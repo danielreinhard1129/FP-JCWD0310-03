@@ -10,16 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Sample {
-  id        Int      @id @default(autoincrement())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("samples") // if you want to use snake_case format
-}
-
 model User {
   id         Int       @id @default(autoincrement())
   fullName   String
@@ -67,9 +57,9 @@ model Address {
   outletId  Int
   userId    Int
 
-  outlet    Outlet  @relation(fields: [outletId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
-  
+  outlet Outlet @relation(fields: [outletId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
   @@map("addresses")
 }
 
