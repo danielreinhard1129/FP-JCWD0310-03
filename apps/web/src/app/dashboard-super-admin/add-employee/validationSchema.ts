@@ -40,7 +40,7 @@ export const ValidationSchemaOutletAdmin = z.object({
     }).min(1, {
         message: "Please select an role to display.",
     }),
-    outlet: z.string({
+    outletId: z.string({
         required_error: "Please select an role to display.",
     }).min(1, {
         message: "Please select an role to display.",
@@ -71,7 +71,7 @@ export const ValidationSchemaWorker = z.object({
     }).min(1, {
         message: "Please select an role to display.",
     }),
-    outlet: z.string({
+    outletId: z.string({
         required_error: "Please select an role to display.",
     }).min(1, {
         message: "Please select an role to display.",
@@ -107,7 +107,7 @@ export const ValidationSchemaDriver = z.object({
     }).min(1, {
         message: "Please select an role to display.",
     }),
-    outlet: z.string({
+    outletId: z.string({
         required_error: "Please select an role to display.",
     }).min(1, {
         message: "Please select an role to display.",

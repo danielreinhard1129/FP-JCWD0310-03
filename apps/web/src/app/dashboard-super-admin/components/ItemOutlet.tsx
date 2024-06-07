@@ -4,10 +4,10 @@ import React from 'react'
 const ItemOutlet = () => {
     return (
         <SelectContent>
-            <SelectItem value="YOGYAKARTA">Yogyakarta</SelectItem>
-            <SelectItem value="SURABAYA">Surabaya</SelectItem>
-            <SelectItem value="SEMARANG">Semarang</SelectItem>
-            <SelectItem value="JAKARTA">Jakarta</SelectItem>
+            <SelectItem value="1">Yogyakarta</SelectItem>
+            <SelectItem value="2">Surabaya</SelectItem>
+            <SelectItem value="2">Semarang</SelectItem>
+            <SelectItem value="3">Jakarta</SelectItem>
         </SelectContent>
     )
 }

@@ -1,14 +1,14 @@
+import cors from 'cors';
 import express, {
-  json,
-  urlencoded,
   Express,
+  NextFunction,
   Request,
   Response,
-  NextFunction,
-  Router,
+  json,
+  urlencoded
 } from 'express';
-import cors from 'cors';
 import { PORT } from './config';
+import { EmployeeRouter } from './routers/employee.router';
 
 export default class App {
   private app: Express;
@@ -16,7 +16,7 @@ export default class App {
   constructor() {
     this.app = express();
     this.configure();
-    // this.routes();
+    this.routes();
     this.handleError();
   }
 
@@ -49,15 +49,15 @@ export default class App {
     );
   }
 
-  // private routes(): void {
-  //   const sampleRouter = new SampleRouter();
+  private routes(): void {
+    const employeeRouter = new EmployeeRouter();
 
-  //   this.app.get('/', (req: Request, res: Response) => {
-  //     res.send(`Hello, Purwadhika Student !`);
-  //   });
+    this.app.get('/api', (req: Request, res: Response) => {
+      res.send(`Hello, Purwadhika Student !`);
+    });
 
-  //   this.app.use('/samples', sampleRouter.getRouter());
-  // }
+    this.app.use('/api/employee', employeeRouter.getRouter());
+  }
 
   public start(): void {
     this.app.listen(PORT, () => {

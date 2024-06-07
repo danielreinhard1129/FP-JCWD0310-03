@@ -1,37 +1,23 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
+import useAddEmployee from "@/hooks/api/employee/useAddEmployee"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
-import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { useEffect, useState } from "react"
-import FormInput from "./FormInput"
 import { ValidationSchemaDriver, ValidationSchemaOutletAdmin, ValidationSchemaSuperAdmin, ValidationSchemaWorker } from "../add-employee/validationSchema"
+import FormInput from "./FormInput"
 import FormSelect from "./FormSelect"
-import ItemRole from "./ItemRole"
-import ItemOutlet from "./ItemOutlet"
 import FormSelectRole from "./FormSelectRole"
-import ItemWorkShift from "./ItemWorkShift"
+import ItemOutlet from "./ItemOutlet"
+import ItemRole from "./ItemRole"
 import ItemStation from "./ItemStation"
+import ItemWorkShift from "./ItemWorkShift"
 
-export function ProfileForm() {
+export function AddEmployeeForm() {
+    const { addEmployee } = useAddEmployee();
     const [selected, setSelected] = useState<string>("")
     const [schema, setSchema] = useState(ValidationSchemaSuperAdmin)
 
@@ -39,13 +25,16 @@ export function ProfileForm() {
     const form = useForm<z.infer<typeof ValidationSchemaWorker>>({
         mode: "all",
         resolver: zodResolver(schema),
-        defaultValues: {
+        defaultValues: {          
+
 
         },
     })
 
     function onSubmit(values: z.infer<typeof schema>) {
-        console.log(values)
+        addEmployee(values)
+        console.log(values);
+        
     }
 
     useEffect(()=>{
@@ -96,7 +85,7 @@ export function ProfileForm() {
                 {selected == "OUTLET_ADMIN" ? (
                     <>
                         <FormSelect
-                            name="outlet"
+                            name="outletId"
                             label="Outlet"
                             placeholder="Select an Outlet"
                             form={form}
@@ -117,7 +106,7 @@ export function ProfileForm() {
                 {selected == "WORKER" ? (
                     <>
                         <FormSelect
-                            name="outlet"
+                            name="outletId"
                             label="Outlet"
                             placeholder="Select an Outlet"
                             form={form}
@@ -145,7 +134,7 @@ export function ProfileForm() {
                 {selected == "DRIVER" ? (
                     <>
                         <FormSelect
-                            name="outlet"
+                            name="outletId"
                             label="Outlet"
                             placeholder="Select an Outlet"
                             form={form}

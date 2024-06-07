@@ -15,9 +15,9 @@ model User {
   fullName   String
   email      String
   password   String?
-  isVerify   Boolean?
+  isVerify   Boolean? @default(false)
   role       Role
-  profilePic String
+  profilePic String?
   createdAt  DateTime  @default(now())
   isDelete   Boolean   @default(false)
   Employee   Employee?
@@ -36,16 +36,21 @@ enum Role {
 
 model Employee {
   id           Int              @id @default(autoincrement())
-  workShift    DateTime
+  workShift    EmployeeWorkShift?
   isSuperAdmin Boolean          @default(false)
   station      EmployeeStation?
   userId       Int              @unique
-  outletId     Int
+  outletId     Int?
 
-  outlet Outlet @relation(fields: [outletId], references: [id])
+  outlet Outlet? @relation(fields: [outletId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
 
   @@map("employees")
+}
+
+enum EmployeeWorkShift {
+  DAY
+  NIGHT
 }
 
 enum EmployeeStation {
@@ -58,7 +63,7 @@ model Address {
   id        Int     @id @default(autoincrement())
   address   String
   city      String
-  isPrimary Boolean
+  isPrimary Boolean @default(true)
   latitude  String
   longitude String
   isDelete  Boolean @default(false)

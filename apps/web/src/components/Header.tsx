@@ -15,7 +15,7 @@ import menu from '../../public/Kucekin_Logo_Black_EVO1.png';
 export const Header = () => {
   return (
     <>
-      <div className="sticky top-0 bg-white z-50">
+      <div className="fixed w-full left-0 top-0 bg-white z-50">
         <div className='container mx-auto px-6 py-2 items-center flex justify-between'>
           <div className="">
             <Image

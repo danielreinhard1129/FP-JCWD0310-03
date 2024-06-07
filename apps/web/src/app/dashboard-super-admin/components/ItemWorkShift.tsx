@@ -4,8 +4,8 @@ import React from 'react'
 const ItemWorkShift = () => {
     return (
         <SelectContent>
-            <SelectItem value="SIANG">Siang</SelectItem>
-            <SelectItem value="MALAM">Malam</SelectItem>
+            <SelectItem value="DAY">Siang</SelectItem>
+            <SelectItem value="NIGHT">Malam</SelectItem>
         </SelectContent>
     )
 }
