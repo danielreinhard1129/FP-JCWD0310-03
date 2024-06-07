@@ -17,6 +17,7 @@ import thumbnail from '../../public/Kucekin_Logo_Black_EVO1.png';
 import image1 from '../../public/Wash And Fold Laundry Service In Atlanta, GA _ Laundry Care.jpeg';
 import { PromotionCarousel } from '@/components/promotion/PromotionCarousel';
 
+
 export default function Home() {
   const { id } = useAppSelector((state) => state.user);
   const router = useRouter();
