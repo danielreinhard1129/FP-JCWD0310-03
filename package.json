@@ -32,5 +32,8 @@
     "hooks": {
       "pre-commit": "npx lint-staged"
     }
+  },
+  "dependencies": {
+    "embla-carousel-react": "^8.1.3"
   }
 }

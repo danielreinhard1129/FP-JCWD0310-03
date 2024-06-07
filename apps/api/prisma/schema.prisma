@@ -16,8 +16,8 @@ model User {
   email      String
   password   String?
   isVerify   Boolean?
-  role       String
-  profilePic String
+  role       Role
+  profilePic String?
   createdAt  DateTime  @default(now())
   isDelete   Boolean   @default(false)
   Employee   Employee?
@@ -26,10 +26,18 @@ model User {
   @@map("users")
 }
 
+enum Role {
+  SUPER_ADMIN
+  OUTLET_ADMIN
+  WORKER
+  DRIVER
+  CUSTOMER
+}
+
 model Employee {
   id           Int              @id @default(autoincrement())
   workShift    DateTime
-  isSuperAdmin Boolean
+  isSuperAdmin Boolean          @default(false)
   station      EmployeeStation?
   userId       Int              @unique
   outletId     Int
