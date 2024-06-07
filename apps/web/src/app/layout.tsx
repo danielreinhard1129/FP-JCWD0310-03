@@ -4,6 +4,7 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import StoreProvider from '@/provider/StoreProvider';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = DM_Sans({ subsets: ['latin'] });
 
@@ -23,7 +24,8 @@ export default function RootLayout({
         <StoreProvider>
           <Header />
           {children}
-          <Footer />
+          {/* <Footer /> */}
+        <Toaster />
         </StoreProvider>
       </body>
     </html>

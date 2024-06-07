@@ -1,7 +1,4 @@
-import { Address } from "cluster";
-import { Employee } from "./employee.type";
-
-
+import { Address, Employee } from "@prisma/client";
 
 export interface User {
     id: number;
@@ -15,12 +12,4 @@ export interface User {
     isDelete: boolean;
     Employee?: Employee;
     Address?: Address;
-  }
-
-export enum Role {
-    SUPER_ADMIN = 'SUPER_ADMIN',
-    OUTLET_ADMIN = 'OUTLET_ADMIN',
-    WORKER = 'WORKER',
-    DRIVER = 'DRIVER',
-    CUSTOMER = 'CUSTOMER',
   }

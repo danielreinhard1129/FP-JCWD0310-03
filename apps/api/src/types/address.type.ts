@@ -1,6 +1,4 @@
-import { Outlet } from "./outlet.type";
-import { User } from "./user.type";
-
+import { Outlet, User } from "@prisma/client";
 
 export interface Address {
     id: number;

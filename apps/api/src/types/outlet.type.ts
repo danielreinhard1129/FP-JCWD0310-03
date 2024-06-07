@@ -1,10 +1,5 @@
-import { Address } from "./address.type";
-import { Employee } from "./employee.type";
-
-export enum OutletType {
-  MAIN = 'MAIN',
-  BRANCH = 'BRANCH',
-}
+import { Address, Employee } from "@prisma/client";
+import { OutletType } from "./outletType.type";
 
 export interface Outlet {
     id: number;

@@ -69,7 +69,14 @@ const config = {
           foreground: 'hsl(var(--card-foreground))',
         },
         main_green: '#116A7B',
-        secondary_green: '#C2DEDC',
+        
+        'mythemes': {
+          maingreen: '#116A7B',
+          secondarygreen: '#C2DEDC',
+          grey: '#F4F4F4',
+          taubmans: '#ECE5C7',
+          dimgrey: '#CDC2AE',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
