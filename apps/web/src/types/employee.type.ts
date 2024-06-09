@@ -14,7 +14,7 @@ export enum EmployeeWorkShift {
 
 export interface Employee {
     id: number;
-    workShift: Date;
+    workShift: EmployeeWorkShift;
     isSuperAdmin: boolean;
     station?: EmployeeStation;
     userId: number;
