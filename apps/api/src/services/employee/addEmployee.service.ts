@@ -15,7 +15,7 @@ export const addEmployeeService = async (
     body: AddEmployeeBody,
 ) => {
     try {
-        const { email, fullName, password, role, isVerify, workShift, station, outletId } = body;       
+        const { email, fullName, password, role, isVerify, workShift, station, outletId } = body;
 
         const existingUser = await prisma.user.findFirst({
             where: { email },
@@ -25,34 +25,41 @@ export const addEmployeeService = async (
             throw new Error('An Account With That Email Already Exists!');
         }
 
+        let IsSuperAdmin = false
+
+        if(role=="SUPER_ADMIN"){
+            IsSuperAdmin = true
+        }
+
         //const hashedPassword = await hashPassword(password);
 
         //add generate referral code trial
 
         const addDataUser = await prisma.user.create({
             data: {
-              email,
-              fullName,
-              password,
-              role,
-              isVerify,
-          }, 
-          
-          });
+                email,
+                fullName,
+                password,
+                role,
+                isVerify,
+            },
+
+        });
         const addDataEmployee = await prisma.employee.create({
             data: {
-              userId: Number(addDataUser.id),
-              outletId: Number(outletId),
-              workShift,
-              station,
-          }, 
-            
-          });
+                userId: Number(addDataUser.id),
+                outletId: Number(outletId),
+                workShift,
+                station,
+                isSuperAdmin: IsSuperAdmin,
+            },
+
+        });
 
         return {
             user: addDataUser,
             employee: addDataEmployee,
-        } 
+        }
 
     } catch (error) {
         throw error;

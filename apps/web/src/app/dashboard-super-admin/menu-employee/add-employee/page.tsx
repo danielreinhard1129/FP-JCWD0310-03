@@ -1,6 +1,6 @@
 import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
-import { AddEmployeeForm } from "../components/FormAddEmployee"
+import { AddEmployeeForm } from "./components/FormAddEmployee"
 
 const AddEmployee = () => {
   return (

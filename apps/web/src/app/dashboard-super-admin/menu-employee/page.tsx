@@ -1,16 +1,25 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { SquarePen } from 'lucide-react';
+'use client'
+
+import Pagination from '@/components/Pagination';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import useGetEmployees from '@/hooks/api/employee/useGetEmployees';
 import Link from 'next/link';
+import { useState } from 'react';
+import TableEmployees from './components/TableEmployee';
 
 const MenuEmployee = () => {
-  
 
-  // const { data: employees, meta, refetch } = useGetEmployees({
-  //   id: id,
-  //   page,
-  //   take: 10,
-  //   status: "PENDING" 
-  // });
+  const [page, setPage] = useState<number>(1);
+  // const { id } = useAppSelector((state) => state.user);
+  const { data: employees, meta, refetch } = useGetEmployees({
+    id: 2,
+    page,
+    take: 5,
+  });
+
+  const handleChangePaginate = ({ selected }: { selected: number }) => {
+    setPage(selected + 1);
+  };
 
   return (
     <div className='flex flex-col gap-5 p-6'>
@@ -18,13 +27,18 @@ const MenuEmployee = () => {
         <div>
           <h1 className='font-bold text-xl'>Your Employees</h1>
         </div>
-        <Link href={"/dashboard-super-admin/add-employee"}>
+        <Link href={"/dashboard-super-admin/menu-employee/add-employee"}>
           <div className='flex bg-mythemes-maingreen h-full w-40 rounded-lg'>
             <h1 className='text-white font-medium mx-auto my-auto'>Add Employee</h1>
           </div>
         </Link>
       </div>
       <div>
+        <Pagination
+          total={meta?.total || 0}
+          take={meta?.take || 0}
+          onChangePage={handleChangePaginate}
+        />
         <Table className='bg-mythemes-secondarygreen rounded-xl'>
           <TableHeader>
             <TableRow>
@@ -38,51 +52,21 @@ const MenuEmployee = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow >
-              <TableCell>SJFSD</TableCell>
-              <TableCell>ARGHEKRF</TableCell>
-              <TableCell>RJKGNER</TableCell>
-              <TableCell>QWEFNQK</TableCell>
-              <TableCell>QEWFJQEF</TableCell>
-              <TableCell>EWFNSDFJND</TableCell>
-              <TableCell><SquarePen/></TableCell>
-            </TableRow>
-            <TableRow >
-              <TableCell>SJFSD</TableCell>
-              <TableCell>ARGHEKRF</TableCell>
-              <TableCell>RJKGNER</TableCell>
-              <TableCell>QWEFNQK</TableCell>
-              <TableCell>QEWFJQEF</TableCell>
-              <TableCell>EWFNSDFJND</TableCell>
-              <TableCell><SquarePen/></TableCell>
-            </TableRow>
-            <TableRow >
-              <TableCell>SJFSD</TableCell>
-              <TableCell>ARGHEKRF</TableCell>
-              <TableCell>RJKGNER</TableCell>
-              <TableCell>QWEFNQK</TableCell>
-              <TableCell>QEWFJQEF</TableCell>
-              <TableCell>EWFNSDFJND</TableCell>
-              <TableCell><SquarePen/></TableCell>
-            </TableRow>
-            <TableRow >
-              <TableCell>SJFSD</TableCell>
-              <TableCell>ARGHEKRF</TableCell>
-              <TableCell>RJKGNER</TableCell>
-              <TableCell>QWEFNQK</TableCell>
-              <TableCell>QEWFJQEF</TableCell>
-              <TableCell>EWFNSDFJND</TableCell>
-              <TableCell><SquarePen/></TableCell>
-            </TableRow>
-            <TableRow >
-              <TableCell>SJFSD</TableCell>
-              <TableCell>ARGHEKRF</TableCell>
-              <TableCell>RJKGNER</TableCell>
-              <TableCell>QWEFNQK</TableCell>
-              <TableCell>QEWFJQEF</TableCell>
-              <TableCell>EWFNSDFJND</TableCell>
-              <TableCell><SquarePen/></TableCell>
-            </TableRow>
+            {employees.map((employee, index) => {
+              return (
+                <TableEmployees
+                  key={index}
+                  employeeId={employee?.id}
+                  name={employee.user.fullName}
+                  email={employee.user.email}
+                  outlet={employee.outlet?.outletName}
+                  role={employee.user.role}
+                  workShift={employee.workShift}
+                  status={employee.workShift}
+                  station={employee.station}
+                />
+              );
+            })}
           </TableBody>
         </Table>
       </div>
