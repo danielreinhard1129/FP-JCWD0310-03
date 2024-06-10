@@ -31,24 +31,25 @@ export const Header = () => {
   return (
     <>
       <div className=" sticky bg-white z-50 top-0">
-        <div className="container mx-auto px-6 py-2 items-center flex justify-between">
-          <div className="">
+        <div className="container mx-auto h-12 px-6 py-2 items-center flex justify-between">
+          <div className="w-28 ">
             <Image
               alt="Kucek.logo."
               src={logo}
               className="object-contain cursor-pointer md:hidden block"
+              onClick={() => router.push('/')}
               width={30}
               height={30}
             />
             <Image
               alt="Kucek.logo."
               src={logo1}
-              className="object-contain cursor-pointer hidden md:block"
-              width={100}
-              height={100}
+              className="cursor-pointer hidden md:block"
+              onClick={() => router.push('/')}
+              objectFit="contain"
             />
           </div>
-          
+
           {Boolean(id) ? (
             <div>
               <Sheet key="right">

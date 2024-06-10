@@ -11,18 +11,20 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  fullName   String
-  email      String
-  password   String?
-  isVerify   Boolean?  @default(false)
-  role       Role
-  profilePic String?
-  token      String?
-  createdAt  DateTime  @default(now())
-  isDelete   Boolean   @default(false)
-  Employee   Employee?
-  Address    Address[]
+  id             Int           @id @default(autoincrement())
+  fullName       String
+  email          String
+  password       String?
+  isVerify       Boolean?      @default(false)
+  role           Role
+  profilePic     String?
+  token          String?
+  tokenExpiresAt DateTime
+  createdAt      DateTime      @default(now())
+  isDelete       Boolean       @default(false)
+  Employee       Employee?
+  Address        Address[]
+  PickupOrder    PickupOrder[]
 
   @@map("users")
 }
@@ -78,14 +80,15 @@ model Address {
 }
 
 model Outlet {
-  id         Int        @id @default(autoincrement())
-  outletName String
-  outletType OutletType
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  isDelete   Boolean    @default(false)
-  Employee   Employee[]
-  Address    Address[]
+  id          Int           @id @default(autoincrement())
+  outletName  String
+  outletType  OutletType
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  isDelete    Boolean       @default(false)
+  Employee    Employee[]
+  Address     Address[]
+  PickupOrder PickupOrder[]
 
   @@map("outlets")
 }
@@ -93,4 +96,79 @@ model Outlet {
 enum OutletType {
   MAIN
   BRANCH
+}
+
+model PickupOrder {
+  id             Int          @id @default(autoincrement())
+  pickupNumber   Int          @unique
+  pickupStatus   PickupStatus @default(Waiting_for_Driver)
+  distance       Int
+  pickupPrice    Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  userId         Int
+  outletId       Int?
+  isOrderCreated Boolean      @default(false)
+
+  user   User    @relation(fields: [userId], references: [id])
+  outlet Outlet? @relation(fields: [outletId], references: [id])
+  Order  Order[]
+
+  @@map("pickupOrders")
+}
+
+enum PickupStatus {
+  Waiting_for_Driver
+  On_The_Way_to_Client
+  On_The_Way_to_Outlet
+  Received_by_Outlet
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  orderNumber   String
+  orderStatus   OrderStatus @default(Waiting_for_Driver_Pickup)
+  weight        Int
+  laundryPrice  Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  pickupOrderId Int         @unique
+
+  pickupOrder PickupOrder @relation(fields: [pickupOrderId], references: [id])
+  OrderItem   OrderItem[]
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  Waiting_for_Driver_Pickup
+  Laundry_On_The_Way_To_Outlet
+  Laundry_Has_Arrived_At_Outlet
+  Laundry_Being_Washed
+  Laundry_Being_Ironed
+  Laundry_Being_Packed
+  Awaiting_Payment
+  Laundry_Being_Delivered_To_Customer
+  Laundry_Received_By_Customer
+}
+
+model OrderItem {
+  id            Int @id @default(autoincrement())
+  qty           Int
+  orderId       Int
+  laundryItemId Int
+
+  laundryItem LaundryItem @relation(fields: [laundryItemId], references: [id])
+  order       Order       @relation(fields: [orderId], references: [id])
+
+  @@map("orderItems")
+}
+
+model LaundryItem {
+  id        Int         @id @default(autoincrement())
+  itemName  String
+  isDelete  Boolean     @default(false)
+  OrderItem OrderItem[]
+
+  @@map("laundryItems")
 }

@@ -1,25 +1,26 @@
-import exp from 'constants';
-import { Employee } from './employee.type';
-import { Address } from './address.type';
+import { Address } from "cluster";
+import { Employee } from "./employee.type";
+
+
 
 export interface User {
-  id: number;
-  fullName: string;
-  email: string;
-  password?: string;
-  isVerify?: boolean;
-  role: Role;
-  profilePic?: string;
-  createdAt: Date;
-  isDelete: boolean;
-  
-  employee: Employee;
-  address: Address;
-}
+    id: number;
+    fullName: string;
+    email: string;
+    password?: string;
+    isVerify?: boolean;
+    role: string;
+    profilePic?: string;
+    createdAt: Date;
+    isDelete: boolean;
+    Employee?: Employee;
+    Address?: Address;
+  }
+
 export enum Role {
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  OUTLET_ADMIN = 'OUTLET_ADMIN',
-  WORKER = 'WORKER',
-  DRIVER = 'DRIVER',
-  CUSTOMER = 'CUSTOMER',
-}
+    SUPER_ADMIN = 'SUPER_ADMIN',
+    OUTLET_ADMIN = 'OUTLET_ADMIN',
+    WORKER = 'WORKER',
+    DRIVER = 'DRIVER',
+    CUSTOMER = 'CUSTOMER',
+  }
