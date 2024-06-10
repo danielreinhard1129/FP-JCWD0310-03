@@ -19,7 +19,8 @@ import { logoutAction } from '@/redux/slices/userSlice';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  const { id, role } = useAppSelector((state) => state.user);
+  // const { id, role } = useAppSelector((state) => state.user);
+  const id = false
   const router = useRouter();
 
   const logout = () => {
@@ -30,22 +31,23 @@ export const Header = () => {
 
   return (
     <>
-      <div className=" sticky bg-white z-50 top-0">
+      <div className="fixed w-full bg-white z-50 top-0">
         <div className="container mx-auto px-6 py-2 items-center flex justify-between">
-          <div className="">
+          <div className="relative h-8 w-24 overflow-hidden">
             <Image
               alt="Kucek.logo."
               src={logo}
-              className="object-contain cursor-pointer md:hidden block"
+              className="object-contain cursor-pointer md:hidden block "
               width={30}
               height={30}
             />
             <Image
               alt="Kucek.logo."
               src={logo1}
-              className="object-contain cursor-pointer hidden md:block"
+              className="object-contain cursor-pointer hidden md:block absolute left-0 -top-4"
               width={100}
-              height={100}
+              height={50}
+              
             />
           </div>
           

@@ -13,7 +13,7 @@ interface FormInputProps {
 }
 
 
-const FormInput: React.FC<FormInputProps> = ({
+const FormInputDisable: React.FC<FormInputProps> = ({
     name,
     label,
     type = 'text',
@@ -30,6 +30,7 @@ const FormInput: React.FC<FormInputProps> = ({
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
                         <Input
+                            disabled
                             type={type}
                             placeholder={placeholder}
                             {...field} />
@@ -41,4 +42,4 @@ const FormInput: React.FC<FormInputProps> = ({
     )
 };
 
-export default FormInput;
+export default FormInputDisable;

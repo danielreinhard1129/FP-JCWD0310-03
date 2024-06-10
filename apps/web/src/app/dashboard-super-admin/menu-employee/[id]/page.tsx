@@ -36,9 +36,6 @@ const EditEmployee = ({ params }: { params: { id: string } }) => {
     workShift: employee?.workShift || '',
   };
 
-  console.log(employee);
-
-
   if (isLoadingGetEmployee) {
     return (
       <div className=' container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold'>
