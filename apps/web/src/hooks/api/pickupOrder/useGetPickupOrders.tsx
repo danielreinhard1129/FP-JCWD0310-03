@@ -1,22 +1,22 @@
 'use client';
 import { axiosInstance } from '@/lib/axios';
-import { Employee } from '@/types/employee.type';
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
+import { PickupOrder } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
-interface IGetEmployeesQuery extends IPaginationQueries {
+interface IGetPickupOrdersQuery extends IPaginationQueries {
   id: number;
 }
 
-const useGetEmployees = (queries: IGetEmployeesQuery) => {
-  const [data, setData] = useState<Employee[]>([]);
+const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
+  const [data, setData] = useState<PickupOrder[]>([]);
   const [meta, setMeta] = useState<IPaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getEmployees = async () => {
+  const getPickupOrders = async () => {
     try {
-      const { data } = await axiosInstance.get('/employee/employees',{
+      const { data } = await axiosInstance.get('/pickupOrder/',{
         params: queries,
       })
       setData(data.data)
@@ -31,11 +31,11 @@ const useGetEmployees = (queries: IGetEmployeesQuery) => {
   }
 
   useEffect(() => {
-    getEmployees();
+    getPickupOrders();
   
   }, [queries?.page, queries.id]);
 
-  return { data, isLoading, meta, refetch: getEmployees };
+  return { data, isLoading, meta, refetch: getPickupOrders };
 };
 
-export default useGetEmployees;
+export default useGetPickupOrders;

@@ -11,7 +11,7 @@ const Sidebar = () => {
                 <Link href={"/dashboard-super-admin/menu-employee"}>
                     <h2>Employees</h2>
                 </Link>
-                <Link href={"/dashboard-super-admin"}>
+                <Link href={"/dashboard-super-admin/menu-order"}>
                     <h2>Orders</h2>
                 </Link>
                 <Link href={"/dashboard-super-admin"}>

@@ -2,7 +2,6 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { SquarePen } from 'lucide-react';
 import Link from 'next/link';
-import Router from 'next/router';
 import { FC, useEffect, useState } from 'react';
 
 interface EmployeeRowTableProps {

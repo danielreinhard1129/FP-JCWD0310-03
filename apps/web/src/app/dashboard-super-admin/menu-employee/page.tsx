@@ -12,7 +12,7 @@ const MenuEmployee = () => {
   const [page, setPage] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
   const { data: employees, meta, refetch } = useGetEmployees({
-    id: 2,
+    id: 0,
     page,
     take: 5,
   });
