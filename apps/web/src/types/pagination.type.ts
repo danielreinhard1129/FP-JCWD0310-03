@@ -2,7 +2,7 @@ export interface IPaginationQueries {
     take?: number;
     page?: number;
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc'
+    sortOrder?: string;  
 }
 
 export interface IPaginationMeta {

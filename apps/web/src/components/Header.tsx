@@ -19,7 +19,8 @@ import { logoutAction } from '@/redux/slices/userSlice';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  const { id, role } = useAppSelector((state) => state.user);
+  // const { id, role } = useAppSelector((state) => state.user);
+  const id = false
   const router = useRouter();
 
   const logout = () => {

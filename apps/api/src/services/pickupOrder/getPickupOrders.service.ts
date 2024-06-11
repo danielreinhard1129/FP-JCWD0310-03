@@ -3,24 +3,25 @@ import { PaginationQueryParams } from "@/types/pagination.type";
 
 import { Prisma } from "@prisma/client";
 
-interface GetEmployeesQuery extends PaginationQueryParams {
+interface GetPickupOrdersQuery extends PaginationQueryParams {
   id: number;
 }
 
-export const getEmployeesService = async (query: GetEmployeesQuery) => {
+export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
   try {
     const { page, sortBy, sortOrder, take, id} = query;
     
     const existingUser = await prisma.user.findFirst({
         where: { id: id },
         select: { Employee: true }
-      })     
+      })      
 
-    const whereClause: Prisma.EmployeeWhereInput = {
+    const whereClause: Prisma.PickupOrderWhereInput = {
         outletId: existingUser?.Employee?.outletId,
+        isOrderCreated: false,
     }
 
-    const employees = await prisma.employee.findMany({
+    const pickupOrders = await prisma.pickupOrder.findMany({
       where: whereClause,
       skip: (page - 1) * take,
       take: take,
@@ -30,14 +31,14 @@ export const getEmployeesService = async (query: GetEmployeesQuery) => {
       include: { user:true, outlet:true },
     });
 
-    const count = await prisma.employee.count({ where: whereClause });
+    const count = await prisma.pickupOrder.count({ where: whereClause });
 
-    if (!employees) {
+    if (!pickupOrders) {
       throw new Error('User not Found!')
     }
 
     return {
-      data: employees,
+      data: pickupOrders,
       meta: { page, take, total: count }
     };
   } catch (error) {

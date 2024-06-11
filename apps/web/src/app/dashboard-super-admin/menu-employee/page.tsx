@@ -12,7 +12,7 @@ const MenuEmployee = () => {
   const [page, setPage] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
   const { data: employees, meta, refetch } = useGetEmployees({
-    id: 2,
+    id: 0,
     page,
     take: 5,
   });
@@ -34,11 +34,7 @@ const MenuEmployee = () => {
         </Link>
       </div>
       <div>
-        <Pagination
-          total={meta?.total || 0}
-          take={meta?.take || 0}
-          onChangePage={handleChangePaginate}
-        />
+        
         <Table className='bg-mythemes-secondarygreen rounded-xl'>
           <TableHeader>
             <TableRow>
@@ -69,6 +65,11 @@ const MenuEmployee = () => {
             })}
           </TableBody>
         </Table>
+        <Pagination
+          total={meta?.total || 0}
+          take={meta?.take || 0}
+          onChangePage={handleChangePaginate}
+        />
       </div>
     </div>
   )

@@ -69,7 +69,7 @@ const config = {
           foreground: 'hsl(var(--card-foreground))',
         },
         main_green: '#116A7B',
-        
+
         'mythemes': {
           maingreen: '#116A7B',
           secondarygreen: '#C2DEDC',
@@ -77,7 +77,11 @@ const config = {
           taubmans: '#ECE5C7',
           dimgrey: '#CDC2AE',
         },
+
       },
+      // backgroundImage: {
+      //   'my_bg_logo': "url('../public/Kucekin_Logo_Black_EVO1.png')"
+      // },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

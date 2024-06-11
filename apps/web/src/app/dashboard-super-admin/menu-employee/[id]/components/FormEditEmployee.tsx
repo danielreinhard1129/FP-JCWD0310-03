@@ -36,14 +36,11 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({ isLoading, onSubmit, init
     const [selected, setSelected] = useState<string>(initialValues.role)
     const [schema, setSchema] = useState(ValidationSchemaSuperAdmin)
 
-    // const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
-    //     defaultValues: initialValues,
-    //   });
 
     const form = useForm<z.infer<typeof ValidationSchemaWorker>>({
         mode: "all",
         resolver: zodResolver(schema),
-        defaultValues: initialValues
+        defaultValues: initialValues,
     })
 
     useEffect(() => {
