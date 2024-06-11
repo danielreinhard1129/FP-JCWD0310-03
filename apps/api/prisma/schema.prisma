@@ -18,7 +18,7 @@ model User {
   isVerify    Boolean?      @default(false)
   role        Role          @default(CUSTOMER)
   profilePic  String?
-  token       String?
+  token       String?       @db.LongText()
   createdAt   DateTime      @default(now())
   isDelete    Boolean       @default(false)
   Employee    Employee?

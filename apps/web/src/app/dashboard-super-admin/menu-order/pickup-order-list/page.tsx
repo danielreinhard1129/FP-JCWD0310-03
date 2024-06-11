@@ -29,11 +29,7 @@ const PickupOrderList = () => {
       </div>
       <div className="mx-8 mb-8">
         <h1 className="text-md font-bold my-auto">Choose Pickup Order to Create Order</h1>
-        <Pagination
-          total={meta?.total || 0}
-          take={meta?.take || 0}
-          onChangePage={handleChangePaginate}
-        />
+        
         <Table className='bg-mythemes-secondarygreen rounded-xl'>
           <TableHeader>
             <TableRow>
@@ -63,6 +59,11 @@ const PickupOrderList = () => {
             })}
           </TableBody>
         </Table>
+        <Pagination
+          total={meta?.total || 0}
+          take={meta?.take || 0}
+          onChangePage={handleChangePaginate}
+        />
       </div>
     </div>
   )

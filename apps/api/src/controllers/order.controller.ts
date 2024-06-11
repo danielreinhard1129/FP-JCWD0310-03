@@ -21,8 +21,11 @@ export class OrderController {
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',
-        sortOrder: parseInt(req.query.sortOrder as string) || 'desc',
+        sortOrder: req.query.sortOrder as string || 'asc',
+        filterOutlet: parseInt(req.query.filterOutlet as string) || 'all',
+        filterStatus: req.query.filterStatus as string || 'all',     
       };
+      
       const result = await getOrdersService(query);
       return res.status(200).send(result);
     } catch (error) {

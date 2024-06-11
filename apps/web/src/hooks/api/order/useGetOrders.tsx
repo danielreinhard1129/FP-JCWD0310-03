@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 
 interface IGetOrdersQuery extends IPaginationQueries {
   id: number;
+  filterOutlet: string,
+  filterStatus: string,
 }
 
 const useGetOrders = (queries: IGetOrdersQuery) => {
@@ -16,8 +18,8 @@ const useGetOrders = (queries: IGetOrdersQuery) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getOrders = async () => {
-    try {
-      const { data } = await axiosInstance.get('/order/',{
+    try {     
+      const { data } = await axiosInstance.get('/order/', {
         params: queries,
       })
       setData(data.data)
@@ -33,8 +35,8 @@ const useGetOrders = (queries: IGetOrdersQuery) => {
 
   useEffect(() => {
     getOrders();
-  
-  }, [queries?.page, queries.id]);
+
+  }, [queries?.filterOutlet, queries?.filterStatus, queries?.sortOrder, queries?.page, queries.id]);
 
   return { data, isLoading, meta, refetch: getOrders };
 };

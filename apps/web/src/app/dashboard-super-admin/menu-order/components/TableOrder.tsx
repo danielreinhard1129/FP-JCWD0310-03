@@ -33,11 +33,11 @@ const TableOrder: FC<OrderRowTableProps> = ({
             <TableCell>{price}</TableCell>
             <TableCell>{createdAt}</TableCell>
             <TableCell>{status}</TableCell>
-            <TableCell>
+            {/* <TableCell>
                 <Link href={`/dashboard-super-admin/menu-order/${orderId}`}>
                     <SquarePen />
                 </Link>
-            </TableCell>
+            </TableCell> */}
         </TableRow>
     )
 }
