@@ -7,14 +7,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import FormInput from '@/components/FormInput';
 import useLogin from '@/hooks/api/auth/useLogin';
-import { ValidationSchema } from '../validationSchema';
+import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
 import Link from 'next/link';
+import { ValidationSchema } from '../validationSchema';
+import useImplicitFlow from './useImplicitFlow';
 
 export function FromLogin() {
+  const { googleLogin } = useLoginByGoogle();
   const { login } = useLogin();
+  // const { googleLogin } = useImplicitFlow();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
@@ -25,7 +29,7 @@ export function FromLogin() {
 
   function onSubmit(values: z.infer<typeof schema>) {
     login(values);
-    console.log(values);
+    // console.log(values);
   }
 
   return (
@@ -67,7 +71,19 @@ export function FromLogin() {
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
 
-        <div>Google</div>
+        <div>
+          <Button onClick={() => googleLogin()}>google</Button>
+          {/* <GoogleLogin
+            type="icon"
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          /> */}
+          ;
+        </div>
         <div className="mx-auto font-light">
           Don't have account?{' '}
           <Link

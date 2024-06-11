@@ -11,20 +11,19 @@ datasource db {
 }
 
 model User {
-  id             Int           @id @default(autoincrement())
-  fullName       String
-  email          String
-  password       String?
-  isVerify       Boolean?      @default(false)
-  role           Role
-  profilePic     String?
-  token          String?
-  tokenExpiresAt DateTime
-  createdAt      DateTime      @default(now())
-  isDelete       Boolean       @default(false)
-  Employee       Employee?
-  Address        Address[]
-  PickupOrder    PickupOrder[]
+  id          Int           @id @default(autoincrement())
+  fullName    String?
+  email       String
+  password    String?
+  isVerify    Boolean?      @default(false)
+  role        Role          @default(CUSTOMER)
+  profilePic  String?
+  token       String?       @db.LongText()
+  createdAt   DateTime      @default(now())
+  isDelete    Boolean       @default(false)
+  Employee    Employee?
+  Address     Address[]
+  PickupOrder PickupOrder[]
 
   @@map("users")
 }
@@ -100,7 +99,7 @@ enum OutletType {
 
 model PickupOrder {
   id             Int          @id @default(autoincrement())
-  pickupNumber   Int          @unique
+  pickupNumber   String       @unique
   pickupStatus   PickupStatus @default(Waiting_for_Driver)
   distance       Int
   pickupPrice    Int

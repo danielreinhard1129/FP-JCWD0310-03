@@ -9,6 +9,7 @@ import express, {
 } from 'express';
 import { PORT } from './config';
 import { EmployeeRouter } from './routers/employee.router';
+import { OutletRouter } from './routers/outlet.router';
 import { AuthRouter } from './routers/auth.router';
 
 export default class App {
@@ -52,6 +53,7 @@ export default class App {
 
   private routes(): void {
     const employeeRouter = new EmployeeRouter();
+    const outletRouter = new OutletRouter();
     const authRouter = new AuthRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
@@ -59,6 +61,7 @@ export default class App {
     });
 
     this.app.use('/api/employee', employeeRouter.getRouter());
+    this.app.use('/api/outlet', outletRouter.getRouter());
     this.app.use('/api/auth', authRouter.getRouter());
   }
 

@@ -16,12 +16,9 @@ export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
       throw new Error('Incorrect email address or password !');
     }
 
-    // const isPasswordValid = await comparePassword(password!, user.password!);
-    const pass = await prisma.user.findFirst({
-      where: { password: password },
-    });
+    const isPasswordValid = await comparePassword(password, user.password);
 
-    if (!pass) {
+    if (!isPasswordValid) {
       throw new Error('Incorrect email address or password !');
     }
 

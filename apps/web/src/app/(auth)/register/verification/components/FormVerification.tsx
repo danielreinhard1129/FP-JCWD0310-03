@@ -10,8 +10,18 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
+import { useSearchParams } from 'next/navigation';
+import { User } from '@/types/user.type';
+import { data } from 'cypress/types/jquery';
 
+interface VerificationArgs extends Pick<User, 'password'> {}
+
+interface VerificationToken extends Pick<User, 'password'> {
+  token: string | null;
+}
 export function FormVerification() {
+  const searchParams = useSearchParams();
+  let tokenParams = searchParams.get('token');
   const { verification } = useVerification();
   const [schema, setSchema] = useState(ValidationSchema);
 
@@ -21,31 +31,26 @@ export function FormVerification() {
     defaultValues: {},
   });
 
-  function onSubmit(values: z.infer<typeof schema>) {
+  function onSubmit(values: VerificationToken) {
+  
     verification(values);
     console.log(values);
   }
 
+  const handleSubmit = (data: VerificationArgs) => {
+    const finalData = {
+      password: data.password,
+      token: tokenParams,
+    };
+    onSubmit(finalData);
+  };
+
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-3 flex flex-col justify-center gap-2 mt-5"
       >
-        <FormInput
-          name="email"
-          type="email"
-          label="Email"
-          placeholder="Your Email"
-          form={form}
-        />
-        <FormInput
-          name="fullName"
-          type="fullName"
-          label="FullName"
-          placeholder="Full Name"
-          form={form}
-        />
         <FormInput
           name="password"
           type="password"
@@ -53,24 +58,9 @@ export function FormVerification() {
           placeholder="Your Password"
           form={form}
         />
-        {/* <FormInput
-          name="email"
-          type="email"
-          label="Email"
-          placeholder="Your Email"
-          form={form}
-        /> */}
-
         <Button type="submit" className="bg-mythemes-maingreen">
           Submit
         </Button>
-        <div className="relative flex py-5 items-center">
-          <div className="flex-grow border-t border-gray-400"></div>
-          <span className="flex-shrink mx-4 text-gray-400">Or</span>
-          <div className="flex-grow border-t border-gray-400"></div>
-        </div>
-
-        <div>Google</div>
       </form>
     </Form>
   );

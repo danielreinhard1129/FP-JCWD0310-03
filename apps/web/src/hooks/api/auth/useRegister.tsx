@@ -13,6 +13,7 @@ interface RegisterResponses {
 }
 
 interface RegisterArgs extends Pick<User, 'email'> {}
+
 const useRegister = () => {
   const router = useRouter();
   const register = async (payload: RegisterArgs) => {

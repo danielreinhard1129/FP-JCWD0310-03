@@ -1,4 +1,5 @@
 import { AuthController } from '@/controllers/auth.controllers';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class AuthRouter {
@@ -12,13 +13,18 @@ export class AuthRouter {
   }
 
   private initializeRoutes(): void {
-    // this.router.get(
-    //   '/keep-login',
-    //   verifyToken,
-    //   this.authController.keepLoginController,
-    // );
+    this.router.post(
+      '/verification',
+      verifyToken,
+      this.authController.verificationController,
+    );
     this.router.post('/register', this.authController.registerController);
+    this.router.post(
+      '/complete-registration',
+      this.authController.completeRegistrationController,
+    );
     this.router.post('/login', this.authController.loginController);
+    this.router.post('/google', this.authController.getGoogleTokenController);
     // this.router.get(
     //   '/keep-login',
     //   verifyToken,

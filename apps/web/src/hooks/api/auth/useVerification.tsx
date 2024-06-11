@@ -5,23 +5,27 @@ import { axiosInstance } from '@/lib/axios';
 import { cn } from '@/lib/utils';
 import { User } from '@/types/user.type';
 import { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface VerificationResponses {
   message: string;
-  data: User;
 }
 
-interface VerificationArgs extends Pick<User, 'email'> {}
+interface VerificationArgs extends Pick<User, 'password'> {
+  token: string | null;
+}
 const useVerification = () => {
   const router = useRouter();
   const verification = async (payload: VerificationArgs) => {
     try {
-      const { data } = await axiosInstance.post<VerificationResponses>(
-        '/auth/Verification',
+      await axiosInstance.post<VerificationResponses>(
+        'auth/verification',
         payload,
       );
-      router.push('/');
+
+      // console.log(payload);
+
+      router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
         // FIXME = change alert to toast

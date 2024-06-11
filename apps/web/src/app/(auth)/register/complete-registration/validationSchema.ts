@@ -8,11 +8,16 @@ export const ValidationSchema = z.object({
     .min(2, {
       message: 'Username must be at least 2 characters.',
     }),
+  email: z
+    .string({
+      required_error: 'Email is Required',
+    })
+    .email(),
   password: z
     .string({
       required_error: 'Password is Required',
     })
-    .min(5, {
+    .min(2, {
       message: 'Password must be at least 2 characters.',
     }),
 });

@@ -4,50 +4,59 @@ import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import useAddEmployee from "@/hooks/api/employee/useAddEmployee"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { ValidationSchemaDriver, ValidationSchemaOutletAdmin, ValidationSchemaSuperAdmin, ValidationSchemaWorker } from "../add-employee/validationSchema"
-import FormInput from "../../../components/FormInput"
-import FormSelect from "./FormSelect"
-import FormSelectRole from "./FormSelectRole"
-import ItemOutlet from "./ItemOutlet"
-import ItemRole from "./ItemRole"
-import ItemStation from "./ItemStation"
-import ItemWorkShift from "./ItemWorkShift"
+import { ValidationSchemaDriver, ValidationSchemaOutletAdmin, ValidationSchemaSuperAdmin, ValidationSchemaWorker } from "../validationSchema"
+import FormInput from "../../../../../components/FormInput"
+import FormSelect from "../../../components/FormSelect"
+import FormSelectRole from "../../../components/FormSelectRole"
+import ItemOutlet from "../../../components/ItemOutlet"
+import ItemRole from "../../../components/ItemRole"
+import ItemStation from "../../../components/ItemStation"
+import ItemWorkShift from "../../../components/ItemWorkShift"
+import { EmployeeStation, EmployeeWorkShift } from "@/types/employee.type"
 
-export function AddEmployeeForm() {
-    const { addEmployee } = useAddEmployee();
-    const [selected, setSelected] = useState<string>("")
+interface FormUpdateEmployee {
+    fullName: string,
+    email: string,
+    role: string,
+    outletId: string,
+    station: string,
+    workShift: string,
+}
+
+interface FormEditEmployeeProps {
+    isLoading: boolean,
+    onSubmit: any,
+    initialValues: FormUpdateEmployee,
+}
+
+const FormEditEmployee: FC<FormEditEmployeeProps> = ({ isLoading, onSubmit, initialValues }) => {
+    const [selected, setSelected] = useState<string>(initialValues.role)
     const [schema, setSchema] = useState(ValidationSchemaSuperAdmin)
 
-    
+    // const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+    //     defaultValues: initialValues,
+    //   });
+
     const form = useForm<z.infer<typeof ValidationSchemaWorker>>({
         mode: "all",
         resolver: zodResolver(schema),
-        defaultValues: {          
-
-
-        },
+        defaultValues: initialValues
     })
 
-    function onSubmit(values: z.infer<typeof schema>) {
-        addEmployee(values)
-        console.log(values);
-        
-    }
-
-    useEffect(()=>{
+    useEffect(() => {
         if (selected == "SUPER_ADMIN") {
             setSchema(ValidationSchemaSuperAdmin)
-        } else if (selected == "OUTLET_ADMIN"){
+        } else if (selected == "OUTLET_ADMIN") {
             setSchema(ValidationSchemaOutletAdmin)
-        } else if (selected == "WORKER"){
+        } else if (selected == "WORKER") {
             setSchema(ValidationSchemaWorker)
-        } else if (selected == "DRIVER"){
+        } else if (selected == "DRIVER") {
             setSchema(ValidationSchemaDriver)
         }
-    },[selected])
+    }, [selected])
 
     return (
         <Form {...form}>
@@ -64,13 +73,6 @@ export function AddEmployeeForm() {
                     type="email"
                     label="Email"
                     placeholder="Your Email"
-                    form={form}
-                />
-                <FormInput
-                    name="password"
-                    type="password"
-                    label="Password"
-                    placeholder="Entry Password"
                     form={form}
                 />
                 <FormSelectRole
@@ -145,8 +147,9 @@ export function AddEmployeeForm() {
                     <div></div>
                 )}
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={isLoading}>Submit</Button>
             </form>
         </Form>
     )
 }
+export default FormEditEmployee

@@ -33,7 +33,7 @@ const useLogin = () => {
       dispatch(loginAction(data.data));
       localStorage.setItem('token', data.token);
       if (data.data.role === Role.CUSTOMER) {
-        router.back;
+        router.push('/');
       }
       if (data.data.role === Role.DRIVER) {
         router.push('/driver');

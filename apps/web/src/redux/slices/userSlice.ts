@@ -3,18 +3,13 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState: Omit<
   User,
-  | 'createdAt'
-  | 'isVerify'
-  | 'isDelete'
-  | 'employee'
-  | 'address'
-  | 'password'
-  | 'profilePic'
+  'createdAt' | 'isDelete' | 'employee' | 'address' | 'password' | 'profilePic'
 > = {
   id: 0,
   fullName: '',
   email: '',
   role: Role.CUSTOMER,
+  isVerify: false,
 };
 
 export const userSlice = createSlice({
@@ -26,6 +21,7 @@ export const userSlice = createSlice({
       state.fullName = action.payload.fullName;
       state.email = action.payload.email;
       state.role = action.payload.role;
+      state.isVerify = action.payload.isVerify;
     },
     logoutAction: (state) => {
       state.id = 0;

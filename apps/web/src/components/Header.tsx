@@ -76,7 +76,10 @@ export const Header = () => {
                       <p className="text-xl font-bold  hover:text-main_green text-left cursor-pointer">
                         Your Order
                       </p>
-                      <p className="text-xl font-bold text-red-400 flex gap-1 cursor-pointer">
+                      <p
+                        className="text-xl font-bold text-red-400 flex gap-1 cursor-pointer"
+                        onClick={logout}
+                      >
                         Logout <span></span> <LogOut />
                       </p>
                     </div>
