@@ -1,9 +1,7 @@
 import prisma from '@/prisma';
 import { appConfig } from '@/utils/config';
 import {
-  OAuth2Client,
-  Credentials,
-  UserRefreshClient,
+  OAuth2Client
 } from 'google-auth-library';
 import { sign } from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
@@ -49,6 +47,7 @@ export const getGoogleTokenService = async (code: string) => {
     });
 
     return {
+      message: 'login google success',
       data: newUser,
       token: token,
     };

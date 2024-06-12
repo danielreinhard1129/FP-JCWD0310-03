@@ -14,8 +14,10 @@ import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
 import Link from 'next/link';
 import { ValidationSchema } from '../validationSchema';
 import useImplicitFlow from './useImplicitFlow';
+import { useRouter } from 'next/navigation';
 
 export function FromLogin() {
+  const router = useRouter();
   const { googleLogin } = useLoginByGoogle();
   const { login } = useLogin();
   // const { googleLogin } = useImplicitFlow();

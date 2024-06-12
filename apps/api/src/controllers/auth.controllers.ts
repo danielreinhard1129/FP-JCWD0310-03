@@ -1,7 +1,5 @@
 import { completeRegistrationService } from '@/services/auth/complete-registration.service';
-import {
-  getGoogleTokenService
-} from '@/services/auth/getGoogleToken.service';
+import { getGoogleTokenService } from '@/services/auth/getGoogleToken.service';
 
 import { loginService } from '@/services/auth/login.service';
 import { registerService } from '@/services/auth/register.service';
@@ -55,8 +53,8 @@ export class AuthController {
     next: NextFunction,
   ) {
     try {
-      const token = req.body.code;
-      const result = await getGoogleTokenService(token);
+      const { code } = req.body;
+      const result = await getGoogleTokenService(code);
       res.status(200).send(result);
     } catch (error) {
       next(error);
