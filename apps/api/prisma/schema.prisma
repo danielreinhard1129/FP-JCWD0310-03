@@ -37,12 +37,15 @@ enum Role {
 }
 
 model Employee {
-  id           Int                @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+
   workShift    EmployeeWorkShift?
   isSuperAdmin Boolean            @default(false)
-  station      EmployeeStation?
-  userId       Int                @unique
-  outletId     Int?
+
+  station EmployeeStation?
+  userId  Int              @unique
+
+  outletId Int?
 
   outlet Outlet? @relation(fields: [outletId], references: [id])
   user   User    @relation(fields: [userId], references: [id])

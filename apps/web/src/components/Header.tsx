@@ -19,8 +19,7 @@ import { logoutAction } from '@/redux/slices/userSlice';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  // const { id, role } = useAppSelector((state) => state.user);
-  const id = false
+  const { id, role } = useAppSelector((state) => state.user);
   const router = useRouter();
 
   const logout = () => {
@@ -31,26 +30,26 @@ export const Header = () => {
 
   return (
     <>
-      <div className="fixed w-full bg-white z-50 top-0">
-        <div className="container mx-auto px-6 py-2 items-center flex justify-between">
-          <div className="relative h-8 w-24 overflow-hidden">
+      <div className=" sticky bg-white z-50 top-0">
+        <div className="container mx-auto h-12 px-6 py-2 items-center flex justify-between">
+          <div className="w-28 ">
             <Image
               alt="Kucek.logo."
               src={logo}
-              className="object-contain cursor-pointer md:hidden block "
+              className="object-contain cursor-pointer md:hidden block"
+              onClick={() => router.push('/')}
               width={30}
               height={30}
             />
             <Image
               alt="Kucek.logo."
               src={logo1}
-              className="object-contain cursor-pointer hidden md:block absolute left-0 -top-4"
-              width={100}
-              height={50}
-              
+              className="cursor-pointer hidden md:block"
+              onClick={() => router.push('/')}
+              objectFit="contain"
             />
           </div>
-          
+
           {Boolean(id) ? (
             <div>
               <Sheet key="right">
@@ -77,7 +76,10 @@ export const Header = () => {
                       <p className="text-xl font-bold  hover:text-main_green text-left cursor-pointer">
                         Your Order
                       </p>
-                      <p className="text-xl font-bold text-red-400 flex gap-1 cursor-pointer">
+                      <p
+                        className="text-xl font-bold text-red-400 flex gap-1 cursor-pointer"
+                        onClick={logout}
+                      >
                         Logout <span></span> <LogOut />
                       </p>
                     </div>

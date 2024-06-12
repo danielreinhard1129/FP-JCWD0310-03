@@ -17,5 +17,5 @@ const AddEmployee = () => {
     </div>
   )
 }
-
+ 
 export default AddEmployee
