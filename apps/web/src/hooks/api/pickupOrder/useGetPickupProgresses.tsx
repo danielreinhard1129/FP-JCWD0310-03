@@ -5,18 +5,18 @@ import { PickupOrder } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
-interface IGetPickupOrdersQuery extends IPaginationQueries {
+interface IGetPickupProgressesQuery extends IPaginationQueries {
   id: number;
 }
 
-const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
+const useGetPickupProgresses = (queries: IGetPickupProgressesQuery) => {
   const [data, setData] = useState<PickupOrder[]>([]);
   const [meta, setMeta] = useState<IPaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getPickupOrders = async () => {
+  const getPickupProgresses = async () => {
     try {
-      const { data } = await axiosInstance.get('/pickup-order/',{
+      const { data } = await axiosInstance.get('/pickup-order/progresses',{
         params: queries,
       })
       setData(data.data)
@@ -31,11 +31,11 @@ const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
   }
 
   useEffect(() => {
-    getPickupOrders();
+    getPickupProgresses();
   
   }, [queries?.page, queries.id]);
 
-  return { data, isLoading, meta, refetch: getPickupOrders };
+  return { data, isLoading, meta, refetch: getPickupProgresses };
 };
 
-export default useGetPickupOrders;
+export default useGetPickupProgresses;
