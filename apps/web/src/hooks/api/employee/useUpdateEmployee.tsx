@@ -7,12 +7,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import useAxios from '../useAxios';
 
-// interface updateEmployeeArgs
-//     extends Pick<Employee, 'outletId' | 'station' | 'workShift'> {
-//     fullName?: string;
-//     email?: string;
-//     role?: string;
-// }
 interface updateEmployeeArgs {
   workShift: string;
   station: string;
@@ -30,7 +24,7 @@ const useUpdateEmployee = (employeeId: number) => {
   const updateEmployee = async (payload: any) => {
     setIsLoading(true);
     try {
-      await axiosInstance.patch(`/employee/employee/${employeeId}`, {
+      await axiosInstance.patch(`/employees/${employeeId}`, {
         ...payload,
       });
       router.push('/dashboard-super-admin/menu-employee');

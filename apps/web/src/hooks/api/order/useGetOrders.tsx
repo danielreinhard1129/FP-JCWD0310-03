@@ -1,6 +1,5 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
-import { Employee } from '@/types/employee.type';
+
 import { Order } from '@/types/order.type';
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
@@ -21,7 +20,7 @@ const useGetOrders = (queries: IGetOrdersQuery) => {
 
   const getOrders = async () => {
     try {     
-      const { data } = await axiosInstance.get('/order/', {
+      const { data } = await axiosInstance.get('/orders', {
         params: queries,
       })
       setData(data.data)

@@ -16,6 +16,7 @@ import { PickupOrderRouter } from './routers/pickupOrder.router';
 import { OrderRouter } from './routers/order.router';
 import { LaundryItemRouter } from './routers/laundryItem.router';
 import { AuthRouter } from './routers/auth.router';
+import { DeliverOrderRouter } from './routers/deliverOrder.router';
 import { UserRouter } from './routers/user.router';
 
 export default class App {
@@ -65,18 +66,20 @@ export default class App {
     const orderRouter = new OrderRouter();
     const laundryItemRouter = new LaundryItemRouter();
     const authRouter = new AuthRouter();
+    const deliverOrderRouter = new DeliverOrderRouter()
     const userRouter = new UserRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
     });
 
-    this.app.use('/api/employee', employeeRouter.getRouter());
-    this.app.use('/api/outlet', outletRouter.getRouter());
-    this.app.use('/api/pickupOrder', pickupOrderRouter.getRouter());
-    this.app.use('/api/order', orderRouter.getRouter());
-    this.app.use('/api/laundryitem', laundryItemRouter.getRouter());
+    this.app.use('/api/employees', employeeRouter.getRouter());
+    this.app.use('/api/outlets', outletRouter.getRouter());
+    this.app.use('/api/pickup-orders', pickupOrderRouter.getRouter());
+    this.app.use('/api/orders', orderRouter.getRouter());
+    this.app.use('/api/laundry-items', laundryItemRouter.getRouter());
     this.app.use('/api/auth', authRouter.getRouter());
+    this.app.use('/api/deliver-orders', deliverOrderRouter.getRouter());
     this.app.use('/api/user', userRouter.getRouter());
   }
 

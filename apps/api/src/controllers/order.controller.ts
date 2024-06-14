@@ -1,5 +1,7 @@
 import { CreateOrderService } from '@/services/order/createOrder.service';
 import { getOrdersService } from '@/services/order/getOders.service';
+import { getOnPendingOrdersService } from '@/services/order/getOnPendingOrders.service';
+import { updateStatusOrderService } from '@/services/order/updateStatusOrder.service';
 
 import { NextFunction, Request, Response } from 'express';
 
@@ -8,6 +10,15 @@ export class OrderController {
   async CreateOrderController(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await CreateOrderService(req.body);
+      res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateStatusOrderController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await updateStatusOrderService(req.body);
       res.status(200).send(result);
     } catch (error) {
       next(error);
@@ -27,6 +38,23 @@ export class OrderController {
       };
       
       const result = await getOrdersService(query);
+      return res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getOnPendingOrdersController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const query = {
+        id: parseInt(req.query.id as string),
+        take: parseInt(req.query.take as string) || 1000000,
+        page: parseInt(req.query.page as string) || 1,
+        sortBy: parseInt(req.query.sortBy as string) || 'id',
+        sortOrder: req.query.sortOrder as string || 'asc',  
+      };
+      
+      const result = await getOnPendingOrdersService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);

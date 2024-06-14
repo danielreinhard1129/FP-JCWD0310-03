@@ -18,7 +18,7 @@ const useGetEmployees = (queries: IGetEmployeesQuery) => {
 
   const getEmployees = async () => {
     try {
-      const { data } = await axiosInstance.get('/employee/employees', {
+      const { data } = await axiosInstance.get('/employees',{
         params: queries,
       });
       setData(data.data);

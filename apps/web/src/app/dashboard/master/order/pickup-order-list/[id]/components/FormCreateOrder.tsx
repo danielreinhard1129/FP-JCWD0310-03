@@ -42,8 +42,6 @@ const FormCreateOrder: FC<FormCreateOrderProps> = ({isLoading, initialValues, on
         ...dynamicSchema,
       });
 
-    console.log(initialValues);
-
     const form = useForm<z.infer<typeof ValidationSchema>>({
         mode: "all",
         resolver: zodResolver(ValidationSchema),

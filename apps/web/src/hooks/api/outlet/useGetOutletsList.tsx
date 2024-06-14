@@ -12,7 +12,7 @@ const useGetOutletList = () => {
 
     const getOutlet = async () => {
         try {
-            const { data } = await axiosInstance.get(`/outlet/outletlist`);
+            const { data } = await axiosInstance.get(`/outlets`);
             setData(data.data);
         } catch (error) {
             if (error instanceof AxiosError) {

@@ -18,7 +18,7 @@ const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
 
   const getPickupOrders = async () => {
     try {
-      const { data } = await axiosInstance.get('/pickupOrder/',{
+      const { data } = await axiosInstance.get('/pickup-orders/',{
         params: queries,
       })
       setData(data.data)

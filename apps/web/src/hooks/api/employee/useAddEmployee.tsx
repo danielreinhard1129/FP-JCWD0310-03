@@ -20,9 +20,9 @@ const useAddEmployee = () => {
   const router = useRouter();
   const addEmployee = async (payload: AddEmployeeArgs) => {
     try {
-      await axiosInstance.post('/employee/add-employee', payload);
-      router.push('/dashboard-super-admin/menu-employee');
-    } catch (error) {
+      await axiosInstance.post('/employees', payload);
+      router.push("/dashboard-super-admin/menu-employee");
+    } catch (error) {          
       if (error instanceof AxiosError) {
         toast({
           className: cn(

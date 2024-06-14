@@ -13,13 +13,22 @@ export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
     
     const existingUser = await prisma.user.findFirst({
         where: { id: id },
-        select: { Employee: true }
-      })      
+        select: { Employee: true, role: true }
+      }) 
+      
+    const whereClause: Prisma.PickupOrderWhereInput = {}
 
-    const whereClause: Prisma.PickupOrderWhereInput = {
-        outletId: existingUser?.Employee?.outletId,
-        isOrderCreated: false,
+    if(existingUser?.role=="DRIVER"){
+      whereClause.outletId = existingUser.Employee?.outletId;
+      whereClause.pickupStatus = "Waiting_for_Driver";
     }
+
+    if(existingUser?.role=="OUTLET_ADMIN"){
+      whereClause.outletId = existingUser.Employee?.outletId;
+      whereClause.isOrderCreated = false;
+      whereClause.pickupStatus = 'Received_by_Outlet';
+    }
+
 
     const pickupOrders = await prisma.pickupOrder.findMany({
       where: whereClause,
