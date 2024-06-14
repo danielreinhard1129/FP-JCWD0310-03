@@ -1,7 +1,7 @@
 "use client"
 
-import FormSelect from "@/app/dashboard-super-admin/components/FormSelect"
-import ItemLaundryItem from "@/app/dashboard-super-admin/components/ItemLaundryItem"
+import FormSelect from "@/app/dashboard/master/components/FormSelect"
+import ItemLaundryItem from "@/app/dashboard/master/components/ItemLaundryItem"
 import FormInput from "@/components/FormInput"
 import FormInputDisable from "@/components/FormInputDisable"
 import { Button } from "@/components/ui/button"

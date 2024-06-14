@@ -16,7 +16,7 @@ const useGetPickupHistories = (queries: IGetPickupHistoriesQuery) => {
 
   const getPickupHistories = async () => {
     try {
-      const { data } = await axiosInstance.get('/pickup-order/history',{
+      const { data } = await axiosInstance.get('/pickup-orders/history',{
         params: queries,
       })
       setData(data.data)

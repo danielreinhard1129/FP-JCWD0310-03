@@ -16,7 +16,7 @@ const useGetPickupProgresses = (queries: IGetPickupProgressesQuery) => {
 
   const getPickupProgresses = async () => {
     try {
-      const { data } = await axiosInstance.get('/pickup-order/progresses',{
+      const { data } = await axiosInstance.get('/pickup-orders/progresses',{
         params: queries,
       })
       setData(data.data)

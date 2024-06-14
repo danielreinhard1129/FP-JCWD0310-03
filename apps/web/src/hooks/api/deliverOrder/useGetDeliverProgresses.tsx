@@ -16,7 +16,7 @@ const useGetDeliverProgresses = (queries: IGetDeliverProgressesQuery) => {
 
   const getDeliverProgresses = async () => {
     try {
-      const { data } = await axiosInstance.get('/deliver-order/progresses',{
+      const { data } = await axiosInstance.get('/deliver-orders/progresses',{
         params: queries,
       })
       setData(data.data)

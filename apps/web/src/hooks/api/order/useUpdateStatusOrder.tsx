@@ -3,25 +3,26 @@
 import { axiosInstance } from '@/lib/axios';
 import { useState } from 'react';
 
-interface UpdateDeliverToClientArgs {
-    deliverOrderId: number,
+interface UpdateStatusOrderArgs {
+    pickupOrderId: number,
     driverId: number,
+    status: string,
 }
 
-const useUpdateDeliverToClient = () => {
+const useUpdateStatusOrder = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const updateDeliverToClient = async (payload: UpdateDeliverToClientArgs) => {
+    const updateStatusOrder = async (payload: UpdateStatusOrderArgs) => {
         setIsLoading(true);
         try {            
-            await axiosInstance.patch(`/deliver-orders/to-client`, payload);
+            await axiosInstance.patch(`/orders/`, payload);
         } catch (error) {
             console.log(error);
         } finally {
             setIsLoading(false);
         }
     };
-    return { updateDeliverToClient, isLoading };
+    return { updateStatusOrder, isLoading };
 };
 
-export default useUpdateDeliverToClient;
+export default useUpdateStatusOrder;

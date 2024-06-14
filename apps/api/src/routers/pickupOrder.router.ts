@@ -1,5 +1,3 @@
-
-
 //import { verifyToken } from '@/lib/jwt';
 import { PickupOrderController } from '@/controllers/pickupOrder.controller';
 import { Router } from 'express';

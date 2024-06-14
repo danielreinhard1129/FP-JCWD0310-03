@@ -14,7 +14,7 @@ export class LaundryItemRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/laundryitemlist', this.laundryItemController.getLaundryItemListController);
+    this.router.get('/', this.laundryItemController.getLaundryItemListController);
   }
 
   getRouter(): Router {

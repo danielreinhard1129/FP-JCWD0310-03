@@ -16,7 +16,7 @@ const useGetDeliverRequest = (queries: IGetDeliverRequestQuery) => {
 
   const getDeliverRequest = async () => {
     try {
-      const { data } = await axiosInstance.get('/deliver-order/request',{
+      const { data } = await axiosInstance.get('/deliver-orders/request',{
         params: queries,
       })
       setData(data.data)
