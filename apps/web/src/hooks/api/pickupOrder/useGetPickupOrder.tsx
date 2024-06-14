@@ -10,7 +10,7 @@ const useGetPickupOrder = (id: number) => {
 
   const getPickupOrder = async () => {
     try {
-      const { data } = await axiosInstance.get<PickupOrder>(`/pickupOrder/${id}`);
+      const { data } = await axiosInstance.get<PickupOrder>(`/pickup-order/${id}`);
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {

@@ -1,22 +1,22 @@
 'use client';
 import { axiosInstance } from '@/lib/axios';
+import { DeliverOrder } from '@/types/deliverOrder.type';
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
-import { PickupOrder } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
-interface IGetPickupOrdersQuery extends IPaginationQueries {
+interface IGetDeliverRequestQuery extends IPaginationQueries {
   id: number;
 }
 
-const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
-  const [data, setData] = useState<PickupOrder[]>([]);
+const useGetDeliverRequest = (queries: IGetDeliverRequestQuery) => {
+  const [data, setData] = useState<DeliverOrder[]>([]);
   const [meta, setMeta] = useState<IPaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getPickupOrders = async () => {
+  const getDeliverRequest = async () => {
     try {
-      const { data } = await axiosInstance.get('/pickup-order/',{
+      const { data } = await axiosInstance.get('/deliver-order/request',{
         params: queries,
       })
       setData(data.data)
@@ -31,11 +31,11 @@ const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
   }
 
   useEffect(() => {
-    getPickupOrders();
+    getDeliverRequest();
   
   }, [queries?.page, queries.id]);
 
-  return { data, isLoading, meta, refetch: getPickupOrders };
+  return { data, isLoading, meta, refetch: getDeliverRequest };
 };
 
-export default useGetPickupOrders;
+export default useGetDeliverRequest;

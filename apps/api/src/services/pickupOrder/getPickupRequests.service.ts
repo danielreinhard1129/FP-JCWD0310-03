@@ -7,7 +7,7 @@ interface GetPickupOrdersQuery extends PaginationQueryParams {
   id: number;
 }
 
-export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
+export const getPickupRequestsService = async (query: GetPickupOrdersQuery) => {
   try {
     const { page, sortBy, sortOrder, take, id} = query;
     
@@ -15,20 +15,14 @@ export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
         where: { id: id },
         select: { Employee: true, role: true }
       }) 
+    if(existingUser?.role!="DRIVER"){
+        throw new Error('Your User Role is Not Allowed to be Accessed!')
+    }
       
-    const whereClause: Prisma.PickupOrderWhereInput = {}
-
-    if(existingUser?.role=="DRIVER"){
-      whereClause.outletId = existingUser.Employee?.outletId;
-      whereClause.pickupStatus = "Waiting_for_Driver";
+    const whereClause: Prisma.PickupOrderWhereInput = {
+        outletId: existingUser.Employee?.outletId,
+        pickupStatus: "Waiting_for_Driver"
     }
-
-    if(existingUser?.role=="OUTLET_ADMIN"){
-      whereClause.outletId = existingUser.Employee?.outletId;
-      whereClause.isOrderCreated = false;
-      whereClause.pickupStatus = 'Received_by_Outlet';
-    }
-
 
     const pickupOrders = await prisma.pickupOrder.findMany({
       where: whereClause,
@@ -41,10 +35,6 @@ export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
     });
 
     const count = await prisma.pickupOrder.count({ where: whereClause });
-
-    if (!pickupOrders) {
-      throw new Error('User not Found!')
-    }
 
     return {
       data: pickupOrders,
