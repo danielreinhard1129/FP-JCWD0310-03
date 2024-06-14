@@ -7,7 +7,7 @@ interface GetDeliverOrdersQuery extends PaginationQueryParams {
   id: number;
 }
 
-export const getDeliverProgressesService = async (query: GetDeliverOrdersQuery) => {
+export const getDeliverHistorysService = async (query: GetDeliverOrdersQuery) => {
   try {
     const { page, sortBy, sortOrder, take, id} = query;
     
@@ -36,7 +36,7 @@ export const getDeliverProgressesService = async (query: GetDeliverOrdersQuery) 
       
     const whereClause: Prisma.DeliverOrderWhereInput = {
         orderId: {in: orderIds},
-        deliverStatus: {in: ["On_The_Way_to_Client", "On_The_Way_to_Outlet"]},
+        deliverStatus: "Received_by_Client",
         driverId: existingUser.Employee?.id
     }
 

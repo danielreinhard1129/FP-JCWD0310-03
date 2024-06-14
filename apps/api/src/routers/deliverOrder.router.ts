@@ -14,6 +14,7 @@ export class DeliverOrderRouter {
   private initializeRoutes(): void {
     this.router.get('/request', this.deliverOrderController.getDeliverRequestsController);
     this.router.get('/progresses', this.deliverOrderController.getDeliverProgressesController);
+    this.router.get('/history', this.deliverOrderController.getDeliverHistorysController);
     this.router.patch('/request', this.deliverOrderController.updateDeliverRequestController);
     this.router.patch('/to-client', this.deliverOrderController.updateDeliverToClientController);
     this.router.patch('/to-outlet', this.deliverOrderController.updateDeliverToOutletController);

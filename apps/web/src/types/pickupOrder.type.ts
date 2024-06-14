@@ -1,3 +1,4 @@
+import { Employee } from "./employee.type";
 import { Order } from "./order.type";
 import { Outlet } from "./outlet.type";
 import { User } from "./user.type";
@@ -9,7 +10,23 @@ export enum PickupStatus {
     Received_by_Outlet = "Received_by_Outlet"
   }
   
-export interface PickupOrder {
+// export interface PickupOrder {
+//     id: number;
+//     pickupNumber: string;
+//     pickupStatus: PickupStatus;
+//     distance: number;
+//     pickupPrice: number;
+//     createdAt: Date;
+//     updatedAt: Date;
+//     userId: number;
+//     outletId: number;
+//     isOrderCreated: boolean;
+//     user: User;
+//     outlet: Outlet;
+//     order: Order[];
+//   }
+
+  export interface PickupOrder {
     id: number;
     pickupNumber: string;
     pickupStatus: PickupStatus;
@@ -20,7 +37,12 @@ export interface PickupOrder {
     userId: number;
     outletId: number;
     isOrderCreated: boolean;
+    driverId?: number | null;
+  
+    // Relations
     user: User;
-    outlet: Outlet;
-    order: Order[];
+    outlet: Outlet
+    Order: Order[];
+    driver?: Employee | null;
   }
+  

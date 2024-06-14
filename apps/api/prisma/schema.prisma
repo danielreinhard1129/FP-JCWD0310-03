@@ -19,6 +19,7 @@ model User {
   role             Role               @default(CUSTOMER)
   profilePic       String?
   token            String?            @db.LongText()
+  tokenExpiresIn   DateTime?
   createdAt        DateTime           @default(now())
   isDelete         Boolean            @default(false)
   Employee         Employee?
