@@ -3,11 +3,15 @@
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { loginAction } from '@/redux/slices/userSlice';
+import useAxios from '../useAxios';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 export default function useLoginByGoogle() {
+  const { axiosInstance } = useAxios();
   const router = useRouter();
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
@@ -23,9 +27,12 @@ export default function useLoginByGoogle() {
         dispatch(loginAction(data.data));
         localStorage.setItem('token', data.token);
 
+        toast.success('Login by Google Succes');
         router.push('/');
       } catch (error) {
-        console.error('Error:', error);
+        if (error instanceof AxiosError) {
+          toast.error(error.response?.data);
+        }
       }
     },
     flow: 'auth-code',

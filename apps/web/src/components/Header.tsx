@@ -30,8 +30,8 @@ export const Header = () => {
 
   return (
     <>
-      <div className=" sticky bg-white z-50 top-0">
-        <div className="container mx-auto h-12 px-6 py-2 items-center flex justify-between">
+      <div className=" container fixed bg-white bottom-0">
+        <div className="h-12  py-2 items-center flex justify-between">
           <div className="w-28 ">
             <Image
               alt="Kucek.logo."
@@ -70,7 +70,10 @@ export const Header = () => {
                       />
                     </SheetTitle>
                     <div className="grid gap-6">
-                      <p className="text-xl font-bold  hover:text-main_green text-left cursor-pointer">
+                      <p
+                        className="text-xl font-bold  hover:text-main_green text-left cursor-pointer"
+                        onClick={() => router.push('/profile')}
+                      >
                         Profile
                       </p>
                       <p className="text-xl font-bold  hover:text-main_green text-left cursor-pointer">
@@ -100,7 +103,6 @@ export const Header = () => {
           )}
         </div>
       </div>
-      <Separator />
     </>
   );
 };

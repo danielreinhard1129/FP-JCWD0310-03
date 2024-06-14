@@ -1,13 +1,14 @@
 'use client';
 
-import { toast } from '@/components/ui/use-toast';
-import { axiosInstance } from '@/lib/axios';
-import { cn } from '@/lib/utils';
+// import { axiosInstance } from '@/lib/axios';
+
 import { loginAction } from '@/redux/slices/userSlice';
 import { Role, User } from '@/types/user.type';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
+import { toast } from 'sonner';
+import useAxios from '../useAxios';
 
 interface LoginResponses {
   message: string;
@@ -21,6 +22,7 @@ interface LoginArgs {
   email: string;
 }
 const useLogin = () => {
+  const { axiosInstance } = useAxios();
   const router = useRouter();
   const dispatch = useDispatch();
   const login = async (payload: LoginArgs) => {
@@ -47,16 +49,11 @@ const useLogin = () => {
       if (data.data.role === Role.WORKER) {
         router.push('/worker');
       }
+      toast(data.message);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // FIXME = change alert to toast
-        toast({
-          className: cn(
-            'top-0 right-0 flex fixed md:max-w-[420px] md:top-16 md:right-4 border-mythemes-darkpink text-mythemes-darkpink',
-          ),
-          variant: 'default',
-          title: error?.response?.data,
-        });
+        // toast.error(error?.response?.data);
+        console.log(error);
       }
     }
   };

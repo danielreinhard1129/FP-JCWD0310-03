@@ -1,12 +1,13 @@
 'use client';
 
 import { toast } from '@/components/ui/use-toast';
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { cn } from '@/lib/utils';
 import { Order } from '@/types/order.type';
 import { AxiosError } from 'axios';
 
 import { useRouter } from 'next/navigation';
+import useAxios from '../useAxios';
 
 interface CreateOrderArgs
     extends Pick<Order, 'weight' > {
@@ -15,6 +16,7 @@ interface CreateOrderArgs
 }
 
 const useCreateOrder = () => {
+    const { axiosInstance } = useAxios();
     const router = useRouter();
     const createOrder = async (payload: CreateOrderArgs) => {
 

@@ -1,49 +1,50 @@
 'use client';
 
-import { toast } from '@/components/ui/use-toast';
-import { axiosInstance } from '@/lib/axios';
-import { cn } from '@/lib/utils';
-import { loginAction } from '@/redux/slices/userSlice';
-import { User } from '@/types/user.type';
+// import { axiosInstance } from '@/lib/axios';
+import { IFormUser, User } from '@/types/user.type';
 import { AxiosError } from 'axios';
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import useAxios from '../useAxios';
+import { toast } from 'sonner';
+import { FileWithPath } from 'react-dropzone';
 
-interface CompleteRegistrationResponse {
-  message: string;
-  data: User;
-  token: string;
-}
-
-interface CompleteRegistrationArgs
-  extends Pick<User, 'email' | 'fullName' | 'password'> {}
+// interface CompleteRegistrationResponse {
+//   message: string;
+//   data: User;
+// }
 
 const useCompleteRegistration = () => {
+  const { axiosInstance } = useAxios();
   const router = useRouter();
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const completeRegistration = async (payload: CompleteRegistrationArgs) => {
+  const completeRegistration = async (payload: IFormUser) => {
     setIsLoading(true);
     try {
-      const { data } = await axiosInstance.post<CompleteRegistrationResponse>(
+      const { email, fullName, password, profilePic } = payload;
+      const completeRegistrationForm = new FormData();
+
+      completeRegistrationForm.append('email', email);
+      completeRegistrationForm.append('fullName', fullName);
+      completeRegistrationForm.append('password', password);
+
+      profilePic?.forEach((file: FileWithPath) => {
+        completeRegistrationForm.append('profilePic', file);
+      });
+
+      await axiosInstance.post<User>(
         `/auth/complete-registration`,
-        { ...payload },
+        completeRegistrationForm,
       );
-      dispatch(loginAction(data.data));
-      localStorage.setItem('token', data.token);
-      router.push('/');
+
+      toast.message('Verification email has been sent to your email');
+      router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          className: cn(
-            'top-0 right-0 flex fixed md:max-w-[420px] md:top-16 md:right-4 border-mythemes-darkpink text-mythemes-darkpink',
-          ),
-          variant: 'default',
-          title: error?.response?.data,
-        });
+        toast.error(error.response?.data);
       }
     } finally {
       setIsLoading(false);

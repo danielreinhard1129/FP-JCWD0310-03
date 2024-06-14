@@ -1,12 +1,14 @@
 'use client';
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { Outlet } from '@/types/outlet.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import useAxios from '../useAxios';
 
 const useGetOutletList = () => {
     const [data, setData] = useState<Outlet[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { axiosInstance } = useAxios();
 
     const getOutlet = async () => {
         try {

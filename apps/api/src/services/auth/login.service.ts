@@ -15,7 +15,9 @@ export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
     if (!user) {
       throw new Error('Incorrect email address or password !');
     }
-
+    if (user && user.profilePic?.includes('googleusercontent.com')) {
+      throw new Error('Please login use Google');
+    }
     const isPasswordValid = await comparePassword(password, user.password);
 
     if (!isPasswordValid) {

@@ -1,10 +1,12 @@
 'use client';
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { Employee } from '@/types/employee.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import useAxios from '../useAxios';
 
 const useGetEmployee = (id: number) => {
+  const { axiosInstance } = useAxios();
   const [data, setData] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 

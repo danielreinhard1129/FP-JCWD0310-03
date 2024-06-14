@@ -8,9 +8,9 @@ import timerIcon from '../../../public/005-timing.png';
 const OurAdventages = () => {
   return (
     <>
-      <div className=" container p-6 md:grid md:grid-cols-4 md:gap-4 ">
-        <div className="grid grid-cols-4 gap-4 mt-6 md:flex md:flex-col md:items-center">
-          <div className="w-20 h-20 md:w-52 md:h-52 p-4  bg-secondary_green rounded-full md:place-content-center">
+      <div className="container">
+        <div className="grid grid-cols-4 gap-4 mt-6 ">
+          <div className="w-20 h-20  p-4  bg-mythemes-secondarygreen rounded-full md:place-content-center">
             <Image
               alt=""
               src={laundryIcon}
@@ -18,13 +18,50 @@ const OurAdventages = () => {
             />
           </div>
 
-          <p className="text-sm md:text-lg text-wrap col-span-3 text-left md:text-center place-content-center">
+          <p className="text-sm text-wrap col-span-3 text-left place-content-center">
             Kucekin ensures meticulous cleaning with eco-friendly detergents for
             spotless clothes.
           </p>
         </div>
-        <div className="grid grid-cols-4 gap-4 mt-6 md:flex md:flex-col md:items-center ">
-          <div className="w-20 h-20 md:w-52 p-4 md:h-52 bg-secondary_green rounded-full place-content-center">
+        <div className="grid grid-cols-4 gap-4 mt-6 ">
+          <div className="w-20 h-20  p-4  bg-mythemes-secondarygreen rounded-full md:place-content-center">
+            <Image
+              alt=""
+              src={detergentIcon}
+              className="mx-auto md:object-fill"
+            />
+          </div>
+
+          <p className="text-sm text-wrap col-span-3 text-left place-content-center">
+            Kucekin uses eco-friendly detergents for safe, effective, and gentle
+            cleaning.
+          </p>
+        </div>
+        <div className="grid grid-cols-4 gap-4 mt-6 ">
+          <div className="w-20 h-20  p-4  bg-mythemes-secondarygreen rounded-full md:place-content-center">
+            <Image alt="" src={timerIcon} className="mx-auto md:object-fill" />
+          </div>
+
+          <p className="text-sm text-wrap col-span-3 text-left place-content-center">
+            Kucekin guarantees fast turnaround times for all your laundry needs.
+          </p>
+        </div>
+        <div className="grid grid-cols-4 gap-4 mt-6 ">
+          <div className="w-20 h-20  p-4  bg-mythemes-secondarygreen rounded-full md:place-content-center">
+            <Image
+              alt=""
+              src={deliveryIcon}
+              className="mx-auto md:object-fill"
+            />
+          </div>
+
+          <p className="text-sm text-wrap col-span-3 text-left place-content-center">
+            Kucekin provides reliable, door-to-door delivery for your freshly
+            cleaned clothes.
+          </p>
+        </div>
+        {/* <div className="grid grid-cols-4 gap-4 mt-6 md:flex md:flex-col md:items-center ">
+          <div className="w-20 h-20 md:w-52 p-4 md:h-52 bg-mythemes-secondarygreen rounded-full place-content-center">
             <Image
               alt=""
               src={detergentIcon}
@@ -38,7 +75,7 @@ const OurAdventages = () => {
           </p>
         </div>
         <div className="grid grid-cols-4 gap-4 mt-6 md:flex md:flex-col md:items-center">
-          <div className="w-20 h-20 md:w-52 p-4 md:h-52 bg-secondary_green rounded-full place-content-center">
+          <div className="w-20 h-20 md:w-52 p-4 md:h-52 bg-mythemes-secondarygreen rounded-full place-content-center">
             <Image
               alt=""
               src={timerIcon}
@@ -51,7 +88,7 @@ const OurAdventages = () => {
           </p>
         </div>
         <div className="grid grid-cols-4 gap-4 mt-6 md:flex md:flex-col md:items-center">
-          <div className="w-20 h-20 md:w-52 p-4 md:h-52 bg-secondary_green rounded-full place-content-center">
+          <div className="w-20 h-20 md:w-52 p-4 md:h-52 bg-mythemes-secondarygreen rounded-full place-content-center">
             <Image
               alt=""
               src={deliveryIcon}
@@ -63,7 +100,7 @@ const OurAdventages = () => {
             Kucekin provides reliable, door-to-door delivery for your freshly
             cleaned clothes.
           </p>
-        </div>
+        </div> */}
       </div>
     </>
   );

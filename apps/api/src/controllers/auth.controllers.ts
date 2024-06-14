@@ -3,6 +3,7 @@ import { getGoogleTokenService } from '@/services/auth/getGoogleToken.service';
 
 import { loginService } from '@/services/auth/login.service';
 import { registerService } from '@/services/auth/register.service';
+import { ResendVerifEmail } from '@/services/auth/resend-verif-email.service';
 import { verificationService } from '@/services/auth/verification.service';
 import { NextFunction, Request, Response } from 'express';
 
@@ -26,8 +27,12 @@ export class AuthController {
   ) {
     try {
       // console.log(req.body);
+      const files = req.files as Express.Multer.File[];
+      if (!files.length) {
+        throw new Error('no file uploaded');
+      }
 
-      const result = await completeRegistrationService(req.body);
+      const result = await completeRegistrationService(req.body, files[0]);
 
       res.status(200).send(result);
     } catch (error) {
@@ -69,7 +74,7 @@ export class AuthController {
   ) {
     try {
       const userId = req.body.user.id;
-      const tokenParams = req.headers.authorization?.split(' ')[1] || '';
+      const tokenParams = req.body.token;
       const { password } = req.body;
 
       const result = await verificationService({
@@ -77,6 +82,22 @@ export class AuthController {
         password,
         tokenParams,
       });
+      return res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async resendVerifEmailController(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const id = req.body.user.id;
+
+      const result = await ResendVerifEmail(Number(id));
+
       return res.status(200).send(result);
     } catch (error) {
       next(error);

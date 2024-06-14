@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import logo from '../../../../../public/Kucekin_Logo_Black_EVO1.png';
 import { CompleteRegistrationForm } from './components/FormCompleteRegistration';
+import { any } from 'cypress/types/bluebird';
+import { string } from 'zod';
 
 const AddEmployee = () => {
   const searchParams = useSearchParams();
@@ -12,6 +14,7 @@ const AddEmployee = () => {
 
   const initialValues = {
     email: emailParams || '',
+    profilePic: [],
   };
 
   return (
@@ -27,7 +30,7 @@ const AddEmployee = () => {
     //   </div>
     // </div>
 
-    <main className="  h-screen top-0 bg-[#f4f4f4] p-0 w-screen left-0 right-0 z-50">
+    <main className=" fixed container overflow-hidden top-0 bg-[#f4f4f4] p-0 w-screen left-0 right-0 z-50">
       <div className="bg-mythemes-secondarygreen rounded-full size-96 absolute -z-10 -left-48"></div>
       <div className="bg-mythemes-secondarygreen rounded-full size-96 absolute -z-10 -right-48 mt-96"></div>
       <div className="container h-screen justify-center">
@@ -40,7 +43,9 @@ const AddEmployee = () => {
           />
         </div>
         <div>
-          <h1 className="text-4xl font-bold mt-24">Create Your Account.</h1>
+          <h1 className="text-4xl font-bold mt-24">
+            Please complete your registration to continue.
+          </h1>
           <CompleteRegistrationForm initialValues={initialValues} />
         </div>
       </div>

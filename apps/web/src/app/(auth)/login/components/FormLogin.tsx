@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { ValidationSchema } from '../validationSchema';
 import useImplicitFlow from './useImplicitFlow';
 import { useRouter } from 'next/navigation';
+import { FcGoogle } from 'react-icons/fc';
 
 export function FromLogin() {
   const router = useRouter();
@@ -74,17 +75,12 @@ export function FromLogin() {
         </div>
 
         <div>
-          <Button onClick={() => googleLogin()}>google</Button>
-          {/* <GoogleLogin
-            type="icon"
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-            }}
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          /> */}
-          ;
+          <Button
+            onClick={() => googleLogin()}
+            className="w-full bg-white flex gap-1 text-black hover:text-white"
+          >
+            <FcGoogle size={25} /> Sign in with your Google account.
+          </Button>
         </div>
         <div className="mx-auto font-light">
           Don't have account?{' '}

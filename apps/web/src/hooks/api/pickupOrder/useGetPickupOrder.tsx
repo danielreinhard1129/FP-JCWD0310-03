@@ -1,12 +1,14 @@
 'use client';
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { PickupOrder } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import useAxios from '../useAxios';
 
 const useGetPickupOrder = (id: number) => {
   const [data, setData] = useState<PickupOrder | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { axiosInstance } = useAxios();
 
   const getPickupOrder = async () => {
     try {

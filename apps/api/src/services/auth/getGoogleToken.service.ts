@@ -1,8 +1,6 @@
 import prisma from '@/prisma';
 import { appConfig } from '@/utils/config';
-import {
-  OAuth2Client
-} from 'google-auth-library';
+import { OAuth2Client } from 'google-auth-library';
 import { sign } from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
 
@@ -15,6 +13,7 @@ const oAuth2Client = new OAuth2Client(
 interface LoginGoogleArgs {
   email: string;
   name: string;
+  picture: string;
 }
 
 export const getGoogleTokenService = async (code: string) => {
@@ -24,20 +23,44 @@ export const getGoogleTokenService = async (code: string) => {
 
     const decode = jwtDecode(idToken as string) as LoginGoogleArgs;
 
-    console.log('INI DECODE', decode.email, decode.name);
+    console.log('INI DECODE', decode);
 
-    const existingEmail = await prisma.user.findFirst({
+    const existingUser = await prisma.user.findFirst({
       where: { email: decode.email },
     });
 
-    if (existingEmail) {
-      throw new Error('Email already exist,Please Login with Email');
+    //    // Jika user ada dan memiliki profile picture dari googleusercontent, izinkan login
+    if (
+      existingUser &&
+      existingUser.profilePic &&
+      existingUser.profilePic.includes('googleusercontent.com')
+    ) {
+      const token = sign({ id: existingUser.id }, appConfig.jwtSecretKey, {
+        expiresIn: '2h',
+      });
+
+      return {
+        message: 'login google success',
+        data: existingUser,
+        token: token,
+      };
     }
 
+    // Jika user ada tetapi profile picture bukan dari googleusercontent, beri error
+    if (
+      existingUser &&
+      existingUser.profilePic &&
+      !existingUser.profilePic.includes('googleusercontent.com')
+    ) {
+      throw new Error('Please login using email');
+    }
+
+    // Jika user tidak ada di database, buat user baru
     const newUser = await prisma.user.create({
       data: {
         email: decode.email,
         fullName: decode.name,
+        profilePic: decode.picture,
         isVerify: true,
       },
     });
