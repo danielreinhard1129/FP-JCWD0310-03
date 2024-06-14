@@ -11,7 +11,10 @@ const Sidebar = () => {
                 <Link href={"/dashboard-driver"}>
                     <h2>Pickup/Deliver Request</h2>
                 </Link>
-                <Link href={"/dashboard-driver"}>
+                <Link href={"/dashboard-driver/progresses"}>
+                    <h2>Pickup/Deliver Progresses</h2>
+                </Link>
+                <Link href={"/dashboard-driver/histories"}>
                     <h2>Pickup/Deliver History</h2>
                 </Link>
             </div>
