@@ -4,8 +4,8 @@ import { Facebook, FacebookIcon, Instagram, Twitter } from 'lucide-react';
 
 export const Footer = () => {
   return (
-    <main className="bg-main_green ">
-      <div className=" container px-6 py-6 text-white">
+    <main className="bg-main_green container ">
+      <div className=" text-white">
         <div className="flex place-content-center mb-5">
           <Image
             alt="Kucek.logo."

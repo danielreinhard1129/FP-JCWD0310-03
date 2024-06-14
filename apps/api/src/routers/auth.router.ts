@@ -1,4 +1,5 @@
 import { AuthController } from '@/controllers/auth.controllers';
+import { uploader } from '@/lib/uploader';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
@@ -18,9 +19,15 @@ export class AuthRouter {
       verifyToken,
       this.authController.verificationController,
     );
+    this.router.patch(
+      '/resend-verif-email',
+      verifyToken,
+      this.authController.resendVerifEmailController,
+    );
     this.router.post('/register', this.authController.registerController);
     this.router.post(
       '/complete-registration',
+      uploader('IMG', '/images').array('profilePic', 1),
       this.authController.completeRegistrationController,
     );
     this.router.post('/login', this.authController.loginController);

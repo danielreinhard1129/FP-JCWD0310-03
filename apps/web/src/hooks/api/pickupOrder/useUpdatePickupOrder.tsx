@@ -1,8 +1,9 @@
 'use client';
 
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import useAxios from '../useAxios';
 
 interface updatePickupOrderArgs {
     workShift: string;
@@ -16,6 +17,7 @@ interface updatePickupOrderArgs {
 const useUpdatePickupOrder = (pickupOrderId: number) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { axiosInstance } = useAxios();
 
     const updatePickupOrder = async (payload: any) => {
         setIsLoading(true);

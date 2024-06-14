@@ -6,14 +6,17 @@ import express, {
   Response,
   json,
   urlencoded,
+  static as static_,
 } from 'express';
 import { PORT } from './config';
+import { join } from 'path';
 import { EmployeeRouter } from './routers/employee.router';
 import { OutletRouter } from './routers/outlet.router';
 import { PickupOrderRouter } from './routers/pickupOrder.router';
 import { OrderRouter } from './routers/order.router';
 import { LaundryItemRouter } from './routers/laundryItem.router';
 import { AuthRouter } from './routers/auth.router';
+import { UserRouter } from './routers/user.router';
 
 export default class App {
   private app: Express;
@@ -29,6 +32,7 @@ export default class App {
     this.app.use(cors());
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
+    this.app.use('/api/assets', static_(join(__dirname, '../public')));
   }
 
   private handleError(): void {
@@ -61,6 +65,7 @@ export default class App {
     const orderRouter = new OrderRouter();
     const laundryItemRouter = new LaundryItemRouter();
     const authRouter = new AuthRouter();
+    const userRouter = new UserRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
@@ -72,6 +77,7 @@ export default class App {
     this.app.use('/api/order', orderRouter.getRouter());
     this.app.use('/api/laundryitem', laundryItemRouter.getRouter());
     this.app.use('/api/auth', authRouter.getRouter());
+    this.app.use('/api/user', userRouter.getRouter());
   }
 
   public start(): void {

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 const Login = () => {
   const router = useRouter();
   return (
-    <main className=" fixed h-screen top-0 bg-[#f4f4f4] p-0 w-screen left-0 right-0 z-50">
+    <main className=" fixed container overflow-hidden top-0 bg-[#f4f4f4] p-0 w-screen left-0 right-0 z-50">
       <div className="bg-mythemes-secondarygreen rounded-full size-96 absolute -z-10 -left-48"></div>
       <div className="bg-mythemes-secondarygreen rounded-full size-96 absolute -z-10 -right-48 mt-96"></div>
       <div className="container h-screen justify-center">

@@ -1,12 +1,12 @@
 import { Footer } from '@/components/Footer';
-import { Header } from '@/components/Header';
 // import { Toaster } from '@/components/ui/toaster';
+import CreatePickupButton from '@/components/CreatePickupButton';
 import StoreProvider from '@/provider/StoreProvider';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
-import './globals.css';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'sonner';
+import './globals.css';
 
 const inter = DM_Sans({ subsets: ['latin'] });
 
@@ -25,9 +25,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <GoogleOAuthProvider clientId="761232261353-uov835jcu2ocgve4443buco69jho2kvk.apps.googleusercontent.com">
           <StoreProvider>
-            <Header />
             {children}
             <Footer />
+            <CreatePickupButton />
             <Toaster richColors />
           </StoreProvider>
         </GoogleOAuthProvider>

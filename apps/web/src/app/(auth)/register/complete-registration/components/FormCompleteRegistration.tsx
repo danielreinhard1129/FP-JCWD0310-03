@@ -6,14 +6,17 @@ import useCompleteRegistration from '@/hooks/api/auth/useCompleteRegistration';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { string, z } from 'zod';
+import { z } from 'zod';
 
 import FormInput from '@/components/FormInput';
-import { ValidationSchema } from '../validationSchema';
 import FormInputDisable from '@/components/FormInputDisable';
+import PreviewImages from '@/components/PreviewImages';
+import { ValidationSchema } from '../validationSchema';
+import Dropzone from '@/components/Dropzone';
 
 interface FormCompleteRegistration {
   email: string;
+  profilePic: File[];
 }
 
 interface FormCompleteRegistrationProps {
@@ -23,6 +26,8 @@ interface FormCompleteRegistrationProps {
 export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
   initialValues,
 }) => {
+  console.log('ini intial', initialValues);
+
   const { completeRegistration } = useCompleteRegistration();
   const [schema, setSchema] = useState(ValidationSchema);
 
@@ -38,6 +43,13 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        {/* <PreviewImages
+          fileImages={initialValues.profilePic}
+          onRemoveImage={(idx: number) =>
+            form.setValue('profilePic', initialValues.profilePic.splice(idx, 1))
+          }
+        /> */}
+
         <FormInput
           name="fullName"
           type="text"
@@ -60,7 +72,15 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
           form={form}
         />
 
-        <Button type="submit">Submit</Button>
+        <Dropzone
+          onDrop={(files) => {
+            form.setValue('profilePic', files);
+          }}
+          isError
+          label=""
+        />
+
+        <Button type="submit" className='w-full bg-mythemes-maingreen'>Submit</Button>
       </form>
     </Form>
   );

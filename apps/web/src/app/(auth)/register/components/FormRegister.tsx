@@ -12,8 +12,11 @@ import Link from 'next/link';
 import { ValidationSchema } from '../validationSchema';
 import useRegister from '@/hooks/api/auth/useRegister';
 import { Separator } from '@radix-ui/react-separator';
+import { FcGoogle } from 'react-icons/fc';
+import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
 
 export function FormRegister() {
+  const { googleLogin } = useLoginByGoogle();
   const { register } = useRegister();
   const [schema, setSchema] = useState(ValidationSchema);
 
@@ -51,7 +54,14 @@ export function FormRegister() {
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
 
-        <div>Google</div>
+        <div>
+          <Button
+            onClick={() => googleLogin()}
+            className="w-full bg-white flex gap-1 text-black hover:text-white"
+          >
+            <FcGoogle size={25} /> Register with your Google account.
+          </Button>
+        </div>
       </form>
     </Form>
   );

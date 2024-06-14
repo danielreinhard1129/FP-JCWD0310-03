@@ -1,10 +1,11 @@
 'use client';
 
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { Employee } from '@/types/employee.type';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import useAxios from '../useAxios';
 
 // interface updateEmployeeArgs
 //     extends Pick<Employee, 'outletId' | 'station' | 'workShift'> {
@@ -22,6 +23,7 @@ interface updateEmployeeArgs {
 }
 
 const useUpdateEmployee = (employeeId: number) => {
+  const { axiosInstance } = useAxios();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

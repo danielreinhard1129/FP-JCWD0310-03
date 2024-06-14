@@ -11,19 +11,22 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
-  fullName    String?
-  email       String
-  password    String?
-  isVerify    Boolean?      @default(false)
-  role        Role          @default(CUSTOMER)
-  profilePic  String?
-  token       String?       @db.LongText()
-  createdAt   DateTime      @default(now())
-  isDelete    Boolean       @default(false)
-  Employee    Employee?
-  Address     Address[]
-  PickupOrder PickupOrder[]
+  id               Int                @id @default(autoincrement())
+  fullName         String?
+  email            String
+  password         String?
+  isVerify         Boolean?           @default(false)
+  role             Role               @default(CUSTOMER)
+  profilePic       String?
+  token            String?            @db.LongText()
+  tokenExpiresIn   DateTime?
+  createdAt        DateTime           @default(now())
+  isDelete         Boolean            @default(false)
+  Employee         Employee?
+  Address          Address[]
+  PickupOrder      PickupOrder[]
+  deliverOrder     DeliverOrder[]
+  UserNotification UserNotification[]
 
   @@map("users")
 }
@@ -37,18 +40,19 @@ enum Role {
 }
 
 model Employee {
-  id Int @id @default(autoincrement())
-
+  id           Int                @id @default(autoincrement())
   workShift    EmployeeWorkShift?
   isSuperAdmin Boolean            @default(false)
+  station      EmployeeStation?
+  userId       Int                @unique
+  outletId     Int?
 
-  station EmployeeStation?
-  userId  Int              @unique
-
-  outletId Int?
-
-  outlet Outlet? @relation(fields: [outletId], references: [id])
-  user   User    @relation(fields: [userId], references: [id])
+  outlet               Outlet?                @relation(fields: [outletId], references: [id])
+  user                 User                   @relation(fields: [userId], references: [id])
+  PickupOrder          PickupOrder[]
+  deliverOrder         DeliverOrder[]
+  OrderWorker          OrderWorker[]
+  EmployeeNotification EmployeeNotification[]
 
   @@map("employees")
 }
@@ -111,10 +115,12 @@ model PickupOrder {
   userId         Int
   outletId       Int?
   isOrderCreated Boolean      @default(false)
+  driverId       Int?
 
-  user   User    @relation(fields: [userId], references: [id])
-  outlet Outlet? @relation(fields: [outletId], references: [id])
+  user   User      @relation(fields: [userId], references: [id])
+  outlet Outlet?   @relation(fields: [outletId], references: [id])
   Order  Order[]
+  driver Employee? @relation(fields: [driverId], references: [id])
 
   @@map("pickupOrders")
 }
@@ -136,8 +142,10 @@ model Order {
   updatedAt     DateTime    @updatedAt
   pickupOrderId Int         @unique
 
-  pickupOrder PickupOrder @relation(fields: [pickupOrderId], references: [id])
-  OrderItem   OrderItem[]
+  pickupOrder  PickupOrder    @relation(fields: [pickupOrderId], references: [id])
+  OrderItem    OrderItem[]
+  deliverOrder DeliverOrder[]
+  OrderWorker  OrderWorker[]
 
   @@map("orders")
 }
@@ -173,4 +181,63 @@ model LaundryItem {
   OrderItem OrderItem[]
 
   @@map("laundryItems")
+}
+
+model DeliverOrder {
+  id            Int           @id @default(autoincrement())
+  deliverNumber String        @unique
+  deliverStatus DeliverStatus @default(Waiting_for_Driver)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  userId        Int
+  driverId      Int?
+  orderId       Int
+
+  user   User      @relation(fields: [userId], references: [id])
+  driver Employee? @relation(fields: [driverId], references: [id])
+  order  Order     @relation(fields: [orderId], references: [id])
+
+  @@map("deliverOrders")
+}
+
+enum DeliverStatus {
+  Waiting_for_Driver
+  On_The_Way_to_Outlet
+  On_The_Way_to_Client
+  Received_by_Client
+}
+
+model OrderWorker {
+  id       Int @id @default(autoincrement())
+  orderId  Int
+  workerId Int
+
+  order  Order    @relation(fields: [orderId], references: [id])
+  worker Employee @relation(fields: [workerId], references: [id])
+
+  @@map("orderWorkers")
+}
+
+model EmployeeNotification {
+  id         Int      @id @default(autoincrement())
+  message    String
+  createdAt  DateTime @default(now())
+  isRead     Boolean  @default(false)
+  employeeId Int
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+
+  @@map("employeeNotifications")
+}
+
+model UserNotification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+  userId    Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("userNotifications")
 }

@@ -6,11 +6,14 @@ import { appConfig } from '@/utils/config';
 import { User } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
 
+interface CompleteRegistrationBody
+  extends Pick<User, 'email' | 'password' | 'fullName' | 'profilePic'> {}
 export const completeRegistrationService = async (
-  body: Pick<User, 'email' | 'fullName' | 'password'>,
+  body: CompleteRegistrationBody,
+  file: Express.Multer.File,
 ) => {
   try {
-    const { email, password } = body;
+    const { email, password, fullName,profilePic } = body;
 
     const existingEmail = await prisma.user.findFirst({
       where: { email: email },
@@ -24,18 +27,24 @@ export const completeRegistrationService = async (
 
     const newUser = await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
-        data: { ...body, password: hashedPassword },
+        data: {
+          email,
+          profilePic: `/images/${file.filename}`,
+          fullName,
+          password: hashedPassword,
+        },
       });
 
       const token = sign({ id: user.id }, appConfig.jwtSecretKey, {
-        expiresIn: '30m',
+        expiresIn: '1m',
       });
 
       let userToken = token;
+      const expiresIn = new Date(new Date().getTime() + 1 * 1000);
 
       await tx.user.update({
         where: { id: user.id },
-        data: { token: userToken },
+        data: { token: userToken, tokenExpiresIn: expiresIn },
       });
 
       const confirmationLink =
@@ -52,7 +61,6 @@ export const completeRegistrationService = async (
     return {
       message: `Verification email has been sent to ${email}`,
       data: newUser,
-      token: newUser.token,
     };
   } catch (error) {
     throw error;

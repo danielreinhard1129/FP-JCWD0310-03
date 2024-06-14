@@ -1,10 +1,12 @@
 'use client';
-import { axiosInstance } from '@/lib/axios';
+// import { axiosInstance } from '@/lib/axios';
 import { LaundryItem } from '@/types/laundryItem.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import useAxios from '../useAxios';
 
 const useGetLaundryItemList = () => {
+    const { axiosInstance } = useAxios();
     const [data, setData] = useState<LaundryItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 

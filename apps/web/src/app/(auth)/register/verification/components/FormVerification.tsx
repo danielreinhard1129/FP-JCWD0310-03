@@ -32,7 +32,6 @@ export function FormVerification() {
   });
 
   function onSubmit(values: VerificationToken) {
-  
     verification(values);
     console.log(values);
   }
@@ -42,6 +41,8 @@ export function FormVerification() {
       password: data.password,
       token: tokenParams,
     };
+    console.log('ini finaldata', finalData);
+
     onSubmit(finalData);
   };
 
@@ -59,7 +60,7 @@ export function FormVerification() {
           form={form}
         />
         <Button type="submit" className="bg-mythemes-maingreen">
-          Submit
+          Verify
         </Button>
       </form>
     </Form>
