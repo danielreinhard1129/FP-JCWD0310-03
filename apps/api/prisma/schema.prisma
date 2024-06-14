@@ -235,8 +235,8 @@ model UserNotification {
   createdAt DateTime @default(now())
   isRead    Boolean  @default(false)
   userId    Int
-  
-  user      User     @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 
   @@map("userNotifications")
 }

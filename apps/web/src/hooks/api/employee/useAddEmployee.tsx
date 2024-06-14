@@ -19,7 +19,6 @@ const useAddEmployee = () => {
   const addEmployee = async (payload: AddEmployeeArgs) => {
 
     try {
-
       await axiosInstance.post('/employee/add-employee', payload);
       router.push("/dashboard-super-admin/menu-employee");
     } catch (error) {          
