@@ -14,7 +14,7 @@ export class OutletRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/outletlist', this.outletController.getOutletListController);
+    this.router.get('/', this.outletController.getOutletListController);
   }
 
   getRouter(): Router {

@@ -14,7 +14,7 @@ const useUpdateDeliverToOutlet = () => {
     const updateDeliverToOutlet = async (payload: UpdateDeliverToOutletArgs) => {
         setIsLoading(true);
         try {            
-            await axiosInstance.patch(`/deliver-order/to-outlet`, payload);
+            await axiosInstance.patch(`/deliver-orders/to-outlet`, payload);
         } catch (error) {
             console.log(error);
         } finally {

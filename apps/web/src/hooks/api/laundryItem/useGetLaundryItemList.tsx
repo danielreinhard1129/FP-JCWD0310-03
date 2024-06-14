@@ -10,7 +10,7 @@ const useGetLaundryItemList = () => {
 
     const GetLaundryItem = async () => {
         try {
-            const { data } = await axiosInstance.get(`/laundryitem/laundryitemlist`);
+            const { data } = await axiosInstance.get(`/laundry-items`);
             setData(data.data);
         } catch (error) {
             if (error instanceof AxiosError) {

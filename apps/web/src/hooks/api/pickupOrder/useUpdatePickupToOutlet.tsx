@@ -14,7 +14,7 @@ const useUpdatePickupToOutlet = () => {
     const updatePickupToOutlet = async (payload: UpdatePickupToOutletArgs) => {
         setIsLoading(true);
         try {            
-            await axiosInstance.patch(`/pickup-order/to-outlet`, payload);
+            await axiosInstance.patch(`/pickup-orders/to-outlet`, payload);
         } catch (error) {
             console.log(error);
         } finally {

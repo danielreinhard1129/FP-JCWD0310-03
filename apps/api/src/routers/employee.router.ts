@@ -14,10 +14,10 @@ export class EmployeeRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.post('/add-employee', this.employeeController.addEmployeeController);
-    this.router.get('/employees', this.employeeController.getEmployeesController);
-    this.router.get('/employee/:id', this.employeeController.getEmployeeController);
-    this.router.patch('/employee/:id', this.employeeController.updateEmployeeController);
+    this.router.post('/', this.employeeController.addEmployeeController);
+    this.router.get('/', this.employeeController.getEmployeesController);
+    this.router.get('/:id', this.employeeController.getEmployeeController);
+    this.router.patch('/:id', this.employeeController.updateEmployeeController);
   }
 
   getRouter(): Router {

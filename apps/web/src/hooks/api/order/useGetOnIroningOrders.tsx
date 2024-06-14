@@ -1,22 +1,22 @@
 'use client';
 import { axiosInstance } from '@/lib/axios';
-import { Employee } from '@/types/employee.type';
+import { Order } from '@/types/order.type';
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
-interface IGetEmployeesQuery extends IPaginationQueries {
+interface IGetOrdersQuery extends IPaginationQueries {
   id: number;
 }
 
-const useGetEmployees = (queries: IGetEmployeesQuery) => {
-  const [data, setData] = useState<Employee[]>([]);
+const useGetOnIroningOrders = (queries: IGetOrdersQuery) => {
+  const [data, setData] = useState<Order[]>([]);
   const [meta, setMeta] = useState<IPaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getEmployees = async () => {
-    try {
-      const { data } = await axiosInstance.get('/employees',{
+  const getOnIroningOrders = async () => {
+    try {     
+      const { data } = await axiosInstance.get('/orders/ironing', {
         params: queries,
       })
       setData(data.data)
@@ -31,11 +31,10 @@ const useGetEmployees = (queries: IGetEmployeesQuery) => {
   }
 
   useEffect(() => {
-    getEmployees();
-  
+    getOnIroningOrders();
+
   }, [queries?.page, queries.id]);
 
-  return { data, isLoading, meta, refetch: getEmployees };
+  return { data, isLoading, meta, refetch: getOnIroningOrders };
 };
-
-export default useGetEmployees;
+export default useGetOnIroningOrders;

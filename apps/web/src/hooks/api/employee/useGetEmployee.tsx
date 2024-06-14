@@ -10,7 +10,7 @@ const useGetEmployee = (id: number) => {
 
   const getEmployee = async () => {
     try {
-      const { data } = await axiosInstance.get<Employee>(`/employee/employee/${id}`);
+      const { data } = await axiosInstance.get<Employee>(`/employees/${id}`);
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {

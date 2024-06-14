@@ -14,7 +14,7 @@ const useUpdatePickupToClient = () => {
     const updatePickupToClient = async (payload: UpdatePickupToClientArgs) => {
         setIsLoading(true);
         try {            
-            await axiosInstance.patch(`/pickup-order/to-client`, payload);
+            await axiosInstance.patch(`/pickup-orders/to-client`, payload);
         } catch (error) {
             console.log(error);
         } finally {
