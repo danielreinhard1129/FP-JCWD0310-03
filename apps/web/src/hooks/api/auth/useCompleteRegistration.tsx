@@ -11,10 +11,10 @@ import useAxios from '../useAxios';
 import { toast } from 'sonner';
 import { FileWithPath } from 'react-dropzone';
 
-// interface CompleteRegistrationResponse {
-//   message: string;
-//   data: User;
-// }
+interface CompleteRegistrationResponse {
+  message: string;
+  data: User;
+}
 
 const useCompleteRegistration = () => {
   const { axiosInstance } = useAxios();

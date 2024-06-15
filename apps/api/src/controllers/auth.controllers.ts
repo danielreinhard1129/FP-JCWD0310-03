@@ -13,7 +13,7 @@ export class AuthController {
     try {
       const result = await registerService(req.body);
 
-      res.status(200).send(result);
+      return res.status(200).send(result);
     } catch (error) {
       next(error);
     }
@@ -34,7 +34,7 @@ export class AuthController {
 
       const result = await completeRegistrationService(req.body, files[0]);
 
-      res.status(200).send(result);
+      return res.status(200).send(result);
     } catch (error) {
       next(error);
     }
@@ -45,7 +45,7 @@ export class AuthController {
     try {
       const result = await loginService(req.body);
 
-      res.status(200).send(result);
+      return res.status(200).send(result);
     } catch (error) {
       next(error);
     }
@@ -60,7 +60,7 @@ export class AuthController {
     try {
       const { code } = req.body;
       const result = await getGoogleTokenService(code);
-      res.status(200).send(result);
+      return res.status(200).send(result);
     } catch (error) {
       next(error);
     }
