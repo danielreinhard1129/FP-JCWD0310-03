@@ -31,7 +31,7 @@ const onSubmit = (values: any) => {
   return (
     <div className="flex flex-col">
       <div className="p-6 flex gap-2 my-auto ">
-        <Link className="my-auto" href={"/dashboard-super-admin/menu-order/pickup-order-list"}>
+        <Link className="my-auto" href={"/dashboard/master/order/pickup-order-list"}>
           <ChevronLeft />
         </Link>
         <h1 className="text-lg font-bold my-auto">Create Order</h1>

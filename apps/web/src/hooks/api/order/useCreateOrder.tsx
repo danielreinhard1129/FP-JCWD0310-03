@@ -23,7 +23,7 @@ const useCreateOrder = () => {
         try {
             console.log(payload);        
             await axiosInstance.post('/orders', payload);
-            router.push("/dashboard-super-admin/menu-order");
+            router.push("/dashboard/master/order");
         } catch (error) {
             if (error instanceof AxiosError) {
 

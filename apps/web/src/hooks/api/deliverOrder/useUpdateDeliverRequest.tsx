@@ -14,7 +14,7 @@ const useUpdateDeliverRequest = () => {
     const updateDeliverRequest = async (payload: UpdateDeliverRequestArgs) => {
         setIsLoading(true);
         try {            
-            await axiosInstance.patch(`/deliver-orders/request`, payload);
+            await axiosInstance.patch(`/delivery-orders/request`, payload);
         } catch (error) {
             console.log(error);
         } finally {

@@ -16,7 +16,7 @@ const useGetDeliverHistories = (queries: IGetDeliverHistoriesQuery) => {
 
   const getDeliverHistories = async () => {
     try {
-      const { data } = await axiosInstance.get('/deliver-orders/history',{
+      const { data } = await axiosInstance.get('/delivery-orders/history',{
         params: queries,
       })
       setData(data.data)

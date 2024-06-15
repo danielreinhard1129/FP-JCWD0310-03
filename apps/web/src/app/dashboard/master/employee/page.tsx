@@ -27,7 +27,7 @@ const MenuEmployee = () => {
         <div>
           <h1 className='font-bold text-xl'>Your Employees</h1>
         </div>
-        <Link href={"/dashboard-super-admin/menu-employee/add-employee"}>
+        <Link href={"/dashboard/master/employee/add-employee"}>
           <div className='flex bg-mythemes-maingreen h-full w-40 rounded-lg'>
             <h1 className='text-white font-medium mx-auto my-auto'>Add Employee</h1>
           </div>

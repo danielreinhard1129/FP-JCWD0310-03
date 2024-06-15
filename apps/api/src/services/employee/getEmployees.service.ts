@@ -13,11 +13,11 @@ export const getEmployeesService = async (query: GetEmployeesQuery) => {
     
     const existingUser = await prisma.user.findFirst({
         where: { id: id },
-        select: { Employee: true }
+        select: { employee: true }
       })     
 
     const whereClause: Prisma.EmployeeWhereInput = {
-        outletId: existingUser?.Employee?.outletId,
+        outletId: existingUser?.employee?.outletId,
     }
 
     const employees = await prisma.employee.findMany({

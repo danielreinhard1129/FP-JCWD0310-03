@@ -5,7 +5,7 @@ export const getOutletListService = async () => {
   try {
     
     const outlets = await prisma.outlet.findMany({
-      include: { Address:true, Employee: true },
+      include: { address:true, employee: true },
     });
 
     if (!outlets) {
