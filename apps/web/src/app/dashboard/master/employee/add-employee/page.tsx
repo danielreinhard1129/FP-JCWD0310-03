@@ -6,7 +6,7 @@ const AddEmployee = () => {
   return (
     <div className="flex flex-col">
       <div className="p-6 flex gap-2 my-auto ">
-        <Link className="my-auto" href={"/dashboard-super-admin/menu-employee"}>
+        <Link className="my-auto" href={"/dashboard/master/employee"}>
           <ChevronLeft />
         </Link>
         <h1 className="text-lg font-bold my-auto">Add New Employee</h1>

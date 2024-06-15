@@ -27,7 +27,7 @@ const useUpdateEmployee = (employeeId: number) => {
       await axiosInstance.patch(`/employees/${employeeId}`, {
         ...payload,
       });
-      router.push('/dashboard-super-admin/menu-employee');
+      router.push('/dashboard/master/employee');
     } catch (error) {
       console.log(error);
     } finally {

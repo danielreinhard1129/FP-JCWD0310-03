@@ -37,7 +37,7 @@ const TablePickupOrder: FC<PickupOrderRowTableProps> = ({
             <TableCell>{status}</TableCell>
             <TableCell>{createdAt}</TableCell>
             <TableCell>
-                <Link href={`/dashboard-super-admin/menu-order/pickup-order-list/${pickupOrderId}`}>
+                <Link href={`/dashboard/master/order/pickup-order-list/${pickupOrderId}`}>
                     <div className='font-bold bg-mythemes-maingreen text-center text-white rounded-md'>
                         <h1 >Create Order</h1>
                     </div>

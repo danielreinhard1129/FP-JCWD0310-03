@@ -65,7 +65,7 @@ const TableEmployees: FC<EmployeeRowTableProps> = ({
             <TableCell>{workShift}</TableCell>
             <TableCell>{currentStatus}</TableCell>
             <TableCell>
-                <Link href={`/dashboard-super-admin/menu-employee/${employeeId}`}>
+                <Link href={`/dashboard/master/employee/${employeeId}`}>
                     <SquarePen />
                 </Link>
             </TableCell>

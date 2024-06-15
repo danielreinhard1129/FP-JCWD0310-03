@@ -15,7 +15,7 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
 
         const existingUser = await prisma.user.findFirst({
             where: { id: id },
-            select: { Employee: true, role:true }
+            select: { employee: true, role:true }
         })        
 
         const whereClause: Prisma.OrderWhereInput = {
@@ -31,7 +31,7 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
         }
         if(existingUser?.role!="SUPER_ADMIN"){
             const pickupOrderData = await prisma.pickupOrder.findMany({
-                where: { outletId: existingUser?.Employee?.outletId },
+                where: { outletId: existingUser?.employee?.outletId },
                 select: { id: true }
             })
             const pickupOrderIds = pickupOrderData.map(pickup => pickup.id);
@@ -49,7 +49,7 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
             orderBy: {
                 [sortBy]: sortOrder,
             },
-            include: { OrderItem: true, pickupOrder: true },
+            include: { orderItem: true, pickupOrder: true },
         });
 
         const count = await prisma.order.count({ where: whereClause });

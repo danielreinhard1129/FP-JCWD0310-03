@@ -3,17 +3,17 @@ import { PaginationQueryParams } from "@/types/pagination.type";
 
 import { Prisma } from "@prisma/client";
 
-interface GetDeliverOrdersQuery extends PaginationQueryParams {
+interface GetDeliveryOrdersQuery extends PaginationQueryParams {
   id: number;
 }
 
-export const getDeliverHistorysService = async (query: GetDeliverOrdersQuery) => {
+export const getDeliveryHistoriesService = async (query: GetDeliveryOrdersQuery) => {
   try {
     const { page, sortBy, sortOrder, take, id} = query;
     
     const existingUser = await prisma.user.findFirst({
         where: { id: id },
-        select: { Employee: true, role: true }
+        select: { employee: true, role: true }
       }) 
 
     if(existingUser?.role!="DRIVER"){
@@ -21,7 +21,7 @@ export const getDeliverHistorysService = async (query: GetDeliverOrdersQuery) =>
     }
 
     const pickupOrders = await prisma.pickupOrder.findMany({
-        where: {outletId: existingUser.Employee?.outletId},
+        where: {outletId: existingUser.employee?.outletId},
         select: {id:true}
     });
 
@@ -34,13 +34,13 @@ export const getDeliverHistorysService = async (query: GetDeliverOrdersQuery) =>
 
     const orderIds = orders.map(order => order.id)
       
-    const whereClause: Prisma.DeliverOrderWhereInput = {
+    const whereClause: Prisma.DeliveryOrderWhereInput = {
         orderId: {in: orderIds},
-        deliverStatus: "Received_by_Client",
-        driverId: existingUser.Employee?.id
+        deliveryStatus: "Received_by_Client",
+        driverId: existingUser.employee?.id
     }
 
-    const deliverOrders = await prisma.deliverOrder.findMany({
+    const deliveryOrders = await prisma.deliveryOrder.findMany({
       where: whereClause,
       skip: (page - 1) * take,
       take: take,
@@ -50,10 +50,10 @@ export const getDeliverHistorysService = async (query: GetDeliverOrdersQuery) =>
       include: { user:true, driver:true },
     });
 
-    const count = await prisma.deliverOrder.count({ where: whereClause });
+    const count = await prisma.deliveryOrder.count({ where: whereClause });
 
     return {
-      data: deliverOrders,
+      data: deliveryOrders,
       meta: { page, take, total: count }
     };
   } catch (error) {
