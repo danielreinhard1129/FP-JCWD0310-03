@@ -19,7 +19,6 @@ export default function useLoginByGoogle() {
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
       try {
-        console.log('ini coderesponse', code);
         const response = await axiosInstance.post('/auth/google', { code });
         const { data } = response;
 

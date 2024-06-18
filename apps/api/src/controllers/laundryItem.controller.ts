@@ -7,7 +7,7 @@ export class LaundryItemController {
     async getLaundryItemListController(req: Request, res: Response, next: NextFunction) {
         try {
             const result = await getLaundryItemListService();
-            res.status(200).send(result);
+            return res.status(200).send(result);
         } catch (error) {
             next(error);
         }

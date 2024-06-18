@@ -47,7 +47,6 @@ const EditEmployee = ({ params }: { params: { id: string } }) => {
   const onSubmit = (values: Partial<FormUpdateEmployee>) => {
     const payload = getChangedValues(values, initialValues);
     updateEmployee(payload);
-    console.log(payload);
 
   };
 

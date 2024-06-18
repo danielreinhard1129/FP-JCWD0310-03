@@ -6,13 +6,12 @@ export const getUserService = async (id: number) => {
       where: { id },
       include: { address: true },
     });
-    
+
     if (!user) {
       throw new Error('User not found');
     }
-    
-    console.log('ini user', user);
-    return user
+
+    return user;
   } catch (error) {
     throw error;
   }

@@ -22,8 +22,6 @@ export const verificationService = async (body: VerificationArgs) => {
     if (!isPasswordValid) {
       throw new Error('incorrect password');
     }
-    console.log('ini user token', user.token);
-    console.log('ini tokenparams', tokenParams);
 
     if (user.token !== tokenParams) {
       throw new Error('Please resend your verification email');

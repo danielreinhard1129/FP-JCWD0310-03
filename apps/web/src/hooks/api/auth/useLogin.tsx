@@ -52,8 +52,8 @@ const useLogin = () => {
       toast(data.message);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // toast.error(error?.response?.data);
-        console.log(error);
+        toast.error(error?.response?.data);
+        
       }
     }
   };

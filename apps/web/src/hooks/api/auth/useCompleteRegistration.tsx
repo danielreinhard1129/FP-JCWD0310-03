@@ -11,10 +11,10 @@ import useAxios from '../useAxios';
 import { toast } from 'sonner';
 import { FileWithPath } from 'react-dropzone';
 
-// interface CompleteRegistrationResponse {
-//   message: string;
-//   data: User;
-// }
+interface CompleteRegistrationResponse {
+  message: string;
+  data: User;
+}
 
 const useCompleteRegistration = () => {
   const { axiosInstance } = useAxios();
@@ -24,21 +24,7 @@ const useCompleteRegistration = () => {
   const completeRegistration = async (payload: IFormUser) => {
     setIsLoading(true);
     try {
-      const { email, fullName, password, profilePic } = payload;
-      const completeRegistrationForm = new FormData();
-
-      completeRegistrationForm.append('email', email);
-      completeRegistrationForm.append('fullName', fullName);
-      completeRegistrationForm.append('password', password);
-
-      profilePic?.forEach((file: FileWithPath) => {
-        completeRegistrationForm.append('profilePic', file);
-      });
-
-      await axiosInstance.post<User>(
-        `/auth/complete-registration`,
-        completeRegistrationForm,
-      );
+      await axiosInstance.post<User>(`/auth/complete-registration`, payload);
 
       toast.message('Verification email has been sent to your email');
       router.push('/login');

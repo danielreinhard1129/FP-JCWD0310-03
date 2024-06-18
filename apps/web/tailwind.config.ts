@@ -30,7 +30,7 @@ const config = {
       center: true,
       padding: '2rem',
       screens: {
-        'xs': '430px',
+        '2xl': '1536px',
       },
     },
     extend: {
@@ -68,19 +68,22 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        main_green: '#116A7B',
 
-        'mythemes': {
+        mythemes: {
           maingreen: '#116A7B',
           secondarygreen: '#C2DEDC',
-          grey: '#F4F4F4',
+          grey: '#f9f9f9',
           taubmans: '#ECE5C7',
           dimgrey: '#CDC2AE',
         },
-
       },
       // backgroundImage: {
       //   'my_bg_logo': "url('../public/Kucekin_Logo_Black_EVO1.png')"
+      // },
+
+      // container: {
+      //   'container-mobile': '430px',
+      //   'container-super-admin': '1440px',
       // },
       borderRadius: {
         lg: 'var(--radius)',

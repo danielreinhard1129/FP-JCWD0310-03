@@ -2,6 +2,18 @@
   @tailwind components;
   @tailwind utilities;
 
+  /* @media (max-width: 430px) {
+    .container-mobile {
+      max-width: 430px;
+    }
+  }
+  
+  @media (min-width: 1440px) {
+    .container-super-admin {
+      max-width: 1440px;
+    }
+  } */
+
   @layer base {
     :root {
       --background: 0 0% 100%;
