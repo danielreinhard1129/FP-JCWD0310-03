@@ -26,8 +26,8 @@ export default function RootLayout({
         <GoogleOAuthProvider clientId="761232261353-uov835jcu2ocgve4443buco69jho2kvk.apps.googleusercontent.com">
           <StoreProvider>
             {children}
-            <Footer />
-            <CreatePickupButton />
+            {/* <Footer /> */}
+            {/* <CreatePickupButton /> */}
             <Toaster richColors />
           </StoreProvider>
         </GoogleOAuthProvider>

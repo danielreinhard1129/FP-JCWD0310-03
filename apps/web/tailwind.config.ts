@@ -29,9 +29,9 @@ const config = {
     container: {
       center: true,
       padding: '2rem',
-      screens: {
-        'xs': '430px',
-      },
+      screens:{
+        '2xl': '1536px'
+      }
     },
     extend: {
       colors: {

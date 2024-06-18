@@ -23,7 +23,7 @@ const CreatePickupButton = () => {
   return (
     <>
       {/* <div className="flex mx-auto fixed bottom-0"> */}
-      <div className="container fixed bottom-0  left-1/2 transform py-1 -translate-x-1/2 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white ">
+      <div className="container sticky bottom-0 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white ">
         <div
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
           onClick={() => router.push('/')}

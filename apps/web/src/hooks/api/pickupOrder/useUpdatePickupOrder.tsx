@@ -1,33 +1,21 @@
 'use client';
 
-// import { axiosInstance } from '@/lib/axios';
-import { useRouter } from 'next/navigation';
+import { axiosInstance } from '@/lib/axios';
 import { useState } from 'react';
-import useAxios from '../useAxios';
 
-interface updatePickupOrderArgs {
-    workShift: string;
-    station: string;
-    outletId: string;
-    fullName?: string;
-    email?: string;
-    role?: string;
+interface UpdatePickupOrderArgs {
+    shipmentOrderId: number,
+    driverId: number,
+    status: string
 }
 
-const useUpdatePickupOrder = (pickupOrderId: number) => {
-    const router = useRouter();
+const useUpdatePickupOrder = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { axiosInstance } = useAxios();
 
-    const updatePickupOrder = async (payload: any) => {
+    const updatePickupOrder = async (payload: UpdatePickupOrderArgs) => {
         setIsLoading(true);
         try {
-            
-            await axiosInstance.patch(`/pickupOrder/${pickupOrderId}`, {
-                ...payload
-            });
-
-            router.push("/dashboard/master/order");
+            await axiosInstance.patch(`/pickup-orders/`, payload);
         } catch (error) {
             console.log(error);
         } finally {

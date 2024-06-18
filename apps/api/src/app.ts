@@ -18,6 +18,8 @@ import { LaundryItemRouter } from './routers/laundryItem.router';
 import { AuthRouter } from './routers/auth.router';
 import { DeliveryOrderRouter } from './routers/deliveryOrder.router';
 import { UserRouter } from './routers/user.router';
+import { OrderWorkerRouter } from './routers/orderWorker.router';
+import { OrderItemRouter } from './routers/orderItem.router';
 
 export default class App {
   private app: Express;
@@ -68,6 +70,8 @@ export default class App {
     const authRouter = new AuthRouter();
     const deliveryOrderRouter = new DeliveryOrderRouter()
     const userRouter = new UserRouter();
+    const orderWorkerRouter = new OrderWorkerRouter();
+    const orderItemRouter = new OrderItemRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
@@ -81,6 +85,8 @@ export default class App {
     this.app.use('/api/auth', authRouter.getRouter());
     this.app.use('/api/delivery-orders', deliveryOrderRouter.getRouter());
     this.app.use('/api/user', userRouter.getRouter());
+    this.app.use('/api/order-workers', orderWorkerRouter.getRouter());
+    this.app.use('/api/order-items', orderItemRouter.getRouter());
   }
 
   public start(): void {
