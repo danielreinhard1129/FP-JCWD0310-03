@@ -1,46 +1,46 @@
-// import prisma from "@/prisma"
-// import { PaginationQueryParams } from "@/types/pagination.type";
+import prisma from '@/prisma';
+import { PaginationQueryParams } from '@/types/pagination.type';
 
-// import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
-// interface GetEmployeesQuery extends PaginationQueryParams {
-//   id: number;
-// }
+interface GetEmployeesQuery extends PaginationQueryParams {
+  id: number;
+}
 
-// export const getEmployeesService = async (query: GetEmployeesQuery) => {
-//   try {
-//     const { page, sortBy, sortOrder, take, id} = query;
-    
-//     const existingUser = await prisma.user.findFirst({
-//         where: { id: id },
-//         select: { Employee: true }
-//       })     
+export const getEmployeesService = async (query: GetEmployeesQuery) => {
+  try {
+    const { page, sortBy, sortOrder, take, id } = query;
 
-//     const whereClause: Prisma.EmployeeWhereInput = {
-//         outletId: existingUser?.Employee?.outletId,
-//     }
+    const existingUser = await prisma.user.findFirst({
+      where: { id: id },
+      select: { employee: true },
+    });
 
-//     const employees = await prisma.employee.findMany({
-//       where: whereClause,
-//       skip: (page - 1) * take,
-//       take: take,
-//       orderBy: {
-//         [sortBy]: sortOrder,
-//       },
-//       include: { user:true, outlet:true },
-//     });
+    const whereClause: Prisma.EmployeeWhereInput = {
+      outletId: existingUser?.employee?.outletId,
+    };
 
-//     const count = await prisma.employee.count({ where: whereClause });
+    const employees = await prisma.employee.findMany({
+      where: whereClause,
+      skip: (page - 1) * take,
+      take: take,
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+      include: { user: true, outlet: true },
+    });
 
-//     if (!employees) {
-//       throw new Error('User not Found!')
-//     }
+    const count = await prisma.employee.count({ where: whereClause });
 
-//     return {
-//       data: employees,
-//       meta: { page, take, total: count }
-//     };
-//   } catch (error) {
-//     throw error
-//   }
-// }
+    if (!employees) {
+      throw new Error('User not Found!');
+    }
+
+    return {
+      data: employees,
+      meta: { page, take, total: count },
+    };
+  } catch (error) {
+    throw error;
+  }
+};

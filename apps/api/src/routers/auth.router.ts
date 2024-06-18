@@ -27,7 +27,6 @@ export class AuthRouter {
     this.router.post('/register', this.authController.registerController);
     this.router.post(
       '/complete-registration',
-      uploader('IMG', '/images').array('profilePic', 1),
       this.authController.completeRegistrationController,
     );
     this.router.post('/login', this.authController.loginController);
@@ -37,15 +36,15 @@ export class AuthRouter {
     //   verifyToken,
     //   this.authController.keepLoginController,
     // );
-    // this.router.post(
-    //   '/forgot-password',
-    //   this.authController.forgotPasswordController,
-    // );
-    // this.router.patch(
-    //   '/reset-password',
-    //   verifyToken,
-    //   this.authController.resetPasswordController,
-    // );
+    this.router.post(
+      '/forgot-password',
+      this.authController.forgotPasswordController,
+    );
+    this.router.patch(
+      '/reset-password',
+      verifyToken,
+      this.authController.resetPasswordController,
+    );
     // this.router.get('/:id', this.authController.getUserController);
   }
 

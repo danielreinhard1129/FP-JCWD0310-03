@@ -1,14 +1,15 @@
-import { getDeliverHistorysService } from '@/services/deliverOrder/getDeliverHistorys.service';
-import { getDeliverProgressesService } from '@/services/deliverOrder/getDeliverProgresses.service';
-import { getDeliverRequestsService } from '@/services/deliverOrder/getDeliverRequests.service';
-import { updateDeliverRequestService } from '@/services/deliverOrder/updateDeliverRequest.service';
-import { updateDeliverToClientService } from '@/services/deliverOrder/updateDeliverToClient.service';
-import { updateDeliverToOutletService } from '@/services/deliverOrder/updateDeliverToOutlet.service';
+
+import { getDeliveryHistoriesService } from '@/services/deliveryOrder/getDeliveryHistories.service';
+import { getDeliveryProgressesService } from '@/services/deliveryOrder/getDeliveryProgresses.service';
+import { getDeliveryRequestsService } from '@/services/deliveryOrder/getDeliveryRequests.service';
+import { updateDeliveryRequestService } from '@/services/deliveryOrder/updateDeliveryRequest.service';
+import { updateDeliveryToClientService } from '@/services/deliveryOrder/updateDeliveryToClient.service';
+import { updateDeliveryToOutletService } from '@/services/deliveryOrder/updateDeliveryToOutlet.service';
 import { NextFunction, Request, Response } from 'express';
 
 
-export class DeliverOrderController {
-  async getDeliverRequestsController(req: Request, res: Response, next: NextFunction) {
+export class DeliveryOrderController {
+  async getDeliveryRequestsController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
         id: parseInt(req.query.id as string),
@@ -17,14 +18,14 @@ export class DeliverOrderController {
         sortBy: parseInt(req.query.sortBy as string) || 'id',
         sortOrder: parseInt(req.query.sortOrder as string) || 'asc',
       };
-      const result = await getDeliverRequestsService(query);
+      const result = await getDeliveryRequestsService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);
     }
   }
 
-  async getDeliverProgressesController(req: Request, res: Response, next: NextFunction) {
+  async getDeliveryProgressesController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
         id: parseInt(req.query.id as string),
@@ -33,14 +34,14 @@ export class DeliverOrderController {
         sortBy: parseInt(req.query.sortBy as string) || 'id',
         sortOrder: parseInt(req.query.sortOrder as string) || 'asc',
       };
-      const result = await getDeliverProgressesService(query);
+      const result = await getDeliveryProgressesService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);
     }
   }
 
-  async getDeliverHistorysController(req: Request, res: Response, next: NextFunction) {
+  async getDeliveryHistoriesController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
         id: parseInt(req.query.id as string),
@@ -49,32 +50,32 @@ export class DeliverOrderController {
         sortBy: parseInt(req.query.sortBy as string) || 'id',
         sortOrder: parseInt(req.query.sortOrder as string) || 'asc',
       };
-      const result = await getDeliverHistorysService(query);
+      const result = await getDeliveryHistoriesService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);
     }
   }
 
-  async updateDeliverRequestController(req: Request, res: Response, next: NextFunction) {
+  async updateDeliveryRequestController(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await updateDeliverRequestService(req.body);
+      const result = await updateDeliveryRequestService(req.body);
       res.status(200).send(result);
     } catch (error) {
       next(error);
     }
   }
-  async updateDeliverToClientController(req: Request, res: Response, next: NextFunction) {
+  async updateDeliveryToClientController(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await updateDeliverToClientService(req.body);
+      const result = await updateDeliveryToClientService(req.body);
       res.status(200).send(result);
     } catch (error) {
       next(error);
     }
   }
-  async updateDeliverToOutletController(req: Request, res: Response, next: NextFunction) {
+  async updateDeliveryToOutletController(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await updateDeliverToOutletService(req.body);
+      const result = await updateDeliveryToOutletService(req.body);
       res.status(200).send(result);
     } catch (error) {
       next(error);

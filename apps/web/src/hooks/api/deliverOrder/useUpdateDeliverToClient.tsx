@@ -14,7 +14,7 @@ const useUpdateDeliverToClient = () => {
     const updateDeliverToClient = async (payload: UpdateDeliverToClientArgs) => {
         setIsLoading(true);
         try {            
-            await axiosInstance.patch(`/deliver-orders/to-client`, payload);
+            await axiosInstance.patch(`/delivery-orders/to-client`, payload);
         } catch (error) {
             console.log(error);
         } finally {

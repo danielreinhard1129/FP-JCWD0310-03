@@ -13,14 +13,14 @@ export const getPickupRequestsService = async (query: GetPickupOrdersQuery) => {
     
     const existingUser = await prisma.user.findFirst({
         where: { id: id },
-        select: { Employee: true, role: true }
+        select: { employee: true, role: true }
       }) 
     if(existingUser?.role!="DRIVER"){
         throw new Error('Your User Role is Not Allowed to be Accessed!')
     }
       
     const whereClause: Prisma.PickupOrderWhereInput = {
-        outletId: existingUser.Employee?.outletId,
+        outletId: existingUser.employee?.outletId,
         pickupStatus: "Waiting_for_Driver"
     }
 

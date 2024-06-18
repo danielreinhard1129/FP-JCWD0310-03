@@ -10,10 +10,9 @@ interface CompleteRegistrationBody
   extends Pick<User, 'email' | 'password' | 'fullName' | 'profilePic'> {}
 export const completeRegistrationService = async (
   body: CompleteRegistrationBody,
-  file: Express.Multer.File,
 ) => {
   try {
-    const { email, password, fullName,profilePic } = body;
+    const { email, password, fullName } = body;
 
     const existingEmail = await prisma.user.findFirst({
       where: { email: email },
@@ -29,7 +28,6 @@ export const completeRegistrationService = async (
       const user = await tx.user.create({
         data: {
           email,
-          profilePic: `/images/${file.filename}`,
           fullName,
           password: hashedPassword,
         },

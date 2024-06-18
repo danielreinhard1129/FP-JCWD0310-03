@@ -47,14 +47,13 @@ const EditEmployee = ({ params }: { params: { id: string } }) => {
   const onSubmit = (values: Partial<FormUpdateEmployee>) => {
     const payload = getChangedValues(values, initialValues);
     updateEmployee(payload);
-    console.log(payload);
 
   };
 
   return (
     <main className="flex flex-col">
       <div className="p-6 flex gap-2 my-auto ">
-        <Link className="my-auto" href={"/dashboard-super-admin/menu-employee"}>
+        <Link className="my-auto" href={"/dashboard/master/employee"}>
           <ChevronLeft />
         </Link>
         <h1 className="text-lg font-bold my-auto">Edit Employee Data</h1>

@@ -53,7 +53,7 @@ const useLogin = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error?.response?.data);
-        console.log(error);
+        
       }
     }
   };

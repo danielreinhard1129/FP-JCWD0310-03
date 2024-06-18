@@ -16,7 +16,6 @@ import Dropzone from '@/components/Dropzone';
 
 interface FormCompleteRegistration {
   email: string;
-  profilePic: File[];
 }
 
 interface FormCompleteRegistrationProps {
@@ -71,16 +70,9 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
           placeholder="Entry Password"
           form={form}
         />
-
-        <Dropzone
-          onDrop={(files) => {
-            form.setValue('profilePic', files);
-          }}
-          isError
-          label=""
-        />
-
-        <Button type="submit" className='w-full bg-mythemes-maingreen'>Submit</Button>
+        <Button type="submit" className="w-full bg-mythemes-maingreen">
+          Submit
+        </Button>
       </form>
     </Form>
   );

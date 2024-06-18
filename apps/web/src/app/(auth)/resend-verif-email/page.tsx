@@ -8,14 +8,13 @@ import React from 'react';
 const ResendVerifEmail = () => {
   const dispatch = useAppDispatch();
   const { id } = useAppSelector((state) => state.user);
-  console.log('ini id', id);
 
   const { resendVerifEmail } = useResendVerifEmail();
 
   // const logout = () => {
   //   localStorage.removeItem('token');
   //   dispatch(logoutAction());
-  // };
+  // }; 
   return (
     <div>
       <Button

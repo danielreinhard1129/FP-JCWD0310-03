@@ -6,9 +6,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 import TableOrder from './components/TableOrder'
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import ItemOutlet from '../components/ItemOutlet'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import ItemFilterOutlet from './components/ItemFilterOutlet'
 import ItemFilterStatus from './components/ItemFilterStatus'
@@ -71,7 +68,7 @@ const MenuOrder = () => {
               <SelectItem value='desc'>Sort by: Latest</SelectItem>
             </SelectContent>
           </Select>
-          <Link href={"/dashboard-super-admin/menu-order/pickup-order-list"}>
+          <Link href={"/dashboard/master/order/pickup-order-list"}>
             <div className='flex bg-mythemes-maingreen h-full w-40 rounded-lg'>
               <h1 className='text-white font-medium mx-auto my-auto'>Create Order</h1>
             </div>

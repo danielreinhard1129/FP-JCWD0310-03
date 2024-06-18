@@ -1,8 +1,6 @@
 'use client'
 import { TableCell, TableRow } from '@/components/ui/table';
-import { SquarePen } from 'lucide-react';
-import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 
 interface OrderRowTableProps {
     key: number;

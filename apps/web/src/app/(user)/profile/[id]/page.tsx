@@ -1,39 +1,48 @@
 'use client';
-import { useAppSelector } from '@/redux/hooks';
-import { useEffect, useRef, useState } from 'react';
-import { toast } from 'sonner';
-
 import useGetUser from '@/hooks/api/user/useGetUser';
-
-import ResendVerifEmail from '@/app/(auth)/resend-verif-email/page';
-import { Badge } from '@/components/ui/badge';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useEffect, useRef, useState } from 'react';
+import { IoIosArrowForward } from 'react-icons/io';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import AuthGuard from '@/hoc/AuthGuard';
+import useResendVerifEmail from '@/hooks/api/auth/useResendVerifEmail';
 import { appConfig } from '@/utils/config';
+import { ChevronLeft, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { GoXCircleFill } from 'react-icons/go';
+import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import noPic from '../../../../../public/pictNotFound.jpeg';
+import { logoutAction } from '@/redux/slices/userSlice';
 
 const Profile = ({ params }: { params: { id: string } }) => {
-  const [selectedImage, setSelectedImage] = useState<HTMLInputElement>();
-  const inputRef = useRef();
+  const dispatch = useAppDispatch();
+  const logout = () => {
+    localStorage.removeItem('token');
+    dispatch(logoutAction());
+  };
 
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // }, []);
+  const [selectedImage, setSelectedImage] = useState<HTMLInputElement>();
+
+  const inputRef = useRef();
+  const { resendVerifEmail } = useResendVerifEmail();
 
   const router = useRouter();
 
-  const { isVerify, tokenExpiresIn, id } = useAppSelector(
-    (state) => state.user,
-  );
+  const { tokenExpiresIn, id } = useAppSelector((state) => state.user);
+
+  const isVerify = useAppSelector((state) => state.user.isVerify);
+
   const { user, isLoading } = useGetUser(Number(params.id));
 
-  console.log('ini data dari page', user);
-
   let tokenExpiryDate;
+
   if (tokenExpiresIn) {
     tokenExpiryDate = new Date(tokenExpiresIn);
   }
+
   const now = new Date();
 
   const capitalizeFirstLetter = (str: string) => {
@@ -41,10 +50,10 @@ const Profile = ({ params }: { params: { id: string } }) => {
   };
 
   useEffect(() => {
-    if (isVerify === false) {
+    if (user?.isVerify === false) {
       toast.warning('Please verify your account');
     }
-  }, [isVerify]);
+  }, [user?.isVerify]);
 
   if (isLoading) {
     return (
@@ -55,15 +64,16 @@ const Profile = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <main className="container p-0 py-6 bg-mythemes-maingreen left-0 right-0 z-50">
-      <div>
-        <div className="container">
-          <div>back</div>
+    <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
+      <div className=" px-6 flex flex-col gap-4  ">
+        <div className="flex relative ">
+          <ChevronLeft className="absolute" onClick={() => router.back()} />
+          <h1 className=" font-extrabold mx-auto">My profile</h1>
         </div>
 
         {/* Profile */}
-        <div className="container flex flex-col text-white">
-          <div className="w-24 h-24 rounded-full place-content-center relative overflow-hidden mx-auto ">
+        <div className=" flex flex-row text-black rounded-xl p-2  gap-2 shadow-lg">
+          <div className="w-20 h-20 rounded-full border-2 my-auto justify-center relative overflow-hidden mx-auto ">
             <Image
               alt="ProfilePict"
               src={
@@ -71,7 +81,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                   ? user.profilePic.includes('googleusercontent.com')
                     ? user.profilePic
                     : `${appConfig.baseURL}/assets/${user.profilePic}`
-                  : `${noPic}` // Path to your default image
+                  : noPic.src // Path to your default image
               }
               quality={80}
               objectFit="cover"
@@ -80,77 +90,86 @@ const Profile = ({ params }: { params: { id: string } }) => {
               className="mx-auto"
             />
           </div>
-          <h1 className="text-center font-bold text-xl">
-            {/* {user?.fullName.toUpperCase()} */}
-            {user?.fullName && capitalizeFirstLetter(user.fullName)}
-          </h1>
-          <p className="text-center font-extralight text-sm w-56 mx-auto mb-1">
-            {user?.Address?.address || 'Your Address'}
-          </p>
-          {/* <div className=""> */}
-          {isVerify === true ? (
-            <Badge className="bg-green-200 text-green-700 mx-auto">
-              Verified
-            </Badge>
-          ) : tokenExpiryDate && tokenExpiryDate < now ? (
-            <div className="relative flex flex-col">
-              <Badge variant={'destructive'} className="mx-auto">
-                Unverified
-              </Badge>
+          <div className="flex-flex-col">
+            <h1 className="text-left font-bold text-lg">
+              {user?.fullName && capitalizeFirstLetter(user.fullName)}
+            </h1>
+            <p className="text-left text-sm w-56 mb-1">
+              {user?.Address?.address || 'Your Address'}
+            </p>
+            <div>
+              {user && user.isVerify === true ? (
+                <p className="flex flex-row my-auto items-center text-sm gap-1 text-green-500 font-bold">
+                  <RiVerifiedBadgeFill /> Verified
+                </p>
+              ) : tokenExpiryDate && tokenExpiryDate < now ? (
+                <div className="relative flex flex-col">
+                  <p className="flex flex-row my-auto items-center text-sm gap-1 text-red-500 font-bold">
+                    <GoXCircleFill />
+                    Unverified
+                  </p>
 
-              <p className="text-xs text-red-500 font-light text-center w-52 mx-auto">
-                Your verificationlink expired. <br />
-                <span
-                  className="underline hover:text-white cursor-pointer"
-                  onClick={() => {
-                    ResendVerifEmail();
-                  }}
-                >
-                  Click here
-                </span>{' '}
-                to resend it.
-              </p>
-            </div>
-          ) : (
-            <div className="relative flex flex-col">
-              <Badge variant={'destructive'} className="mx-auto">
-                Unverified
-              </Badge>
+                  <p className="text-xs text-red-500 font-light text-left w-52">
+                    Your verification link is expired. <br />
+                    <span
+                      className="underline hover:text-red-800 font-bold cursor-pointer"
+                      onClick={() => {
+                        resendVerifEmail();
+                      }}
+                    >
+                      Click here
+                    </span>{' '}
+                    to resend it.
+                  </p>
+                </div>
+              ) : (
+                <div className="relative flex flex-col">
+                  <p className="flex flex-row my-auto items-center text-sm gap-1 text-red-500 font-bold">
+                    <GoXCircleFill />
+                    Unverified
+                  </p>
 
-              <p className="text-xs text-red-500 font-light text-center w-52 mx-auto">
-                <span
-                  className="underline hover:text-white cursor-pointer"
-                  onClick={() => router.push('/verification')}
-                >
-                  Click here
-                </span>{' '}
-                to verify.
-              </p>
+                  <p className="text-xs text-red-500 font-light text-left w-52 ">
+                    <span
+                      className="underline hover:text-red-800 cursor-pointer"
+                      onClick={() => router.push('/verification')}
+                    >
+                      Click here
+                    </span>{' '}
+                    to verify.
+                  </p>
+                </div>
+              )}
             </div>
-            // <Button
-            //   className="text-red-500"
-            //   onClick={() => router.push('/verification')}
-            // >
-            //   Verify your account
-            // </Button>
-          )}
-          {/* </div> */}
-        </div>
-        <div className="bg-[#f4f4f4] h-screen py-[43px] rounded-t-[40px] mt-5">
-          <div className="container">
-            <input
-              type="file"
-              name="myImage"
-              // Event handler to capture file selection and update the state
-              // onChange={(event) => {
-              //   console.log(event.target.files[0]); // Log the selected file
-              //   setSelectedImage(event.target.files[0]); // Update the state with the selected file
-              // }}
-            />
-            <div>asfasf</div>
-            <div>asfasf</div>
-            <div>asfasf</div>
           </div>
+        </div>
+
+        <div className="w-full flex flex-col gap-4">
+          <Button
+            className="bg-mythemes-secondarygreen hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
+            onClick={() => router.push(`/profile/${id}/edit`)}
+          >
+            <p>Edit Profile</p>
+            <IoIosArrowForward />
+          </Button>
+          <Button
+            className="bg-mythemes-secondarygreen hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
+            onClick={() => router.push(`/profile/${id}/change-password`)}
+          >
+            <p>Change Password</p>
+            <IoIosArrowForward />
+          </Button>
+          <Button className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full">
+            <p>Your Order</p>
+            <IoIosArrowForward />
+          </Button>
+          <Button
+            onClick={logout}
+            className="bg-mythemes-grey text-red-500 hover:bg-mythemes-grey gap-2 mt-5 flex flex-row justify-center rounded-full"
+          >
+            <LogOut />
+            <p>Logout</p>
+          </Button>
         </div>
       </div>
     </main>

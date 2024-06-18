@@ -183,14 +183,14 @@ model LaundryItem {
 }
 
 model DeliveryOrder {
-  id            Int            @id @default(autoincrement())
-  deliverNumber String         @unique
-  deliverStatus DeliveryStatus @default(Waiting_for_Driver)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  userId        Int
-  driverId      Int?
-  orderId       Int
+  id             Int            @id @default(autoincrement())
+  deliveryNumber String         @unique
+  deliveryStatus DeliveryStatus @default(Waiting_for_Driver)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  userId         Int
+  driverId       Int?
+  orderId        Int
 
   user   User      @relation(fields: [userId], references: [id])
   driver Employee? @relation(fields: [driverId], references: [id])

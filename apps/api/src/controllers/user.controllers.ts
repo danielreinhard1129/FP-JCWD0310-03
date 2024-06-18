@@ -17,12 +17,15 @@ export class UserController {
 
   async updateUserController(req: Request, res: Response, next: NextFunction) {
     try {
+      const id = req.params.id;
       const files = req.files as Express.Multer.File[];
+      const newPassword = req.body.newPassword;
 
       const result = await updateUserService(
-        Number(req.params.id),
+        Number(id),
         req.body,
         files[0],
+        newPassword,
       );
 
       return res.status(200).send(result);

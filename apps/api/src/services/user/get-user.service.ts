@@ -11,7 +11,6 @@ export const getUserService = async (id: number) => {
       throw new Error('User not found');
     }
 
-    console.log('ini user', user);
     return user;
   } catch (error) {
     throw error;

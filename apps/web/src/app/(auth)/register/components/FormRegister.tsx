@@ -25,10 +25,9 @@ export function FormRegister() {
     resolver: zodResolver(schema),
     defaultValues: {},
   });
-
+  
   function onSubmit(values: z.infer<typeof schema>) {
     register(values);
-    console.log(values);
   }
 
   return (

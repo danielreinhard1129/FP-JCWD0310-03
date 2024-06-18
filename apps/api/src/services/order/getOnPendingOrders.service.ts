@@ -13,7 +13,7 @@ export const getOnPendingOrdersService = async (query: GetOnPendingOrdersQuery) 
 
         const existingUser = await prisma.user.findFirst({
             where: { id: id },
-            select: { Employee: true, role: true }
+            select: { employee: true, role: true }
         })
 
         if (existingUser?.role != "WORKER") {
@@ -21,7 +21,7 @@ export const getOnPendingOrdersService = async (query: GetOnPendingOrdersQuery) 
         }
 
         const pickupOrders = await prisma.pickupOrder.findMany({
-            where: { outletId: existingUser.Employee?.outletId },
+            where: { outletId: existingUser.employee?.outletId },
             select: { id: true }
         });
 
@@ -38,7 +38,7 @@ export const getOnPendingOrdersService = async (query: GetOnPendingOrdersQuery) 
             orderBy: {
                 [sortBy]: sortOrder,
             },
-            include: { OrderItem: true, pickupOrder: true },
+            include: { orderItem: true, pickupOrder: true },
         })
 
         const count = await prisma.order.count({ where: whereClause });

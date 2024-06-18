@@ -32,7 +32,6 @@ export function FromLogin() {
 
   function onSubmit(values: z.infer<typeof schema>) {
     login(values);
-    // console.log(values);
   }
 
   return (
@@ -77,7 +76,7 @@ export function FromLogin() {
         <div>
           <Button
             onClick={() => googleLogin()}
-            className="w-full bg-white flex gap-1 text-black hover:text-white"
+            className="w-full bg-mythemes-grey flex gap-1 text-black hover:text-white"
           >
             <FcGoogle size={25} /> Sign in with your Google account.
           </Button>
@@ -86,7 +85,7 @@ export function FromLogin() {
           Don't have account?{' '}
           <Link
             href={'http://localhost:3000/register'}
-            className="text-main_green hover:underline  hover:text-mythemes-secondarygreen"
+            className="text-main_green hover:underline font-bold hover:text-mythemes-secondarygreen"
           >
             Sign up
           </Link>

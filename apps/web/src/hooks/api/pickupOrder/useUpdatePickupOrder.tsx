@@ -27,7 +27,7 @@ const useUpdatePickupOrder = (pickupOrderId: number) => {
                 ...payload
             });
 
-            router.push("/dashboard-super-admin/menu-order");
+            router.push("/dashboard/master/order");
         } catch (error) {
             console.log(error);
         } finally {
