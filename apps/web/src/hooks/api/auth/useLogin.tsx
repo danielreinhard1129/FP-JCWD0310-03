@@ -38,22 +38,21 @@ const useLogin = () => {
         router.push('/');
       }
       if (data.data.role === Role.DRIVER) {
-        router.push('/driver');
+        router.push('/dashboard/driver');
       }
       if (data.data.role === Role.OUTLET_ADMIN) {
         router.push('/outlet-admin');
       }
       if (data.data.role === Role.SUPER_ADMIN) {
-        router.push('/super-admin');
+        router.push('/dashboard/master');
       }
       if (data.data.role === Role.WORKER) {
-        router.push('/worker');
+        router.push('/dashboard/worker');
       }
       toast(data.message);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error?.response?.data);
-        
       }
     }
   };
