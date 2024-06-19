@@ -1,6 +1,4 @@
 'use client';
-import Autocomplete from '@/components/AutoComplete';
-import { Footer } from '@/components/Footer';
 /* eslint-disable react/no-unescaped-entities */
 import AboutUs from '@/components/homePage/AboutUs';
 import BrowseOutlet from '@/components/homePage/BrowseOutlet';
@@ -16,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
+import Autocomplete from '@/components/AutoComplete';
 
 export default function Home() {
   const { getLocation, data } = useGetLocationByCoord();
@@ -100,7 +99,7 @@ export default function Home() {
 
         {/* CARD PROMOTION
       - USE CAROUSEL */}
-        <div className="px-6">
+        <div className="container">
           <label className="font-bold md:text-3xl">Promotion</label>
           <PromotionCarousel />
         </div>
@@ -119,9 +118,9 @@ export default function Home() {
 
         {/* BUTTON */}
         {/* <CreatePickupButton /> */}
-      </section>
-      {!id ? <Footer /> : null}
 
+        {/* <Header /> */}
+      </section>
       {/* <Menu /> */}
     </>
   );

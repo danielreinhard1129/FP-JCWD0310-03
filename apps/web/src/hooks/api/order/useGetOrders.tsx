@@ -8,8 +8,8 @@ import useAxios from '../useAxios';
 
 interface IGetOrdersQuery extends IPaginationQueries {
   id: number;
-  filterOutlet: string,
-  filterStatus: string,
+  filterOutlet?: string,
+  filterStatus?: string,
 }
 
 const useGetOrders = (queries: IGetOrdersQuery) => {

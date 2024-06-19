@@ -1,15 +1,16 @@
-import prisma from "@/prisma"
+import prisma from "@/prisma";
 import { PaginationQueryParams } from "@/types/pagination.type";
 
-import { Prisma } from "@prisma/client";
+import { PickupStatus, Prisma } from "@prisma/client";
 
 interface GetPickupOrdersQuery extends PaginationQueryParams {
   id: number;
+  pickupStatus: string;
 }
 
 export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
   try {
-    const { page, sortBy, sortOrder, take, id} = query;
+    const { page, sortBy, sortOrder, pickupStatus, take, id} = query;
     
     const existingUser = await prisma.user.findFirst({
         where: { id: id },
@@ -20,7 +21,10 @@ export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
 
     if(existingUser?.role=="DRIVER"){
       whereClause.outletId = existingUser.employee?.outletId;
-      whereClause.pickupStatus = "Waiting_for_Driver";
+      whereClause.pickupStatus = pickupStatus as PickupStatus;
+      if(pickupStatus!= String(PickupStatus.Waiting_for_Driver)){
+        whereClause.driverId = id;
+      }
     }
 
     if(existingUser?.role=="OUTLET_ADMIN"){

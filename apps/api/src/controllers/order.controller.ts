@@ -1,12 +1,14 @@
 import { CreateOrderService } from '@/services/order/createOrder.service';
-import { getOrdersService } from '@/services/order/getOders.service';
+import { getOrdersService } from '@/services/order/getOrders.service';
 import { getOnPendingOrdersService } from '@/services/order/getOnPendingOrders.service';
-import { updateStatusOrderService } from '@/services/order/updateStatusOrder.service';
+
 
 import { NextFunction, Request, Response } from 'express';
+import { updateOrderStatusService } from '@/services/order/updateOrderStatus.service';
+
 
 export class OrderController {
-  async CreateOrderController(req: Request, res: Response, next: NextFunction) {
+  async createOrderController(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await CreateOrderService(req.body);
       return res.status(200).send(result);
@@ -15,14 +17,10 @@ export class OrderController {
     }
   }
 
-  async updateStatusOrderController(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  async updateOrderStatusController(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await updateStatusOrderService(req.body);
-      return res.status(200).send(result);
+      const result = await updateOrderStatusService(req.body);
+      res.status(200).send(result);
     } catch (error) {
       next(error);
     }
