@@ -14,6 +14,7 @@ const PickupOrderList = () => {
     id: 0,
     page,
     take: 5,
+    pickupStatus:''
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {

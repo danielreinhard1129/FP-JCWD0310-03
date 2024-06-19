@@ -1,13 +1,14 @@
 'use client';
 // import { axiosInstance } from '@/lib/axios';
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
-import { PickupOrder } from '@/types/pickupOrder.type';
+import { PickupOrder, PickupStatus } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetPickupOrdersQuery extends IPaginationQueries {
   id: number;
+  pickupStatus: string;
 }
 
 const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {

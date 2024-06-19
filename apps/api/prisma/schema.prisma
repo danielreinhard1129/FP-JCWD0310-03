@@ -154,8 +154,11 @@ enum OrderStatus {
   Laundry_On_The_Way_To_Outlet
   Laundry_Has_Arrived_At_Outlet
   Laundry_Being_Washed
+  Laundry_Finished_Washing
   Laundry_Being_Ironed
+  Laundry_Finished_Ironing
   Laundry_Being_Packed
+  Laundry_Finished_Packing
   Awaiting_Payment
   Laundry_Being_Delivered_To_Customer
   Laundry_Received_By_Customer
@@ -207,9 +210,11 @@ enum DeliveryStatus {
 }
 
 model OrderWorker {
-  id       Int @id @default(autoincrement())
+  id       Int              @id @default(autoincrement())
   orderId  Int
   workerId Int
+  station  EmployeeStation?
+  isComplete Boolean @default(false)
 
   order  Order    @relation(fields: [orderId], references: [id])
   worker Employee @relation(fields: [workerId], references: [id])
