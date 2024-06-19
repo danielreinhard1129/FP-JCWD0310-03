@@ -7,7 +7,7 @@ import thumbnail from '../../../public/Kucekin_Logo_Black_EVO1.png';
 const BrowseOutlet = () => {
   return (
     <>
-      <div className="container">
+      <div className="px-6">
         <div className="flex justify-between">
           <label className="font-bold md:text-3xl">Outlet</label>
           <label className="font-light text-main_green text-sm mt-auto underline cursor-pointer">
@@ -16,7 +16,7 @@ const BrowseOutlet = () => {
         </div>
 
         <div className=" ">
-          <ScrollArea className="whitespace-nowrap rounded-md  bg-[#f4f4f4]">
+          <ScrollArea className="whitespace-nowrap rounded-md">
             <div className="flex gap-4 ">
               <Card className="w-52 rounded-xl bg-white shadow-md">
                 <CardHeader className="">

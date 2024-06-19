@@ -33,7 +33,7 @@ export function FormVerification() {
 
   function onSubmit(values: VerificationToken) {
     verification(values);
-    console.log(values);
+
   }
 
   const handleSubmit = (data: VerificationArgs) => {
@@ -41,8 +41,6 @@ export function FormVerification() {
       password: data.password,
       token: tokenParams,
     };
-    console.log('ini finaldata', finalData);
-
     onSubmit(finalData);
   };
 

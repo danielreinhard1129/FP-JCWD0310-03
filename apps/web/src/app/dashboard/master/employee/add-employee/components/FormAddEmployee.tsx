@@ -34,7 +34,6 @@ export function AddEmployeeForm() {
 
   function onSubmit(values: z.infer<typeof schema>) {
     addEmployee(values);
-    console.log(values);
   }
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { AuthController } from '@/controllers/auth.controllers';
 import { UserController } from '@/controllers/user.controllers';
+import { uploader } from '@/lib/uploader';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
@@ -14,12 +15,17 @@ export class UserRouter {
   }
 
   private initializeRoutes(): void {
+    this.router.patch(
+      '/profile/:id',
+      verifyToken,
+      uploader('IMG', '/images').array('profilePic', 1),
+      this.userController.updateUserController,
+    );
     this.router.get(
       '/profile/:id',
+      verifyToken,
       this.userController.getUserController,
     );
-
-    // this.router.get('/:id', this.authController.getUserController);
   }
 
   getRouter(): Router {

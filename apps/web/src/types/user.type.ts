@@ -29,4 +29,5 @@ export interface IFormUser {
   email: string;
   password: string;
   profilePic?: File[];
+  newPassword?: string|null;
 }

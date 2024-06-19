@@ -6,7 +6,7 @@ const AboutUs = () => {
   return (
     <>
       <div className=" bg-[#ECE5C7] py-6 w-full ">
-        <div className="container flex flex-col gap-4">
+        <div className="px-6 flex flex-col gap-4">
           <p className="text-main_green font-bold text-left md:text-3xl">
             Why Kucekin?
           </p>

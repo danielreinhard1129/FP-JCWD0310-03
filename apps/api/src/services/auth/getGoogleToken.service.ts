@@ -23,13 +23,10 @@ export const getGoogleTokenService = async (code: string) => {
 
     const decode = jwtDecode(idToken as string) as LoginGoogleArgs;
 
-    console.log('INI DECODE', decode);
-
     const existingUser = await prisma.user.findFirst({
       where: { email: decode.email },
     });
 
-    //    // Jika user ada dan memiliki profile picture dari googleusercontent, izinkan login
     if (
       existingUser &&
       existingUser.profilePic &&
@@ -46,7 +43,6 @@ export const getGoogleTokenService = async (code: string) => {
       };
     }
 
-    // Jika user ada tetapi profile picture bukan dari googleusercontent, beri error
     if (
       existingUser &&
       existingUser.profilePic &&
@@ -55,7 +51,6 @@ export const getGoogleTokenService = async (code: string) => {
       throw new Error('Please login using email');
     }
 
-    // Jika user tidak ada di database, buat user baru
     const newUser = await prisma.user.create({
       data: {
         email: decode.email,

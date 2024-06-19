@@ -27,8 +27,4 @@ export const ValidationSchema = z.object({
       message:
         'Password must contain at least one uppercase letter and one special character.',
     }),
-  profilePic: z
-    .array(z.any())
-    .min(1, { message: 'You must upload at least one image' })
-    .max(5, { message: 'You can only upload up to 5 images' }),
 });

@@ -14,10 +14,6 @@ interface ResendVerifEmailResponse {
   data: User;
 }
 
-// interface ResendVerifEmailArgs extends Pick<User, 'id'> {
-//   id: number;
-// }
-
 const useResendVerifEmail = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();

@@ -8,7 +8,7 @@ import timerIcon from '../../../public/005-timing.png';
 const OurAdventages = () => {
   return (
     <>
-      <div className="container">
+      <div className="px-6">
         <div className="grid grid-cols-4 gap-4 mt-6 ">
           <div className="w-20 h-20  p-4  bg-mythemes-secondarygreen rounded-full md:place-content-center">
             <Image

@@ -23,7 +23,7 @@ const useGetEmployee = (id: number) => {
       setIsLoading(false);
     }
   };
-
+ 
   useEffect(() => {
     getEmployee();
   }, []);
