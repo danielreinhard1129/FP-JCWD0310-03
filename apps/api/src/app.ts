@@ -1,15 +1,25 @@
+import cors from 'cors';
 import express, {
-  json,
-  urlencoded,
   Express,
+  NextFunction,
   Request,
   Response,
-  NextFunction,
-  Router,
+  json,
+  urlencoded,
+  static as static_,
 } from 'express';
-import cors from 'cors';
 import { PORT } from './config';
-import { SampleRouter } from './routers/sample.router';
+import { join } from 'path';
+import { EmployeeRouter } from './routers/employee.router';
+import { OutletRouter } from './routers/outlet.router';
+import { PickupOrderRouter } from './routers/pickupOrder.router';
+import { OrderRouter } from './routers/order.router';
+import { LaundryItemRouter } from './routers/laundryItem.router';
+import { AuthRouter } from './routers/auth.router';
+import { DeliveryOrderRouter } from './routers/deliveryOrder.router';
+import { UserRouter } from './routers/user.router';
+import { OrderWorkerRouter } from './routers/orderWorker.router';
+import { OrderItemRouter } from './routers/orderItem.router';
 
 export default class App {
   private app: Express;
@@ -25,6 +35,7 @@ export default class App {
     this.app.use(cors());
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
+    this.app.use('/api/assets', static_(join(__dirname, '../public')));
   }
 
   private handleError(): void {
@@ -51,13 +62,31 @@ export default class App {
   }
 
   private routes(): void {
-    const sampleRouter = new SampleRouter();
+    const employeeRouter = new EmployeeRouter();
+    const outletRouter = new OutletRouter();
+    const pickupOrderRouter = new PickupOrderRouter();
+    const orderRouter = new OrderRouter();
+    const laundryItemRouter = new LaundryItemRouter();
+    const authRouter = new AuthRouter();
+    const deliveryOrderRouter = new DeliveryOrderRouter()
+    const userRouter = new UserRouter();
+    const orderWorkerRouter = new OrderWorkerRouter();
+    const orderItemRouter = new OrderItemRouter();
 
-    this.app.get('/', (req: Request, res: Response) => {
+    this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
     });
 
-    this.app.use('/samples', sampleRouter.getRouter());
+    this.app.use('/api/employees', employeeRouter.getRouter());
+    this.app.use('/api/outlets', outletRouter.getRouter());
+    this.app.use('/api/pickup-orders', pickupOrderRouter.getRouter());
+    this.app.use('/api/orders', orderRouter.getRouter());
+    this.app.use('/api/laundry-items', laundryItemRouter.getRouter());
+    this.app.use('/api/auth', authRouter.getRouter());
+    this.app.use('/api/delivery-orders', deliveryOrderRouter.getRouter());
+    this.app.use('/api/user', userRouter.getRouter());
+    this.app.use('/api/order-workers', orderWorkerRouter.getRouter());
+    this.app.use('/api/order-items', orderItemRouter.getRouter());
   }
 
   public start(): void {
