@@ -7,7 +7,7 @@ import WashingCard from '../../components/WashingCard';
 import { EmployeeStation } from '@/types/employee.type';
 
 
-const WashingOngoing = () => {
+const IroningHistory = () => {
   const [page, setPage] = useState<number>(1);  
   // const { id } = useAppSelector((state) => state.user);
   const id = 3;
@@ -15,9 +15,8 @@ const WashingOngoing = () => {
     id: id,
     page,
     take: 10,
-    isComplete: Number(Boolean(false)),
-    // isBypassRejected: Number(Boolean(false)),
-    station: String(EmployeeStation.WASHING)
+    isComplete: Number(Boolean(true)),
+    station: String(EmployeeStation.IRONING)
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -34,23 +33,23 @@ const WashingOngoing = () => {
               key={index}
               workerId={id}
               orderId={orderWorker.orderId}
-              targetStatus={OrderStatus.Laundry_Finished_Washing}
+              targetStatus={OrderStatus.Laundry_Being_Ironed}
               referenceNumber={orderWorker.order.orderNumber}
               fullName={orderWorker.order.pickupOrder.user.fullName}
               email={orderWorker.order.pickupOrder.user.email}
               refetch={refetch}
-              buttonLabel="Finish"
-              isHistory={false}
+              buttonLabel="Complete"
+              isHistory={true}
               weight={orderWorker.order.weight}
               isItemChecking={false}
-              isBypassRequest={orderWorker.bypassRequest}
-              isBypassAccepted={orderWorker.bypassAccepted}
+              isBypassRequest={false}
+              isBypassAccepted={false}
               isBypassRejected={orderWorker.bypassRejected}
             />
           )
         })}
 
-        <div className='flex justify-center bg-mythemes-secondarygreen content-center rounded-xl mb-2'>
+        <div className='flex justify-center bg-green-200 content-center rounded-xl mb-2'>
           <Pagination
             total={meta?.total || 0}
             take={meta?.take || 0}
@@ -62,4 +61,4 @@ const WashingOngoing = () => {
   )
 }
 
-export default WashingOngoing
+export default IroningHistory

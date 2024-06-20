@@ -4,12 +4,13 @@ import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
-import { OrderWorker } from '@/types/orderWorkers.type';
+import { OrderWorker } from '@/types/orderWorker.type';
 
 interface IGetOrderWorkersQuery extends IPaginationQueries {
   id: number;
-  station: string;
-  isComplete: number; 
+  station?: string;
+  isComplete?: number;
+  bypassRequest?: number;
 }
 
 const useGetOrderWorkers = (queries: IGetOrderWorkersQuery) => {
@@ -23,6 +24,7 @@ const useGetOrderWorkers = (queries: IGetOrderWorkersQuery) => {
       const { data } = await axiosInstance.get('/order-workers', {
         params: queries,
       })
+      
       setData(data.data)
       setMeta(data.meta)
     } catch (error) {

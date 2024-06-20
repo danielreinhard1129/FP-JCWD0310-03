@@ -22,8 +22,8 @@ const DeliveryNavbar = () => {
           <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/delivery/request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/delivery/request"} >
           <h2 >Request</h2>
           </Link>
-          <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/delivery/pickup') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/delivery/pickup"}>
-          <h2>Pickup</h2>
+          <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/delivery/collect') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/delivery/collect"}>
+          <h2>Collect</h2>
           </Link>
           <Link  className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/delivery/deliver') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/delivery/deliver"}>
           <h2>Deliver</h2>

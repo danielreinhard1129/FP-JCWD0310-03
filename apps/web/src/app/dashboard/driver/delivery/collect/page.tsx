@@ -34,7 +34,7 @@ const DeliveryOrderPickup = () => {
               fullName={deliveryOrder.user.fullName}
               email={deliveryOrder.user.email}
               refetch={refetch}
-              buttonLabel="Picked Up"
+              buttonLabel="Collected"
               isHistory={false}
               shipmentType='delivery'
             />

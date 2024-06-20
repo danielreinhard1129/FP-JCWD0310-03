@@ -1,5 +1,4 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
 import { PickupOrder } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
@@ -13,6 +12,7 @@ const useGetPickupOrder = (id: number) => {
   const getPickupOrder = async () => {
     try {
       const { data } = await axiosInstance.get<PickupOrder>(`/pickup-orders/${id}`);
+      
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {
