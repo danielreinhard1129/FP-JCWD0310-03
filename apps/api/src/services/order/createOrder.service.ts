@@ -2,7 +2,6 @@
 import prisma from '@/prisma';
 import { Order } from '@prisma/client';
 
-// 
 
 interface CreateOrderBody
     extends Pick<Order, 'weight'> {

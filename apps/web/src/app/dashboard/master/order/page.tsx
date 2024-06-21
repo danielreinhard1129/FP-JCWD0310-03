@@ -9,16 +9,21 @@ import TableOrder from './components/TableOrder'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import ItemFilterOutlet from './components/ItemFilterOutlet'
 import ItemFilterStatus from './components/ItemFilterStatus'
+import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers'
+import { EmployeeStation } from '@/types/employee.type'
+import TableBypassRequest from './components/TableBypaassRequest'
 
 const MenuOrder = () => {
   const [page, setPage] = useState<number>(1);
+  const [pageBypass, setPageBypass] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
+  const id = 1
   const [filterOutlet, setFilterOutlet] = useState("all")
   const [filterStatus, setFilterStatus] = useState("all")
   const [sortOrder, setSortOrder] = useState('asc')
 
   const { data: orders, meta, refetch } = useGetOrders({
-    id: 1,
+    id: id,
     page,
     take: 10,
     filterOutlet,
@@ -26,8 +31,18 @@ const MenuOrder = () => {
     sortOrder,
   });
 
+  const { data: orderWorkers, meta: metaBypass, refetch: refetchBypass } = useGetOrderWorkers({
+    id: id,
+    page,
+    take: 10,
+    bypassRequest: Number(Boolean(true)),
+  });
+
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
+  };
+  const handleChangePaginateBypass = ({ selected }: { selected: number }) => {
+    setPageBypass(selected + 1);
   };
 
   const handleChangeFilterOutlet = (value: string) => {
@@ -36,7 +51,7 @@ const MenuOrder = () => {
   const handleChangeFilterStatus = (value: string) => {
     setFilterStatus(value)
   }
-  const handleChangeSortingBy = (value: 'asc'|'desc') => {
+  const handleChangeSortingBy = (value: 'asc' | 'desc') => {
     setSortOrder(value)
   }
 
@@ -110,6 +125,45 @@ const MenuOrder = () => {
           total={meta?.total || 0}
           take={meta?.take || 0}
           onChangePage={handleChangePaginate}
+        />
+      </div>
+      <div>
+        <h1 className='font-bold text-lg'>Bypass Request</h1>
+      </div>
+      <div>
+        <Table className='text-xs bg-mythemes-secondarygreen/40 rounded-xl text-stone-800'>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order Number</TableHead>
+              <TableHead>Weight</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Outlet</TableHead>
+              <TableHead>Station</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orderWorkers?.map((orderWorker, index) => {
+              return (
+                <TableBypassRequest
+                  key={index}
+                  orderWorkerId={orderWorker.id}
+                  isAccept={orderWorker.bypassAccepted}
+                  isReject={orderWorker.bypassRejected}
+                  orderNumber={orderWorker.order.orderNumber}
+                  weight={String(orderWorker.order.weight)}
+                  price={String(orderWorker.order.laundryPrice)}
+                  outlet={String(orderWorker.order.pickupOrder.outlet.outletName)}
+                  station={String(orderWorker.station)}
+                  refetch={refetchBypass}
+                />
+              );
+            })}
+          </TableBody>
+        </Table>
+        <Pagination
+          total={metaBypass?.total || 0}
+          take={metaBypass?.take || 0}
+          onChangePage={handleChangePaginateBypass}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 'use client'
 import Pagination from '@/components/Pagination';
-import useGetOrderWorkers from '@/hooks/api/orderWorkers/useGetOrderWorkers';
+import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
@@ -16,6 +16,7 @@ const WashingHistory = () => {
     page,
     take: 10,
     isComplete: Number(Boolean(true)),
+    // isBypassRejected: Number(Boolean(true)),
     station: String(EmployeeStation.WASHING)
   });
 
@@ -42,11 +43,14 @@ const WashingHistory = () => {
               isHistory={true}
               weight={orderWorker.order.weight}
               isItemChecking={false}
+              isBypassRequest={false}
+              isBypassAccepted={false}
+              isBypassRejected={orderWorker.bypassRejected}
             />
           )
         })}
 
-        <div className='flex justify-center bg-mythemes-dimgrey content-center rounded-xl mb-2'>
+        <div className='flex justify-center bg-green-200 content-center rounded-xl mb-2'>
           <Pagination
             total={meta?.total || 0}
             take={meta?.take || 0}

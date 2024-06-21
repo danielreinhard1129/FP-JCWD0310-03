@@ -74,8 +74,8 @@ const ShipmentCard: FC<ShipmentCardProps> = ({
         </>
       ) : (
         <>
-        <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-dimgrey'></div>
-        <div className='absolute right-3 bottom-3 bg-mythemes-dimgrey font-bold text-white p-0.5 w-1/4 text-sm text-center rounded-md'>{buttonLabel}</div>
+        <div className='absolute top-0 left-0 h-full w-2 bg-green-200'></div>
+        <div className='absolute right-3 bottom-3 bg-green-600 font-bold text-white p-0.5 w-1/4 text-sm text-center rounded-md'>{buttonLabel}</div>
         </>
       )}
     </div>

@@ -5,13 +5,13 @@ import { PickupStatus } from '@/types/pickupOrder.type';
 import { useState } from 'react';
 import ShipmentCard from '../../components/CardShipment';
 
-const PickupOrderPickup = () => {
+const PickupOrderDeliver = () => {
   const [page, setPage] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
   const id = 4;
   const { data: pickupOrders, meta: meta, refetch: refetch } = useGetPickupOrders({
     id: id,
-    pickupStatus: String(PickupStatus.On_The_Way_to_Client),
+    pickupStatus: String(PickupStatus.On_The_Way_to_Outlet),
     page: page,
     take: 10,
   });
@@ -29,7 +29,7 @@ const PickupOrderPickup = () => {
               key={index}
               driverId={id}
               shipmentOrderId={pickupOrder.id}
-              status={PickupStatus.On_The_Way_to_Outlet}
+              status={PickupStatus.Received_by_Outlet}
               referenceNumber={pickupOrder.pickupNumber}
               fullName={pickupOrder.user.fullName}
               email={pickupOrder.user.email}
@@ -52,4 +52,4 @@ const PickupOrderPickup = () => {
   )
 }
 
-export default PickupOrderPickup
+export default PickupOrderDeliver

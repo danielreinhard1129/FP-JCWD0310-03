@@ -14,6 +14,8 @@ export class OrderWorkerRouter {
 
   private initializeRoutes(): void {
     this.router.get('/', this.orderWorkerController.getOrderWorkersController);
+    this.router.patch('/', this.orderWorkerController.updateOrderWorkerController);
+    this.router.post('/', this.orderWorkerController.createOrderWorkerController);
   }
 
   getRouter(): Router {

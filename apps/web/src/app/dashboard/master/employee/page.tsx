@@ -22,7 +22,7 @@ const MenuEmployee = () => {
   };
 
   return (
-    <div className='flex flex-col gap-5 p-6'>
+    <div className='container flex flex-col gap-5 pt-6 px-6'>
       <div className='flex justify-between my-auto'>
         <div>
           <h1 className='font-bold text-xl'>Your Employees</h1>

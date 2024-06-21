@@ -6,7 +6,7 @@ import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 
 
-const WashingRequest = () => {
+const IroningRequest = () => {
   const [page, setPage] = useState<number>(1);
   
   // const { id } = useAppSelector((state) => state.user);
@@ -15,7 +15,7 @@ const WashingRequest = () => {
     id: id,
     page,
     take: 10,
-    filterStatus: String(OrderStatus.Laundry_Has_Arrived_At_Outlet)
+    filterStatus: String(OrderStatus.Laundry_Finished_Washing)
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -32,7 +32,7 @@ const WashingRequest = () => {
               key={index}
               workerId={id}
               orderId={order.id}
-              targetStatus={OrderStatus.Laundry_Being_Washed}
+              targetStatus={OrderStatus.Laundry_Being_Ironed}
               referenceNumber={order.orderNumber}
               fullName={order.pickupOrder?.user?.fullName}
               email={order.pickupOrder?.user?.email}
@@ -60,4 +60,4 @@ const WashingRequest = () => {
   )
 }
 
-export default WashingRequest
+export default IroningRequest
