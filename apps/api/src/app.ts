@@ -74,7 +74,7 @@ export default class App {
     const orderItemRouter = new OrderItemRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
-      res.send(`Hello, Purwadhika Student !`);
+      res.send(`Hello, Purwadhika Student ! ${PORT}`);
     });
 
     this.app.use('/api/employees', employeeRouter.getRouter());
