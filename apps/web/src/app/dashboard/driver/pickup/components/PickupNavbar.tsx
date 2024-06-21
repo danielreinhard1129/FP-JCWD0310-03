@@ -22,11 +22,11 @@ const PickupNavbar = () => {
         <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/pickup/request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/pickup/request"} >
           <h2 >Request</h2>
         </Link>
+        <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/pickup/collect') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/pickup/collect"}>
+          <h2>Collect</h2>
+        </Link>
         <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/pickup/pickup') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/pickup/pickup"}>
           <h2>Pickup</h2>
-        </Link>
-        <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/pickup/deliver') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/pickup/deliver"}>
-          <h2>Deliver</h2>
         </Link>
         <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/pickup/history') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/pickup/history"}>
           <h2>History</h2>

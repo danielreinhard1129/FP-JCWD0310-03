@@ -41,6 +41,9 @@ const WashingRequest = () => {
               isHistory={false}
               weight={order.weight}
               isItemChecking={true}
+              isBypassRequest={false}
+              isBypassAccepted={false}
+              isBypassRejected={false}
             />
           )
         })}

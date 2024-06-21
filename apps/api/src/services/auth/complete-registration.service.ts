@@ -34,11 +34,11 @@ export const completeRegistrationService = async (
       });
 
       const token = sign({ id: user.id }, appConfig.jwtSecretKey, {
-        expiresIn: '1m',
+        expiresIn: '1h',
       });
 
       let userToken = token;
-      const expiresIn = new Date(new Date().getTime() + 1 * 1000);
+      const expiresIn = new Date(new Date().getTime() + 1 * 60 * 60 * 1000);
 
       await tx.user.update({
         where: { id: user.id },

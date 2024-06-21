@@ -30,7 +30,7 @@ export const Header = () => {
 
   return (
     <>
-      <div className=" fixed left-0 w-full bg-white z-50 top-0">
+      <div className="w-full bg-white z-50 top-0">
         <div className="container mx-auto h-12 px-6 py-2 items-center flex justify-between">
           <div className="w-28 ">
             <Image

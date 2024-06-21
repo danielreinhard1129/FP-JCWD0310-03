@@ -54,10 +54,6 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
 
         const count = await prisma.order.count({ where: whereClause });
 
-        // if (!orders) {
-        //     throw new Error('User not Found!')
-        // }
-
         return {
             data: orders,
             meta: { page, take, total: count }

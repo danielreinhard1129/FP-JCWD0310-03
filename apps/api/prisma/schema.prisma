@@ -68,18 +68,18 @@ enum EmployeeStation {
 }
 
 model Address {
-  id        Int     @id @default(autoincrement())
-  address   String
-  city      String
-  isPrimary Boolean @default(true)
-  latitude  String
-  longitude String
-  isDelete  Boolean @default(false)
-  outletId  Int
-  userId    Int
+  id          Int     @id @default(autoincrement())
+  addressLine String
+  city        String
+  isPrimary   Boolean @default(true)
+  latitude    String?
+  longitude   String?
+  isDelete    Boolean @default(false)
+  outletId    Int?
+  userId      Int?
 
-  outlet Outlet @relation(fields: [outletId], references: [id])
-  user   User   @relation(fields: [userId], references: [id])
+  outlet Outlet? @relation(fields: [outletId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
 
   @@map("addresses")
 }
@@ -88,7 +88,9 @@ model Outlet {
   id          Int           @id @default(autoincrement())
   outletName  String
   outletType  OutletType
+  outletImage String?
   createdAt   DateTime      @default(now())
+  deletedAt   DateTime?
   updatedAt   DateTime      @updatedAt
   isDelete    Boolean       @default(false)
   employee    Employee[]
@@ -210,11 +212,14 @@ enum DeliveryStatus {
 }
 
 model OrderWorker {
-  id       Int              @id @default(autoincrement())
-  orderId  Int
-  workerId Int
-  station  EmployeeStation?
-  isComplete Boolean @default(false)
+  id             Int              @id @default(autoincrement())
+  orderId        Int
+  workerId       Int
+  station        EmployeeStation?
+  isComplete     Boolean          @default(false)
+  bypassRequest  Boolean          @default(false)
+  bypassAccepted Boolean          @default(false)
+  bypassRejected Boolean          @default(false)
 
   order  Order    @relation(fields: [orderId], references: [id])
   worker Employee @relation(fields: [workerId], references: [id])

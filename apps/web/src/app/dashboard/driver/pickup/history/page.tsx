@@ -40,7 +40,7 @@ const PickupOrderHistory = () => {
             />
           )
         })}
-        <div className='flex justify-center bg-mythemes-dimgrey content-center rounded-xl mb-2'>  
+        <div className='flex justify-center bg-green-200 content-center rounded-xl mb-2'>  
             <Pagination
               total={meta?.total || 0}
               take={meta?.take || 0}

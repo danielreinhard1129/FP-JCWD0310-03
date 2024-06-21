@@ -1,5 +1,5 @@
-import { Address } from "./address.type";
-import { Employee } from "./employee.type";
+import { Address } from './address.type';
+import { Employee } from './employee.type';
 
 export enum OutletType {
   MAIN = 'MAIN',
@@ -7,12 +7,23 @@ export enum OutletType {
 }
 
 export interface Outlet {
-    id: number;
-    outletName: string;
-    outletType: OutletType;
-    createdAt: Date;
-    updatedAt: Date;
-    isDelete: boolean;
-    Employee?: Employee;
-    Address?: Address;
-  }
+  id: number;
+  outletName: string;
+  outletType: OutletType;
+  outletImage: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isDelete: boolean;
+  Employee?: Employee;
+  address: Address[];
+}
+
+export interface IFormOutlet {
+  outletName: string;
+  outletType: OutletType;
+  outletImage: File[];
+  address: {
+    addressLine: string;
+    city: string;
+  };
+}
