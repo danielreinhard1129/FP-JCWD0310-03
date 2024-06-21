@@ -77,7 +77,9 @@ const Profile = ({ params }: { params: { id: string } }) => {
                 user?.profilePic
                   ? user.profilePic.includes('googleusercontent.com')
                     ? user.profilePic
-                    : `${BASE_API_URL}/assets/${user.profilePic}`
+
+                    : `${BASE_API_URL}/assets${user.profilePic}`
+
                   : noPic.src // Path to your default image
               }
               quality={80}
