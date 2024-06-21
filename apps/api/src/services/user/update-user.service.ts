@@ -51,11 +51,11 @@ export const updateUserService = async (
       }
 
       const token = sign({ id: user.id }, appConfig.jwtSecretKey, {
-        expiresIn: '1m',
+        expiresIn: '1h',
       });
 
       let userToken = token;
-      const expiresIn = new Date(new Date().getTime() + 1 * 1000);
+      const expiresIn = new Date(new Date().getTime() + 1 * 60 * 60 * 1000);
 
       body.isVerify = false;
       body.token = userToken;
@@ -87,6 +87,9 @@ export const updateUserService = async (
         profilePic: body.profilePic,
         email: body.email,
         fullName: body.fullName,
+        isVerify: body.isVerify,
+        token: body.token,
+        tokenExpiresIn: body.tokenExpiresIn,
       },
     });
 

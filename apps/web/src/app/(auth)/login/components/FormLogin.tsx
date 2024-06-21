@@ -1,22 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import FormInput from '@/components/FormInput';
 import useLogin from '@/hooks/api/auth/useLogin';
 import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { ValidationSchema } from '../validationSchema';
-import useImplicitFlow from './useImplicitFlow';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { appConfig } from '@/utils/config';
+import { z } from 'zod';
+import { ValidationSchema } from '../validationSchema';
 
 export function FromLogin() {
   const router = useRouter();

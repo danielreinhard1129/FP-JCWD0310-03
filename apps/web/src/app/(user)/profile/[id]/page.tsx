@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 import AuthGuard from '@/hoc/AuthGuard';
 import useResendVerifEmail from '@/hooks/api/auth/useResendVerifEmail';
 import useGetUser from '@/hooks/api/user/useGetUser';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import { logoutAction } from '@/redux/slices/userSlice';
-import { appConfig } from '@/utils/config';
+import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
 import { ChevronLeft, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -15,6 +15,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../../public/pictNotFound.jpeg';
+import useVerification from '@/hooks/api/auth/useVerification';
 
 const Profile = ({ params }: { params: { id: string } }) => {
   const dispatch = useAppDispatch();
@@ -24,13 +25,13 @@ const Profile = ({ params }: { params: { id: string } }) => {
   };
 
   const [selectedImage, setSelectedImage] = useState<HTMLInputElement>();
+  const { user, isLoading } = useGetUser(Number(params.id));
 
   const inputRef = useRef();
   const { resendVerifEmail } = useResendVerifEmail();
+  const { verification } = useVerification();
 
   const router = useRouter();
-
-  const { user, isLoading } = useGetUser(Number(params.id));
 
   let tokenExpiryDate;
 
@@ -75,7 +76,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                 user?.profilePic
                   ? user.profilePic.includes('googleusercontent.com')
                     ? user.profilePic
-                    : `${appConfig.baseURL}/assets/${user.profilePic}`
+                    : `${NEXT_PUBLIC_BASE_API_URL}/assets/${user.profilePic}`
                   : noPic.src // Path to your default image
               }
               quality={80}
@@ -128,6 +129,9 @@ const Profile = ({ params }: { params: { id: string } }) => {
                     <span
                       className="underline hover:text-red-800 cursor-pointer"
                       onClick={() => router.push('/verification')}
+                      // onClick={() => {
+                      //   verification((params.id));
+                      // }} 
                     >
                       Click here
                     </span>{' '}

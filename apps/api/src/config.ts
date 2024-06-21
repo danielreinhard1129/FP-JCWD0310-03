@@ -16,3 +16,4 @@ export const NEXT_BASE_URL = process.env.NEXT_BASE_URL;
 export const GMAIL_EMAIL = process.env.GMAIL_EMAIL;
 export const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
 
+ 

@@ -1,7 +1,7 @@
+import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
 import axios, { AxiosInstance } from 'axios';
-import { appConfig } from '@/utils/config';
 
-const { baseURL } = appConfig;
+const baseURL = NEXT_PUBLIC_BASE_API_URL;
 
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL,

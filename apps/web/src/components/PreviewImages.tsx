@@ -1,10 +1,10 @@
 'use client';
 
+import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
+import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { FC, useMemo } from 'react';
 import { Button } from './ui/button';
-import { Trash2 } from 'lucide-react';
-import { appConfig } from '@/utils/config';
 
 interface PreviewImagesProps {
   fileImages?: File[];
@@ -33,7 +33,7 @@ const PreviewImages: FC<PreviewImagesProps> = ({
             className="relative h-[200px] w-[300px] rounded-md border"
           >
             <Image
-              src={images ? `${appConfig.baseURL}/${image}` : image}
+              src={images ? `${NEXT_PUBLIC_BASE_API_URL}/${image}` : image}
               alt="thumbnail"
               objectFit="contain"
               fill
