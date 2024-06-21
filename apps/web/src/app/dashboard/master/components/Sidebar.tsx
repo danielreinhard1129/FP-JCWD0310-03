@@ -1,72 +1,44 @@
-import { BarChartBig, Store, Users, WashingMachine } from 'lucide-react';
+'use client'
+import Link from 'next/link'
+import React from 'react'
+import logo from '../../../../../public/Kucekin_K_White_Logo.png'
 import Image from 'next/image';
-import Link from 'next/link';
-import poto from '../../../../../public/profile.jpg';
-import { Separator } from '@/components/ui/separator';
+import { usePathname, useRouter } from 'next/navigation';
+import { BookUser, ClipboardList, FileBarChart2, Store } from 'lucide-react';
 
 const Sidebar = () => {
-  return (
-    <div className="flex flex-col gap-8  text-center text-white">
-      <div className="rounded-b-[60px] bg-mythemes-grey px-6 py-4 flex flex-col">
-        <div className="w-28 h-28 mb-4 rounded-full border-4 border-mythemes-maingreen my-auto justify-center relative overflow-hidden mx-auto ">
-          <Image
-            alt="ProfilePict"
-            src={poto}
-            quality={80}
-            objectFit="cover"
-            fill
-            loading="lazy"
-            className="mx-auto"
-          />
+    const pathname = usePathname()
+    const isActive = (path: string) => pathname.startsWith(path);
+    return (
+        <div className="flex flex-col gap-10 text-center text-white">
+            <Link className='w-12 mx-auto mt-10' href={"/dashboard/master"}>
+                <Image
+                    alt="Kucek.logo."
+                    src={logo}
+                    className="cursor-pointer"
+                    objectFit="contain"
+                />
+            </Link>
+            <div className='flex flex-col text-md font-medium'>
+                <Link className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/employee') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/employee"}>
+                <BookUser className='my-auto w-5 h-5'/>
+                    <h2 className='my-auto'>Employees</h2>
+                </Link>
+                <Link className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/order') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/order"}>
+                <ClipboardList className='my-auto w-5 h-5'/>
+                    <h2 className='my-auto'>Orders</h2>
+                </Link>
+                <Link className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/outlet') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/outlet"}>
+                <Store className='my-auto w-5 h-5'/>
+                    <h2 className='my-auto'>Outlets</h2>
+                </Link>
+                <Link className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/overview') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/overview"}>
+                <FileBarChart2 className='my-auto w-5 h-5'/>
+                    <h2 className='my-auto'>Overview</h2>
+                </Link>
+            </div>
         </div>
-        <h1 className=" font-bold text-center text-xl text-black">
-          Christoper Handoyo
-        </h1>
-        <p className="text-black font-bold text-sm">Super Admin</p>
-      </div>
-      {/* <Link href={'/dashboard/master'}>
-        <h1 className="text-3xl font-bold">MENU</h1>
-      </Link> */}
-      <div className="flex flex-col gap-11 px-6 text-left text-xl font-bold">
-        <Link
-          href={'/dashboard/master/employee'}
-          className=" h-11 rounded-full place-content-center px-2 hover:bg-white hover:text-mythemes-maingreen  transition-all duration-200"
-        >
-          <h2 className="flex gap-4 hover:translate-x-10 transition-all duration-300">
-            <Users />
-            Employees
-          </h2>
-        </Link>
-        <Link
-          href={'/dashboard/master/order'}
-          className=" h-11 rounded-full place-content-center px-2 hover:bg-white hover:text-mythemes-maingreen  transition-all duration-200"
-        >
-          <h2 className="flex gap-4 hover:translate-x-10 transition-all duration-300">
-            <WashingMachine />
-            Orders
-          </h2>
-        </Link>
-        <Link
-          href={'/dashboard/master/outlet'}
-          className=" h-11 rounded-full place-content-center px-2 hover:bg-white hover:text-mythemes-maingreen  transition-all duration-200"
-        >
-          <h2 className="flex gap-4 hover:translate-x-10 transition-all duration-300">
-            <Store />
-            Outlets
-          </h2>
-        </Link>
-        <Link
-          href={'/dashboard/master'}
-          className=" h-11 rounded-full place-content-center px-2 hover:bg-white hover:text-mythemes-maingreen  transition-all duration-200"
-        >
-          <h2 className="flex gap-4 hover:translate-x-10 transition-all duration-300">
-            <BarChartBig />
-            Report
-          </h2>
-        </Link>
-      </div>
-    </div>
-  );
-};
+    )
+}
 
 export default Sidebar;

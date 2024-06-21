@@ -1,21 +1,22 @@
 'use client'
 import Pagination from '@/components/Pagination';
-import useGetOrders from '@/hooks/api/order/useGetOrders';
+import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
+import { EmployeeStation } from '@/types/employee.type';
 
 
-const WashingRequest = () => {
-  const [page, setPage] = useState<number>(1);
-  
+const PackingOngoing = () => {
+  const [page, setPage] = useState<number>(1);  
   // const { id } = useAppSelector((state) => state.user);
   const id = 3;
-  const { data: orders, meta, refetch } = useGetOrders({
+  const { data: orderWorkers, meta, refetch } = useGetOrderWorkers({
     id: id,
     page,
     take: 10,
-    filterStatus: String(OrderStatus.Laundry_Has_Arrived_At_Outlet)
+    isComplete: Number(Boolean(false)),
+    station: String(EmployeeStation.PACKING)
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -26,24 +27,24 @@ const WashingRequest = () => {
   return (
     <div className='min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6'>
       <div className='flex flex-col gap-3'>
-      {orders.map((order, index) => {
+      {orderWorkers.map((orderWorker, index) => {
           return (
             <WashingCard
               key={index}
               workerId={id}
-              orderId={order.id}
-              targetStatus={OrderStatus.Laundry_Being_Washed}
-              referenceNumber={order.orderNumber}
-              fullName={order.pickupOrder?.user?.fullName}
-              email={order.pickupOrder?.user?.email}
+              orderId={orderWorker.orderId}
+              targetStatus={OrderStatus.Laundry_Finished_Packing}
+              referenceNumber={orderWorker.order.orderNumber}
+              fullName={orderWorker.order.pickupOrder.user.fullName}
+              email={orderWorker.order.pickupOrder.user.email}
               refetch={refetch}
-              buttonLabel="Claim"
+              buttonLabel="Finish"
               isHistory={false}
-              weight={order.weight}
-              isItemChecking={true}
-              isBypassRequest={false}
-              isBypassAccepted={false}
-              isBypassRejected={false}
+              weight={orderWorker.order.weight}
+              isItemChecking={false}
+              isBypassRequest={orderWorker.bypassRequest}
+              isBypassAccepted={orderWorker.bypassAccepted}
+              isBypassRejected={orderWorker.bypassRejected}
             />
           )
         })}
@@ -60,4 +61,4 @@ const WashingRequest = () => {
   )
 }
 
-export default WashingRequest
+export default PackingOngoing

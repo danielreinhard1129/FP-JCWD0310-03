@@ -15,7 +15,6 @@ export class OrderRouter {
 
   private initializeRoutes(): void {
     this.router.get('/', this.orderController.getOrdersController);
-    this.router.get('/pending', this.orderController.getOnPendingOrdersController);
     this.router.post('/', this.orderController.createOrderController);
     this.router.patch('/', this.orderController.updateOrderStatusController);
   }
