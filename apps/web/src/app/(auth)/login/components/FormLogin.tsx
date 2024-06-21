@@ -16,6 +16,7 @@ import { ValidationSchema } from '../validationSchema';
 import useImplicitFlow from './useImplicitFlow';
 import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
+import { appConfig } from '@/utils/config';
 
 export function FromLogin() {
   const router = useRouter();
@@ -60,7 +61,7 @@ export function FromLogin() {
         </Button>
         {/* <div className=''> */}
         <Link
-          href={'http://localhost:3000/forgot-password'}
+          href={`/forgot-password`}
           className="hover:underline hover:text-mythemes-maingreen ml-auto font-light"
         >
           Forgot password?
@@ -84,7 +85,7 @@ export function FromLogin() {
         <div className="mx-auto font-light">
           Don't have account?{' '}
           <Link
-            href={'http://localhost:3000/register'}
+            href={`/register`}
             className="text-main_green hover:underline font-bold hover:text-mythemes-secondarygreen"
           >
             Sign up

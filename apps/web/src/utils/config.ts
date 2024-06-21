@@ -1,5 +1,4 @@
 export const appConfig = {
-    baseURL: 'http://localhost:8000/api',
-    baseUrlNext: 'http://localhost:3000',
-  };
-  
+  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
+  baseUrlNext: process.env.NEXT_PUBLIC_BASE_URL,
+};

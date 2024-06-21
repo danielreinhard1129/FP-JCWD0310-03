@@ -1,21 +1,20 @@
 'use client';
-import useGetUser from '@/hooks/api/user/useGetUser';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useRef, useState } from 'react';
-import { IoIosArrowForward } from 'react-icons/io';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import AuthGuard from '@/hoc/AuthGuard';
 import useResendVerifEmail from '@/hooks/api/auth/useResendVerifEmail';
+import useGetUser from '@/hooks/api/user/useGetUser';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { logoutAction } from '@/redux/slices/userSlice';
 import { appConfig } from '@/utils/config';
 import { ChevronLeft, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { GoXCircleFill } from 'react-icons/go';
+import { IoIosArrowForward } from 'react-icons/io';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
+import { toast } from 'sonner';
 import noPic from '../../../../../public/pictNotFound.jpeg';
-import { logoutAction } from '@/redux/slices/userSlice';
 
 const Profile = ({ params }: { params: { id: string } }) => {
   const dispatch = useAppDispatch();
@@ -31,16 +30,12 @@ const Profile = ({ params }: { params: { id: string } }) => {
 
   const router = useRouter();
 
-  const { tokenExpiresIn, id } = useAppSelector((state) => state.user);
-
-  const isVerify = useAppSelector((state) => state.user.isVerify);
-
   const { user, isLoading } = useGetUser(Number(params.id));
 
   let tokenExpiryDate;
 
-  if (tokenExpiresIn) {
-    tokenExpiryDate = new Date(tokenExpiresIn);
+  if (user?.tokenExpiresIn) {
+    tokenExpiryDate = new Date(user.tokenExpiresIn);
   }
 
   const now = new Date();
@@ -147,14 +142,14 @@ const Profile = ({ params }: { params: { id: string } }) => {
         <div className="w-full flex flex-col gap-4">
           <Button
             className="bg-mythemes-secondarygreen hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
-            onClick={() => router.push(`/profile/${id}/edit`)}
+            onClick={() => router.push(`/profile/${user?.id}/edit`)}
           >
             <p>Edit Profile</p>
             <IoIosArrowForward />
           </Button>
           <Button
             className="bg-mythemes-secondarygreen hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
-            onClick={() => router.push(`/profile/${id}/change-password`)}
+            onClick={() => router.push(`/profile/${user?.id}/change-password`)}
           >
             <p>Change Password</p>
             <IoIosArrowForward />

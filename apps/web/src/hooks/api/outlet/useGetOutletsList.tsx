@@ -19,7 +19,6 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
   const getOutlet = async () => {
     try {
       const { data } = await axiosInstance.get(`/outlets`, { params: queries });
-
       setData(data.data);
       setMeta(data.meta);
     } catch (error) {
@@ -35,7 +34,7 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
   useEffect(() => {
     getOutlet();
   }, [queries.page, queries.search]);
-  return { data, isLoading, refetch: getOutlet };
+  return { data, isLoading, meta, refetch: getOutlet };
 };
 
 export default useGetOutletList;

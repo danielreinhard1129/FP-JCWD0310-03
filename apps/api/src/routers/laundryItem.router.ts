@@ -1,4 +1,3 @@
-
 //import { verifyToken } from '@/lib/jwt';
 import { LaundryItemController } from '@/controllers/laundryItem.controller';
 import { Router } from 'express';
@@ -14,7 +13,26 @@ export class LaundryItemRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', this.laundryItemController.getLaundryItemListController);
+    this.router.post(
+      '/',
+      this.laundryItemController.creaeteLaundryItemController,
+    );
+    this.router.get(
+      '/',
+      this.laundryItemController.getLaundryItemListController,
+    );
+    this.router.get(
+      '/:id',
+      this.laundryItemController.getLaundryItemController,
+    );
+    this.router.patch(
+      '/:id',
+      this.laundryItemController.updateLaundryItemController,
+    );
+    this.router.delete(
+      '/:id',
+      this.laundryItemController.deleteLaundryController,
+    );
   }
 
   getRouter(): Router {

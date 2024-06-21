@@ -1,17 +1,27 @@
-'use client'
+'use client';
 
 import Pagination from '@/components/Pagination';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import useGetEmployees from '@/hooks/api/employee/useGetEmployees';
 import Link from 'next/link';
 import { useState } from 'react';
 import TableEmployees from './components/TableEmployee';
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 
 const MenuEmployee = () => {
-
   const [page, setPage] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
-  const { data: employees, meta, refetch } = useGetEmployees({
+  const {
+    data: employees,
+    meta,
+    refetch,
+  } = useGetEmployees({
     id: 0,
     page,
     take: 5,
@@ -22,20 +32,21 @@ const MenuEmployee = () => {
   };
 
   return (
-    <div className='flex flex-col gap-5 p-6'>
-      <div className='flex justify-between my-auto'>
+    <div className="flex flex-col gap-5 p-6">
+      <div className="flex justify-between my-auto">
         <div>
-          <h1 className='font-bold text-xl'>Your Employees</h1>
+          <h1 className="font-bold text-xl">Your Employees</h1>
         </div>
-        <Link href={"/dashboard/master/employee/add-employee"}>
-          <div className='flex bg-mythemes-maingreen h-full w-40 rounded-lg'>
-            <h1 className='text-white font-medium mx-auto my-auto'>Add Employee</h1>
+        <Link href={'/dashboard/master/employee/add-employee'}>
+          <div className="flex bg-mythemes-maingreen h-full w-40 rounded-lg">
+            <h1 className="text-white font-medium mx-auto my-auto">
+              Add Employee
+            </h1>
           </div>
         </Link>
       </div>
       <div>
-        
-        <Table className='bg-mythemes-secondarygreen rounded-xl'>
+        <Table className="bg-mythemes-secondarygreen rounded-xl">
           <TableHeader>
             <TableRow>
               <TableHead>Full Name</TableHead>
@@ -72,7 +83,7 @@ const MenuEmployee = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MenuEmployee
+export default SuperAdminGuard(MenuEmployee);

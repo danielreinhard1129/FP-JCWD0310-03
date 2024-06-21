@@ -1,19 +1,19 @@
-import prisma from "@/prisma";
-
+import prisma from '@/prisma';
 
 export const getLaundryItemListService = async () => {
   try {
-    
-    const laundryItems = await prisma.laundryItem.findMany();
+    const laundryItems = await prisma.laundryItem.findMany({
+      where: { isDelete: false },
+    });
 
     if (!laundryItems) {
-      throw new Error('Laundry Item not Found!')
+      throw new Error('Laundry Item not Found!');
     }
 
     return {
-      data: laundryItems
+      data: laundryItems,
     };
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};

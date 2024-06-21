@@ -11,8 +11,8 @@ const initialState: Omit<
   email: '',
   role: Role.CUSTOMER,
   isVerify: false,
-  profilePic: '',
-  tokenExpiresIn: new Date(),
+  // profilePic: '',
+  // tokenExpiresIn: new Date(),
 };
 
 export const userSlice = createSlice({
@@ -25,8 +25,8 @@ export const userSlice = createSlice({
       state.email = action.payload.email;
       state.role = action.payload.role;
       state.isVerify = action.payload.isVerify;
-      state.profilePic = action.payload.profilePic;
-      state.tokenExpiresIn = action.payload.tokenExpiresIn;
+      // state.profilePic = action.payload.profilePic;
+      // state.tokenExpiresIn = action.payload.tokenExpiresIn;
     },
     logoutAction: (state) => {
       state.id = 0;
