@@ -1,11 +1,15 @@
-'use client'
+'use client';
 import { SelectContent, SelectItem } from '@/components/ui/select';
 import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
 import React, { useState } from 'react';
 
 const ItemOutlet = () => {
   const [page, setPage] = useState(1);
-  const { data: outlets } = useGetOutletList({ page, take: 1 });
+  const { data: outlets } = useGetOutletList({
+    page,
+    take: 1,
+    search: '',
+  });
   return (
     <SelectContent>
       {outlets.map((outlet, index) => {

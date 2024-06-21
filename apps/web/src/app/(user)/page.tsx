@@ -15,15 +15,19 @@ import { useEffect, useState } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
 import Autocomplete from '@/components/AutoComplete';
+import useGetUser from '@/hooks/api/user/useGetUser';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 
-export default function Home() {
-  const { getLocation, data } = useGetLocationByCoord();
-  const { createAddress } = useCreateAddressByCoord();
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
+const Home = () => {
+  // const { getLocation, data } = useGetLocationByCoord();
+  // const { createAddress } = useCreateAddressByCoord();
+  // const [latitude, setLatitude] = useState('');
+  // const [longitude, setLongitude] = useState('');
+  const { id } = useAppSelector((state) => state.user);
+  const { user } = useGetUser(id);
 
   // useEffect(() => {
-  //   window.navigator.geolocation.getCurrentPosition((position) => {
+  //   navigator.geolocation.getCurrentPosition((position) => {
   //     const lat = String(position.coords.latitude);
   //     const lon = String(position.coords.longitude);
   //     setLatitude(lat);
@@ -42,7 +46,6 @@ export default function Home() {
   //   }
   // }, [data]);
 
-  const { id, profilePic, fullName } = useAppSelector((state) => state.user);
   const router = useRouter();
   return (
     <>
@@ -74,10 +77,10 @@ export default function Home() {
                     <Image
                       alt="ProfilePict"
                       src={
-                        profilePic
-                          ? profilePic.includes('googleusercontent.com')
-                            ? profilePic
-                            : `${appConfig.baseURL}/assets/${profilePic}`
+                        user?.profilePic
+                          ? user.profilePic.includes('googleusercontent.com')
+                            ? user.profilePic
+                            : `${appConfig.baseURL}/assets/${user.profilePic}`
                           : noPic.src // Path to your default image
                       }
                       quality={80}
@@ -87,7 +90,7 @@ export default function Home() {
                       className="mx-auto"
                     />
                   </div>
-                  <p className="font-bold">{fullName}</p>
+                  <p className="font-bold text-center">{user?.fullName}</p>
                 </div>
               )}
             </div>
@@ -124,4 +127,5 @@ export default function Home() {
       {/* <Menu /> */}
     </>
   );
-}
+};
+export default CustomerAuthGuard(Home);
