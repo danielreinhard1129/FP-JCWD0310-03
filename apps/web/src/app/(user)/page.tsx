@@ -9,11 +9,12 @@ import { PromotionCarousel } from '@/components/promotion/PromotionCarousel';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
-import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
+
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
+import { BASE_API_URL } from '@/utils/config';
 
 const Home = () => {
   // const { getLocation, data } = useGetLocationByCoord();
@@ -77,7 +78,7 @@ const Home = () => {
                         user?.profilePic
                           ? user.profilePic.includes('googleusercontent.com')
                             ? user.profilePic
-                            : `${NEXT_PUBLIC_BASE_API_URL}/assets/${user.profilePic}`
+                            : `${BASE_API_URL}/assets/${user.profilePic}`
                           : noPic.src // Path to your default image
                       }
                       quality={80}

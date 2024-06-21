@@ -189,7 +189,7 @@
 import AuthGuard from '@/hoc/AuthGuard';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
-import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
+
 import { getChangedValues } from '@/utils/getChangeValues';
 import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
@@ -197,6 +197,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import noPic from '../../../.././../../public/pictNotFound.jpeg';
 import FormEditUser from './components/FormEditUser';
+import { BASE_API_URL } from '@/utils/config';
 
 interface IFormEditUser {
   email: string;
@@ -280,7 +281,7 @@ const EditProfile = ({ params }: { params: { id: string } }) => {
                   user?.profilePic
                     ? user.profilePic.includes('googleusercontent.com')
                       ? user.profilePic
-                      : `${NEXT_PUBLIC_BASE_API_URL}/assets/${user.profilePic}`
+                      : `${BASE_API_URL}/assets/${user.profilePic}`
                     : noPic.src // Path to your default image
                 }
                 quality={80}
