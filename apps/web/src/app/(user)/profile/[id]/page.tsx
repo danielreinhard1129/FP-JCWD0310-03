@@ -5,7 +5,7 @@ import useResendVerifEmail from '@/hooks/api/auth/useResendVerifEmail';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppDispatch } from '@/redux/hooks';
 import { logoutAction } from '@/redux/slices/userSlice';
-import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
+
 import { ChevronLeft, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,7 @@ import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../../public/pictNotFound.jpeg';
 import useVerification from '@/hooks/api/auth/useVerification';
+import { BASE_API_URL } from '@/utils/config';
 
 const Profile = ({ params }: { params: { id: string } }) => {
   const dispatch = useAppDispatch();
@@ -76,7 +77,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                 user?.profilePic
                   ? user.profilePic.includes('googleusercontent.com')
                     ? user.profilePic
-                    : `${NEXT_PUBLIC_BASE_API_URL}/assets/${user.profilePic}`
+                    : `${BASE_API_URL}/assets/${user.profilePic}`
                   : noPic.src // Path to your default image
               }
               quality={80}
