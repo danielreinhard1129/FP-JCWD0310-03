@@ -1,7 +1,7 @@
 'use client';
 
 import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
-import { appConfig } from '@/utils/config';
+import { NEXT_PUBLIC_BASE_URL } from '@/utils/config';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -65,7 +65,7 @@ const Autocomplete = () => {
       //     },
       //   })}
       onChange={(outlet) => {
-        router.push(appConfig.baseUrlNext + `/${outlet?.value}`);
+        router.push(NEXT_PUBLIC_BASE_URL + `/${outlet?.value}`);
       }}
     />
   );

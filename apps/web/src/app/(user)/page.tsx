@@ -1,22 +1,19 @@
 'use client';
 /* eslint-disable react/no-unescaped-entities */
+import Autocomplete from '@/components/AutoComplete';
 import AboutUs from '@/components/homePage/AboutUs';
 import BrowseOutlet from '@/components/homePage/BrowseOutlet';
 import OurAdventages from '@/components/homePage/OurAdventages';
 import Testimonials from '@/components/homePage/Testimonials';
 import { PromotionCarousel } from '@/components/promotion/PromotionCarousel';
-import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
-import useCreateAddressByCoord from '@/hooks/api/user/useCreateAddressByCoord';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
+import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
-import { appConfig } from '@/utils/config';
+import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
-import Autocomplete from '@/components/AutoComplete';
-import useGetUser from '@/hooks/api/user/useGetUser';
-import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 
 const Home = () => {
   // const { getLocation, data } = useGetLocationByCoord();
@@ -80,7 +77,7 @@ const Home = () => {
                         user?.profilePic
                           ? user.profilePic.includes('googleusercontent.com')
                             ? user.profilePic
-                            : `${appConfig.baseURL}/assets/${user.profilePic}`
+                            : `${NEXT_PUBLIC_BASE_API_URL}/assets/${user.profilePic}`
                           : noPic.src // Path to your default image
                       }
                       quality={80}

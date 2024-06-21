@@ -18,7 +18,7 @@ const useResendVerifEmail = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+ 
   const resendVerifEmail = async () => {
     setIsLoading(true);
     try {
