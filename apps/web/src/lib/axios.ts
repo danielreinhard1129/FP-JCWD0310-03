@@ -1,7 +1,7 @@
-import { NEXT_PUBLIC_BASE_API_URL } from '@/utils/config';
+import { BASE_API_URL } from '@/utils/config';
 import axios, { AxiosInstance } from 'axios';
 
-const baseURL = NEXT_PUBLIC_BASE_API_URL;
+const baseURL = BASE_API_URL;
 
 console.log('base url di FE', baseURL);
 
