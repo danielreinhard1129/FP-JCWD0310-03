@@ -25,7 +25,9 @@ const OutletDetail = () => {
               alt="ProfilePict"
               src={
                 outlet?.outletImage
+
                   ? `${BASE_API_URL}/assets${outlet.outletImage}`
+
                   : image.src // Path to your default image
               }
               quality={80}
