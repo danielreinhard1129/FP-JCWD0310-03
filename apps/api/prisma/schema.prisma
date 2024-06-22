@@ -113,9 +113,9 @@ model PickupOrder {
   pickupPrice    Int
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  isOrderCreated Boolean      @default(false)
   userId         Int
   outletId       Int?
-  isOrderCreated Boolean      @default(false)
   driverId       Int?
 
   user   User      @relation(fields: [userId], references: [id])

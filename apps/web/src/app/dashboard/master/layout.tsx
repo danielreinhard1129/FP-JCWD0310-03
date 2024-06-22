@@ -6,12 +6,12 @@ import Sidebar from "./components/Sidebar";
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <main>
-            <div className="grid grid-cols-6">
-                <div className="sticky top-0 col-span-1 h-screen bg-mythemes-maingreen">
+            <div className="md:grid md:grid-cols-6">
+                <div className="hidden md:block sticky top-0 col-span-1 h-screen bg-mythemes-maingreen">
                     <Sidebar />
                 </div>
-                <div className="col-span-5">
-                    <div className="sticky z-50 top-0">
+                <div className="md: col-span-5">
+                    <div className="md:hidden block sticky z-50 top-0">
                         <Header />
                     </div>
                     <div className="">

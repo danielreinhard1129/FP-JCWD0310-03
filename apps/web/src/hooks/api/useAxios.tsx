@@ -7,8 +7,6 @@ const useAxios = () => {
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('token');
 
-  console.log('base url api di FE : ', axiosInstance);
-
   useEffect(() => {
     const requestIntercept = axiosInstance.interceptors.request.use(
       (config) => {

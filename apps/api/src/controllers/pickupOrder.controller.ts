@@ -10,7 +10,9 @@ export class PickupOrderController {
     try {
       const query = {
         id: parseInt(req.query.id as string), 
-        pickupStatus: req.query.pickupStatus as string || '',  
+        pickupStatus: req.query.pickupStatus as string || 'all',
+        isOrderCreated: parseInt(req.query.isOrderCreated as string),  
+        isClaimedbyDriver: parseInt(req.query.isClaimedbyDriver as string),  
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',

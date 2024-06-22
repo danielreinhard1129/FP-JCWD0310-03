@@ -3,10 +3,6 @@ import axios, { AxiosInstance } from 'axios';
 
 const baseURL = BASE_API_URL;
 
-console.log('base url di FE', baseURL);
-
-console.log('base url di FE', baseURL);
-
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL,
 });

@@ -6,6 +6,7 @@ import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import TablePickupOrder from './components/TablePickupOrder'
+import { PickupStatus } from '@/types/pickupOrder.type'
 
 const PickupOrderList = () => {
   const [page, setPage] = useState<number>(1);
@@ -14,7 +15,8 @@ const PickupOrderList = () => {
     id: 0,
     page,
     take: 5,
-    pickupStatus:''
+    pickupStatus: String(PickupStatus.Received_by_Outlet),
+    isOrderCreated: Number(Boolean(false))
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
