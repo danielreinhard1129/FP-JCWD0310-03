@@ -21,8 +21,6 @@ export const updateLaundryItemService = async (
       data: { ...body },
     });
 
-    console.log('dari serpis', body, id);
-
     return { message: 'Update laundry item success!', data: updateItem };
   } catch (error) {
     throw error;

@@ -15,11 +15,6 @@ import TableLaundryItem from './components/TableLaundryItem';
 const LaundryItem = () => {
   const { isData, refetch, isLoading } = useGetLaundryItemList();
 
-  // useEffect(() => {
-  //   refetch();
-  //   console.log('jalan sekali');
-  // }, [isLoading]);
-
   return (
     <div className="flex flex-col gap-5 p-6">
       <div className="flex justify-between my-auto">

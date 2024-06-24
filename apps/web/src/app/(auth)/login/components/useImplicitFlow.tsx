@@ -18,7 +18,6 @@ export default function useImplicitFlow() {
 
       setTokenResponse(tokenResponse);
       setUser(userInfo);
-      console.log('ini user info', tokenResponse);
     },
     onError: (errorResponse) => console.log(errorResponse),
   });

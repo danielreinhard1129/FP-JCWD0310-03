@@ -47,21 +47,13 @@ export function UpdateItem({ id, refetch }: UpdateItemProps) {
     refetch();
     event.preventDefault();
     const values: UpdateItemArgs = { itemName };
-    console.log('ini value modal', values.itemName);
     await updateLaundryItem(values);
     setIsOpen(false);
   };
 
-  //   const initialValues = {
-  //     itemName: String(laundryItem?.itemName) | undefined,
-  //   };
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        {/* <Button variant="outline" onClick={() => setIsOpen(true)}>
-          Add item
-        </Button> */}
         <SquarePen
           size={20}
           className="cursor-pointer"

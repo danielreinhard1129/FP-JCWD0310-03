@@ -20,6 +20,7 @@ import { DeliveryOrderRouter } from './routers/deliveryOrder.router';
 import { UserRouter } from './routers/user.router';
 import { OrderWorkerRouter } from './routers/orderWorker.router';
 import { OrderItemRouter } from './routers/orderItem.router';
+import { AddressRouter } from './routers/address.router';
 import { PaymentRouter } from './routers/payment.router';
 
 export default class App {
@@ -69,10 +70,11 @@ export default class App {
     const orderRouter = new OrderRouter();
     const laundryItemRouter = new LaundryItemRouter();
     const authRouter = new AuthRouter();
-    const deliveryOrderRouter = new DeliveryOrderRouter()
+    const deliveryOrderRouter = new DeliveryOrderRouter();
     const userRouter = new UserRouter();
     const orderWorkerRouter = new OrderWorkerRouter();
     const orderItemRouter = new OrderItemRouter();
+    const addressRouter = new AddressRouter();
     const paymentRouter = new PaymentRouter()
 
     this.app.get('/api', (req: Request, res: Response) => {
@@ -89,6 +91,7 @@ export default class App {
     this.app.use('/api/user', userRouter.getRouter());
     this.app.use('/api/order-workers', orderWorkerRouter.getRouter());
     this.app.use('/api/order-items', orderItemRouter.getRouter());
+    this.app.use('/api/address', addressRouter.getRouter());
     this.app.use('/api/payments', paymentRouter.getRouter());
     
   }

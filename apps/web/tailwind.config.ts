@@ -77,14 +77,6 @@ const config = {
           dimgrey: '#CDC2AE',
         },
       },
-      // backgroundImage: {
-      //   'my_bg_logo': "url('../public/Kucekin_Logo_Black_EVO1.png')"
-      // },
-
-      // container: {
-      //   'container-mobile': '430px',
-      //   'container-super-admin': '1440px',
-      // },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

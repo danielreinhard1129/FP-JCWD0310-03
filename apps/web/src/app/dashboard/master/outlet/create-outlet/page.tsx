@@ -1,6 +1,7 @@
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import FormCreateOutlet from './components/FormCreateOutlet';
+import { Separator } from '@/components/ui/separator';
 
 const CreateOutlet = () => {
   return (
@@ -11,7 +12,8 @@ const CreateOutlet = () => {
         </Link>
         <h1 className="text-lg font-bold my-auto">Add New Outlet</h1>
       </div>
-      <div className="mx-8 mb-8 p-5 w-8/12 rounded-xl bg-mythemes-secondarygreen">
+      <Separator className='bg-black' />
+      <div className="p-6 rounded-xl bg-white">
         <FormCreateOutlet />
       </div>
     </div>

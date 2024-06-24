@@ -12,5 +12,5 @@ export interface Address {
   outletId: number;
   userId?: number;
   outlet?: Outlet;
-  user?: User;
+  user?: User[];
 }

@@ -39,7 +39,8 @@ const ChangePassword = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
+    // <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
+    <main className="container p-0 pt-[32px] bg-[#ffff]">
       <div className="container flex flex-col gap-4">
         <div className="flex relative">
           <ChevronLeft className="absolute" onClick={() => router.back()} />
