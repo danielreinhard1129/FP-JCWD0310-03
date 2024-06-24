@@ -51,7 +51,6 @@ export class LaundryItemController {
     try {
       const id = req.params.id;
       const result = await updateLaundryItemService(Number(id), req.body);
-      console.log('dari kontrol', id, req.body);
 
       return res.status(200).send(result);
     } catch (error) {

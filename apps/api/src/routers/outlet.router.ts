@@ -14,11 +14,7 @@ export class OutletRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.post(
-      '/',
-      uploader('IMG', '/images').array('outletImage', 1),
-      this.outletController.createOutletController,
-    );
+    this.router.post('/', this.outletController.createOutletController);
     this.router.get('/', this.outletController.getOutletListController);
     this.router.get('/:id', this.outletController.getOutletController);
     this.router.patch(

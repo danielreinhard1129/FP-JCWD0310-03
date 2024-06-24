@@ -25,12 +25,9 @@ const Profile = ({ params }: { params: { id: string } }) => {
     dispatch(logoutAction());
   };
 
-  const [selectedImage, setSelectedImage] = useState<HTMLInputElement>();
   const { user, isLoading } = useGetUser(Number(params.id));
 
-  const inputRef = useRef();
   const { resendVerifEmail } = useResendVerifEmail();
-  const { verification } = useVerification();
 
   const router = useRouter();
 
@@ -54,14 +51,16 @@ const Profile = ({ params }: { params: { id: string } }) => {
 
   if (isLoading) {
     return (
-      <div className=" container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold">
+      // <div className=" container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold">
+      <div className=" container flex justify-center px-4 pt-24 text-4xl font-semibold">
         Loading
       </div>
     );
   }
 
   return (
-    <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
+    // <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
+    <main className="container p-0 pt-[32px] bg-[#ffff]">
       <div className=" px-6 flex flex-col gap-4  ">
         <div className="flex relative ">
           <ChevronLeft className="absolute" onClick={() => router.back()} />
@@ -77,9 +76,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                 user?.profilePic
                   ? user.profilePic.includes('googleusercontent.com')
                     ? user.profilePic
-
                     : `${BASE_API_URL}/assets${user.profilePic}`
-
                   : noPic.src // Path to your default image
               }
               quality={80}
@@ -94,7 +91,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
               {user?.fullName && capitalizeFirstLetter(user.fullName)}
             </h1>
             <p className="text-left text-sm w-56 mb-1">
-              {user?.Address?.address || 'Your Address'}
+              {user?.email || 'Your Email'}
             </p>
             <div>
               {user && user.isVerify === true ? (
@@ -134,7 +131,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                       onClick={() => router.push('/verification')}
                       // onClick={() => {
                       //   verification((params.id));
-                      // }} 
+                      // }}
                     >
                       Click here
                     </span>{' '}
@@ -146,7 +143,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4 h-[569px]">
           <Button
             className="bg-mythemes-secondarygreen hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
             onClick={() => router.push(`/profile/${user?.id}/edit`)}
@@ -161,13 +158,16 @@ const Profile = ({ params }: { params: { id: string } }) => {
             <p>Change Password</p>
             <IoIosArrowForward />
           </Button>
-          <Button className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full">
-            <p>Your Order</p>
+          <Button
+            className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
+            onClick={() => router.push(`/profile/${user?.id}/address`)}
+          >
+            <p>Your Address</p>
             <IoIosArrowForward />
           </Button>
           <Button
             onClick={logout}
-            className="bg-mythemes-grey text-red-500 hover:bg-mythemes-grey gap-2 mt-5 flex flex-row justify-center rounded-full"
+            className="bg-mythemes-grey mt-auto text-red-500 hover:bg-mythemes-grey gap-2  flex flex-row justify-center rounded-full"
           >
             <LogOut />
             <p>Logout</p>

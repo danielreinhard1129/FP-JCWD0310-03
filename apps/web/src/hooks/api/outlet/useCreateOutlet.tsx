@@ -1,20 +1,17 @@
 'use client';
-import { IFormOutlet, Outlet } from '@/types/outlet.type';
-import { FileWithPath } from 'react-dropzone';
-import useAxios from '../useAxios';
+import { Outlet } from '@/types/outlet.type';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { data } from 'cypress/types/jquery';
-import { AxiosError } from 'axios';
-import exp from 'constants';
-import { useState } from 'react';
+import useAxios from '../useAxios';
 
 interface createOutletArgs {
   outletName: string;
   outletType: string;
-  outletImage: File[];
   addressLine: string;
   city: string;
+  latitude: string;
+  longitude: string;
 }
 
 const useCreateOutlet = () => {
@@ -24,20 +21,9 @@ const useCreateOutlet = () => {
   const createOutlet = async (payload: createOutletArgs) => {
     // setIsloading(true);
     try {
-      const { outletName, outletType, outletImage, addressLine, city } =
-        payload;
+      const { outletName, outletType, addressLine, city } = payload;
 
-      const createOutletForm = new FormData();
-
-      createOutletForm.append('outletName', outletName);
-      createOutletForm.append('outletType', outletType);
-      createOutletForm.append('addressLine', addressLine);
-      createOutletForm.append('city', city);
-      outletImage?.forEach((file: FileWithPath) => {
-        createOutletForm.append('outletImage', file);
-      });
-
-      await axiosInstance.post<Outlet>('/outlets', createOutletForm);
+      await axiosInstance.post<Outlet>('/outlets', payload);
 
       toast.success('Create outlet success !');
       router.push('/dashboard/master/outlet');

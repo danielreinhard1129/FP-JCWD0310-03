@@ -25,8 +25,6 @@ interface FormCompleteRegistrationProps {
 export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
   initialValues,
 }) => {
-  console.log('ini intial', initialValues);
-
   const { completeRegistration } = useCompleteRegistration();
   const [schema, setSchema] = useState(ValidationSchema);
 

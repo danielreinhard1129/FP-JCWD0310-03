@@ -40,7 +40,7 @@ import { Employee } from '@/types/employee.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
-import { User } from '@/types/user.type';
+import { IFormUser, User } from '@/types/user.type';
 
 const useGetUser = (id: number) => {
   const { axiosInstance } = useAxios();

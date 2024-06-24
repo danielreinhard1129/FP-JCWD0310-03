@@ -21,7 +21,7 @@ const useCompleteRegistration = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const completeRegistration = async (payload: IFormUser) => {
+  const completeRegistration = async (payload: Partial<IFormUser>) => {
     setIsLoading(true);
     try {
       await axiosInstance.post<User>(`/auth/complete-registration`, payload);
