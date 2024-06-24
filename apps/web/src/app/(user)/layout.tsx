@@ -1,5 +1,5 @@
+import CreatePickupButton from '@/components/CreatePickupButton';
 import React from 'react';
-import CreatePickupButton from '../../components/CreatePickupButton';
 import { Footer } from '@/components/Footer';
 import 'leaflet/dist/leaflet.css';
 

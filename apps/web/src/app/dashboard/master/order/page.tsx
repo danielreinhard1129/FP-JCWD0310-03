@@ -33,7 +33,7 @@ const MenuOrder = () => {
 
   const { data: orderWorkers, meta: metaBypass, refetch: refetchBypass } = useGetOrderWorkers({
     id: id,
-    page,
+    page: pageBypass,
     take: 10,
     bypassRequest: Number(Boolean(true)),
   });
@@ -56,7 +56,7 @@ const MenuOrder = () => {
   }
 
   return (
-    <div className='flex flex-col gap-5 p-6'>
+    <div className='container flex flex-col gap-5 p-6'>
       <div className='flex justify-between'>
         <div>
           <h1 className='font-bold text-xl'>Your Orders</h1>

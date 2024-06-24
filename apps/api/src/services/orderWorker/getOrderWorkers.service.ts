@@ -44,14 +44,8 @@ export const getOrderWorkersService = async (query: GetOrderWorkersQuery) => {
       whereClause.station = station as EmployeeStation
     }
 
-    if(!Number.isNaN(isComplete)){
-      if(Boolean(isComplete)==true){
-        whereClause.isComplete = Boolean(isComplete)
-      }
-      if(Boolean(isComplete)==false){
-        whereClause.isComplete = Boolean(isComplete)
-      }
-
+    if(!Number.isNaN(isComplete)){      
+        whereClause.isComplete = Boolean(isComplete)    
     }
 
     if(bypassRequest!='all'){

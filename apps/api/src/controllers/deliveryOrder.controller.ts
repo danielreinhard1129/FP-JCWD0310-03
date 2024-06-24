@@ -9,7 +9,8 @@ export class DeliveryOrderController {
     try {
       const query = {
         id: parseInt(req.query.id as string),
-        deliveryStatus: req.query.deliveryStatus as string || '',
+        deliveryStatus: req.query.deliveryStatus as string || 'all',
+        isClaimedbyDriver: parseInt(req.query.isClaimedbyDriver as string),
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',

@@ -8,7 +8,8 @@ import useAxios from '../useAxios';
 
 interface IGetDeliveryOrdersQuery extends IPaginationQueries {
   id: number;
-  deliveryStatus: string;
+  deliveryStatus?: string;
+  isClaimedbyDriver?: number;
 }
 
 const useGetDeliveryOrders = (queries: IGetDeliveryOrdersQuery) => {

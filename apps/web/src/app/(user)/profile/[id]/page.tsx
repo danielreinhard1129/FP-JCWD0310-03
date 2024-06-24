@@ -6,6 +6,8 @@ import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppDispatch } from '@/redux/hooks';
 import { logoutAction } from '@/redux/slices/userSlice';
 
+import useVerification from '@/hooks/api/auth/useVerification';
+import { BASE_API_URL } from '@/utils/config';
 import { ChevronLeft, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -15,8 +17,6 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../../public/pictNotFound.jpeg';
-import useVerification from '@/hooks/api/auth/useVerification';
-import { BASE_API_URL } from '@/utils/config';
 
 const Profile = ({ params }: { params: { id: string } }) => {
   const dispatch = useAppDispatch();
@@ -158,6 +158,12 @@ const Profile = ({ params }: { params: { id: string } }) => {
             <p>Change Password</p>
             <IoIosArrowForward />
           </Button>
+          <Button className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
+          onClick={() => router.push(`/order`)}
+          >
+            <p>Your Order</p>
+            <IoIosArrowForward />
+          </Button>
           <Button
             className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
             onClick={() => router.push(`/profile/${user?.id}/address`)}
@@ -172,6 +178,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
             <LogOut />
             <p>Logout</p>
           </Button>
+
         </div>
       </div>
     </main>
