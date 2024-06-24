@@ -10,6 +10,8 @@ interface UpdateOutletArgs
   extends Pick<Outlet, 'outletName' | 'outletType' | 'outletImage'> {
   addressLine: string;
   city: string;
+  latitude?: string;
+  longitude?: string;
 }
 
 export const updateOutletService = async (
@@ -18,7 +20,15 @@ export const updateOutletService = async (
   file: Express.Multer.File,
 ) => {
   try {
-    const { outletName, outletType, outletImage, addressLine, city } = body;
+    const {
+      outletName,
+      outletType,
+      outletImage,
+      addressLine,
+      city,
+      latitude,
+      longitude,
+    } = body;
 
     const outlet = await prisma.outlet.findFirst({
       where: { id },
@@ -60,6 +70,8 @@ export const updateOutletService = async (
         data: {
           addressLine: addressLine,
           city: city,
+          latitude: latitude,
+          longitude: longitude,
         },
       });
       return { updateOutlet, updateAddress };

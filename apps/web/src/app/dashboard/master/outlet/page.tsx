@@ -16,17 +16,17 @@ import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 import { PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const MenuOutlet = () => {
   const [page, setPage] = useState<number>(1);
+  const router = useRouter();
   // const { id } = useAppSelector((state) => state.user);
   const { data, meta, refetch } = useGetOutletList({
     search: '',
-    page,
+    page: 1,
     take: 5,
   });
-
-  // console.log('ini data', data[0].address[0].addressLine);
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -41,6 +41,9 @@ const MenuOutlet = () => {
         {/* <Link href={'/dashboard/master/outlet/create-outlet'}> */}
         <Button
           variant="outline"
+          onClick={() => {
+            router.push('/dashboard/master/outlet/create-outlet');
+          }}
           // onClick={() => setIsOpen(true)}
           className="font-bold text-mythemes-maingreen flex gap-2 text-md bg-inherit border-none"
         >
@@ -63,17 +66,6 @@ const MenuOutlet = () => {
           </TableHeader>
           <TableBody>
             {data.map((outlet, index) => {
-              // console.log(data[0].address[0].addressLine);
-
-              // const address =
-              //   outlet.Address && outlet.Address.length > 0
-              //     ? outlet.Address[0].address
-              //     : '';
-              // const city =
-              //   outlet.Address && outlet.Address.length > 0
-              //     ? outlet.address[0].city
-              //     : '';
-
               return (
                 <TableOutlet
                   key={index}

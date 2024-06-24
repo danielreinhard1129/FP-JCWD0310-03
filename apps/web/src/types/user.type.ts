@@ -1,4 +1,4 @@
-import { Address } from 'cluster';
+import { Address } from './address.type';
 import { Employee } from './employee.type';
 
 export interface User {
@@ -12,7 +12,7 @@ export interface User {
   createdAt: Date;
   isDelete: boolean;
   Employee?: Employee;
-  Address?: Address;
+  address?: Address[];
   tokenExpiresIn?: Date;
 }
 
@@ -29,5 +29,10 @@ export interface IFormUser {
   email: string;
   password: string;
   profilePic?: File[];
-  newPassword?: string|null;
+  newPassword?: string | null;
+  addressLine: string;
+  city: string;
+  isPrimary: boolean;
+  latitude?: string;
+  longitude?: string;
 }

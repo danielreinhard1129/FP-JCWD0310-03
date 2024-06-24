@@ -12,8 +12,7 @@ export class OutletController {
     next: NextFunction,
   ) {
     try {
-      const files = req.files as Express.Multer.File[];
-      const result = await createOutletService(req.body, files[0]);
+      const result = await createOutletService(req.body);
       return res.status(200).send(result);
     } catch (error) {
       next(error);

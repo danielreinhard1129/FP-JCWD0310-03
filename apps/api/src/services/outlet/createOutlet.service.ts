@@ -10,14 +10,14 @@ interface createOutletArgs
   extends Pick<Outlet, 'outletName' | 'outletType' | 'outletImage'> {
   addressLine: string;
   city: string;
+  latitude: string;
+  longitude: string;
 }
 
-export const createOutletService = async (
-  body: Partial<createOutletArgs>,
-  file: Express.Multer.File,
-) => {
+export const createOutletService = async (body: Partial<createOutletArgs>) => {
   try {
-    const { outletName, outletType, addressLine, city } = body;
+    const { outletName, outletType, addressLine, city, latitude, longitude } =
+      body;
 
     const existingOutletName = await prisma.outlet.findFirst({
       where: { outletName },
@@ -32,7 +32,6 @@ export const createOutletService = async (
         data: {
           outletName: outletName!,
           outletType: outletType!,
-          outletImage: `/images/${file.filename}`,
         },
       });
 
@@ -40,6 +39,8 @@ export const createOutletService = async (
         data: {
           addressLine: addressLine!,
           city: city!,
+          latitude: latitude,
+          longitude: longitude,
           outletId: outlet.id,
         },
       });

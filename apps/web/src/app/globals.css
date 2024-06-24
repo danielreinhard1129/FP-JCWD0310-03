@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.map-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/* Ensure Leaflet map fills its container */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -32,7 +32,7 @@ const FormInput: React.FC<FormInputProps> = ({
                         <Input
                             type={type}
                             placeholder={placeholder}
-                            className='bg-mythemes-grey'
+                            className=''
                             {...field} />
                     </FormControl>
                     <FormMessage />

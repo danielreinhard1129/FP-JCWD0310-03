@@ -17,8 +17,6 @@ const useUpdateLaundryItem = (id: number) => {
     setIsLoading(true);
     try {
       await axiosInstance.patch(`/laundry-items/${id}`, { ...payload });
-      console.log('ini pay dan id', payload, id);
-
       toast.success('Update laundry item success !');
       router.push('/dashboard/master/laundry-item');
     } catch (error) {

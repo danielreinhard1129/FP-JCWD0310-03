@@ -61,7 +61,18 @@ const useUpdateUser = (id: number) => {
   const updateUser = async (payload: Partial<IFormUser>) => {
     setIsLoading(true);
     try {
-      const { email, fullName, password, profilePic, newPassword } = payload;
+      const {
+        email,
+        fullName,
+        password,
+        profilePic,
+        newPassword,
+        addressLine,
+        city,
+        isPrimary,
+        latitude,
+        longitude,
+      } = payload;
       const updateUserForm = new FormData();
 
       if (fullName) updateUserForm.append('fullName', fullName);
@@ -71,6 +82,12 @@ const useUpdateUser = (id: number) => {
       if (profilePic && profilePic.length > 0) {
         updateUserForm.append('profilePic', profilePic[0]);
       }
+      if (addressLine) updateUserForm.append('addressLine', addressLine);
+      if (city) updateUserForm.append('city', city);
+      if (latitude) updateUserForm.append('latitude', latitude);
+      if (longitude) updateUserForm.append('longitude', longitude);
+      if (isPrimary !== undefined)
+        updateUserForm.append('isPrimary', Number(isPrimary).toString());
 
       await axiosInstance.patch<User>(`/user/profile/${id}`, updateUserForm);
 
