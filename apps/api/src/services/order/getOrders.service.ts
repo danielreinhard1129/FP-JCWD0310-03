@@ -12,7 +12,7 @@ interface GetOrdersQuery extends PaginationQueryParams {
 export const getOrdersService = async (query: GetOrdersQuery) => {
     try {
         const { page, sortBy, sortOrder, take, id, filterOutlet, filterStatus } = query;
-
+       
         const existingUser = await prisma.user.findFirst({
             where: { id: id },
             select: { employee: true, role: true }
@@ -27,7 +27,7 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
             select: {id: true}
             })
             const pickupOrderIds = pickupOrderData.map(pickup => pickup.id);
-            whereClause.pickupOrderId = { in: pickupOrderIds };
+            whereClause.pickupOrderId = { in: pickupOrderIds };            
         }
 
         if (existingUser?.role != "CUSTOMER") {

@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 interface UpdateOrderStatusArgs {
     orderId: number,
-    workerId: number,
+    workerId?: number,
     orderStatus: OrderStatus,
 }
 

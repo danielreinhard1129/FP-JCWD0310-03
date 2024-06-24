@@ -20,6 +20,7 @@ import { DeliveryOrderRouter } from './routers/deliveryOrder.router';
 import { UserRouter } from './routers/user.router';
 import { OrderWorkerRouter } from './routers/orderWorker.router';
 import { OrderItemRouter } from './routers/orderItem.router';
+import { PaymentRouter } from './routers/payment.router';
 
 export default class App {
   private app: Express;
@@ -72,6 +73,7 @@ export default class App {
     const userRouter = new UserRouter();
     const orderWorkerRouter = new OrderWorkerRouter();
     const orderItemRouter = new OrderItemRouter();
+    const paymentRouter = new PaymentRouter()
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student ! ${PORT}`);
@@ -87,6 +89,8 @@ export default class App {
     this.app.use('/api/user', userRouter.getRouter());
     this.app.use('/api/order-workers', orderWorkerRouter.getRouter());
     this.app.use('/api/order-items', orderItemRouter.getRouter());
+    this.app.use('/api/payments', paymentRouter.getRouter());
+    
   }
 
   public start(): void {

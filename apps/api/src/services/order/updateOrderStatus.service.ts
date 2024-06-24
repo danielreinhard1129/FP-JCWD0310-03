@@ -12,6 +12,9 @@ export const updateOrderStatusService = async (
     try {
         const { orderId, workerId, orderStatus } = body;
 
+        console.log('ini bodyy',body);
+        
+
         const existingOrder = await prisma.order.findFirst({
             where: { id: orderId },
             select: { orderStatus: true }
@@ -28,84 +31,89 @@ export const updateOrderStatusService = async (
             },
         });
 
-        const orderWorker = await prisma.orderWorker.findFirst({
-            where: {orderId: orderId, workerId: workerId, station: 'WASHING'}
-        })
+        if (!Number.isNaN(workerId)) {
 
-        if (orderStatus == 'Laundry_Finished_Washing'){
             const orderWorker = await prisma.orderWorker.findFirst({
-                where: {orderId: orderId, workerId: workerId, station: 'WASHING'},
-                select: {id: true}
+                where: { orderId: orderId, workerId: workerId, station: 'WASHING' }
             })
-            await prisma.orderWorker.update({
-                where: {id: orderWorker?.id},
-                data: {
-                    isComplete: true
-                }
-            })
+
+            if (orderStatus == 'Laundry_Finished_Washing') {
+                const orderWorker = await prisma.orderWorker.findFirst({
+                    where: { orderId: orderId, workerId: workerId, station: 'WASHING' },
+                    select: { id: true }
+                })
+                await prisma.orderWorker.update({
+                    where: { id: orderWorker?.id },
+                    data: {
+                        isComplete: true
+                    }
+                })
+            }
+
+            if (orderStatus == 'Laundry_Finished_Ironing') {
+                const orderWorker = await prisma.orderWorker.findFirst({
+                    where: { orderId: orderId, workerId: workerId, station: 'IRONING' },
+                    select: { id: true }
+                })
+                await prisma.orderWorker.update({
+                    where: { id: orderWorker?.id },
+                    data: {
+                        isComplete: true
+                    }
+                })
+            }
+
+            if (orderStatus == 'Laundry_Finished_Packing') {
+                const orderWorker = await prisma.orderWorker.findFirst({
+                    where: { orderId: orderId, workerId: workerId, station: 'PACKING' },
+                    select: { id: true }
+                })
+                await prisma.orderWorker.update({
+                    where: { id: orderWorker?.id },
+                    data: {
+                        isComplete: true
+                    }
+                })
+            }
+
+            if (orderStatus == 'Laundry_Being_Ironed') {
+                await prisma.orderWorker.create({
+                    data: {
+                        orderId: orderId,
+                        workerId: workerId,
+                        station: EmployeeStation.IRONING
+                    }
+                })
+            }
+
+            if (orderStatus == 'Laundry_Being_Washed') {
+                await prisma.orderWorker.create({
+                    data: {
+                        orderId: orderId,
+                        workerId: workerId,
+                        station: EmployeeStation.WASHING
+                    }
+                })
+            }
+
+            if (orderStatus == 'Laundry_Being_Packed') {
+                await prisma.orderWorker.create({
+                    data: {
+                        orderId: orderId,
+                        workerId: workerId,
+                        station: EmployeeStation.PACKING
+                    }
+                })
+            }
+
         }
 
-        if (orderStatus == 'Laundry_Finished_Ironing'){
-            const orderWorker = await prisma.orderWorker.findFirst({
-                where: {orderId: orderId, workerId: workerId, station: 'IRONING'},
-                select: {id: true}
-            })
-            await prisma.orderWorker.update({
-                where: {id: orderWorker?.id},
-                data: {
-                    isComplete: true
-                }
-            })
-        }
-
-        if (orderStatus == 'Laundry_Finished_Packing'){
-            const orderWorker = await prisma.orderWorker.findFirst({
-                where: {orderId: orderId, workerId: workerId, station: 'PACKING'},
-                select: {id: true}
-            })
-            await prisma.orderWorker.update({
-                where: {id: orderWorker?.id},
-                data: {
-                    isComplete: true
-                }
-            })
-        }
-
-        if (orderStatus == 'Laundry_Being_Ironed') {
-            await prisma.orderWorker.create({
-                data: {
-                    orderId: orderId,
-                    workerId: workerId,
-                    station: EmployeeStation.IRONING
-                }
-            })
-        }
-
-        if (orderStatus == 'Laundry_Being_Washed') {
-            await prisma.orderWorker.create({
-                data: {
-                    orderId: orderId,
-                    workerId: workerId,
-                    station: EmployeeStation.WASHING
-                }
-            })
-        }
-
-        if (orderStatus == 'Laundry_Being_Packed') {
-            await prisma.orderWorker.create({
-                data: {
-                    orderId: orderId,
-                    workerId: workerId,
-                    station: EmployeeStation.PACKING
-                }
-            })
-        }
 
         return {
-        order: updateStatusUpdate,
-    }
+            order: updateStatusUpdate,
+        }
 
-} catch (error) {
-    throw error;
-}
+    } catch (error) {
+        throw error;
+    }
 };

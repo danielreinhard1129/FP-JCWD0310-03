@@ -71,7 +71,7 @@ model Address {
   id          Int     @id @default(autoincrement())
   addressLine String
   city        String
-  isPrimary   Boolean @default(true)
+  isPrimary   Boolean @default(false)
   latitude    String?
   longitude   String?
   isDelete    Boolean @default(false)
@@ -147,6 +147,7 @@ model Order {
   orderItem    OrderItem[]
   deliverOrder DeliveryOrder[]
   orderWorker  OrderWorker[]
+  payment      Payment[]
 
   @@map("orders")
 }
@@ -248,4 +249,26 @@ model Notification {
   userNotification UserNotification[]
 
   @@map("notifications")
+}
+
+model Payment {
+  id              Int           @id @default(autoincrement())
+  invoiceNumber   String        @unique
+  amount          Int
+  paymentStatus   PaymentStatus @default(Pending)
+  snapToken       String?
+  snapRedirectUrl String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  orderId         Int
+  order           Order         @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  Pending
+  Completed
+  Failed
+  Expired
 }
