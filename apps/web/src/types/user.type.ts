@@ -11,7 +11,7 @@ export interface User {
   profilePic?: string;
   createdAt: Date;
   isDelete: boolean;
-  Employee?: Employee;
+  employee?: Employee;
   address?: Address[];
   tokenExpiresIn?: Date;
 }

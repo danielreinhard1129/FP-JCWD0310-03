@@ -1,8 +1,9 @@
 'use client'
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import { OrderStatus } from '@/types/order.type';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ItemCheckingDialog from './ItemCheckingDialog';
+import { EmployeeWorkShift } from '@/types/employee.type';
 
 interface WashingCardProps {
   key: number;
@@ -20,6 +21,7 @@ interface WashingCardProps {
   isBypassRequest: boolean
   isBypassAccepted: boolean
   isBypassRejected: boolean
+  employeeWorkShift?: EmployeeWorkShift
 }
 
 const WashingCard: FC<WashingCardProps> = ({
@@ -37,7 +39,8 @@ const WashingCard: FC<WashingCardProps> = ({
   isItemChecking,
   isBypassRequest,
   isBypassAccepted,
-  isBypassRejected
+  isBypassRejected,
+  employeeWorkShift
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -65,6 +68,35 @@ const WashingCard: FC<WashingCardProps> = ({
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
+
+  //shift confirmation
+  const [isDisable, setIsDisable] = useState(false);
+
+  useEffect(() => {
+    const checkStatus = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
+
+      if (employeeWorkShift === EmployeeWorkShift.DAY) {
+        if (currentHour >= 6 && currentHour < 18) {
+          setIsDisable(false);
+        } else {
+          setIsDisable(true);
+        }
+      } else if (employeeWorkShift === EmployeeWorkShift.NIGHT) {
+        if (currentHour >= 18 || currentHour < 6) {
+          setIsDisable(false);
+        } else {
+          setIsDisable(true);
+        }
+      }
+    };
+
+    checkStatus();
+    const interval = setInterval(checkStatus, 60000);
+
+    return () => clearInterval(interval);
+  }, [employeeWorkShift]);
 
   return (
     <div key={key} className='relative flex flex-col gap-2 overflow-hidden shadow-md bg-white py-3 pl-5 pr-3 rounded-xl'>
@@ -110,7 +142,7 @@ const WashingCard: FC<WashingCardProps> = ({
           ) : (
             <>
               <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
-              <button onClick={handleDialogOpen} className='absolute right-3 bottom-3 bg-mythemes-maingreen font-bold text-sm text-white p-0.5 w-1/4 rounded-md' >{buttonLabel}</button>
+              <button disabled={isDisable} onClick={handleDialogOpen} className={`absolute right-3 bottom-3 font-bold text-sm text-white p-0.5 w-1/4 rounded-md ${isDisable ? 'bg-mythemes-secondarygreen' : 'bg-mythemes-maingreen'}`} >{buttonLabel}</button>
               <ItemCheckingDialog
                 isOpen={isDialogOpen}
                 onClose={handleDialogClose}
@@ -132,7 +164,7 @@ const WashingCard: FC<WashingCardProps> = ({
         ) : (
           <>
             <div className='absolute top-0 left-0 h-full w-2 bg-green-200'></div>
-            <div className='absolute right-3 bottom-3 bg-green-600 font-bold text-white p-0.5 w-1/4 text-sm text-center rounded-md'>{buttonLabel}</div>
+            <div className={`absolute right-3 bottom-3 bg-green-600 font-bold text-white p-0.5 w-1/4 text-sm text-center rounded-md`}>{buttonLabel}</div>
           </>
         ))
       )}

@@ -4,12 +4,14 @@ import useGetOrders from '@/hooks/api/order/useGetOrders';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
+import { useAppSelector } from '@/redux/hooks';
+import useGetUser from '@/hooks/api/user/useGetUser';
 
 
 const WashingRequest = () => {
-  const [page, setPage] = useState<number>(1);
-  
-  // const { id } = useAppSelector((state) => state.user);
+  const [page, setPage] = useState<number>(1);  
+  const { id: inId } = useAppSelector((state) => state.user);
+
   const id = 3;
   const { data: orders, meta, refetch } = useGetOrders({
     id: id,
@@ -17,6 +19,8 @@ const WashingRequest = () => {
     take: 10,
     filterStatus: String(OrderStatus.READY_TO_WASH)
   });
+
+  const {user} = useGetUser(id); 
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -44,6 +48,7 @@ const WashingRequest = () => {
               isBypassRequest={false}
               isBypassAccepted={false}
               isBypassRejected={false}
+              employeeWorkShift={user?.employee?.workShift}
             />
           )
         })}

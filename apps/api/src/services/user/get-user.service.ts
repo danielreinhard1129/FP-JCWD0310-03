@@ -4,7 +4,7 @@ export const getUserService = async (id: number) => {
   try {
     const user = await prisma.user.findFirst({
       where: { id },
-      include: { address: true },
+      include: { address: true, employee: true },
     });
 
     if (!user) {
