@@ -1,5 +1,9 @@
 import { AuthController } from '@/controllers/auth.controllers';
 import { uploader } from '@/lib/uploader';
+import { completeRegisterValidator } from '@/middlewares/completeRegistValidator';
+import { loginValidator } from '@/middlewares/loginValidator';
+import { registerValidator } from '@/middlewares/registerValidator';
+import { verificationValidator } from '@/middlewares/verificationValidator';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
@@ -17,35 +21,46 @@ export class AuthRouter {
     this.router.post(
       '/verification',
       verifyToken,
+      verificationValidator,
       this.authController.verificationController,
     );
+
     this.router.patch(
       '/resend-verif-email',
       verifyToken,
       this.authController.resendVerifEmailController,
     );
-    this.router.post('/register', this.authController.registerController);
+
+    this.router.post(
+      '/register',
+      registerValidator,
+      this.authController.registerController,
+    );
+
     this.router.post(
       '/complete-registration',
+      completeRegisterValidator,
       this.authController.completeRegistrationController,
     );
-    this.router.post('/login', this.authController.loginController);
+
+    this.router.post(
+      '/login',
+      loginValidator,
+      this.authController.loginController,
+    );
+
     this.router.post('/google', this.authController.getGoogleTokenController);
-    // this.router.get(
-    //   '/keep-login',
-    //   verifyToken,
-    //   this.authController.keepLoginController,
-    // );
+
     this.router.post(
       '/forgot-password',
       this.authController.forgotPasswordController,
     );
+
     this.router.patch(
       '/reset-password',
       verifyToken,
       this.authController.resetPasswordController,
     );
-    // this.router.get('/:id', this.authController.getUserController);
   }
 
   getRouter(): Router {

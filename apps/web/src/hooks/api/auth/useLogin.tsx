@@ -35,7 +35,7 @@ const useLogin = () => {
       dispatch(loginAction(data.data));
       localStorage.setItem('token', data.token);
       if (data.data.role === Role.CUSTOMER) {
-        router.push('/');
+        router.push('/user');
       }
       if (data.data.role === Role.DRIVER) {
         router.push('/dashboard/driver');
@@ -49,10 +49,10 @@ const useLogin = () => {
       if (data.data.role === Role.WORKER) {
         router.push('/dashboard/worker');
       }
-      toast(data.message);
+      toast.success(data.message);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error?.response?.data);
+        toast.error(error.response?.data.message);
       }
     }
   };

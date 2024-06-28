@@ -95,7 +95,7 @@ const useUpdateUser = (id: number) => {
       router.push(`/profile/${id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data || 'Something went wrong');
+        toast.error(error.response?.data.message || 'Something went wrong');
         console.error(error);
       }
     } finally {

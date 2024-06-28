@@ -23,9 +23,7 @@ const MenuOutlet = () => {
   const router = useRouter();
   // const { id } = useAppSelector((state) => state.user);
   const { data, meta, refetch } = useGetOutletList({
-    search: '',
-    page: 1,
-    take: 5,
+    take: 1000,
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -83,11 +81,11 @@ const MenuOutlet = () => {
             })}
           </TableBody>
         </Table>
-        <Pagination
+        {/* <Pagination
           total={meta?.total || 0}
           take={meta?.take || 0}
           onChangePage={handleChangePaginate}
-        />
+        /> */}
       </div>
     </div>
   );

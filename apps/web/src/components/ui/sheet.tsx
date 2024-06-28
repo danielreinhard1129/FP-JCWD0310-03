@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { ChevronLeft, X } from 'lucide-react';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -44,7 +45,7 @@ const sheetVariants = cva(
       },
     },
     defaultVariants: {
-      side: 'right',
+      side: 'bottom',
     },
   },
 );
@@ -64,6 +65,10 @@ const SheetContent = React.forwardRef<
       className={cn(sheetVariants({ side }), className)}
       {...props}
     >
+      <SheetPrimitive.Close className=" rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100   disabled:pointer-events-none data-[state=open]:bg-secondary">
+        <ChevronLeft />
+        <span className="sr-only">Close</span>
+      </SheetPrimitive.Close>
       {children}
     </SheetPrimitive.Content>
   </SheetPortal>

@@ -11,11 +11,12 @@ interface UserResult {
 
 interface AddressResult {
   user: UserResult;
+  latitude: string;
+  longitude: string;
   addressLine: string;
   isPrimary: boolean;
   id: number;
 }
-
 
 const useGetUserAddress = (id: number) => {
   const { axiosInstance } = useAxios();

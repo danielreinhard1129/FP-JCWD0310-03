@@ -21,7 +21,7 @@ const useUpdateLaundryItem = (id: number) => {
       router.push('/dashboard/master/laundry-item');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
     } finally {
       setIsLoading(false);

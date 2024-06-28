@@ -16,7 +16,7 @@ const useGetLaundryItem = (id: number) => {
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
     } finally {
       setIsLoading(false);

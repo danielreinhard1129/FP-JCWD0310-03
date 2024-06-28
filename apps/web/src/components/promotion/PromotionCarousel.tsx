@@ -29,8 +29,8 @@ export function PromotionCarousel() {
           <CarouselItem key={index}>
             <div className="p-1">
               <Card className="">
-                <CardContent className="items-center justify-center p-6  bg-main_green h-[144px] rounded-xl text-center text-white place-content-center">
-                  <span className="text-4xl font-semibold">{promo}</span>
+                <CardContent className="items-center justify-center p-6  bg-main_green h-[200px] md:h-[400px] rounded-xl text-center text-white place-content-center">
+                  <span className="text-4xl text-mythemes-maingreen font-semibold">{promo}</span>
                 </CardContent>
               </Card>
             </div>

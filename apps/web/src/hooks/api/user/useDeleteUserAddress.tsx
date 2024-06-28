@@ -15,7 +15,7 @@ const useDeleteUserAddress = (id: number) => {
       router.refresh();
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
     }
   };

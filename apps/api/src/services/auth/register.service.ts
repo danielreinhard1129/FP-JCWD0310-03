@@ -31,3 +31,4 @@ export const registerService = async (body: Pick<User, 'email'>) => {
     throw error;
   }
 };
+ 

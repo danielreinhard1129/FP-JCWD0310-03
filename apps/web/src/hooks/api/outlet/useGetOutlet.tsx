@@ -1,10 +1,9 @@
 'use client';
 // import { axiosInstance } from '@/lib/axios';
-import { Employee } from '@/types/employee.type';
+import { Outlet } from '@/types/outlet.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
-import { Outlet } from '@/types/outlet.type';
 
 const useGetOutlet = (id: number) => {
   const { axiosInstance } = useAxios();
@@ -17,7 +16,7 @@ const useGetOutlet = (id: number) => {
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // TODO : replace console.log with toast
+        // toast.error(error.response?.data.message);
         console.log(error);
       }
     } finally {

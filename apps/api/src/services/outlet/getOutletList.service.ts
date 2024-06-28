@@ -1,19 +1,42 @@
 import prisma from '@/prisma';
+import { Prisma } from '@prisma/client';
 
-export const getOutletListService = async () => {
+interface GetOutlet {
+  take: number;
+}
+
+export const getOutletListService = async (query: GetOutlet) => {
   try {
+    // const outlets = await prisma.outlet.findMany({
+    //   where: { isDelete: false },
+    //   include: { address: true, employee: true },
+    // });
+
+    // if (!outlets) {
+    //   throw new Error('Outlet not Found!');
+    // }
+
+    // return {
+    //   data: outlets,
+    // };
+    const { take } = query;
+    const whereClause: Prisma.OutletWhereInput = {
+      isDelete: false,
+    };
+
     const outlets = await prisma.outlet.findMany({
-      where: { isDelete: false },
-      include: { address: true, employee: true },
+      where: whereClause,
+      take: take,
+      include: {
+        address: true,
+        employee: true,
+      },
+    });
+    const count = await prisma.outlet.count({
+      where: whereClause,
     });
 
-    if (!outlets) {
-      throw new Error('Outlet not Found!');
-    }
-
-    return {
-      data: outlets,
-    };
+    return { data: outlets };
   } catch (error) {
     throw error;
   }

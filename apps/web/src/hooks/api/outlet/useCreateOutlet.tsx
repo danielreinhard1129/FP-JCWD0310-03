@@ -29,7 +29,7 @@ const useCreateOutlet = () => {
       router.push('/dashboard/master/outlet');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
       console.log(error);
     }
