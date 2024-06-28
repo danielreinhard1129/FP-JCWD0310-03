@@ -26,11 +26,11 @@ const useCompleteRegistration = () => {
     try {
       await axiosInstance.post<User>(`/auth/complete-registration`, payload);
 
-      toast.message('Verification email has been sent to your email');
+      toast.success('Verification email has been sent to your email');
       router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
     } finally {
       setIsLoading(false);

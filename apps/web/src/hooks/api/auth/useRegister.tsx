@@ -24,11 +24,12 @@ const useRegister = () => {
         '/auth/register',
         payload,
       );
-      router.push('/');
+      toast.success(data.message);
+      router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
         // FIXME = change alert to toast
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
     }
   };

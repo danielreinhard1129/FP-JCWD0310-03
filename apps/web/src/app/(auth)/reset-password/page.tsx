@@ -54,5 +54,5 @@ const ResetPassword: React.FC = () => {
     </main>
   );
 };
-
+ 
 export default ResetPassword;

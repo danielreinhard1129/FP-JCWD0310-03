@@ -28,7 +28,7 @@ const useUpdateUserAddress = (id: number) => {
       router.back();
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
       console.log(error);
     } finally {

@@ -28,7 +28,7 @@ export default function SuperAdminGuard(Component: any) {
       }
       if (role !== 'SUPER_ADMIN' && role === 'CUSTOMER' && !isLoading) {
         toast.error("You don't have permission to access this page.");
-        redirect('/');
+        redirect('/user');
       }
       if (role !== 'SUPER_ADMIN' && role === 'OUTLET_ADMIN' && !isLoading) {
         toast.error("You don't have permission to access this page.");

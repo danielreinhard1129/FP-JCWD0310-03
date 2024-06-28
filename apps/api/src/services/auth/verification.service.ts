@@ -1,14 +1,14 @@
 import { comparePassword } from '@/lib/bcrypt';
 import prisma from '@/prisma';
 
-interface VerificationArgs {
-  userId: number;
-  password: string;
-  tokenParams: string;
-}
-export const verificationService = async (body: VerificationArgs) => {
+// interface VerificationArgs {
+//   userId: number;
+//   password: string;
+//   tokenParams: string;
+// }
+export const verificationService = async (password: string, userId: number) => {
   try {
-    const { password, tokenParams, userId } = body;
+    // const { password, tokenParams, userId } = body;
     const user = await prisma.user.findFirst({
       where: { id: userId },
     });
@@ -23,12 +23,15 @@ export const verificationService = async (body: VerificationArgs) => {
       throw new Error('incorrect password');
     }
 
-    if (user.token !== tokenParams) {
-      throw new Error('Please resend your verification email');
-    }
-    if (user.tokenExpiresIn && user.tokenExpiresIn > new Date()) {
-      throw new Error('Please resend your verification email');
-    }
+    // if (user.token !== tokenParams) {
+    //   throw new Error('Please resend your verification email');
+    // }
+
+    // if (user.tokenExpiresIn && user.tokenExpiresIn > new Date()) {
+    //   throw new Error(
+    //     'Looks like your token expired. Just hit resend on that verification email!',
+    //   );
+    // }
 
     const verify = await prisma.user.update({
       where: { id: user.id },

@@ -28,7 +28,7 @@ const CardMap = ({ onLocationSelect }: any) => {
   >(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
+    window.navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         setCurrentPosition([latitude, longitude]);

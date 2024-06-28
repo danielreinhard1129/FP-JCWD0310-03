@@ -12,7 +12,7 @@ import FormInput from '@/components/FormInput';
 interface FormResetPassword {
   password: string;
 }
-
+ 
 interface FormResetPasswordProps {
   isLoading: boolean;
   onSubmit: any;

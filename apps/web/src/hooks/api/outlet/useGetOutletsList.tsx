@@ -8,6 +8,7 @@ import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 
 interface IGetOutletsQuery extends IPaginationQueries {
   search?: string;
+  take: number;
 }
 
 const useGetOutletList = (queries: IGetOutletsQuery) => {
@@ -33,7 +34,7 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
 
   useEffect(() => {
     getOutlet();
-  }, [queries.page, queries.search]);
+  }, [queries.page, queries.search,queries.take]);
   return { data, isLoading, meta, refetch: getOutlet };
 };
 

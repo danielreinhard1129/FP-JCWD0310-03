@@ -27,7 +27,7 @@ export default function DriverAuthGuard(Component: any) {
       }
       if (role !== 'DRIVER' && role === 'CUSTOMER' && !isLoading) {
         toast.error("You don't have permission to access this page.");
-        redirect('/');
+        redirect('/user');
       }
       if (role !== 'DRIVER' && role === 'OUTLET_ADMIN' && !isLoading) {
         toast.error("You don't have permission to access this page.");
