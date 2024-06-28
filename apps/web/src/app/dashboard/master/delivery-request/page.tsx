@@ -9,6 +9,7 @@ import TableOrder from '../order/components/TableOrder';
 import Pagination from '@/components/Pagination';
 import { OrderStatus } from '@/types/order.type';
 import TableDeliveryRequest from './components/TableDeliveryRequest';
+import useGetUser from '@/hooks/api/user/useGetUser';
 
 const DeliveryRequest = () => {
   const [page, setPage] = useState<number>(1);
@@ -26,6 +27,8 @@ const DeliveryRequest = () => {
     sortOrder,
   });
 
+  const {user} = useGetUser(id);
+
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
   };
@@ -40,32 +43,8 @@ const DeliveryRequest = () => {
 
   return (
     <div className='container flex flex-col gap-5 p-6'>
-      <div className='flex justify-between'>
-        <div>
-          <h1 className='font-bold text-xl'>Your Orders</h1>
-        </div>
-        <div className='flex gap-2'>
-          <Select name='outlet' onValueChange={handleChangeFilterOutlet} defaultValue='all'>
-            <SelectTrigger className='min-w-40'>
-              <SelectValue placeholder={"Outlet"} />
-            </SelectTrigger>
-            <ItemFilterOutlet />
-          </Select>
-          <Select name='sortOrder' onValueChange={handleChangeSortingBy} defaultValue='asc'>
-            <SelectTrigger className='min-w-40'>
-              <SelectValue placeholder={"Sort By"} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='asc'>Sort by: Newest</SelectItem>
-              <SelectItem value='desc'>Sort by: Latest</SelectItem>
-            </SelectContent>
-          </Select>
-          <Link href={"/dashboard/master/order/pickup-order-list"}>
-            <div className='flex bg-mythemes-maingreen h-full w-40 rounded-lg'>
-              <h1 className='text-white font-medium mx-auto my-auto'>Create Order</h1>
-            </div>
-          </Link>
-        </div>
+      <div>
+        <h1 className='font-bold text-xl'>Delivery Request</h1>
       </div>
       <div>
 
@@ -94,6 +73,7 @@ const DeliveryRequest = () => {
                   createdAt={String(order.createdAt)}
                   status={order.orderStatus}
                   refetch={refetch}
+                  employeeWorkShift={user?.employee?.workShift}
                 />
               );
             })}

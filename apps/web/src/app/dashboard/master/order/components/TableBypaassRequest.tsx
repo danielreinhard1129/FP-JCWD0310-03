@@ -1,7 +1,8 @@
 'use client'
 import { TableCell, TableRow } from '@/components/ui/table';
 import useUpdateOrderWorker from '@/hooks/api/orderWorker/useUpdateOrderWorker';
-import { FC } from 'react';
+import { EmployeeWorkShift } from '@/types/employee.type';
+import { FC, useEffect, useState } from 'react';
 
 interface BypassRequestRowTableProps {
     key: number;
@@ -14,6 +15,7 @@ interface BypassRequestRowTableProps {
     refetch: () => void
     isAccept: boolean
     isReject: boolean
+    employeeWorkShift?: EmployeeWorkShift
 }
 
 const TableBypassRequest: FC<BypassRequestRowTableProps> = ({
@@ -26,7 +28,8 @@ const TableBypassRequest: FC<BypassRequestRowTableProps> = ({
     station,
     refetch,
     isAccept,
-    isReject
+    isReject,
+    employeeWorkShift
 }) => {
     const { updateOrderWorker } = useUpdateOrderWorker()
     const acceptValues = {
@@ -55,6 +58,35 @@ const TableBypassRequest: FC<BypassRequestRowTableProps> = ({
         }
     };
 
+    //shift confirmation
+    const [isDisable, setIsDisable] = useState(false);
+
+    useEffect(() => {
+        const checkStatus = () => {
+            const now = new Date();
+            const currentHour = now.getHours();
+
+            if (employeeWorkShift === EmployeeWorkShift.DAY) {
+                if (currentHour >= 6 && currentHour < 18) {
+                    setIsDisable(false);
+                } else {
+                    setIsDisable(true);
+                }
+            } else if (employeeWorkShift === EmployeeWorkShift.NIGHT) {
+                if (currentHour >= 18 || currentHour < 6) {
+                    setIsDisable(false);
+                } else {
+                    setIsDisable(true);
+                }
+            }
+        };
+
+        checkStatus();
+        const interval = setInterval(checkStatus, 60000);
+
+        return () => clearInterval(interval);
+    }, [employeeWorkShift]);
+
     return (
         <TableRow key={key} >
             <TableCell>{orderNumber}</TableCell>
@@ -68,14 +100,14 @@ const TableBypassRequest: FC<BypassRequestRowTableProps> = ({
                         <button disabled className='py-0.5 bg-mythemes-dimgrey w-1/2 text-white font-bold'>Accepted</button>
                     </div>
                 ) : (
-                    ( isReject== true ? (
+                    (isReject == true ? (
                         <div>
                             <button disabled className='py-0.5 bg-mythemes-dimgrey w-1/2 text-white font-bold'>Rejected</button>
                         </div>
                     ) : (
                         <div className='flex gap-2 w-40 justify-end'>
-                            <button onClick={handleAccept} className='py-0.5 bg-mythemes-maingreen w-1/2 text-white font-bold'>Accept</button>
-                            <button onClick={handleReject} className='py-0.5 bg-mythemes-maingreen w-1/2 text-white font-bold'>Reject</button>
+                            <button disabled={isDisable} onClick={handleAccept} className='py-0.5 bg-mythemes-maingreen w-1/2 text-white font-bold'>Accept</button>
+                            <button disabled={isDisable} onClick={handleReject} className='py-0.5 bg-mythemes-maingreen w-1/2 text-white font-bold'>Reject</button>
                         </div>
                     ))
                 )}

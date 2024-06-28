@@ -22,6 +22,11 @@ export class UserRouter {
       this.userController.updateUserController,
     );
     this.router.get(
+      '/',
+      verifyToken,
+      this.userController.getUsersController,
+    );
+    this.router.get(
       '/profile/:id',
       verifyToken,
       this.userController.getUserController,

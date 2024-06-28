@@ -82,7 +82,7 @@ const OrderCard: FC<ShipmentCardProps> = ({
                     <button onClick={handleUpdate} className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Confirm</button>
                 ) : (
                     (orderStatus == 'Laundry_Received_By_Customer' ? (
-                        <button className='absolute right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Completed</button>
+                        <button disabled className='absolute right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Completed</button>
                     ) : (
                         <>
                             {/* <button className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Details</button> */}
