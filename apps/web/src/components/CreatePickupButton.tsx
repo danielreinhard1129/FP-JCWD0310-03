@@ -6,50 +6,26 @@ import { useRouter } from 'next/navigation';
 const CreatePickupButton = () => {
   const { id, isVerify } = useAppSelector((state) => state.user);
   const router = useRouter();
-
-  // const handleClick = () => {
-  //   if (!id) {
-  //     toast.warning('Please Login');
-  //     router.push('/login');
-  //   } else if (isVerify === false) {
-  //     router.push('/login');
-  //   } else {
-  //     router.push('/outlet');
-  //   }
-  // };
-
   return (
     <>
-      {/* <div className="flex mx-auto fixed bottom-0"> */}
-      <div className="container sticky bottom-0 py-2 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white ">
+      <div className="container max-w-[430px] fixed bottom-0 py-2 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white ">
         <Home
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/user')}
         />
-
-        {/* <div
-          className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-          onClick={() =>
-            !id
-              ? (toast.warning('Please login to continue'),
-                router.push('/login'))
-              : router.push('/order-list')
-          }
-        > */}
         <Shirt className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer" />
-        {/* </div> */}
-
         <CirclePlus
           size={50}
           className="flex flex-col items-center gap-1 text-mythemes-maingreen cursor-pointer"
+          onClick={() => router.push(`/user/request-pickup`)}
         />
 
         <Bell className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-         onClick={() => router.push(`/notification`)}/>
+         onClick={() => router.push(`user/notification`)}/>
 
         <User
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-          onClick={() => router.push(`/profile/${id}`)}
+          onClick={() => router.replace(`user/profile/${id}`)}
         />
       </div>
     </>

@@ -47,7 +47,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
     if (user?.isVerify === false) {
       toast.warning('Please verify your account');
     }
-  }, [user?.isVerify]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -126,16 +126,17 @@ const Profile = ({ params }: { params: { id: string } }) => {
                   </p>
 
                   <p className="text-xs text-red-500 font-light text-left w-52 ">
-                    <span
+                    Please check your email to verify your account.
+                    {/* <span
                       className="underline hover:text-red-800 cursor-pointer"
-                      onClick={() => router.push('/verification')}
+                      onClick={() => router.push('/register/verification')}
                       // onClick={() => {
                       //   verification((params.id));
                       // }}
                     >
                       Click here
                     </span>{' '}
-                    to verify.
+                    to verify. */}
                   </p>
                 </div>
               )}
@@ -146,27 +147,28 @@ const Profile = ({ params }: { params: { id: string } }) => {
         <div className="w-full flex flex-col gap-4 h-[569px]">
           <Button
             className="bg-mythemes-secondarygreen hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
-            onClick={() => router.push(`/profile/${user?.id}/edit`)}
+            onClick={() => router.push(`user/profile/${user?.id}/edit`)}
           >
             <p>Edit Profile</p>
             <IoIosArrowForward />
           </Button>
           <Button
             className="bg-mythemes-secondarygreen hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
-            onClick={() => router.push(`/profile/${user?.id}/change-password`)}
+            onClick={() => router.push(`user/profile/${user?.id}/change-password`)}
           >
             <p>Change Password</p>
             <IoIosArrowForward />
           </Button>
-          <Button className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
-          onClick={() => router.push(`/order`)}
+          <Button
+            className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
+            onClick={() => router.push(`/order`)}
           >
             <p>Your Order</p>
             <IoIosArrowForward />
           </Button>
           <Button
             className="bg-mythemes-secondarygreen  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between rounded-full"
-            onClick={() => router.push(`/profile/${user?.id}/address`)}
+            onClick={() => router.push(`user/profile/${user?.id}/address`)}
           >
             <p>Your Address</p>
             <IoIosArrowForward />
@@ -178,7 +180,6 @@ const Profile = ({ params }: { params: { id: string } }) => {
             <LogOut />
             <p>Logout</p>
           </Button>
-
         </div>
       </div>
     </main>

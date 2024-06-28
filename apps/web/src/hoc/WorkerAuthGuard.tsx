@@ -27,7 +27,7 @@ export default function WorkerAuthGuard(Component: any) {
       }
       if (role !== 'WORKER' && role === 'CUSTOMER' && !isLoading) {
         toast.error("You don't have permission to access this page.");
-        redirect('/');
+        redirect('/user');
       }
       if (role !== 'WORKER' && role === 'OUTLET_ADMIN' && !isLoading) {
         toast.error("You don't have permission to access this page.");

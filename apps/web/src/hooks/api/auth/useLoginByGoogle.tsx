@@ -27,10 +27,10 @@ export default function useLoginByGoogle() {
         localStorage.setItem('token', data.token);
 
         toast.success('Login by Google Succes');
-        router.push('/');
+        router.push('/user');
       } catch (error) {
         if (error instanceof AxiosError) {
-          toast.error(error.response?.data);
+          toast.error(error.response?.data.message);
         }
       }
     },

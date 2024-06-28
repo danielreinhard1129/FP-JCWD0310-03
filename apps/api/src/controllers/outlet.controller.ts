@@ -3,7 +3,7 @@ import { deleteOutletService } from '@/services/outlet/deleteOutlet.service';
 import { getOutletService } from '@/services/outlet/getOutlet.service';
 import { getOutletListService } from '@/services/outlet/getOutletList.service';
 import { updateOutletService } from '@/services/outlet/updateOutlet.service';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, query, Request, Response } from 'express';
 
 export class OutletController {
   async createOutletController(
@@ -24,7 +24,10 @@ export class OutletController {
     next: NextFunction,
   ) {
     try {
-      const result = await getOutletListService();
+      const query = {
+        take: parseInt(req.query.take as string) || 100,
+      };
+      const result = await getOutletListService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);

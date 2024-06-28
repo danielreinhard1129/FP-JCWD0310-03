@@ -69,15 +69,19 @@ export class AuthController {
     next: NextFunction,
   ) {
     try {
-      const userId = req.body.user.id;
-      const tokenParams = req.body.token;
-      const { password } = req.body;
+      // const userId = req.body.user.id;
+      // const tokenParams = req.body.token;
+      // const { password } = req.body;
 
-      const result = await verificationService({
-        userId,
-        password,
-        tokenParams,
-      });
+      // const result = await verificationService({
+      //   userId,
+      //   password,
+      //   tokenParams,
+      // });
+
+      const userId = Number(req.body.user.id);
+      const password = req.body.password;
+      const result = await verificationService(password, userId);
       return res.status(200).send(result);
     } catch (error) {
       next(error);
@@ -132,4 +136,3 @@ export class AuthController {
     }
   }
 }
- 

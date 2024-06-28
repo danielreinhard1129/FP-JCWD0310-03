@@ -17,7 +17,7 @@ export const Header = () => {
   const logout = () => {
     localStorage.removeItem('token');
     dispatch(logoutAction());
-    router.push('/');
+    router.push('/login');
   };
 
   return (

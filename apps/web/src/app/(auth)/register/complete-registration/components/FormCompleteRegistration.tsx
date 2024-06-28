@@ -39,14 +39,10 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        {/* <PreviewImages
-          fileImages={initialValues.profilePic}
-          onRemoveImage={(idx: number) =>
-            form.setValue('profilePic', initialValues.profilePic.splice(idx, 1))
-          }
-        /> */}
-
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-3 mt-9 h-[480px] flex flex-col"
+      >
         <FormInput
           name="fullName"
           type="text"
@@ -68,7 +64,11 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
           placeholder="Entry Password"
           form={form}
         />
-        <Button type="submit" className="w-full bg-mythemes-maingreen">
+
+        <Button
+          type="submit"
+          className="w-full bg-mythemes-maingreen font-bold bottom-5 mt-24"
+        >
           Submit
         </Button>
       </form>

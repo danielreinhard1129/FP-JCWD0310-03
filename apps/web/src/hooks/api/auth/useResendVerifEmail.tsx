@@ -3,7 +3,6 @@
 // import { axiosInstance } from '@/lib/axios';
 import { User } from '@/types/user.type';
 import { AxiosError } from 'axios';
-
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -29,7 +28,7 @@ const useResendVerifEmail = () => {
       router.push('/');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
     } finally {
       setIsLoading(false);

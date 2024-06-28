@@ -16,7 +16,7 @@ export const ResendVerifEmail = async (id: number) => {
     const token = sign({ id: user.id }, appConfig.jwtSecretKey, {
       expiresIn: '1h',
     });
-    const expiresIn = new Date(new Date().getTime() + 1 * 1000);
+    const expiresIn = new Date(new Date().getTime() + 1 * 60 * 60 * 1000);
 
     await prisma.user.update({
       where: { id: user.id },

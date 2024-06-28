@@ -2,15 +2,14 @@ import { MIDTRANS_PUBLIC_CLIENT, MIDTRANS_SECRET } from '@/config';
 import prisma from '@/prisma';
 import { MidtransClient } from 'midtrans-node-client';
 
-
 const snap = new MidtransClient.Snap({
-    isProduction: false,
-    clientKey: MIDTRANS_PUBLIC_CLIENT,
-    serverKey: MIDTRANS_SECRET
-})
+  isProduction: false,
+  clientKey: MIDTRANS_PUBLIC_CLIENT,
+  serverKey: MIDTRANS_SECRET,
+});
 
 interface createPaymentArgs {
-    orderId: number
+  orderId: number;
 }
 
 export const createPaymentService = async (

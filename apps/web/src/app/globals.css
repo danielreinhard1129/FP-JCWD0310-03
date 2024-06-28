@@ -76,6 +76,10 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
+  /* styles.css */
+  .bg-hero {
+    background-image: url('../../public/kaitlyn-pixley-vpJ-Q16DKAg-unsplash.jpg');
+  }
 }
 
 @layer base {
