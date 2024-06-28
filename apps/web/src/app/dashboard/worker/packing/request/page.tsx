@@ -4,6 +4,7 @@ import useGetOrders from '@/hooks/api/order/useGetOrders';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
+import useGetUser from '@/hooks/api/user/useGetUser';
 
 
 const PackingRequest = () => {
@@ -17,6 +18,8 @@ const PackingRequest = () => {
     take: 10,
     filterStatus: String(OrderStatus.Laundry_Finished_Ironing)
   });
+
+  const {user} = useGetUser(id); 
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -44,6 +47,7 @@ const PackingRequest = () => {
               isBypassRequest={false}
               isBypassAccepted={false}
               isBypassRejected={false}
+              employeeWorkShift={user?.employee?.workShift}
             />
           )
         })}

@@ -33,7 +33,7 @@ const PackingOngoing = () => {
               key={index}
               workerId={id}
               orderId={orderWorker.orderId}
-              targetStatus={OrderStatus.Laundry_Finished_Packing}
+              targetStatus={OrderStatus.Awaiting_Payment}
               referenceNumber={orderWorker.order.orderNumber}
               fullName={orderWorker.order.pickupOrder.user.fullName}
               email={orderWorker.order.pickupOrder.user.email}

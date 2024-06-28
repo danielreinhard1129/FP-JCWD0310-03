@@ -1,6 +1,7 @@
 
+import { createDeliveryOrderService } from '@/services/deliveryOrder/createDeliveryOrder.service';
 import { getDeliveryOrdersService } from '@/services/deliveryOrder/getDeliveryOrders.service';
-import { updateDeliveryOrderService } from '@/services/deliveryOrder/updateDeliveryOrders.service';
+import { updateDeliveryOrderService } from '@/services/deliveryOrder/updateDeliveryOrder.service';
 import { NextFunction, Request, Response } from 'express';
 
 
@@ -23,6 +24,15 @@ export class DeliveryOrderController {
     }
   }
   
+  async createDeliveryOrderController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await createDeliveryOrderService(req.body);
+      res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async updateDeliveryOrderController(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await updateDeliveryOrderService(req.body);

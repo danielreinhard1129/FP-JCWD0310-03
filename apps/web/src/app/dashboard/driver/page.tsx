@@ -16,7 +16,9 @@ const DriverDashboard = () => {
           <h1 className="font-bold text-sm ">Welcome Back!</h1>
         </div>
         <div className="absolute right-0 top-1 my-auto flex h-8 rounded-full border border-gray-400 px-2">
+        <Link className="h-5 text-mythemes-maingreen my-auto" href={'/dashboard/driver/notification'} >
           <Bell className="h-5 text-mythemes-maingreen my-auto" />
+          </Link>
         </div>
       </div>
       <div className="h-40 bg-white rounded-xl shadow-md"></div>

@@ -7,17 +7,21 @@ import Link from 'next/link'
 import { useState } from 'react'
 import TablePickupOrder from './components/TablePickupOrder'
 import { PickupStatus } from '@/types/pickupOrder.type'
+import useGetUser from '@/hooks/api/user/useGetUser'
 
 const PickupOrderList = () => {
   const [page, setPage] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
+  const id = 0
   const { data: pickupOrders, meta, refetch } = useGetPickupOrders({
-    id: 0,
+    id: id,
     page,
     take: 5,
     pickupStatus: String(PickupStatus.Received_by_Outlet),
     isOrderCreated: Number(Boolean(false))
   });
+
+  const {user} = useGetUser(id);
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -57,6 +61,7 @@ const PickupOrderList = () => {
                   outlet={pickupOrder.outlet.outletName}
                   status={pickupOrder.pickupStatus}
                   createdAt={String(pickupOrder.createdAt)}
+                  employeeWorkShift={user?.employee?.workShift}
                 />
               );
             })}

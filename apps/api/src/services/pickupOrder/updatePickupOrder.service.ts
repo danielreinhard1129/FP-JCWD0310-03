@@ -1,10 +1,10 @@
 import prisma from '@/prisma';
-import { PickupStatus } from '@prisma/client';
+import { OrderStatus, PickupStatus } from '@prisma/client';
 
 interface UpdatePickupOrderBody {
-    shipmentOrderId: number,
-    driverId: number,
-    status: string
+  shipmentOrderId: number,
+  driverId: number,
+  status: string
 }
 export const updatePickupOrderService = async (
   body: UpdatePickupOrderBody,
@@ -21,13 +21,36 @@ export const updatePickupOrderService = async (
       throw new Error('User not Found!')
     }
 
-    return await prisma.pickupOrder.update({
+    let orderStatus
+
+    if (status == String(PickupStatus.On_The_Way_to_Client)) {
+      orderStatus = OrderStatus.Laundry_On_The_Way_To_Customer
+    }
+    if (status == String(PickupStatus.On_The_Way_to_Outlet)) {
+      orderStatus = OrderStatus.LAUNDRY_ON_THE_WAY_TO_OUTLET
+    }
+    if (status == String(PickupStatus.Received_by_Outlet)) {
+      orderStatus = OrderStatus.Laundry_Has_Arrived_At_Outlet
+    }
+
+    const updateOrder = await prisma.order.update({
+      where: { pickupOrderId: shipmentOrderId },
+      data: { orderStatus: orderStatus }
+    })
+
+    const updatePickupOrder = await prisma.pickupOrder.update({
       where: { id: shipmentOrderId },
-      data: { 
-        pickupStatus: status as PickupStatus, 
+      data: {
+        pickupStatus: status as PickupStatus,
         driverId: driverId
-    },
+      },
     });
+
+
+    return {
+      pickupOrder: updatePickupOrder,
+      order: updateOrder
+    }
 
   } catch (error) {
     throw error;

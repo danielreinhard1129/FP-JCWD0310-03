@@ -13,6 +13,7 @@ export class DeliveryOrderRouter {
 
   private initializeRoutes(): void {
     this.router.get('/', this.deliveryOrderController.getDeliveryOrdersController);
+    this.router.post('/', this.deliveryOrderController.createDeliveryOrderController);
     this.router.patch('/', this.deliveryOrderController.updateDeliveryOrderController);
   }
 

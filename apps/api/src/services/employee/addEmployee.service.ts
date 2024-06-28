@@ -1,15 +1,14 @@
 
+import { hashPassword } from '@/lib/bcrypt';
 import prisma from '@/prisma';
 import { EmployeeStation, EmployeeWorkShift, User } from '@prisma/client';
 
-// 
 interface AddEmployeeBody
     extends Pick<User, 'email' | 'fullName' | 'password' | 'role' | 'isVerify'> {
     workShift: EmployeeWorkShift;
     station: EmployeeStation;
     outletId: string;
 }
-
 
 export const addEmployeeService = async (
     body: AddEmployeeBody,
@@ -27,11 +26,11 @@ export const addEmployeeService = async (
 
         let IsSuperAdmin = false
 
-        if(role=="SUPER_ADMIN"){
+        if (role == "SUPER_ADMIN") {
             IsSuperAdmin = true
         }
 
-        //const hashedPassword = await hashPassword(password);
+        const hashedPassword = await hashPassword(password);
 
         //add generate referral code trial
 
@@ -39,7 +38,7 @@ export const addEmployeeService = async (
             data: {
                 email,
                 fullName,
-                password,
+                password: hashedPassword,
                 role,
                 isVerify,
             },

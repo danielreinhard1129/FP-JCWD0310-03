@@ -1,7 +1,7 @@
+import { createOrderPickupOrderService } from '@/services/pickupOrder/createPickupOrder.service';
 import { getPickupOrderService } from '@/services/pickupOrder/getPickupOrder.service';
 import { getPickupOrdersService } from '@/services/pickupOrder/getPickupOrders.service';
 import { updatePickupOrderService } from '@/services/pickupOrder/updatePickupOrder.service';
-import { PickupStatus } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
 
@@ -38,6 +38,15 @@ export class PickupOrderController {
   async updatePickupOrderController(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await updatePickupOrderService(req.body);
+      res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async createPickupOrderController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await createOrderPickupOrderService(req.body);
       res.status(200).send(result);
     } catch (error) {
       next(error);
