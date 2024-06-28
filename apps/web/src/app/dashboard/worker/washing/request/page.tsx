@@ -15,7 +15,7 @@ const WashingRequest = () => {
     id: id,
     page,
     take: 10,
-    filterStatus: String(OrderStatus.Laundry_Has_Arrived_At_Outlet)
+    filterStatus: String(OrderStatus.READY_TO_WASH)
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {

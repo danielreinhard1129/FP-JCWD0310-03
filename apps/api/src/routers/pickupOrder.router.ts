@@ -15,6 +15,7 @@ export class PickupOrderRouter {
   private initializeRoutes(): void {
     this.router.get('/', this.pickupOrderController.getPickupOrdersController);
     this.router.get('/:id', this.pickupOrderController.getPickupOrderController);
+    this.router.post('/', this.pickupOrderController.createPickupOrderController);
     this.router.patch('/', this.pickupOrderController.updatePickupOrderController);
   }
 

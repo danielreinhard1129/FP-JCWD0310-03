@@ -1,6 +1,6 @@
 'use client';
 import { useAppSelector } from '@/redux/hooks';
-import { CirclePlus, Home, Search, Shirt, User } from 'lucide-react';
+import { Bell, CirclePlus, Home, Search, Shirt, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const CreatePickupButton = () => {
@@ -44,7 +44,8 @@ const CreatePickupButton = () => {
           className="flex flex-col items-center gap-1 text-mythemes-maingreen cursor-pointer"
         />
 
-        <Search className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer" />
+        <Bell className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
+         onClick={() => router.push(`/notification`)}/>
 
         <User
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"

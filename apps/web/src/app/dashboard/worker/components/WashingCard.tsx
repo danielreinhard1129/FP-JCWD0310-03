@@ -1,10 +1,8 @@
 'use client'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import { OrderStatus } from '@/types/order.type';
 import { FC, useState } from 'react';
 import ItemCheckingDialog from './ItemCheckingDialog';
-import useUpdateOrderWorker from '@/hooks/api/orderWorker/useUpdateOrderWorker';
 
 interface WashingCardProps {
   key: number;
@@ -51,7 +49,6 @@ const WashingCard: FC<WashingCardProps> = ({
 
   const { updateOrderStatus } = useUpdateOrderStatus()
 
-
   const handleUpdate = async () => {
     try {
       await updateOrderStatus(values);
@@ -68,8 +65,6 @@ const WashingCard: FC<WashingCardProps> = ({
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
-
-
 
   return (
     <div key={key} className='relative flex flex-col gap-2 overflow-hidden shadow-md bg-white py-3 pl-5 pr-3 rounded-xl'>

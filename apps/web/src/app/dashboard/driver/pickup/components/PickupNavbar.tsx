@@ -16,7 +16,9 @@ const PickupNavbar = () => {
           <ChevronLeft className='h-6 my-auto' />
         </Link>
         <h1 className='font-bold mx-auto my-auto'>Your Pickup</h1>
-        <Bell className='absolute h-5 my-auto top-0.5 right-0' />
+        <Link className='absolute h-5 my-auto top-0.5 right-0' href={'/dashboard/driver/notification'} >
+          <Bell className='absolute h-5 my-auto top-0.5 right-0' />
+        </Link>
       </div>
       <div className='flex gap-2 text-center text-xs font-semibold justify-between'>
         <Link className={`w-1/4 rounded-t-xl p-1 active ${isActive('/dashboard/driver/pickup/request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={"/dashboard/driver/pickup/request"} >

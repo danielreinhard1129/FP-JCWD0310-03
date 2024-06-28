@@ -1,7 +1,6 @@
 import CreatePickupButton from '@/components/CreatePickupButton';
-import React from 'react';
-import { Footer } from '@/components/Footer';
 import 'leaflet/dist/leaflet.css';
+import React from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

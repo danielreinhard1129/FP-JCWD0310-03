@@ -19,29 +19,24 @@ export const createPaymentService = async (
     try {
         const { orderId } = body;
 
-        const existingOrderId = await prisma.order.findFirst({
+        const existingOrder = await prisma.order.findFirst({
             where: { id: orderId },
-            include: { pickupOrder: true, deliverOrder: true }
+            include: { pickupOrder: true, deliveryOrder: true }
         });
 
-        if (!existingOrderId) {
+        if (!existingOrder) {
             throw new Error('Order Not Found!');
         }
 
-        const Amount = existingOrderId.laundryPrice + (2 * existingOrderId.pickupOrder.pickupPrice)
+        if (!existingOrder.laundryPrice){
+            throw new Error('Order Not Yet Process by Admin')
+        }
 
-        const currentMonth = new Date().getMonth() + 1;
+        if (!existingOrder.deliveryOrder[0].deliveryPrice) {
+            throw new Error('No Delivery Order Found!');
+        }
 
-        const lastInvoice = await prisma.payment.findFirst({
-            where: {
-                invoiceNumber: {
-                    contains: `INV-${existingOrderId.pickupOrder.userId}-${currentMonth}-`
-                }
-            },
-            orderBy: {
-                invoiceNumber: 'desc'
-            }
-        });
+        const amount = existingOrder.laundryPrice + existingOrder.pickupOrder.pickupPrice + existingOrder.deliveryOrder[0].deliveryPrice
 
         const padNumber = (num: number, size: number): string => {
             let s = num.toString();
@@ -49,9 +44,23 @@ export const createPaymentService = async (
             return s;
         };
 
-        const getNextInvoiceNumber = (lastInvoice: { invoiceNumber: string } | null, paddingSize: number): string => {
+        const orderNumberParts = existingOrder.orderNumber.split('-');
+        const orderNumberPart = orderNumberParts.pop()
+
+        const lastInvoice = await prisma.payment.findFirst({
+            where: {
+                invoiceNumber: {
+                    contains: `INV-${padNumber(existingOrder.pickupOrder.userId,4)}-${orderNumberPart}-`
+                }
+            },
+            orderBy: {
+                invoiceNumber: 'desc'
+            }
+        });
+
+        const getNextInvoiceNumber = (lastInvoice: { invoiceNumber: string } | null): string => {
             if (!lastInvoice) {
-                return padNumber(1, paddingSize);
+                return padNumber(1, 4);
             }
 
             const invoiceParts = lastInvoice.invoiceNumber.split('-');
@@ -67,27 +76,25 @@ export const createPaymentService = async (
                 throw new Error('Last part of the invoice number is not a valid number');
             }
 
-            return padNumber(lastNumber + 1, paddingSize);
+            return padNumber(lastNumber + 1, 4);
         };
 
+        const nextIncrement = getNextInvoiceNumber(lastInvoice);
 
-        const paddingSize = 4;
-        const nextIncrement = getNextInvoiceNumber(lastInvoice, paddingSize);
-
-        const invoiceNumber = `INV-${existingOrderId.pickupOrder.userId}-${currentMonth}-${nextIncrement}`;
+        const invoiceNumber = `INV-${padNumber(existingOrder.pickupOrder.userId,4)}-${orderNumberPart}-${nextIncrement}`;
 
         const createPayment = await prisma.payment.create({
             data: {
                 orderId: orderId,
                 invoiceNumber: String(invoiceNumber),
-                amount: Amount,
+                amount: amount,
             }
         })
 
         const token = await snap.createTransactionToken({
             transaction_details: {
                 order_id: createPayment.invoiceNumber,
-                gross_amount: Amount
+                gross_amount: amount
             }
         })
 
@@ -95,8 +102,6 @@ export const createPaymentService = async (
             where: { id: createPayment.id },
             data: { snapToken: token }
         })
-
-
 
         return updatePaymentToken
     } catch (error) {
