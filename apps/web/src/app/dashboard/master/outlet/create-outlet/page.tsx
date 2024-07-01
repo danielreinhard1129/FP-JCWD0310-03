@@ -1,7 +1,10 @@
+'use client'
+
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import FormCreateOutlet from './components/FormCreateOutlet';
 import { Separator } from '@/components/ui/separator';
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 
 const CreateOutlet = () => {
   return (
@@ -20,4 +23,4 @@ const CreateOutlet = () => {
   );
 };
 
-export default CreateOutlet;
+export default SuperAdminGuard(CreateOutlet);

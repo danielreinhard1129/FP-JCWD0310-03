@@ -1,4 +1,4 @@
-import { MIDTRANS_PUBLIC_CLIENT, MIDTRANS_SECRET } from '@/config';
+import { MIDTRANS_PUBLIC_CLIENT, MIDTRANS_SECRET, NEXT_BASE_URL } from '@/config';
 import prisma from '@/prisma';
 import { MidtransClient } from 'midtrans-node-client';
 
@@ -90,16 +90,25 @@ export const createPaymentService = async (
             }
         })
 
-        const token = await snap.createTransactionToken({
+        const payload = {
             transaction_details: {
                 order_id: createPayment.invoiceNumber,
                 gross_amount: amount
-            }
-        })
+            },
+            // callbacks: {
+            // finish: `https://jcwd031003.purwadhikabootcamp.com`,
+            // error: `https://jcwd031003.purwadhikabootcamp.com`,
+            // pending: `https://jcwd031003.purwadhikabootcamp.com`
+            // }
+        }
+
+        const transaction = await snap.createTransaction(
+            payload
+        )        
 
         const updatePaymentToken = await prisma.payment.update({
             where: { id: createPayment.id },
-            data: { snapToken: token }
+            data: { snapToken: transaction.token, snapRedirectUrl: transaction.redirect_url}
         })
 
         return updatePaymentToken

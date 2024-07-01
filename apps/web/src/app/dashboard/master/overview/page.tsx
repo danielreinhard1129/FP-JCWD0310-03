@@ -1,3 +1,5 @@
+'use client'
+import SuperAdminGuard from '@/hoc/SuperAdminGuard'
 import React from 'react'
 
 const Overview = () => {
@@ -6,4 +8,4 @@ const Overview = () => {
   )
 }
 
-export default Overview
+export default SuperAdminGuard(Overview)

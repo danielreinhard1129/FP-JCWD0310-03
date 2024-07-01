@@ -1,10 +1,13 @@
 'use client'
-import Pagination from '@/components/Pagination';
-import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
-import { OrderStatus } from '@/types/order.type';
-import { useState } from 'react';
-import WashingCard from '../../components/WashingCard';
-import { EmployeeStation } from '@/types/employee.type';
+
+import useGetOrderWorkers from "@/hooks/api/orderWorker/useGetOrderWorkers";
+import { EmployeeStation } from "@/types/employee.type";
+import { useState } from "react";
+import WashingCard from "../../components/WashingCard";
+import { OrderStatus } from "@/types/order.type";
+import Pagination from "@/components/Pagination";
+import WorkerAuthGuard from "@/hoc/WorkerAuthGuard";
+
 
 
 const IroningHistory = () => {
@@ -23,7 +26,6 @@ const IroningHistory = () => {
     setPage(selected + 1);
   };
 
-
   return (
     <div className='min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6'>
       <div className='flex flex-col gap-3'>
@@ -33,7 +35,7 @@ const IroningHistory = () => {
               key={index}
               workerId={id}
               orderId={orderWorker.orderId}
-              targetStatus={OrderStatus.Laundry_Being_Ironed}
+              targetStatus={OrderStatus.BEING_IRONED}
               referenceNumber={orderWorker.order.orderNumber}
               fullName={orderWorker.order.pickupOrder.user.fullName}
               email={orderWorker.order.pickupOrder.user.email}
@@ -61,4 +63,4 @@ const IroningHistory = () => {
   )
 }
 
-export default IroningHistory
+export default WorkerAuthGuard(IroningHistory)

@@ -4,6 +4,7 @@ import useGetDeliveryOrders from '@/hooks/api/deliveryOrder/useGetDeliveryOrders
 import { DeliveryStatus } from '@/types/deliveryOrder.type';
 import { useState } from 'react';
 import ShipmentCard from '../../components/CardShipment';
+import DriverAuthGuard from '@/hoc/DriverAuthGuard';
 
 const DeliveryOrderHistory = () => {
   const [page, setPage] = useState<number>(1);
@@ -11,7 +12,7 @@ const DeliveryOrderHistory = () => {
   const id = 4;
   const { data: deliveryOrders, meta: meta, refetch: refetch } = useGetDeliveryOrders({
     id: id,
-    deliveryStatus: String(DeliveryStatus.Received_by_Client),
+    deliveryStatus: String(DeliveryStatus.RECEIVED_BY_CUSTOMER),
     page: page,
     take: 10,
   });
@@ -29,7 +30,7 @@ const DeliveryOrderHistory = () => {
               key={index}
               driverId={id}
               shipmentOrderId={deliveryOrder.id}
-              status={DeliveryStatus.Received_by_Client}
+              status={DeliveryStatus.RECEIVED_BY_CUSTOMER}
               referenceNumber={deliveryOrder.deliveryNumber}
               fullName={deliveryOrder.user.fullName}
               email={deliveryOrder.user.email}
@@ -52,4 +53,4 @@ const DeliveryOrderHistory = () => {
   )
 }
 
-export default DeliveryOrderHistory
+export default DriverAuthGuard(DeliveryOrderHistory)

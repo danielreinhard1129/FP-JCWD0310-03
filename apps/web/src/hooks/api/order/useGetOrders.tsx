@@ -10,6 +10,9 @@ interface IGetOrdersQuery extends IPaginationQueries {
   id?: number;
   filterOutlet?: string,
   filterStatus?: string,
+  filterDate?: Date,
+  search?: string,
+  filterCategory?: string
 }
 
 const useGetOrders = (queries: IGetOrdersQuery) => {
@@ -35,9 +38,9 @@ const useGetOrders = (queries: IGetOrdersQuery) => {
   }
 
   useEffect(() => {
-    getOrders();
+    getOrders();      
 
-  }, [queries?.filterOutlet, queries?.filterStatus, queries?.sortOrder, queries?.page, queries.id]);
+  }, [queries.filterCategory ,queries.search, queries.filterDate ,queries?.filterOutlet, queries?.filterStatus, queries?.sortOrder, queries?.page, queries.id]);
 
   return { data, isLoading, meta, refetch: getOrders };
 };

@@ -14,13 +14,13 @@ export const createOrderWorkerService = async (
 
     let station
 
-    if(orderStatus == String(OrderStatus.Laundry_Being_Washed)){
+    if(orderStatus == String(OrderStatus.BEING_WASHED)){
         station = EmployeeStation.WASHING
     }
-    if(orderStatus == String(OrderStatus.Laundry_Being_Ironed)){
+    if(orderStatus == String(OrderStatus.BEING_IRONED)){
         station = EmployeeStation.IRONING
     }
-    if(orderStatus == String(OrderStatus.Laundry_Being_Packed)){
+    if(orderStatus == String(OrderStatus.BEING_PACKED)){
         station = EmployeeStation.PACKING
     }
 

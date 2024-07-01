@@ -14,7 +14,6 @@ import { ValidationSchema } from '../validationSchema';
 import dynamic from 'next/dynamic';
 const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
 
-interface AddressProps {}
 
 const FormCreateOutlet = () => {
   const { createOutlet } = useCreateOutlet();

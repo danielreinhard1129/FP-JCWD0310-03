@@ -5,6 +5,7 @@ import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import useGetUser from '@/hooks/api/user/useGetUser';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 
 
 const PackingRequest = () => {
@@ -16,7 +17,7 @@ const PackingRequest = () => {
     id: id,
     page,
     take: 10,
-    filterStatus: String(OrderStatus.Laundry_Finished_Ironing)
+    filterStatus: String(OrderStatus.IRONING_COMPLETED)
   });
 
   const {user} = useGetUser(id); 
@@ -35,7 +36,7 @@ const PackingRequest = () => {
               key={index}
               workerId={id}
               orderId={order.id}
-              targetStatus={OrderStatus.Laundry_Being_Packed}
+              targetStatus={OrderStatus.BEING_PACKED}
               referenceNumber={order.orderNumber}
               fullName={order.pickupOrder?.user?.fullName}
               email={order.pickupOrder?.user?.email}
@@ -64,4 +65,4 @@ const PackingRequest = () => {
   )
 }
 
-export default PackingRequest
+export default WorkerAuthGuard(PackingRequest)

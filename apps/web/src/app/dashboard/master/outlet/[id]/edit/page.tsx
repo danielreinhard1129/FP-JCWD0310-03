@@ -7,6 +7,7 @@ import useUpdateOutlet from '@/hooks/api/outlet/useUpdateOutlet';
 import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
 import { OutletType } from '@/types/outlet.type';
 import { getChangedValues } from '@/utils/getChangeValues';
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 
 interface UpdateOutletArgs {
   outletName: string;
@@ -60,4 +61,4 @@ const EditOutlet = ({ params }: { params: { id: number } }) => {
   );
 };
 
-export default EditOutlet;
+export default SuperAdminGuard(EditOutlet);

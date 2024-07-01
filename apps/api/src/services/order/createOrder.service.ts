@@ -35,7 +35,7 @@ export const CreateOrderService = async (
             data: {
                 weight: Number(weight),
                 laundryPrice: Number(weight * 6000),
-                orderStatus: OrderStatus.READY_TO_WASH
+                orderStatus: OrderStatus.READY_FOR_WASHING
             },
         });
 

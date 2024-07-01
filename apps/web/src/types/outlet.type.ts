@@ -1,5 +1,6 @@
 import { Address } from './address.type';
 import { Employee } from './employee.type';
+import { PickupOrder } from './pickupOrder.type';
 
 export enum OutletType {
   MAIN = 'MAIN',
@@ -11,10 +12,12 @@ export interface Outlet {
   outletName: string;
   outletType: OutletType;
   createdAt: Date;
+  deletedAt?: Date | null;
   updatedAt: Date;
   isDelete: boolean;
-  Employee?: Employee;
+  employee: Employee[];
   address: Address[];
+  pickupOrder: PickupOrder[];
 }
 
 export interface IFormOutlet {

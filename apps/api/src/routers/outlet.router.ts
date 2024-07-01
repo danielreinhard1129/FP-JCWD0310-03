@@ -17,7 +17,10 @@ export class OutletRouter {
     this.router.post('/', this.outletController.createOutletController);
     this.router.get('/', this.outletController.getOutletListController);
     this.router.get('/:id', this.outletController.getOutletController);
-    this.router.patch('/:id', this.outletController.updateOutletController);
+    this.router.patch(
+      '/:id',
+      this.outletController.updateOutletController,
+    );
     this.router.delete('/:id', this.outletController.deleteOutletController);
   }
 

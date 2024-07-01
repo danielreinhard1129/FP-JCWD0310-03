@@ -1,19 +1,26 @@
 import { Address } from './address.type';
+import { DeliveryOrder } from './deliveryOrder.type';
 import { Employee } from './employee.type';
+import { UserNotification } from './notification.type';
+import { PickupOrder } from './pickupOrder.type';
 
 export interface User {
-  id?: number;
-  fullName?: string;
-  email?: string;
-  password?: string;
-  isVerify?: boolean;
-  role?: string;
-  profilePic?: string;
-  createdAt?: Date;
-  isDelete?: boolean;
-  employee?: Employee;
-  address?: Address[];
-  tokenExpiresIn?: Date;
+  id: number;
+  fullName: string;
+  email: string;
+  password: string;
+  isVerify: boolean;
+  role: Role;
+  profilePic: string; 
+  token: string;
+  tokenExpiresIn: Date; 
+  createdAt: Date;
+  isDelete: boolean;
+  employee: Employee; 
+  address: Address[];
+  pickupOrder: PickupOrder[];
+  deliveryOrder: DeliveryOrder[];
+  userNotification: UserNotification[];
 }
 
 export enum Role {

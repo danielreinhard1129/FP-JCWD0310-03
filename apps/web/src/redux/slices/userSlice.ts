@@ -2,7 +2,10 @@ import { Role, User } from '@/types/user.type';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { date } from 'zod';
 
-const initialState: Partial<User> = {
+const initialState: Pick<
+  User,
+  'id'|'fullName'|'email'|'role'|'isVerify'|'profilePic'|'tokenExpiresIn'
+> = {
   id: 0,
   fullName: '',
   email: '',
