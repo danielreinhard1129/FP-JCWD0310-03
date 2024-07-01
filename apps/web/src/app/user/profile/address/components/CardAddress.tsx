@@ -21,10 +21,20 @@ interface Address {
   id: number;
   addressLine?: string;
   isPrimary?: string | null;
+  refetch: () => void;
 }
 
-const CardAddress: FC<Address> = ({ addressLine, isPrimary, id }) => {
+const CardAddress: FC<Address> = ({ addressLine, isPrimary, id, refetch }) => {
   const { deleteUserAddress } = useDeleteUserAddress(id);
+
+  const handleDelete = async () => {
+    try {
+      await deleteUserAddress();
+      refetch();
+    } catch (error) {
+      console.error('Failed to delete address', error);
+    }
+  };
   return (
     <Card className=" p-4 shadow-lg flex flex-col gap-4 ">
       <div className=" flex flex-col gap-2">
@@ -55,7 +65,7 @@ const CardAddress: FC<Address> = ({ addressLine, isPrimary, id }) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => deleteUserAddress()}>
+              <AlertDialogAction onClick={handleDelete}>
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>

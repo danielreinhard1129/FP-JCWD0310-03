@@ -7,7 +7,7 @@ import { sign } from 'jsonwebtoken';
 export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
   try {
     const { email, password } = body;
-
+ 
     const user = await prisma.user.findFirst({
       where: { email: email },
     });

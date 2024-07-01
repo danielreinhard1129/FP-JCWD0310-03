@@ -17,7 +17,7 @@ export class AddressController {
 
       return res.status(200).send(result);
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -29,7 +29,7 @@ export class AddressController {
 
       return res.status(200).send(result);
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -45,7 +45,7 @@ export class AddressController {
 
       return res.status(200).send(result);
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -61,7 +61,7 @@ export class AddressController {
 
       return res.status(200).send(result);
     } catch (error) {
-      next();
+      next(error);
     }
   }
 }

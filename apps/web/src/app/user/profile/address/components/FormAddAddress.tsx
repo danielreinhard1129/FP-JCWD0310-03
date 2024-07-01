@@ -4,25 +4,19 @@ import FormCheckBox from '@/components/FormCheckBock';
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
+  Form
 } from '@/components/ui/form';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
 import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { boolean, z } from 'zod';
+import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
-import { Checkbox } from '@/components/ui/checkbox';
-import { values } from 'lodash';
 
 const FormAddress = () => {
   const { id } = useAppSelector((state) => state.user);
-  const { updateUser, isLoading } = useUpdateUser(id);
+  const { updateUser, isLoading } = useUpdateUser();
   const [locationData, setLocationData] = useState({
     addressLine: '',
     city: '',

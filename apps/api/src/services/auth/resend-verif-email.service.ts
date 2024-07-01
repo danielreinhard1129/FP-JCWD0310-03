@@ -20,7 +20,7 @@ export const ResendVerifEmail = async (id: number) => {
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { token: token, tokenExpiresIn: expiresIn },
+      data: { token: token, tokenExpiresIn: expiresIn.toISOString() },
     });
 
     const confirmationLink =

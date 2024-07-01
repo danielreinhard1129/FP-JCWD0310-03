@@ -21,13 +21,13 @@ interface AddressResult {
 
 const useGetAddressById = (id: number) => {
   const { axiosInstance } = useAxios();
-  const [data, setData] = useState<AddressResult>();
+  const [data, setData] = useState<AddressResult | null>();
   const [isLoading, setIsLoading] = useState(true);
 
   const getAddressById = async () => {
     try {
-      const { data } = await axiosInstance.get(`/address/${id}`);
-      setData(data);
+      const response = await axiosInstance.get(`/address/${id}`);
+      setData(response.data);
     } catch (error) {
       if (error instanceof AxiosError) {
         // TODO : replace console.log with toast

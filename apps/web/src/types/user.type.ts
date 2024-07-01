@@ -2,15 +2,15 @@ import { Address } from './address.type';
 import { Employee } from './employee.type';
 
 export interface User {
-  id: number;
-  fullName: string;
-  email: string;
+  id?: number;
+  fullName?: string;
+  email?: string;
   password?: string;
   isVerify?: boolean;
-  role: string;
+  role?: string;
   profilePic?: string;
-  createdAt: Date;
-  isDelete: boolean;
+  createdAt?: Date;
+  isDelete?: boolean;
   employee?: Employee;
   address?: Address[];
   tokenExpiresIn?: Date;
@@ -25,13 +25,13 @@ export enum Role {
 }
 
 export interface IFormUser {
-  fullName: string;
-  email: string;
-  password: string;
+  fullName?: string;
+  email?: string;
+  password?: string;
   profilePic?: File[];
   newPassword?: string | null;
-  addressLine: string;
-  city: string;
+  addressLine?: string;
+  city?: string;
   isPrimary: boolean;
   latitude?: string;
   longitude?: string;

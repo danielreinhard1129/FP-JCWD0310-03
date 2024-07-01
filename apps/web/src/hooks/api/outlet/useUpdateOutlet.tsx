@@ -10,7 +10,6 @@ import { useState } from 'react';
 interface UpdateOutletArgs {
   outletName: string;
   outletType: string;
-  outletImage: File[];
   addressLine: string;
   city: string;
 }
@@ -22,8 +21,7 @@ const useUpdateOutlet = (id: number) => {
   const updateOutlet = async (payload: Partial<UpdateOutletArgs>) => {
     setIsloading(true);
     try {
-      const { outletName, outletType, outletImage, addressLine, city } =
-        payload;
+      const { outletName, outletType, addressLine, city } = payload;
 
       const createOutletForm = new FormData();
 
@@ -31,9 +29,6 @@ const useUpdateOutlet = (id: number) => {
       if (outletType) createOutletForm.append('outletType', outletType);
       if (addressLine) createOutletForm.append('addressLine', addressLine);
       if (city) createOutletForm.append('city', city);
-      outletImage?.forEach((file: FileWithPath) => {
-        createOutletForm.append('outletImage', file);
-      });
 
       await axiosInstance.patch<Outlet>(`/outlets/${id}`, createOutletForm);
 

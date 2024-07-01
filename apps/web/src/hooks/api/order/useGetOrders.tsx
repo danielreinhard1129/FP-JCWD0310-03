@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetOrdersQuery extends IPaginationQueries {
-  id: number;
+  id?: number;
   filterOutlet?: string,
   filterStatus?: string,
 }

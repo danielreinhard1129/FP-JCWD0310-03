@@ -28,14 +28,16 @@ const Navbar = () => {
   return (
     <>
       <div className="md:block hidden">
-        <div className="h-12 mt-3 absolute flex justify-between place-items-center container ">
-          <div className="w-28">
+        <div className="left-0 h-12 mt-3 absolute flex justify-between place-items-center container ">
+          <div className="w-28 ">
             <Image alt="logo" src={logo} />
           </div>
-          <div className="flex gap-16 font-bold text-white text-lg">
-            <div>Home</div>
-            <div>About</div>
-            <div>Feature</div>
+          <div className="flex gap-16 font-bold text-white text-lg ml-28">
+            <div className="cursor-pointer" onClick={() => router.push('/')}>
+              Home
+            </div>
+            <div>Services</div>
+            <div>Go to apps</div>
           </div>
           <div className="flex gap-6 font-bold text-white text-xl">
             {Boolean(id) ? (
@@ -47,10 +49,16 @@ const Navbar = () => {
               </Button>
             ) : (
               <>
-                <Button className="bg-transparent hover:bg-mythemes-secondarygreen hover:text-mythemes-maingreen font-bold text-white text-lg rounded-xl">
+                <Button
+                  className="bg-transparent hover:bg-mythemes-secondarygreen hover:text-mythemes-maingreen font-bold text-white text-lg rounded-xl"
+                  onClick={() => router.push('/login')}
+                >
                   Sign in
                 </Button>
-                <Button className="bg-mythemes-maingreen hover:bg-mythemes-secondarygreen hover:text-mythemes-maingreen font-bold text-white text-lg rounded-xl">
+                <Button
+                  className="bg-mythemes-maingreen hover:bg-mythemes-secondarygreen hover:text-mythemes-maingreen font-bold text-white text-lg rounded-xl"
+                  onClick={() => router.push('/register')}
+                >
                   Sign up
                 </Button>
               </>
@@ -58,6 +66,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
       <div className="md:hidden ">
         <div className="h-12 mt-3 absolute flex justify-between place-items-center container ">
           <div className="w-28">
@@ -85,30 +94,22 @@ const Navbar = () => {
                   </DropdownMenuItem>
                 ) : (
                   <>
-                    <DropdownMenuItem className="text-mythemes-maingreen font-bold">
+                    <DropdownMenuItem
+                      className="text-mythemes-maingreen font-bold"
+                      onClick={() => router.push('/register')}
+                    >
                       Sign Up
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="font-bold">
+                    <DropdownMenuItem
+                      className="font-bold"
+                      onClick={() => router.push('/login')}
+                    >
                       Sign In
                     </DropdownMenuItem>
                   </>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* <Sheet>
-              <SheetTrigger>
-                <Menu />
-              </SheetTrigger>
-              <SheetContent className="opacity-70 font-bold">
-                <div className="text-3xl text-center">Menu</div>
-                <div className="flex flex-col gap-6 mt-12 text-xl">
-                  <div>Home</div>
-                  <div>About Us</div>
-                  <div>Features</div>
-                </div>
-              </SheetContent>
-            </Sheet> */}
           </div>
         </div>
       </div>

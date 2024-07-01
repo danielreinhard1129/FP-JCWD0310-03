@@ -11,8 +11,8 @@ interface WashingCardProps {
   orderId: number;
   targetStatus: string;
   referenceNumber: string
-  fullName: string
-  email: string
+  fullName?: string
+  email?: string
   weight: number
   refetch: () => void
   buttonLabel: string

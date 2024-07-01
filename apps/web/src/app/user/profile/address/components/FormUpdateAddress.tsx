@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
@@ -16,12 +16,12 @@ interface FormUpdateAddress {
   city: string;
   latitude: string;
   longitude: string;
-  isPrimary: boolean;
+  isPrimary?: boolean;
 }
 
 interface FormEditAddressProps {
   isLoading: boolean;
-  onSubmit: any;
+  onSubmit: (data: FormUpdateAddress) => void;
   initialValues: FormUpdateAddress;
 }
 
@@ -45,6 +45,10 @@ const FormUpdateAddress: FC<FormEditAddressProps> = ({
     resolver: zodResolver(ValidationSchema),
     defaultValues: initialValues,
   });
+
+  // useEffect(() => {
+  //   form.reset(initialValues);
+  // }, [initialValues, form]);
 
   const onLocationSelect = (location: any) => {
     setLocationData(location);

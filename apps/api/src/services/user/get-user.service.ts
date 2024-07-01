@@ -1,9 +1,9 @@
 import prisma from '@/prisma';
 
-export const getUserService = async (id: number) => {
+export const getUserService = async (userId: number) => {
   try {
     const user = await prisma.user.findFirst({
-      where: { id },
+      where: { id: userId },
       include: { address: true, employee: true },
     });
 

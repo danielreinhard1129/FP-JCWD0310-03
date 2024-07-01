@@ -10,7 +10,7 @@ import AddAddress from './components/AddAddress';
 
 const UserAddress = () => {
   const { id } = useAppSelector((state) => state.user);
-  const { address, isLoading, refetch } = useGetUserAddress(id);
+  const { address, isLoading, refetch } = useGetUserAddress(Number(id));
   const router = useRouter();
 
   return (
@@ -33,11 +33,12 @@ const UserAddress = () => {
             key={index}
             addressLine={address.addressLine}
             isPrimary={address.isPrimary === true ? 'Primary' : ''}
+            refetch={refetch}
           />
         ))}
       </div>
     </main>
   );
-}; 
+};
 
 export default UserAddress;

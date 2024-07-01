@@ -10,7 +10,6 @@ export interface Outlet {
   id: number;
   outletName: string;
   outletType: OutletType;
-  outletImage: string;
   createdAt: Date;
   updatedAt: Date;
   isDelete: boolean;
@@ -21,7 +20,6 @@ export interface Outlet {
 export interface IFormOutlet {
   outletName: string;
   outletType: OutletType;
-  outletImage: File[];
   address: {
     addressLine: string;
     city: string;

@@ -31,7 +31,7 @@ module.exports = {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1536px',
+        '2xl': '1800px',
       },
     },
     extend: {
@@ -71,8 +71,13 @@ module.exports = {
         },
 
         mythemes: {
-          maingreen: '#116A7B',
-          secondarygreen: '#C2DEDC',
+          mainYellow: '#FDDE55',
+          secondaryYellow: '#FEEFAD',
+          maingreen: '#03AED2',
+          secondaryblue: '#68D2E8',
+          secondarygreen: '#e3f6f5',
+          tertiarygreen: '#bae8e8',
+          white: '#fffffe',
           grey: '#F8F9FB',
           taubmans: '#ECE5C7',
           dimgrey: '#CDC2AE',

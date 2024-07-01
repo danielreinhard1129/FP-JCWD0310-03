@@ -90,7 +90,6 @@ model Outlet {
   id          Int           @id @default(autoincrement())
   outletName  String
   outletType  OutletType
-  outletImage String?
   createdAt   DateTime      @default(now())
   deletedAt   DateTime?
   updatedAt   DateTime      @updatedAt
@@ -268,6 +267,7 @@ model Payment {
   id              Int           @id @default(autoincrement())
   invoiceNumber   String        @unique
   amount          Int
+  paymentMethode  String?
   paymentStatus   PaymentStatus @default(PENDING)
   snapToken       String?
   snapRedirectUrl String?
@@ -280,8 +280,9 @@ model Payment {
 }
 
 enum PaymentStatus {
-  PENDING
-  COMPLETED
-  FAILED
+  SUCCESSED
+  CANCELLED
+  DENIED
   EXPIRED
+  PENDING
 }

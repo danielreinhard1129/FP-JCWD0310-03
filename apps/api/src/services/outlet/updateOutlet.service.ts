@@ -1,13 +1,8 @@
 import prisma from '@/prisma';
-import { UserRole } from '@/types/user.type';
-import { Employee, Outlet } from '@prisma/client';
-import fs from 'fs';
-import { join } from 'path';
+import { Outlet } from '@prisma/client';
 
-const defaultDir = '../../../public/images';
 
-interface UpdateOutletArgs
-  extends Pick<Outlet, 'outletName' | 'outletType' | 'outletImage'> {
+interface UpdateOutletArgs extends Pick<Outlet, 'outletName' | 'outletType'> {
   addressLine: string;
   city: string;
   latitude?: string;
@@ -17,18 +12,10 @@ interface UpdateOutletArgs
 export const updateOutletService = async (
   id: number,
   body: Partial<UpdateOutletArgs>,
-  file: Express.Multer.File,
 ) => {
   try {
-    const {
-      outletName,
-      outletType,
-      outletImage,
-      addressLine,
-      city,
-      latitude,
-      longitude,
-    } = body;
+    const { outletName, outletType, addressLine, city, latitude, longitude } =
+      body;
 
     const outlet = await prisma.outlet.findFirst({
       where: { id },
@@ -46,22 +33,12 @@ export const updateOutletService = async (
       where: { outletId: id },
     });
 
-    if (file) {
-      body.outletImage = `/images/${file.filename}`;
-      const imagePath = join(__dirname, '../../../public' + outlet.outletImage);
-
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-      }
-    }
-
     const update = await prisma.$transaction(async (tx) => {
       const updateOutlet = await tx.outlet.update({
         where: { id },
         data: {
           outletName: outletName,
           outletType: outletType,
-          outletImage: outletImage,
         },
       });
 
@@ -79,12 +56,6 @@ export const updateOutletService = async (
 
     return update;
   } catch (error) {
-    const imagePath = join(__dirname, defaultDir + file?.filename);
-
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
-    }
-
     throw error;
   }
 };

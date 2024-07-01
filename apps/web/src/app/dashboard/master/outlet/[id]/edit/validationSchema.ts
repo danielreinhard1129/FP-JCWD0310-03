@@ -25,10 +25,4 @@ export const ValidationSchema = z.object({
     .min(2, {
       message: 'Address must be at least 2 characters.',
     }),
-  outletImage: z
-    .array(z.any())
-    .min(1, 'Outlet Image is Required')
-    .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
-      message: 'Each file must be less than 1 MB.',
-    }),
 });

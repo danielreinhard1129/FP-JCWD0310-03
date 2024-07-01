@@ -6,6 +6,7 @@ import { getChangedValues } from '@/utils/getChangeValues';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import FormChangePassword from './components/FormChangePasswor';
+import { useAppSelector } from '@/redux/hooks';
 
 interface IFormEditUser {
   password?: string;
@@ -13,9 +14,10 @@ interface IFormEditUser {
   confirmPassword?: string;
 }
 
-const ChangePassword = ({ params }: { params: { id: string } }) => {
-  const { user, isLoading: isLoadingGetUser } = useGetUser(Number(params.id));
-  const { updateUser, isLoading } = useUpdateUser(Number(params.id));
+const ChangePassword = () => {
+  const { id } = useAppSelector((state) => state.user);
+  const { user, isLoading: isLoadingGetUser } = useGetUser(Number(id));
+  const { updateUser, isLoading } = useUpdateUser();
 
   const router = useRouter();
 

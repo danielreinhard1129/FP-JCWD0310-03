@@ -2,7 +2,7 @@
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import FormEditOutlet from './components/FormEditOutlet';
+import FormEditOutlet from '../components/FormEditOutlet';
 import useUpdateOutlet from '@/hooks/api/outlet/useUpdateOutlet';
 import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
 import { OutletType } from '@/types/outlet.type';
@@ -11,7 +11,6 @@ import { getChangedValues } from '@/utils/getChangeValues';
 interface UpdateOutletArgs {
   outletName: string;
   outletType: string;
-  outletImage: File[];
   addressLine: string;
   city: string;
 }
@@ -25,7 +24,6 @@ const EditOutlet = ({ params }: { params: { id: number } }) => {
   const initialValues = {
     outletName: outlet?.outletName || '',
     outletType: outlet?.outletType || '',
-    outletImage: [],
     addressLine: outlet?.address[0].addressLine || '',
     city: outlet?.address[0].city || '',
   };

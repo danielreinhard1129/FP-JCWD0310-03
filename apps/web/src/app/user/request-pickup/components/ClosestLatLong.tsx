@@ -4,6 +4,7 @@
 // import useGetOutletCoord from '@/hooks/api/outlet/useGetOutletCoord';
 // import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 // import { Label } from '@/components/ui/label';
+// import { Outlet } from '@/types/outlet.type';
 
 // interface Location {
 //   id: number;
@@ -40,6 +41,7 @@
 
 //     return vectorDistance(dx, dy);
 //   }
+
 //   const sortedLocations = [...locationData].sort((a, b) => {
 //     const distanceA = locationDistance(targetLocation, a);
 //     const distanceB = locationDistance(targetLocation, b);
@@ -52,26 +54,24 @@
 // interface ClosestLatLongProps {
 //   targetLocation: TargetLocation;
 //   onSelect: (id: string) => void;
-//   selectedOutletId: string | null;
-//   refetch: () => void;
-//   setSelectedOutletId: (value: string) => void;
+//   dataOutles: Outlet;
+//   selectedOutlet:
+//   setSelectedOutlet: Location;
 // }
 
 // const ClosestLatLong: React.FC<ClosestLatLongProps> = ({
 //   targetLocation,
 //   onSelect,
-//   selectedOutletId,
-//   refetch,
-//   setSelectedOutletId,
+//   dataOutles,
+//   selectedOutlet,
+//   setSelectedOutlet,
 // }) => {
-//   const { dataOutles, isLoading } = useGetOutletCoord();
 //   const [locationData, setLocationData] = useState<Location[]>([]);
-//   // console.log(dataOutles);
 
 //   useEffect(() => {
-//     if (dataOutles && dataOutles.data) {
-//       const formattedLocations: Location[] = dataOutles.data.flatMap((data) =>
-//         data.address.map((address) => ({
+//     if (dataOutles) {
+//       const formattedLocations = dataOutles.flatMap((data) =>
+//         data.address.map((address: any) => ({
 //           id: Number(address.outletId),
 //           latitude: address.latitude,
 //           longitude: address.longitude,
@@ -83,28 +83,9 @@
 //     }
 //   }, [dataOutles]);
 
-//   // useEffect(() => {
-//   //   const index = dataOutles?.data.findIndex((outlet) => outlet.id === 5);
-//   //   if (index != undefined) {
-//   //     selectedOutlet(dataOutles?.data[index].address);
-//   //     console.log('dari compp', dataOutles?.data[index].address);
-//   //   }
-//   // }, [onSelect]);
-
-//   // useEffect(() => {
-//   //   // Pastikan dataOutles.data tidak null atau undefined
-//   //   if (dataOutles?.data) {
-//   //     const selectedOutlet = dataOutles.data.find(outlet => outlet.id === onSelect);
-//   //     if (selectedOutlet) {
-//   //       // Lakukan sesuatu dengan selectedOutlet.id
-//   //       console.log('Selected outlet ID:', selectedOutlet.id);
-//   //     }
-//   //   }
-//   // }, [onSelect, dataOutles]);
-
-//   if (isLoading) {
-//     return <div>Loading...</div>;
-//   }
+//   // if (isLoading) {
+//   //   return <div>Loading...</div>;
+//   // }
 
 //   if (!locationData || locationData.length === 0) {
 //     return <div>No locations found.</div>;
@@ -116,13 +97,9 @@
 //     3,
 //   );
 
-//   // const handleChange = async (value: string) => {
-//   //   await onSelect(String(value)), await setSelectedOutletId(value), refetch();
-//   // };
-//   const handleChange = async (value: string) => {
-//     await onSelect(value);
+//   const handleChange = (value: string) => {
+//     onSelect(value);
 //     setSelectedOutletId(String(value));
-//     refetch();
 //   };
 
 //   if (!closestLocationsList || closestLocationsList.length === 0) {
@@ -131,7 +108,7 @@
 
 //   return (
 //     <div>
-//       <RadioGroup value={selectedOutletId || ''} onValueChange={handleChange}>
+//       <RadioGroup value={selectedOutlet || ''} onValueChange={handleChange}>
 //         {closestLocationsList.map((closest) => (
 //           <div
 //             className="w-full h-20 p-2 border rounded-xl place-items-center shadow-sm grid grid-cols-9 gap-7"
@@ -151,7 +128,7 @@
 //                 <p className="text-xs text-left line-clamp-1 font-bold text-gray-500">
 //                   {closest.addressLine}
 //                 </p>
-//                 <p>{Number(closest.id)}</p>
+//                 <p>{closest.id}</p>
 //               </Label>
 //             </div>
 //           </div>
@@ -166,10 +143,25 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import useGetOutletCoord from '@/hooks/api/outlet/useGetOutletCoord';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { Outlet } from '@/types/outlet.type';
 
+interface Component {
+  latitude: string;
+  longitude: string;
+  addressLine: string;
+  id: number;
+  outletId: number;
+}
+interface Data {
+  address: Component[];
+  outletName: string;
+  id: number;
+}
+interface OpenCageData {
+  data: Data[];
+}
 interface Location {
   id: number;
   latitude: string;
@@ -217,26 +209,24 @@ const closestLocations = (
 
 interface ClosestLatLongProps {
   targetLocation: TargetLocation;
-  onSelect: (id: string) => void;
-  selectedOutletId: string | null;
-  refetch: () => void;
-  setSelectedOutletId: (value: string) => void;
+  dataOutles: OpenCageData | null;
+  selectedOutlet: Data | null;
+  // setSelectedOutlet: Outlet | null;
+  setSelectedOutlet: (outlet: Data) => void;
 }
 
 const ClosestLatLong: React.FC<ClosestLatLongProps> = ({
   targetLocation,
-  onSelect,
-  selectedOutletId,
-  refetch,
-  setSelectedOutletId,
+  dataOutles,
+  selectedOutlet,
+  setSelectedOutlet,
 }) => {
-  const { dataOutles, isLoading } = useGetOutletCoord();
   const [locationData, setLocationData] = useState<Location[]>([]);
 
   useEffect(() => {
-    if (dataOutles && dataOutles.data) {
-      const formattedLocations: Location[] = dataOutles.data.flatMap((data) =>
-        data.address.map((address) => ({
+    if (dataOutles) {
+      const formattedLocations = dataOutles.data.flatMap((data) =>
+        data.address.map((address: any) => ({
           id: Number(address.outletId),
           latitude: address.latitude,
           longitude: address.longitude,
@@ -248,10 +238,6 @@ const ClosestLatLong: React.FC<ClosestLatLongProps> = ({
     }
   }, [dataOutles]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (!locationData || locationData.length === 0) {
     return <div>No locations found.</div>;
   }
@@ -262,19 +248,24 @@ const ClosestLatLong: React.FC<ClosestLatLongProps> = ({
     3,
   );
 
-  const handleChange = async (value: string) => {
-    await onSelect(value);
-    setSelectedOutletId(String(value));
-    refetch();
+  const handleChange = (id: string) => {
+    const selected = locationData.find((loc) => loc.id === Number(id));
+    if (selected) {
+      const outlet = dataOutles?.data.find(
+        (outlet) => outlet.outletName === selected.outletName,
+      );
+      if (outlet) {
+        setSelectedOutlet(outlet);
+      }
+    }
   };
-
-  if (!closestLocationsList || closestLocationsList.length === 0) {
-    return <div>No locations found.</div>;
-  }
 
   return (
     <div>
-      <RadioGroup value={selectedOutletId || ''} onValueChange={handleChange}>
+      <RadioGroup
+        value={selectedOutlet?.id.toString() || ''}
+        onValueChange={handleChange}
+      >
         {closestLocationsList.map((closest) => (
           <div
             className="w-full h-20 p-2 border rounded-xl place-items-center shadow-sm grid grid-cols-9 gap-7"

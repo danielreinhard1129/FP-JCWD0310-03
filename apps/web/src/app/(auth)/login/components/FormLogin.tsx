@@ -80,10 +80,10 @@ export function FromLogin() {
           </Button>
         </div>
         <div className="mx-auto font-light">
-          Don't have account?{' '}
+          Don't have an account?{' '}
           <Link
             href={`/register`}
-            className="text-main_green hover:underline font-bold hover:text-mythemes-secondarygreen"
+            className="text-mythemes-maingreen hover:underline font-bold hover:text-mythemes-secondaryblue"
           >
             Sign up
           </Link>

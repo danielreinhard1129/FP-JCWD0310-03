@@ -52,7 +52,7 @@ const useLogin = () => {
       toast.success(data.message);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(error.response?.data);
       }
     }
   };

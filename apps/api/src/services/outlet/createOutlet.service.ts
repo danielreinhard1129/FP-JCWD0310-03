@@ -6,8 +6,7 @@ interface Address {
   city: string;
 }
 
-interface createOutletArgs
-  extends Pick<Outlet, 'outletName' | 'outletType' | 'outletImage'> {
+interface createOutletArgs extends Pick<Outlet, 'outletName' | 'outletType'> {
   addressLine: string;
   city: string;
   latitude: string;

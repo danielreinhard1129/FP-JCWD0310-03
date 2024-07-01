@@ -19,7 +19,7 @@ interface Udate extends Partial<User> {
 }
 
 export const updateUserService = async (
-  id: number,
+  userId: number,
   body: Udate,
   file?: Express.Multer.File,
   newPassword?: string,
@@ -36,7 +36,7 @@ export const updateUserService = async (
     } = body;
 
     const user = await prisma.user.findFirst({
-      where: { id },
+      where: { id: userId },
       include: { address: true },
     });
 
@@ -98,8 +98,8 @@ export const updateUserService = async (
     }
 
     const update = await prisma.$transaction(async (tx) => {
-      await tx.user.update({
-        where: { id },
+      const user = await tx.user.update({
+        where: { id: userId },
         data: {
           password: body.password,
           profilePic: body.profilePic,
@@ -115,20 +115,22 @@ export const updateUserService = async (
         where: { addressLine },
       });
 
-      if (existingAddress) {
-        throw new Error('Address already exist');
+      if (!existingAddress) {
+        const address = await tx.address.create({
+          data: {
+            addressLine: addressLine,
+            city: city,
+            userId: userId,
+            latitude: latitude,
+            longitude: longitude,
+            isPrimary: Boolean(Number(isPrimary)),
+          },
+        });
+
+        return address;
       }
 
-      await tx.address.create({
-        data: {
-          addressLine: addressLine,
-          city: city,
-          userId: id,
-          latitude,
-          longitude,
-          isPrimary: Boolean(Number(isPrimary)),
-        },
-      });
+      return user;
     });
 
     return update;
