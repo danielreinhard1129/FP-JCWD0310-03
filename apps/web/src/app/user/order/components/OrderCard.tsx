@@ -2,6 +2,8 @@
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import useCreatePayment from '@/hooks/api/payment/useCreatePayment';
 import { OrderStatus } from '@/types/order.type';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 import { FC } from 'react';
 
@@ -23,9 +25,10 @@ const OrderCard: FC<ShipmentCardProps> = ({
     refetch,
 
 }) => {
+    const router = useRouter();
     const values = {
         orderId: Number(orderId),
-        orderStatus: OrderStatus.Laundry_Received_By_Customer
+        orderStatus: OrderStatus.COMPLETED
     }
 
     const payValues = {
@@ -34,8 +37,8 @@ const OrderCard: FC<ShipmentCardProps> = ({
 
     const { updateOrderStatus } = useUpdateOrderStatus()
     const { createPayment, data, isLoading } = useCreatePayment()
-    
-    
+
+
     const handleUpdate = async () => {
         try {
             await updateOrderStatus(values);
@@ -44,18 +47,18 @@ const OrderCard: FC<ShipmentCardProps> = ({
             console.error('Failed to update pickup order', error);
         }
     };
-    
+
     const handlePayment = async () => {
         try {
             const paymentData = await createPayment(payValues);
             if (!isLoading && paymentData) {
                 if (window.snap) {
-                    // window.snap.pay(`8dacd378-d696-4e85-9b63-95c3c8c4bbc1`);
+                    // window.snap.pay(`4a3f871a-2549-42ea-ae8d-36925130b3cc`);
                     window.snap.pay(`${paymentData.snapToken}`);
                 } else {
                     alert('Snap is not loaded yet. Please try again.');
                 }
-            }                      
+            }
         } catch (error) {
             alert('Payment Error!')
 
@@ -64,33 +67,42 @@ const OrderCard: FC<ShipmentCardProps> = ({
 
 
     return (
-        <div key={key} className='relative flex overflow-hidden shadow-md bg-white py-3 px-5 rounded-xl'>
-            <div>
-                <p className='text-black text-sm font-bold align-top'>{orderNumber}</p>
-                <div className='flex gap-2'>
-                    <div className='my-auto'>
-                        <p className='text-sm font-medium text-gray-700'>{orderStatus}</p>
+        <Link href={`/user/order/${orderId}`}>
+            <div onClick={()=>router.push(`/${orderId}`)} key={key} className='relative flex overflow-hidden shadow-md bg-white py-3 px-5 rounded-xl'>
+                <div>
+                    <p className='text-black text-sm font-bold align-top'>{orderNumber}</p>
+                    <div className='flex gap-2'>
+                        <div className='my-auto'>
+                            <p className='text-sm font-medium text-gray-700'>{orderStatus}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
-            <p className='font-bold absolute right-3 top-3 text-xs text-gray-500'>{createAt}</p>
-            {orderStatus == "Awaiting_Payment" ? (
-                <button onClick={handlePayment} className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Pay</button>
-            ) : (
-                (orderStatus == "Laundry_Being_Delivered_To_Customer" ? (
-                    <button onClick={handleUpdate} className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Confirm</button>
-                ) : (
-                    (orderStatus == 'Laundry_Received_By_Customer' ? (
-                        <button className='absolute right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Completed</button>
+                <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
+                <p className='font-bold absolute right-3 top-3 text-xs text-gray-500'>{createAt}</p>
+                {orderStatus === OrderStatus.AWAITING_PAYMENT
+                    || orderStatus === OrderStatus.READY_FOR_WASHING
+                    || orderStatus === OrderStatus.BEING_WASHED
+                    || orderStatus === OrderStatus.WASHING_COMPLETED
+                    || orderStatus === OrderStatus.BEING_IRONED
+                    || orderStatus === OrderStatus.IRONING_COMPLETED
+                    || orderStatus === OrderStatus.BEING_PACKED
+                    ? (
+                        <button onClick={()=> router.push(`/${orderId}/transaction`)} className='absolute z-40 right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Pay</button>
                     ) : (
-                        <>
-                            {/* <button className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Details</button> */}
-                        </>
-                    ))
-                ))
-            )}
-        </div>
+                        (orderStatus == OrderStatus.RECEIVED_BY_CUSTOMER ? (
+                            <button onClick={handleUpdate} className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Confirm</button>
+                        ) : (
+                            (orderStatus == OrderStatus.COMPLETED ? (
+                                <button disabled className='absolute right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Completed</button>
+                            ) : (
+                                <>
+                                    {/* <button className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Details</button> */}
+                                </>
+                            ))
+                        ))
+                    )}
+            </div>
+        </Link>
     )
 }
 export default OrderCard

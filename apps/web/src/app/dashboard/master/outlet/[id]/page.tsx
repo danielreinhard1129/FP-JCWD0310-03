@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import image from '../../../../../../public/Kucekin_Logo_Black_EVO1.png';
 import { BASE_API_URL } from '@/utils/config';
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 
 const OutletDetail = () => {
   const { id } = useAppSelector((state) => state.user);
@@ -20,23 +21,6 @@ const OutletDetail = () => {
       <div className="p-6 grid grid-cols-3 bg-mythemes-grey">
         <div className="p-4">
           {/* <Label className=" font-bold text-lg">Outlet Image</Label> */}
-          <div className="w-full h-80 shadow-xl rounded-xl my-auto justify-center relative overflow-hidden mx-auto ">
-            <Image
-              alt="ProfilePict"
-              src={
-                outlet?.outletImage
-
-                  ? `${BASE_API_URL}/assets${outlet.outletImage}`
-
-                  : image.src // Path to your default image
-              }
-              quality={80}
-              objectFit="contain"
-              fill
-              loading="lazy"
-              className="mx-auto"
-            />
-          </div>
         </div>
         <div className="p-4">
           <div className="grid grid-cols-2 h-full p-4 bg-mythemes-taubmans rounded-xl">
@@ -63,4 +47,4 @@ const OutletDetail = () => {
   );
 };
 
-export default OutletDetail;
+export default SuperAdminGuard(OutletDetail);

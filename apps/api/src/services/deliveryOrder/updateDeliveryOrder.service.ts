@@ -1,5 +1,6 @@
 import prisma from '@/prisma';
 import { DeliveryStatus, OrderStatus } from '@prisma/client';
+import { scheduleJob } from 'node-schedule';
 
 interface UpdateDeliveryOrderBody {
   shipmentOrderId: number,
@@ -21,11 +22,29 @@ export const updateDeliveryOrderService = async (
       throw new Error('Deliver Order not Found!')
     }
 
-    if (status == String(DeliveryStatus.On_The_Way_to_Outlet)) {
+    if (status == String(DeliveryStatus.ON_THE_WAY_TO_OUTLET)) {
       await prisma.order.update({
         where: { id: existingDeliveryOrder.orderId },
-        data: { orderStatus: OrderStatus.Laundry_Being_Delivered_To_Customer }
+        data: { orderStatus: OrderStatus.BEING_DELIVERED_TO_CUSTOMER }
       })
+
+      // const schedule = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+      const schedule = new Date(Date.now() + 2 * 60 * 1000);
+      scheduleJob('run every ', schedule, async () => {
+        const order = await prisma.order.findFirst({
+          where: {
+            id: existingDeliveryOrder.orderId,
+            orderStatus: 'BEING_DELIVERED_TO_CUSTOMER',
+          },
+        });
+        if(order){
+          await prisma.order.update({
+            where: { id: existingDeliveryOrder.orderId },
+            data: { orderStatus: OrderStatus.RECEIVED_BY_CUSTOMER },
+          });
+        }
+      });
+  
     }
 
     return await prisma.deliveryOrder.update({

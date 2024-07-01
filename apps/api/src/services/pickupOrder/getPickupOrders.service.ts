@@ -22,7 +22,7 @@ export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
 
     if (existingUser?.role == "DRIVER") {
       whereClause.outletId = existingUser.employee?.outletId;
-      if (pickupStatus != String(PickupStatus.Waiting_for_Driver)) {
+      if (pickupStatus != String(PickupStatus.WAITING_FOR_DRIVER)) {
         whereClause.driverId = id;
       }
     }

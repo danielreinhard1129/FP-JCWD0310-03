@@ -28,17 +28,19 @@ const CardMap = ({ onLocationSelect }: any) => {
   >(null);
 
   useEffect(() => {
-    window.navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setCurrentPosition([latitude, longitude]);
-        getLocation(latitude, longitude);
-      },
-      (error) => {
-        console.error(error);
-        setCurrentPosition([0, 0]);
-      },
-    );
+    if (typeof window !== 'undefined') {
+      window.navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentPosition([latitude, longitude]);
+          getLocation(latitude, longitude);
+        },
+        (error) => {
+          console.error(error);
+          setCurrentPosition([0, 0]);
+        },
+      );
+    }
   }, []);
 
   useEffect(() => {

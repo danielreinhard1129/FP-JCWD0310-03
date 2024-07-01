@@ -1,12 +1,11 @@
 import prisma from '@/prisma';
-import { UserRole } from '@/types/user.type';
-import { Employee } from '@prisma/client';
+import { Employee, Role } from '@prisma/client';
 
 interface updateEmployeeArgs
   extends Pick<Employee, 'outletId' | 'station' | 'workShift'> {
   fullName?: string;
   email?: string;
-  role?: UserRole;
+  role?: Role;
 }
 
 export const updateEmployeeService = async (id: number, body: any) => {

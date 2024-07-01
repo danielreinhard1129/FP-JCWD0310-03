@@ -23,14 +23,14 @@ export const updatePickupOrderService = async (
 
     let orderStatus
 
-    if (status == String(PickupStatus.On_The_Way_to_Client)) {
-      orderStatus = OrderStatus.Laundry_On_The_Way_To_Customer
+    if (status == String(PickupStatus.ON_THE_WAY_TO_CUSTOMER)) {
+      orderStatus = OrderStatus.ON_THE_WAY_TO_CUSTOMER
     }
-    if (status == String(PickupStatus.On_The_Way_to_Outlet)) {
-      orderStatus = OrderStatus.LAUNDRY_ON_THE_WAY_TO_OUTLET
+    if (status == String(PickupStatus.ON_THE_WAY_TO_OUTLET)) {
+      orderStatus = OrderStatus.ON_THE_WAY_TO_OUTLET
     }
-    if (status == String(PickupStatus.Received_by_Outlet)) {
-      orderStatus = OrderStatus.Laundry_Has_Arrived_At_Outlet
+    if (status == String(PickupStatus.RECEIVED_BY_OUTLET)) {
+      orderStatus = OrderStatus.ARRIVED_AT_OUTLET
     }
 
     const updateOrder = await prisma.order.update({

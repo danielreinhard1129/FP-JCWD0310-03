@@ -1,7 +1,8 @@
 'use client'
 import { TableCell, TableRow } from '@/components/ui/table';
 import useCreateDeliveryOrder from '@/hooks/api/deliveryOrder/useCreateDeliveryOrder';
-import { FC } from 'react';
+import { EmployeeWorkShift } from '@/types/employee.type';
+import { FC, useEffect, useState } from 'react';
 
 interface DeliveryRequestRowTableProps {
     key: number;
@@ -12,7 +13,8 @@ interface DeliveryRequestRowTableProps {
     price: string
     createdAt: string
     status: string
-    refetch: ()=>void
+    refetch: () => void
+    employeeWorkShift?: EmployeeWorkShift
 }
 
 const TableDeliveryRequest: FC<DeliveryRequestRowTableProps> = ({
@@ -24,7 +26,8 @@ const TableDeliveryRequest: FC<DeliveryRequestRowTableProps> = ({
     price,
     createdAt,
     status,
-    refetch
+    refetch,
+    employeeWorkShift
 }) => {
     const { createDeliveryOrder } = useCreateDeliveryOrder()
 
@@ -41,6 +44,35 @@ const TableDeliveryRequest: FC<DeliveryRequestRowTableProps> = ({
         }
     };
 
+    //shift confirmation
+    const [isDisable, setIsDisable] = useState(false);
+
+    useEffect(() => {
+        const checkStatus = () => {
+            const now = new Date();
+            const currentHour = now.getHours();
+
+            if (employeeWorkShift === EmployeeWorkShift.DAY) {
+                if (currentHour >= 6 && currentHour < 18) {
+                    setIsDisable(false);
+                } else {
+                    setIsDisable(true);
+                }
+            } else if (employeeWorkShift === EmployeeWorkShift.NIGHT) {
+                if (currentHour >= 18 || currentHour < 6) {
+                    setIsDisable(false);
+                } else {
+                    setIsDisable(true);
+                }
+            }
+        };
+
+        checkStatus();
+        const interval = setInterval(checkStatus, 60000);
+
+        return () => clearInterval(interval);
+    }, [employeeWorkShift]);
+
     return (
         <TableRow key={key} >
             <TableCell>{orderNumber}</TableCell>
@@ -51,7 +83,11 @@ const TableDeliveryRequest: FC<DeliveryRequestRowTableProps> = ({
             <TableCell>{status}</TableCell>
             <TableCell>
                 <div className='flex gap-2 w-40 justify-end'>
-                    <button onClick={handleCreate} className='py-0.5 bg-mythemes-maingreen w-1/2 text-white font-bold'>Create Delivery Order</button>
+                    <button
+                        disabled={isDisable}
+                        onClick={handleCreate}
+                        className='py-0.5 bg-mythemes-maingreen w-1/2 text-white font-bold'
+                    >Create Delivery Order</button>
                 </div>
             </TableCell>
         </TableRow>

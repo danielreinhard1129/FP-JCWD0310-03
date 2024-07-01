@@ -5,11 +5,11 @@ export interface OrderWorker {
   id: number;
   orderId: number;
   workerId: number;
-  station?: EmployeeStation;
+  station?: EmployeeStation | null;
   isComplete: boolean;
   bypassRequest: boolean;
   bypassAccepted: boolean;
   bypassRejected: boolean;
-  order: Order
-  worker: Employee
+  order: Order;
+  worker: Employee;
 }

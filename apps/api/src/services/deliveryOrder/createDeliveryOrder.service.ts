@@ -21,13 +21,13 @@ export const createDeliveryOrderService = async (
 
     const updateOrder = await prisma.order.update({
       where:{id: orderId},
-      data: {orderStatus: OrderStatus.WAITING_DELIVERY_DRIVER}
+      data: {orderStatus: OrderStatus.WAITING_FOR_DELIVERY_DRIVER}
     })
 
     const updateDeliveryOrder = await prisma.deliveryOrder.update({
       where: { id: existingDeliveryOrder.id },
       data: { 
-        deliveryStatus: DeliveryStatus.Waiting_for_Driver, 
+        deliveryStatus: DeliveryStatus.WAITING_FOR_DRIVER, 
     },
     });
 

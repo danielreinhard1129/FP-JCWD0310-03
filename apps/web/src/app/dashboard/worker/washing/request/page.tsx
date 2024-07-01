@@ -6,6 +6,7 @@ import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import { useAppSelector } from '@/redux/hooks';
 import useGetUser from '@/hooks/api/user/useGetUser';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 
 
 const WashingRequest = () => {
@@ -17,7 +18,7 @@ const WashingRequest = () => {
     id: id,
     page,
     take: 10,
-    filterStatus: String(OrderStatus.READY_TO_WASH)
+    filterStatus: String(OrderStatus.READY_FOR_WASHING)
   });
 
   const {user} = useGetUser(id); 
@@ -36,7 +37,7 @@ const WashingRequest = () => {
               key={index}
               workerId={id}
               orderId={order.id}
-              targetStatus={OrderStatus.Laundry_Being_Washed}
+              targetStatus={OrderStatus.BEING_WASHED}
               referenceNumber={order.orderNumber}
               fullName={order.pickupOrder?.user?.fullName}
               email={order.pickupOrder?.user?.email}
@@ -65,4 +66,4 @@ const WashingRequest = () => {
   )
 }
 
-export default WashingRequest
+export default WorkerAuthGuard(WashingRequest)

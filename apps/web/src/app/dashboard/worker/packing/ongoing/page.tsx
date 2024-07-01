@@ -5,6 +5,7 @@ import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import { EmployeeStation } from '@/types/employee.type';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 
 
 const PackingOngoing = () => {
@@ -33,7 +34,7 @@ const PackingOngoing = () => {
               key={index}
               workerId={id}
               orderId={orderWorker.orderId}
-              targetStatus={OrderStatus.Awaiting_Payment}
+              targetStatus={OrderStatus.AWAITING_PAYMENT}
               referenceNumber={orderWorker.order.orderNumber}
               fullName={orderWorker.order.pickupOrder.user.fullName}
               email={orderWorker.order.pickupOrder.user.email}
@@ -61,4 +62,4 @@ const PackingOngoing = () => {
   )
 }
 
-export default PackingOngoing
+export default WorkerAuthGuard(PackingOngoing)

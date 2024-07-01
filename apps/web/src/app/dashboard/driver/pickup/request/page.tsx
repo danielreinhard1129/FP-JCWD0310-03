@@ -4,6 +4,7 @@ import useGetPickupOrders from '@/hooks/api/pickupOrder/useGetPickupOrders';
 import { PickupStatus } from '@/types/pickupOrder.type';
 import { useState } from 'react';
 import ShipmentCard from '../../components/CardShipment';
+import DriverAuthGuard from '@/hoc/DriverAuthGuard';
 
 const PickupOrderRequest = () => {
   const [page, setPage] = useState<number>(1);
@@ -11,7 +12,7 @@ const PickupOrderRequest = () => {
   const id = 4;
   const { data: pickupOrders, meta: meta, refetch: refetch } = useGetPickupOrders({
     id: id,
-    pickupStatus: String(PickupStatus.Waiting_for_Driver),
+    pickupStatus: String(PickupStatus.WAITING_FOR_DRIVER),
     page: page,
     take: 10,
   });
@@ -29,7 +30,7 @@ const PickupOrderRequest = () => {
               key={index}
               driverId={id}
               shipmentOrderId={pickupOrder.id}
-              status={PickupStatus.On_The_Way_to_Client}
+              status={PickupStatus.ON_THE_WAY_TO_CUSTOMER}
               referenceNumber={pickupOrder.pickupNumber}
               fullName={pickupOrder.user.fullName}
               email={pickupOrder.user.email}
@@ -52,4 +53,4 @@ const PickupOrderRequest = () => {
   )
 }
 
-export default PickupOrderRequest
+export default DriverAuthGuard(PickupOrderRequest)

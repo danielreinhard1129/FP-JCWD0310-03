@@ -5,6 +5,7 @@ import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import { EmployeeStation } from '@/types/employee.type';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 
 
 const IroningOngoing = () => {
@@ -33,7 +34,7 @@ const IroningOngoing = () => {
               key={index}
               workerId={id}
               orderId={orderWorker.orderId}
-              targetStatus={OrderStatus.Laundry_Finished_Ironing}
+              targetStatus={OrderStatus.BEING_IRONED}
               referenceNumber={orderWorker.order.orderNumber}
               fullName={orderWorker.order.pickupOrder.user.fullName}
               email={orderWorker.order.pickupOrder.user.email}
@@ -61,4 +62,4 @@ const IroningOngoing = () => {
   )
 }
 
-export default IroningOngoing
+export default WorkerAuthGuard(IroningOngoing)

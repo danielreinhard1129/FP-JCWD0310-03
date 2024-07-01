@@ -1,5 +1,5 @@
 'use client';
-import CardMap from '@/components/CardMap';
+
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -11,8 +11,9 @@ import { z } from 'zod';
 import FormSelect from '../../../components/FormSelect';
 import ItemOutletType from '../../../components/ItemOutletType';
 import { ValidationSchema } from '../validationSchema';
+import dynamic from 'next/dynamic';
 
-interface AddressProps {}
+const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
 
 const FormCreateOutlet = () => {
   const { createOutlet } = useCreateOutlet();
