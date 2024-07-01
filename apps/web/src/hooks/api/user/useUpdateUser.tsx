@@ -87,7 +87,6 @@ const useUpdateUser = () => {
       if (email) updateUserForm.append('email', email);
       if (password) updateUserForm.append('password', password);
       if (newPassword) updateUserForm.append('newPassword', newPassword);
-
       if (addressLine) updateUserForm.append('addressLine', addressLine);
       if (city) updateUserForm.append('city', city);
       if (latitude) updateUserForm.append('latitude', latitude);

@@ -1,5 +1,5 @@
 'use client';
-import CardMap from '@/components/CardMap';
+// import CardMap from '@/components/CardMap';
 import FormCheckBox from '@/components/FormCheckBock';
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,9 @@ import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
+import dynamic from 'next/dynamic';
+
+const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
 
 interface FormUpdateAddress {
   addressLine: string;

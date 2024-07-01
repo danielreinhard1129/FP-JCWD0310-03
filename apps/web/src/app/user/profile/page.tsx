@@ -146,7 +146,7 @@ const Profile = () => {
           </Button>
           <Button
             className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2"
-            onClick={() => router.push('/user')}
+            onClick={() => router.push('/user/profile/address')}
           >
             <p>Your Address</p>
             <IoIosArrowForward />

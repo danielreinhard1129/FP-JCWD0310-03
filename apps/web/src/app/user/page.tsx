@@ -17,11 +17,10 @@ const Home = () => {
   const [currentPosition, setCurrentPosition] = useState<[number, number]>();
   const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
     useAppSelector((state) => state.user);
-  // const { user } = useGetUser(id);
   const { getLocation, data } = useGetLocationByCoord();
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
+    window.navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         setCurrentPosition([latitude, longitude]);

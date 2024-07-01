@@ -21,7 +21,7 @@ interface Address {
   id: number;
   addressLine?: string;
   isPrimary?: string | null;
-  refetch: () => void;
+refetch: () => void;
 }
 
 const CardAddress: FC<Address> = ({ addressLine, isPrimary, id, refetch }) => {
