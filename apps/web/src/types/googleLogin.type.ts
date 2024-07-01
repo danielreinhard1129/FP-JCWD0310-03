@@ -1,3 +1,4 @@
+'use client'
 export type Context = 'signin' | 'signup' | 'use';
 
 export type UxMode = 'popup' | 'redirect';

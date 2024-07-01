@@ -14,7 +14,7 @@ export const updateUserAddressService = async (
   body: Partial<FormUpdateAddressArgs>,
 ) => {
   try {
-    console.log(body);
+    const { addressLine, city, isPrimary, latitude, longitude } = body;
 
     const address = await prisma.address.findFirst({
       where: { id: id },
@@ -26,26 +26,39 @@ export const updateUserAddressService = async (
     if (address.isDelete === true) {
       throw new Error('Address not found !');
     }
-    const existingAddress = await prisma.address.findFirst({
-      where: { addressLine: body.addressLine },
-    });
 
-    if (existingAddress) {
-      throw new Error('Address already exist !');
+    if (addressLine) {
+      const existingAddress = await prisma.address.findFirst({
+        where: { addressLine: { equals: addressLine } },
+      });
+
+      if (existingAddress) {
+        throw new Error('Address already exist !');
+      }
     }
 
-    const updateAddress = await prisma.address.update({
-      where: { id: address.id },
-      data: {
-        addressLine: body.addressLine,
-        city: body.city,
-        isPrimary: body.isPrimary,
-        latitude: body.latitude,
-        longitude: body.longitude,
-      },
+    const update = await prisma.$transaction(async (tx) => {
+      if (isPrimary === true) {
+        await tx.address.updateMany({
+          data: {
+            isPrimary: false,
+          },
+        });
+      }
+      const updateAddress = await tx.address.update({
+        where: { id: address.id },
+        data: {
+          addressLine: body.addressLine,
+          city: body.city,
+          isPrimary: body.isPrimary,
+          latitude: body.latitude,
+          longitude: body.longitude,
+        },
+      });
+      return updateAddress;
     });
 
-    return { message: 'Updates address success', data: updateAddress };
+    return { message: 'Updates address success', data: update };
   } catch (error) {
     throw error;
   }

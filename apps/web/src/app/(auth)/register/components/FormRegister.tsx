@@ -25,7 +25,7 @@ export function FormRegister() {
     resolver: zodResolver(schema),
     defaultValues: {},
   });
-  
+
   function onSubmit(values: z.infer<typeof schema>) {
     register(values);
   }
@@ -60,6 +60,15 @@ export function FormRegister() {
           >
             <FcGoogle size={25} /> Register with your Google account.
           </Button>
+        </div>
+        <div className="mx-auto font-light">
+          Already have an account?{' '}
+          <Link
+            href={`/login`}
+            className="text-mythemes-maingreen hover:underline font-bold hover:text-mythemes-secondarygreen"
+          >
+            Login
+          </Link>
         </div>
       </form>
     </Form>

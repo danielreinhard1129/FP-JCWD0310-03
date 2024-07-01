@@ -8,9 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import FormSelect from '../../../../components/FormSelect';
-import ItemOutletType from '../../../../components/ItemOutletType';
-import { ValidationSchema } from '../validationSchema';
+import FormSelect from '../../../components/FormSelect';
+import ItemOutletType from '../../../components/ItemOutletType';
+import { ValidationSchema } from '../edit/validationSchema';
 
 interface FormUpdateOutlet {
   outletName: string;
@@ -36,7 +36,6 @@ const FormEditOutlet: FC<FormUpdateOutletProps> = ({
     defaultValues: initialValues,
   });
 
- 
   const errors = form.formState.errors;
 
   return (

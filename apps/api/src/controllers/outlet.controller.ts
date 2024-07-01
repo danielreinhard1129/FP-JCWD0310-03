@@ -49,8 +49,7 @@ export class OutletController {
   ) {
     try {
       const id = req.params.id;
-      const files = req.files as Express.Multer.File[];
-      const result = await updateOutletService(Number(id), req.body, files[0]);
+      const result = await updateOutletService(Number(id), req.body);
       return res.status(200).send(result);
     } catch (error) {
       next(error);

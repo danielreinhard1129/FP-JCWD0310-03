@@ -1,50 +1,64 @@
 'use client';
-import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
-import { useAppSelector } from '@/redux/hooks';
 import { ChevronLeft } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
-import image from '../../../../../../public/Kucekin_Logo_Black_EVO1.png';
-import { BASE_API_URL } from '@/utils/config';
-import SuperAdminGuard from '@/hoc/SuperAdminGuard';
+import React from 'react';
 
-const OutletDetail = () => {
-  const { id } = useAppSelector((state) => state.user);
-  const { outlet } = useGetOutlet(Number(id));
+import useUpdateOutlet from '@/hooks/api/outlet/useUpdateOutlet';
+import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
+import { OutletType } from '@/types/outlet.type';
+import { getChangedValues } from '@/utils/getChangeValues';
+import FormEditOutlet from './components/FormEditOutlet';
+
+interface UpdateOutletArgs {
+  outletName: string;
+  outletType: string;
+  addressLine: string;
+  city: string;
+}
+
+const EditOutlet = ({ params }: { params: { id: number } }) => {
+  const { updateOutlet, isLoading } = useUpdateOutlet(Number(params.id));
+  const { outlet, isLoading: isLoadingGetOutlet } = useGetOutlet(
+    Number(params.id),
+  );
+
+  const initialValues = {
+    outletName: outlet?.outletName || '',
+    outletType: outlet?.outletType || '',
+    addressLine: outlet?.address[0].addressLine || '',
+    city: outlet?.address[0].city || '',
+  };
+
+  if (isLoadingGetOutlet) {
+    return (
+      <div className=" container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold">
+        Loading
+      </div>
+    );
+  }
+
+  const onSubmit = (values: Partial<UpdateOutletArgs>) => {
+    const payload = getChangedValues(values, initialValues);
+    updateOutlet(payload);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="p-6 flex gap-2 my-auto ">
         <Link className="my-auto" href={'/dashboard/master/employee'}>
           <ChevronLeft />
         </Link>
+        <h1 className="text-lg font-bold my-auto">Add New Outlet</h1>
       </div>
-      <div className="p-6 grid grid-cols-3 bg-mythemes-grey">
-        <div className="p-4">
-          {/* <Label className=" font-bold text-lg">Outlet Image</Label> */}
-        </div>
-        <div className="p-4">
-          <div className="grid grid-cols-2 h-full p-4 bg-mythemes-taubmans rounded-xl">
-            <div className="place-content-center">
-              <label className="font-bold text-md">Outlet Name</label>
-              <p className="text-lg ">lalalalallalalala</p>
-            </div>
-            <div className="place-content-center">
-              <label className="font-bold text-md">Outlet Type</label>
-              <p className="text-lg ">MAIN</p>
-            </div>
-            <div className="place-content-center">
-              <label className="font-bold text-md">Outlet Address</label>
-              <p className="text-lg ">Pogung</p>
-            </div>
-            <div className="place-content-center">
-              <label className="font-bold text-md">City</label>
-              <p className="text-lg ">Sleman</p>
-            </div>
-          </div>
-        </div>
+      <div className="mx-8 mb-8 p-5 w-8/12 rounded-xl bg-mythemes-secondarygreen">
+        <FormEditOutlet
+          initialValues={initialValues}
+          isLoading={isLoading}
+          onSubmit={onSubmit}
+        />
       </div>
     </div>
   );
 };
 
-export default SuperAdminGuard(OutletDetail);
+export default EditOutlet;

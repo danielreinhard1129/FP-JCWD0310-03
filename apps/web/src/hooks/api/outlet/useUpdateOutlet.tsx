@@ -21,8 +21,7 @@ const useUpdateOutlet = (id: number) => {
   const updateOutlet = async (payload: Partial<UpdateOutletArgs>) => {
     setIsloading(true);
     try {
-      const { outletName, outletType, addressLine, city } =
-        payload;
+      const { outletName, outletType, addressLine, city } = payload;
 
       const createOutletForm = new FormData();
 

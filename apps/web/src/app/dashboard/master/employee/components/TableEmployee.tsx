@@ -7,9 +7,9 @@ import { FC, useEffect, useState } from 'react';
 interface EmployeeRowTableProps {
     key: number;
     employeeId: number;
-    name: string
-    email: string
-    role: string
+    name?: string
+    email?: string
+    role?: string
     outlet: string | undefined
     workShift: string
     status: string

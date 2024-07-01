@@ -1,7 +1,7 @@
 'use client';
 
 import useGetEmployee from '@/hooks/api/employee/useGetEmployee';
-import useGetUser from '@/hooks/api/user/useGetUser';
+// import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
 import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ export default function CustomerAuthGuard(Component: any) {
     const router = useRouter();
 
     const { id, role } = useAppSelector((state) => state.user);
-    const { user } = useGetUser(Number(id));
+    // const { user } = useGetUser(Number(id));
 
     useEffect(() => {
       setTimeout(() => {

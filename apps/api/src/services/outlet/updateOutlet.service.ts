@@ -1,12 +1,8 @@
 import prisma from '@/prisma';
-import { Employee, Outlet } from '@prisma/client';
-import fs from 'fs';
-import { join } from 'path';
+import { Outlet } from '@prisma/client';
 
-const defaultDir = '../../../public/images';
 
-interface UpdateOutletArgs
-  extends Pick<Outlet, 'outletName' | 'outletType'> {
+interface UpdateOutletArgs extends Pick<Outlet, 'outletName' | 'outletType'> {
   addressLine: string;
   city: string;
   latitude?: string;
@@ -16,17 +12,10 @@ interface UpdateOutletArgs
 export const updateOutletService = async (
   id: number,
   body: Partial<UpdateOutletArgs>,
-  file: Express.Multer.File,
 ) => {
   try {
-    const {
-      outletName,
-      outletType,
-      addressLine,
-      city,
-      latitude,
-      longitude,
-    } = body;
+    const { outletName, outletType, addressLine, city, latitude, longitude } =
+      body;
 
     const outlet = await prisma.outlet.findFirst({
       where: { id },
@@ -43,7 +32,6 @@ export const updateOutletService = async (
     const addressId = await prisma.address.findFirst({
       where: { outletId: id },
     });
-
 
     const update = await prisma.$transaction(async (tx) => {
       const updateOutlet = await tx.outlet.update({
@@ -68,12 +56,6 @@ export const updateOutletService = async (
 
     return update;
   } catch (error) {
-    const imagePath = join(__dirname, defaultDir + file?.filename);
-
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
-    }
-
     throw error;
   }
 };

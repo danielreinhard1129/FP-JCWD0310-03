@@ -32,13 +32,13 @@ export enum Role {
 }
 
 export interface IFormUser {
-  fullName: string;
-  email: string;
-  password: string;
+  fullName?: string;
+  email?: string;
+  password?: string;
   profilePic?: File[];
   newPassword?: string | null;
-  addressLine: string;
-  city: string;
+  addressLine?: string;
+  city?: string;
   isPrimary: boolean;
   latitude?: string;
   longitude?: string;

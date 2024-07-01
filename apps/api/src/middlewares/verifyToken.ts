@@ -14,7 +14,7 @@ declare global {
     }
   }
 }
- 
+
 export const verifyToken = (
   req: Request,
   res: Response,
@@ -35,7 +35,7 @@ export const verifyToken = (
         return res.status(401).send({ message: 'invalid token' });
       }
     }
-    req.body.user = payload as PayloadToken;
+    res.locals.user = payload as PayloadToken;
     next();
   });
 };

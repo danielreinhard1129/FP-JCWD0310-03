@@ -4,7 +4,6 @@ import BrowseOutlet from '@/components/homePage/BrowseOutlet';
 import { PromotionCarousel } from '@/components/promotion/PromotionCarousel';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
-import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
 import { BASE_API_URL } from '@/utils/config';
 import 'leaflet/dist/leaflet.css';
@@ -16,12 +15,12 @@ import noPic from '../../../public/pictNotFound.jpeg';
 
 const Home = () => {
   const [currentPosition, setCurrentPosition] = useState<[number, number]>();
-  const { id } = useAppSelector((state) => state.user);
-  const { user } = useGetUser(id);
+  const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
+    useAppSelector((state) => state.user);
   const { getLocation, data } = useGetLocationByCoord();
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
+    window.navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         setCurrentPosition([latitude, longitude]);
@@ -38,7 +37,7 @@ const Home = () => {
   return (
     <>
       <section className="p-0 container relative mx-auto flex flex-col gap-8 mb-5  ">
-        <div className="px-6 bg-mythemes-maingreen text-white rounded-b-3xl py-6 flex flex-col gap-4">
+        <div className="px-6 bg-mythemes-maingreen text-white rounded-b-3xl py-6 flex flex-col gap-4 h-28">
           <div className="flex justify-between items-center">
             <div>
               <p className=" text-xs">Current Location</p>
@@ -59,15 +58,15 @@ const Home = () => {
                 <div className="flex flex-col">
                   <div
                     className="w-10 h-10 rounded-full border-2 my-auto justify-center relative overflow-hidden mx-auto "
-                    onClick={() => router.push(`/profile/${id}`)}
+                    onClick={() => router.push(`/user/profile`)}
                   >
                     <Image
                       alt="ProfilePict"
                       src={
-                        user?.profilePic
-                          ? user.profilePic.includes('googleusercontent.com')
-                            ? user.profilePic
-                            : `${BASE_API_URL}/assets${user.profilePic}`
+                        profilePic
+                          ? profilePic.includes('googleusercontent.com')
+                            ? profilePic
+                            : `${BASE_API_URL}/assets${profilePic}`
                           : noPic.src // Path to your default image
                       }
                       quality={80}

@@ -16,18 +16,13 @@ export class UserRouter {
 
   private initializeRoutes(): void {
     this.router.patch(
-      '/profile/:id',
+      '/profile',
       verifyToken,
       uploader('IMG', '/images').array('profilePic', 1),
       this.userController.updateUserController,
     );
     this.router.get(
-      '/',
-      verifyToken,
-      this.userController.getUsersController,
-    );
-    this.router.get(
-      '/profile/:id',
+      '/profile',
       verifyToken,
       this.userController.getUserController,
     );

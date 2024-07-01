@@ -4,9 +4,9 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import useGetAddressById from '@/hooks/api/address/useGetAddressById';
 import useUpdateUserAddress from '@/hooks/api/user/useUpdateUserAddress';
 import { ChevronLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import FormUpdateAddress from './FormUpdateAddress';
+import { getChangedValues } from '@/utils/getChangeValues';
 
 interface UpdateAddressProps {
   addressId: number;
@@ -20,23 +20,24 @@ interface FormUpdateAddressArgs {
   isPrimary: boolean;
 }
 
-const UpdateAddress: React.FC<UpdateAddressProps> = ({ addressId }) => {
+interface AddressResult {
+  addressLine: string;
+  city: string;
+  isPrimary: boolean;
+  latitude: string;
+  longitude: string;
+}
+
+const UpdateAddress: FC<UpdateAddressProps> = ({ addressId }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [initialValues, setInitialValues] = useState<any>(null);
+  const [initialValues, setInitialValues] = useState<AddressResult | null>(
+    null,
+  );
   const { address, isLoading, refetch } = useGetAddressById(addressId);
   const { updateUserAddress, isLoading: isLoadingUpdateAddress } =
     useUpdateUserAddress(addressId);
-  const router = useRouter();
-  const [locationData, setLocationData] = useState({
-    addressLine: '',
-    city: '',
-    latitude: '',
-    longitude: '',
-    isPrimary: false,
-  });
 
   useEffect(() => {
-    isLoading;
     if (address) {
       setInitialValues({
         addressLine: address.addressLine,
@@ -49,14 +50,15 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({ addressId }) => {
   }, [address]);
 
   const handleOnSubmit = async (values: Partial<FormUpdateAddressArgs>) => {
-    await updateUserAddress(values);
-
+    const payload = await getChangedValues(values, initialValues!);
+    await updateUserAddress(payload);
+    refetch();
     setIsOpen(false);
   };
-  if (isLoading) {
+
+  if (isLoading || !initialValues) {
     return (
-      // <div className=" container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold">
-      <div className=" container flex justify-center px-4 pt-24 text-4xl font-semibold">
+      <div className="container flex justify-center px-4 pt-24 text-4xl font-semibold">
         Loading
       </div>
     );
@@ -66,7 +68,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({ addressId }) => {
     <Sheet open={isOpen}>
       <SheetTrigger
         onClick={() => setIsOpen(true)}
-        className="col-span-7 rounded-xl bg-white text-blackn border hover:ring-mythemes-maingreen hover:ring text-sm p-1 hover:bg-mythemes-grey"
+        className="col-span-7 rounded-xl bg-white text-black border hover:ring-mythemes-maingreen hover:ring text-sm p-1 hover:bg-mythemes-grey"
       >
         Edit Address
       </SheetTrigger>
@@ -83,13 +85,11 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({ addressId }) => {
           </div>
           <Separator />
           <div>
-            {initialValues && (
-              <FormUpdateAddress
-                initialValues={initialValues}
-                isLoading={isLoadingUpdateAddress}
-                onSubmit={handleOnSubmit}
-              />
-            )}
+            <FormUpdateAddress
+              initialValues={initialValues}
+              isLoading={isLoadingUpdateAddress}
+              onSubmit={handleOnSubmit}
+            />
           </div>
         </div>
       </SheetContent>

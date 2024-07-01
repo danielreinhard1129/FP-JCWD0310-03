@@ -49,7 +49,7 @@ const useGetUser = (id: number) => {
 
   const getUser = async () => {
     try {
-      const { data } = await axiosInstance.get<User>(`/user/profile/${id}`);
+      const { data } = await axiosInstance.get<User>(`/user/profile/`);
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {

@@ -8,20 +8,17 @@ import timerIcon from '../../../public/005-timing.png';
 const OurAdventages = () => {
   return (
     <>
-      <div className='container flex flex-col gap-4'>
-        <h1 className=' font-bold md:text-3xl text-2xl text-center'>Here are our advantages expanded</h1>
-        <p className='text-center md:w-[900px] md:mx-auto'>
-          At KUCEKIN, we pride ourselves on our professionalism, ensuring that
-          your laundry is handled with the utmost care and attention to detail.
-          We use eco-friendly materials to protect the environment while
-          providing the best care for your clothes. And, our commitment to
-          punctuality means you can always count on us to deliver your freshly
-          laundered items right on schedule. Experience the KUCEKIN difference
-          with our exceptional service, sustainable practices, and reliable
-          delivery.
+      <div className="container flex flex-col gap-4">
+        <h1 className=" font-bold md:text-3xl text-2xl text-center">
+          Here are our advantages expanded
+        </h1>
+        <p className="text-center md:w-[900px] md:mx-auto">
+          At KUCEKIN, we handle your laundry with care, using eco-friendly
+          materials. Count on us for reliable, on-time delivery. Experience
+          exceptional service and sustainability with KUCEKIN.
         </p>
       </div>
-      <div className=" container p-6 md:grid md:grid-cols-4 md:gap-4 ">
+      <div className=" container  md:grid md:grid-cols-4 md:gap-4 ">
         <div className="grid grid-cols-4 gap-4 mt-6 md:flex md:flex-col md:items-center">
           <div className="w-20 h-20 md:w-52 md:h-52 p-4   rounded-full md:place-content-center">
             <Image
@@ -31,7 +28,7 @@ const OurAdventages = () => {
             />
           </div>
 
-          <p className="text-sm md:text-lg text-wrap col-span-3 text-left md:text-center place-content-center">
+          <p className="text-sm md:text-md text-wrap col-span-3 text-left md:text-center place-content-center">
             Kucekin ensures meticulous cleaning with eco-friendly detergents for
             spotless clothes.
           </p>
@@ -45,7 +42,7 @@ const OurAdventages = () => {
               className="mx-auto"
             />
           </div>
-          <p className="text-sm md:text-lg text-wrap col-span-3 text-left md:text-center place-content-center">
+          <p className="text-sm md:text-md text-wrap col-span-3 text-left md:text-center place-content-center">
             Kucekin uses eco-friendly detergents for safe, effective, and gentle
             cleaning.
           </p>
@@ -59,7 +56,7 @@ const OurAdventages = () => {
               className="mx-auto"
             />
           </div>
-          <p className="text-sm md:text-lg text-wrap col-span-3 text-left md:text-center place-content-center">
+          <p className="text-sm md:text-md text-wrap col-span-3 text-left md:text-center place-content-center">
             Kucekin guarantees fast turnaround times for all your laundry needs.
           </p>
         </div>
@@ -72,7 +69,7 @@ const OurAdventages = () => {
               className="mx-auto"
             />
           </div>
-          <p className="text-sm md:text-lg text-wrap col-span-3 text-left md:text-center place-content-center">
+          <p className="text-sm md:text-md text-wrap col-span-3 text-left md:text-center place-content-center">
             Kucekin provides reliable, door-to-door delivery for your freshly
             cleaned clothes.
           </p>

@@ -79,9 +79,9 @@ export class AuthController {
       //   tokenParams,
       // });
 
-      const userId = Number(req.body.user.id);
-      const password = req.body.password;
-      const result = await verificationService(password, userId);
+      const userId = res.locals.user.id;
+      // const password = req.body.password;
+      const result = await verificationService(req.body, userId);
       return res.status(200).send(result);
     } catch (error) {
       next(error);
@@ -94,7 +94,7 @@ export class AuthController {
     next: NextFunction,
   ) {
     try {
-      const id = req.body.user.id;
+      const id = res.locals.user.id;
 
       const result = await ResendVerifEmail(Number(id));
 

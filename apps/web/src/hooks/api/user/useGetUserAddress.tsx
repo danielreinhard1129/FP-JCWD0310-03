@@ -17,7 +17,7 @@ interface AddressResult {
   isPrimary: boolean;
   id: number;
 }
-
+ 
 const useGetUserAddress = (id: number) => {
   const { axiosInstance } = useAxios();
   const [data, setData] = useState<AddressResult[]>([]);

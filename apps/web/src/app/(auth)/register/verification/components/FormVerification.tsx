@@ -14,14 +14,14 @@ import { useSearchParams } from 'next/navigation';
 import { User } from '@/types/user.type';
 import { data } from 'cypress/types/jquery';
 interface VerificationToken {
-  password?: string;
-  onSubmit: any;
+  password: string | null;
+  // token: string | null;
 }
-const FormVerification: FC<VerificationToken> = ({ onSubmit }) => {
-  // const searchParams = useSearchParams();
-  // let tokenParams = searchParams.get('token');
-  // const { verification } = useVerification();
-  // const [schema, setSchema] = useState(ValidationSchema);
+const FormVerification = () => {
+  const searchParams = useSearchParams();
+  let tokenParams = searchParams.get('token');
+  const { verification } = useVerification();
+  const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
     mode: 'all',
@@ -29,9 +29,13 @@ const FormVerification: FC<VerificationToken> = ({ onSubmit }) => {
     defaultValues: {},
   });
 
-  // function onSubmit(values: VerificationToken) {
-  //   verification(values);
-  // }
+  function onSubmit(values: VerificationToken) {
+    const payload = {
+      password: values.password,
+      token: tokenParams,
+    };
+    verification(payload);
+  }
 
   // const handleSubmit = (data: VerificationArgs) => {
   //   const finalData = {

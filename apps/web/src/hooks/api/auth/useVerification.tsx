@@ -11,22 +11,20 @@ interface VerificationResponses {
 }
 
 interface VerificationArgs {
-  password?: string;
+  password: string | null;
+  token: string | null;
 }
 const useVerification = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
-  const verification = async (password: string, token: string) => {
+  const verification = async (payload: VerificationArgs) => {
     try {
-      await axiosInstance.post<VerificationResponses>(
-        'auth/verification',
-        { password },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      console.log('ini payload', payload);
+      await axiosInstance.post('auth/verification', payload, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
         },
-      );
+      });
 
       toast.success('Your account has been verified, please log in!');
       router.push('/login');

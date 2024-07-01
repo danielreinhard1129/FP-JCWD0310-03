@@ -1,37 +1,24 @@
 'use client';
-import CardMap from '@/components/CardMap';
 import FormCheckBox from '@/components/FormCheckBock';
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
+import {
+  Form
+} from '@/components/ui/form';
+import useUpdateUser from '@/hooks/api/user/useUpdateUser';
 import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
+import dynamic from 'next/dynamic';
 
-interface FormUpdateAddress {
-  addressLine: string;
-  city: string;
-  latitude: string;
-  longitude: string;
-  isPrimary: boolean;
-}
+const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
 
-interface FormEditAddressProps {
-  isLoading: boolean;
-  onSubmit: any;
-  initialValues: FormUpdateAddress;
-}
-
-const FormUpdateAddress: FC<FormEditAddressProps> = ({
-  initialValues,
-  isLoading,
-  onSubmit,
-}) => {
+const FormAddress = () => {
   const { id } = useAppSelector((state) => state.user);
-  //   const { updateUserAddress, isLoading } = useUpdateUserAddress(id);
+  const { updateUser, isLoading } = useUpdateUser();
   const [locationData, setLocationData] = useState({
     addressLine: '',
     city: '',
@@ -43,7 +30,13 @@ const FormUpdateAddress: FC<FormEditAddressProps> = ({
   const form = useForm<z.infer<typeof ValidationSchema>>({
     mode: 'all',
     resolver: zodResolver(ValidationSchema),
-    defaultValues: initialValues,
+    defaultValues: {
+      addressLine: locationData.addressLine,
+      city: locationData.city,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      isPrimary: locationData.isPrimary,
+    },
   });
 
   const onLocationSelect = (location: any) => {
@@ -54,6 +47,10 @@ const FormUpdateAddress: FC<FormEditAddressProps> = ({
     form.setValue('longitude', String(location.longitude));
     form.setValue('isPrimary', Boolean(location.isPrimary));
   };
+
+  function onSubmit(values: z.infer<typeof ValidationSchema>) {
+    updateUser(values);
+  }
 
   const errors = form.formState.errors;
 
@@ -99,7 +96,6 @@ const FormUpdateAddress: FC<FormEditAddressProps> = ({
 
         <Button
           type="submit"
-          disabled={isLoading}
           className="bg-white outline mt-3 outline-teal-800 text-mythemes-maingreen font-bold hover:bg-mythemes-maingreen hover:text-white"
         >
           Submit
@@ -109,4 +105,4 @@ const FormUpdateAddress: FC<FormEditAddressProps> = ({
   );
 };
 
-export default FormUpdateAddress;
+export default FormAddress;

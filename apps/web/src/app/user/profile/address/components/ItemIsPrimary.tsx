@@ -1,3 +1,4 @@
+'use client'
 import { SelectContent, SelectItem } from '@/components/ui/select';
 import React from 'react';
 

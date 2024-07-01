@@ -9,8 +9,8 @@ interface PickupOrderRowTableProps {
     key: number;
     pickupOrderId: number;
     pickupNumber: string
-    name: string
-    email: string
+    name?: string
+    email?: string
     outlet: string
     status: string
     createdAt: string

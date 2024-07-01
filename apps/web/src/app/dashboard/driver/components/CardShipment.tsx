@@ -9,8 +9,8 @@ interface ShipmentCardProps {
   shipmentOrderId: number;
   status: string;
   referenceNumber: string
-  fullName: string
-  email: string
+  fullName?: string
+  email?: string
   address?: string
   refetch: () => void
   buttonLabel: string

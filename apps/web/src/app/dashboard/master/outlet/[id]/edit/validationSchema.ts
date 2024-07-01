@@ -25,5 +25,4 @@ export const ValidationSchema = z.object({
     .min(2, {
       message: 'Address must be at least 2 characters.',
     }),
-  
 });

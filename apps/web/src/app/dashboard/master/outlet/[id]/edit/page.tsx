@@ -2,7 +2,7 @@
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import FormEditOutlet from './components/FormEditOutlet';
+import FormEditOutlet from '../components/FormEditOutlet';
 import useUpdateOutlet from '@/hooks/api/outlet/useUpdateOutlet';
 import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
 import { OutletType } from '@/types/outlet.type';

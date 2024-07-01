@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import Pagination from '@/components/Pagination';
 import { Button } from '@/components/ui/button';
@@ -14,9 +14,11 @@ import { CalendarIcon, ChevronLeft, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import OrderCard from './components/OrderCard';
+import { useRouter } from 'next/navigation';
 
 
 const UserOrder = () => {
+  const router = useRouter();
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
@@ -26,7 +28,11 @@ const UserOrder = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [filterCategory, setFilterCategory] = useState<string>('pickup')
 
-  const { data: orders, meta, refetch } = useGetOrders({
+  const {
+    data: orders,
+    meta,
+    refetch,
+  } = useGetOrders({
     id: id,
     page,
     take: 10,
@@ -158,7 +164,7 @@ const UserOrder = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserOrder
+export default UserOrder;

@@ -1,28 +1,40 @@
 'use client';
-import CardMap from '@/components/CardMap';
+// import CardMap from '@/components/CardMap';
 import FormCheckBox from '@/components/FormCheckBock';
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from '@/components/ui/form';
-import useUpdateUser from '@/hooks/api/user/useUpdateUser';
+import { Form } from '@/components/ui/form';
 import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { boolean, z } from 'zod';
+import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
-import { Checkbox } from '@/components/ui/checkbox';
-import { values } from 'lodash';
+import dynamic from 'next/dynamic';
 
-const FormAddress = () => {
+const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
+
+interface FormUpdateAddress {
+  addressLine: string;
+  city: string;
+  latitude: string;
+  longitude: string;
+  isPrimary?: boolean;
+}
+
+interface FormEditAddressProps {
+  isLoading: boolean;
+  onSubmit: (data: FormUpdateAddress) => void;
+  initialValues: FormUpdateAddress;
+}
+
+const FormUpdateAddress: FC<FormEditAddressProps> = ({
+  initialValues,
+  isLoading,
+  onSubmit,
+}) => {
   const { id } = useAppSelector((state) => state.user);
-  const { updateUser, isLoading } = useUpdateUser(id);
+  //   const { updateUserAddress, isLoading } = useUpdateUserAddress(id);
   const [locationData, setLocationData] = useState({
     addressLine: '',
     city: '',
@@ -34,14 +46,12 @@ const FormAddress = () => {
   const form = useForm<z.infer<typeof ValidationSchema>>({
     mode: 'all',
     resolver: zodResolver(ValidationSchema),
-    defaultValues: {
-      addressLine: locationData.addressLine,
-      city: locationData.city,
-      latitude: locationData.latitude,
-      longitude: locationData.longitude,
-      isPrimary: locationData.isPrimary,
-    },
+    defaultValues: initialValues,
   });
+
+  // useEffect(() => {
+  //   form.reset(initialValues);
+  // }, [initialValues, form]);
 
   const onLocationSelect = (location: any) => {
     setLocationData(location);
@@ -51,10 +61,6 @@ const FormAddress = () => {
     form.setValue('longitude', String(location.longitude));
     form.setValue('isPrimary', Boolean(location.isPrimary));
   };
-
-  function onSubmit(values: z.infer<typeof ValidationSchema>) {
-    updateUser(values);
-  }
 
   const errors = form.formState.errors;
 
@@ -100,6 +106,7 @@ const FormAddress = () => {
 
         <Button
           type="submit"
+          disabled={isLoading}
           className="bg-white outline mt-3 outline-teal-800 text-mythemes-maingreen font-bold hover:bg-mythemes-maingreen hover:text-white"
         >
           Submit
@@ -109,4 +116,4 @@ const FormAddress = () => {
   );
 };
 
-export default FormAddress;
+export default FormUpdateAddress;

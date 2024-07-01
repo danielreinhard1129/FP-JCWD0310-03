@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import FormInput from '../../../../../../components/FormInput';
+import FormInput from '../../../../../components/FormInput';
 import { ValidationSchema } from '../validationSchema';
 
 interface FormEditUser {
@@ -19,9 +19,9 @@ interface FormEditUser {
 interface FormEditUserProps {
   isLoading: boolean;
   onSubmit: any;
-  initialValues: FormEditUser;
+  initialValues: Partial<FormEditUser>;
 }
- 
+
 const FormEditUser: FC<FormEditUserProps> = ({
   isLoading,
   onSubmit,
