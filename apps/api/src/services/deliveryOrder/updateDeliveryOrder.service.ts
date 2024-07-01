@@ -22,26 +22,25 @@ export const updateDeliveryOrderService = async (
       throw new Error('Deliver Order not Found!')
     }
 
-    if (status == String(DeliveryStatus.On_The_Way_to_Outlet)) {
+    if (status == String(DeliveryStatus.ON_THE_WAY_TO_OUTLET)) {
       await prisma.order.update({
         where: { id: existingDeliveryOrder.orderId },
-        data: { orderStatus: OrderStatus.Laundry_Being_Delivered_To_Customer }
+        data: { orderStatus: OrderStatus.BEING_DELIVERED_TO_CUSTOMER }
       })
 
-      // schedule auto confirmetion in 2x24hours
       // const schedule = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
       const schedule = new Date(Date.now() + 2 * 60 * 1000);
       scheduleJob('run every ', schedule, async () => {
         const order = await prisma.order.findFirst({
           where: {
             id: existingDeliveryOrder.orderId,
-            orderStatus: 'Laundry_Being_Delivered_To_Customer',
+            orderStatus: 'BEING_DELIVERED_TO_CUSTOMER',
           },
         });
         if(order){
           await prisma.order.update({
             where: { id: existingDeliveryOrder.orderId },
-            data: { orderStatus: OrderStatus.Laundry_Received_By_Customer },
+            data: { orderStatus: OrderStatus.RECEIVED_BY_CUSTOMER },
           });
         }
       });

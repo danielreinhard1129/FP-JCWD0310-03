@@ -90,7 +90,6 @@ model Outlet {
   id          Int           @id @default(autoincrement())
   outletName  String
   outletType  OutletType
-  outletImage String?
   createdAt   DateTime      @default(now())
   deletedAt   DateTime?
   updatedAt   DateTime      @updatedAt
@@ -110,7 +109,7 @@ enum OutletType {
 model PickupOrder {
   id             Int          @id @default(autoincrement())
   pickupNumber   String       @unique
-  pickupStatus   PickupStatus @default(Waiting_for_Driver)
+  pickupStatus   PickupStatus @default(WAITING_FOR_DRIVER)
   distance       Int
   pickupPrice    Int
   createdAt      DateTime     @default(now())
@@ -131,16 +130,16 @@ model PickupOrder {
 }
 
 enum PickupStatus {
-  Waiting_for_Driver
-  On_The_Way_to_Client
-  On_The_Way_to_Outlet
-  Received_by_Outlet
+  WAITING_FOR_DRIVER
+  ON_THE_WAY_TO_CUSTOMER
+  ON_THE_WAY_TO_OUTLET
+  RECEIVED_BY_OUTLET
 }
 
 model Order {
   id            Int         @id @default(autoincrement())
   orderNumber   String
-  orderStatus   OrderStatus @default(Waiting_for_Driver_Pickup)
+  orderStatus   OrderStatus @default(WAITING_FOR_PICKUP_DRIVER)
   weight        Int?
   laundryPrice  Int?
   createdAt     DateTime    @default(now())
@@ -158,21 +157,22 @@ model Order {
 }
 
 enum OrderStatus {
-  Waiting_for_Driver_Pickup
-  Laundry_On_The_Way_To_Customer
-  LAUNDRY_ON_THE_WAY_TO_OUTLET
-  Laundry_Has_Arrived_At_Outlet
-  READY_TO_WASH
-  Laundry_Being_Washed
-  Laundry_Finished_Washing
-  Laundry_Being_Ironed
-  Laundry_Finished_Ironing
-  Laundry_Being_Packed
-  Awaiting_Payment
-  READY_TO_DELIVER
-  WAITING_DELIVERY_DRIVER
-  Laundry_Being_Delivered_To_Customer
-  Laundry_Received_By_Customer
+  WAITING_FOR_PICKUP_DRIVER
+  ON_THE_WAY_TO_CUSTOMER
+  ON_THE_WAY_TO_OUTLET
+  ARRIVED_AT_OUTLET
+  READY_FOR_WASHING
+  BEING_WASHED
+  WASHING_COMPLETED
+  BEING_IRONED
+  IRONING_COMPLETED
+  BEING_PACKED
+  AWAITING_PAYMENT
+  READY_FOR_DELIVERY
+  WAITING_FOR_DELIVERY_DRIVER
+  BEING_DELIVERED_TO_CUSTOMER
+  RECEIVED_BY_CUSTOMER
+  COMPLETED
 }
 
 model OrderItem {
@@ -200,8 +200,8 @@ model DeliveryOrder {
   id             Int            @id @default(autoincrement())
   deliveryNumber String         @unique
   deliveryStatus DeliveryStatus @default(NOT_READY_TO_DELIVER)
-  distance       Int?
-  deliveryPrice  Int?
+  distance       Int
+  deliveryPrice  Int
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   userId         Int
@@ -219,10 +219,10 @@ model DeliveryOrder {
 
 enum DeliveryStatus {
   NOT_READY_TO_DELIVER
-  Waiting_for_Driver
-  On_The_Way_to_Outlet
-  On_The_Way_to_Client
-  Received_by_Client
+  WAITING_FOR_DRIVER
+  ON_THE_WAY_TO_OUTLET
+  ON_THE_WAY_TO_CUSTOMER
+  RECEIVED_BY_CUSTOMER
 }
 
 model OrderWorker {
@@ -268,6 +268,7 @@ model Payment {
   id              Int           @id @default(autoincrement())
   invoiceNumber   String        @unique
   amount          Int
+  paymentMethode  String?
   paymentStatus   PaymentStatus @default(PENDING)
   snapToken       String?
   snapRedirectUrl String?
@@ -280,8 +281,9 @@ model Payment {
 }
 
 enum PaymentStatus {
-  PENDING
-  COMPLETED
-  FAILED
+  SUCCESSED
+  CANCELLED
+  DENIED
   EXPIRED
+  PENDING
 }

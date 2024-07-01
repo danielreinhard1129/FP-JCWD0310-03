@@ -23,7 +23,7 @@ const DeliveryRequest = () => {
     page,
     take: 10,
     filterOutlet,
-    filterStatus : String(OrderStatus.READY_TO_DELIVER),
+    filterStatus : String(OrderStatus.READY_FOR_DELIVERY),
     sortOrder,
   });
 

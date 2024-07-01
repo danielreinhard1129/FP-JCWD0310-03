@@ -1,6 +1,5 @@
 'use client';
 
-import useGetEmployee from '@/hooks/api/employee/useGetEmployee';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
 import { redirect, useRouter } from 'next/navigation';

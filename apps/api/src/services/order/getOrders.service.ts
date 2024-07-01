@@ -7,12 +7,15 @@ interface GetOrdersQuery extends PaginationQueryParams {
     id: number;
     filterOutlet?: string | number;
     filterStatus?: string | number;
+    filterDate?: Date,
+    search?: string,
+    filterCategory?: string
 }
 
 export const getOrdersService = async (query: GetOrdersQuery) => {
     try {
-        const { page, sortBy, sortOrder, take, id, filterOutlet, filterStatus } = query;
-       
+        const { page, sortBy, sortOrder, take, id, filterOutlet, filterStatus, filterDate, search, filterCategory } = query;
+
         const existingUser = await prisma.user.findFirst({
             where: { id: id },
             select: { employee: true, role: true }
@@ -21,13 +24,13 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
         const whereClause: Prisma.OrderWhereInput = {
         }
 
-        if (existingUser?.role == "CUSTOMER") { 
+        if (existingUser?.role == "CUSTOMER") {
             const pickupOrderData = await prisma.pickupOrder.findMany({
-            where: {userId: id},
-            select: {id: true}
+                where: { userId: id },
+                select: { id: true }
             })
             const pickupOrderIds = pickupOrderData.map(pickup => pickup.id);
-            whereClause.pickupOrderId = { in: pickupOrderIds };            
+            whereClause.pickupOrderId = { in: pickupOrderIds };
         }
 
         if (existingUser?.role != "CUSTOMER") {
@@ -54,6 +57,64 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
 
         if (filterStatus !== 'all') {
             whereClause.orderStatus = filterStatus as OrderStatus;
+        }
+
+        if (filterStatus == 'all') {
+            if (filterCategory == 'pickup') {
+                whereClause.orderStatus = {
+                    in: [
+                        OrderStatus.WAITING_FOR_PICKUP_DRIVER,
+                        OrderStatus.ON_THE_WAY_TO_CUSTOMER,
+                        OrderStatus.ON_THE_WAY_TO_OUTLET,
+                        OrderStatus.ARRIVED_AT_OUTLET
+                    ]
+                };
+            }
+            if (filterCategory == 'process') {
+                whereClause.orderStatus = {
+                    in: [
+                        OrderStatus.READY_FOR_WASHING,
+                        OrderStatus.BEING_WASHED,
+                        OrderStatus.WASHING_COMPLETED,
+                        OrderStatus.BEING_IRONED,
+                        OrderStatus.IRONING_COMPLETED,
+                        OrderStatus.BEING_PACKED,
+                        OrderStatus.AWAITING_PAYMENT
+                    ]
+                };
+            }
+            if (filterCategory == 'delivery') {
+                whereClause.orderStatus = {
+                    in: [
+                        OrderStatus.READY_FOR_DELIVERY,
+                        OrderStatus.WAITING_FOR_DELIVERY_DRIVER,
+                        OrderStatus.BEING_DELIVERED_TO_CUSTOMER
+                    ]
+                };
+            }
+            if (filterCategory == 'completed') {
+                whereClause.orderStatus = {
+                    in: [
+                        OrderStatus.RECEIVED_BY_CUSTOMER
+                    ]
+                };
+            }
+        }
+
+        if (filterDate !== undefined) {
+            // whereClause.createdAt = filterDate
+            const startOfDay = new Date(filterDate.setHours(0, 0, 0, 0));
+            const endOfDay = new Date(filterDate.setHours(23, 59, 59, 999));
+            whereClause.createdAt = {
+                gte: startOfDay,
+                lte: endOfDay
+            };
+        }
+
+        if (search !== '') {
+            whereClause.orderNumber = {
+                contains: search?.toUpperCase(),
+            };
         }
 
         const orders = await prisma.order.findMany({

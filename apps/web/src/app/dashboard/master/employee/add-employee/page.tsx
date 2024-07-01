@@ -1,6 +1,8 @@
+'use client'
 import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 import { AddEmployeeForm } from "./components/FormAddEmployee"
+import SuperAdminGuard from "@/hoc/SuperAdminGuard"
 
 const AddEmployee = () => {
   return (
@@ -18,4 +20,4 @@ const AddEmployee = () => {
   )
 }
  
-export default AddEmployee
+export default SuperAdminGuard(AddEmployee)

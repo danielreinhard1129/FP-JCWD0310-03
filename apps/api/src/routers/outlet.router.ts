@@ -19,7 +19,6 @@ export class OutletRouter {
     this.router.get('/:id', this.outletController.getOutletController);
     this.router.patch(
       '/:id',
-      uploader('IMG', '/images').array('outletImage', 1),
       this.outletController.updateOutletController,
     );
     this.router.delete('/:id', this.outletController.deleteOutletController);

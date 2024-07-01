@@ -17,7 +17,7 @@ const PickupOrderList = () => {
     id: id,
     page,
     take: 5,
-    pickupStatus: String(PickupStatus.Received_by_Outlet),
+    pickupStatus: String(PickupStatus.RECEIVED_BY_OUTLET),
     isOrderCreated: Number(Boolean(false))
   });
 

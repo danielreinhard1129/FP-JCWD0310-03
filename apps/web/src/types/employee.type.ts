@@ -1,4 +1,7 @@
+import { DeliveryOrder } from "./deliveryOrder.type";
+import { OrderWorker } from "./orderWorker.type";
 import { Outlet } from "./outlet.type";
+import { PickupOrder } from "./pickupOrder.type";
 import { User } from "./user.type";
 
 export enum EmployeeStation {
@@ -13,13 +16,16 @@ export enum EmployeeWorkShift {
 }
 
 export interface Employee {
-    id: number;
-    workShift: EmployeeWorkShift;
-    isSuperAdmin: boolean;
-    station?: EmployeeStation;
-    userId: number;
-    outletId?: number;
-    outlet?: Outlet;
-    user: User;
-  }
+  id: number;
+  workShift: EmployeeWorkShift;
+  isSuperAdmin: boolean;
+  station: EmployeeStation;
+  userId: number;
+  outletId: number;
+  outlet: Outlet;
+  user: User;
+  pickupOrder: PickupOrder[];
+  deliveryOrder: DeliveryOrder[];
+  orderWorker: OrderWorker[];
+}
 

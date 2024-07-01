@@ -5,6 +5,7 @@ import { getChangedValues } from '@/utils/getChangeValues';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import FormEditEmployee from './components/FormEditEmployee';
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 
 interface FormUpdateEmployee {
   fullName: string,
@@ -69,4 +70,4 @@ const EditEmployee = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default EditEmployee;
+export default SuperAdminGuard(EditEmployee);

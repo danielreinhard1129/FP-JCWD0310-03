@@ -23,8 +23,8 @@ export const updateOrderStatusService = async (
 
         let setOrderStatus = orderStatus
 
-        if (orderStatus == 'Awaiting_Payment' && existingOrder.isPaid == true) {
-            setOrderStatus = OrderStatus.READY_TO_DELIVER
+        if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == true) {
+            setOrderStatus = OrderStatus.READY_FOR_DELIVERY
         }
 
         const updateStatusUpdate = await prisma.order.update({
@@ -34,7 +34,7 @@ export const updateOrderStatusService = async (
             },
         });
 
-        if (orderStatus == 'Awaiting_Payment' && existingOrder.isPaid == false) {
+        if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == false) {
             const createNotification = await prisma.notification.create({
                 data: {
                     title: "Payment Reminder",
@@ -64,7 +64,7 @@ export const updateOrderStatusService = async (
 
 
 
-            if (orderStatus == 'Laundry_Finished_Washing') {
+            if (orderStatus == 'WASHING_COMPLETED') {
                 const orderWorker = await prisma.orderWorker.findFirst({
                     where: { orderId: orderId, workerId: workerId, station: 'WASHING' },
                     select: { id: true }
@@ -103,7 +103,7 @@ export const updateOrderStatusService = async (
                 }));
             }
 
-            if (orderStatus == 'Laundry_Finished_Ironing') {
+            if (orderStatus == 'IRONING_COMPLETED') {
                 const orderWorker = await prisma.orderWorker.findFirst({
                     where: { orderId: orderId, workerId: workerId, station: 'IRONING' },
                     select: { id: true }
@@ -142,7 +142,7 @@ export const updateOrderStatusService = async (
                 }));
             }
 
-            if (orderStatus == 'Awaiting_Payment') {
+            if (orderStatus == 'AWAITING_PAYMENT') {
                 const orderWorker = await prisma.orderWorker.findFirst({
                     where: { orderId: orderId, workerId: workerId, station: 'PACKING' },
                     select: { id: true }
@@ -155,7 +155,7 @@ export const updateOrderStatusService = async (
                 })
             }
 
-            if (orderStatus == 'Laundry_Being_Ironed') {
+            if (orderStatus == 'BEING_IRONED') {
                 await prisma.orderWorker.create({
                     data: {
                         orderId: orderId,
@@ -165,7 +165,7 @@ export const updateOrderStatusService = async (
                 })
             }
 
-            if (orderStatus == 'Laundry_Being_Washed') {
+            if (orderStatus == 'BEING_WASHED') {
                 await prisma.orderWorker.create({
                     data: {
                         orderId: orderId,
@@ -175,7 +175,7 @@ export const updateOrderStatusService = async (
                 })
             }
 
-            if (orderStatus == 'Laundry_Being_Packed') {
+            if (orderStatus == 'BEING_PACKED') {
                 await prisma.orderWorker.create({
                     data: {
                         orderId: orderId,
@@ -184,9 +184,7 @@ export const updateOrderStatusService = async (
                     }
                 })
             }
-
         }
-
 
         return {
             order: updateStatusUpdate,

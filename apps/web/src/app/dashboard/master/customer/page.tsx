@@ -4,6 +4,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import React, { useState } from 'react'
 import TableCustomers from './components/TableCustomer';
 import useGetUsers from '@/hooks/api/user/useGetUsers';
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 
 const MenuCustomer = () => {
   const [page, setPage] = useState<number>(1);
@@ -58,4 +59,4 @@ const MenuCustomer = () => {
   )
 }
 
-export default MenuCustomer
+export default SuperAdminGuard(MenuCustomer)

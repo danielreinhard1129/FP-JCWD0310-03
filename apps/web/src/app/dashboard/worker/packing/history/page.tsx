@@ -5,6 +5,7 @@ import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import { EmployeeStation } from '@/types/employee.type';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 
 
 const PackingHistory = () => {
@@ -33,7 +34,7 @@ const PackingHistory = () => {
               key={index}
               workerId={id}
               orderId={orderWorker.orderId}
-              targetStatus={OrderStatus.Laundry_Finished_Packing}
+              targetStatus={OrderStatus.AWAITING_PAYMENT}
               referenceNumber={orderWorker.order.orderNumber}
               fullName={orderWorker.order.pickupOrder.user.fullName}
               email={orderWorker.order.pickupOrder.user.email}
@@ -61,4 +62,4 @@ const PackingHistory = () => {
   )
 }
 
-export default PackingHistory
+export default WorkerAuthGuard(PackingHistory)

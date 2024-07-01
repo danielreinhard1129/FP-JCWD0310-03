@@ -15,7 +15,6 @@ import { ValidationSchema } from '../validationSchema';
 interface FormUpdateOutlet {
   outletName: string;
   outletType: string;
-  outletImage: File[];
   addressLine: string;
   city: string;
 }
@@ -37,14 +36,7 @@ const FormEditOutlet: FC<FormUpdateOutletProps> = ({
     defaultValues: initialValues,
   });
 
-  const handleRemoveImage = (index: number) => {
-    const currentOutletImage = form.getValues('outletImage') || [];
-    const updatedOutletImage = currentOutletImage.toSpliced(index, 1);
-    form.setValue('outletImage', updatedOutletImage, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-  };
+ 
   const errors = form.formState.errors;
 
   return (
@@ -79,29 +71,6 @@ const FormEditOutlet: FC<FormUpdateOutletProps> = ({
           placeholder="Select an Outlet type"
           form={form}
           item={<ItemOutletType />}
-        />
-        <Dropzone
-          label="Outlet Image"
-          // onDrop={(files) => form.setValue('outletImage', files)}
-          onDrop={(files) => {
-            const currentThumbnails = form.getValues('outletImage' || []);
-            form.setValue('outletImage', [...currentThumbnails, ...files], {
-              shouldValidate: true,
-              shouldDirty: true,
-            });
-          }}
-          isError={Boolean(errors.outletImage)}
-        />
-
-        <Controller
-          name="outletImage"
-          control={form.control}
-          render={({ field }) => (
-            <PreviewImages
-              fileImages={field.value}
-              onRemoveImage={handleRemoveImage}
-            />
-          )}
         />
         <Button type="submit" disabled={isLoading}>
           Submit
