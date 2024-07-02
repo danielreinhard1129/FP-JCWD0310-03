@@ -6,8 +6,25 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
+interface PaymentChartData {
+  payments: Payment[];
+  totalIncome: number;
+  totalTransaction: number;
+  totalWeight: number;
+  incomeMonthly: number[];
+  transactionMonthly: number[];
+  weightMonthly: number[];
+  incomeDaily: number[];
+  transactionDaily: number[];
+  weightDaily: number[];
+}
+
+interface PaymentChartResponse {
+  data: PaymentChartData;
+}
+
 interface GetPaymentChartQuery{
-  id: number;
+  // id: number;
   filterOutlet: string;
   filterMonth: string;
   filterYear: string;
@@ -15,7 +32,7 @@ interface GetPaymentChartQuery{
 
 const useGetPaymentChart = (queries: GetPaymentChartQuery) => {
   const { axiosInstance } = useAxios();
-  const [data, setData] = useState<Payment[]>([]);
+  const [data, setData] = useState<PaymentChartData | null>(null);
   const [meta, setMeta] = useState<IPaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -39,7 +56,7 @@ const useGetPaymentChart = (queries: GetPaymentChartQuery) => {
   useEffect(() => {
     getPaymentChart();
 
-  }, [queries.id]);
+  }, [queries.filterMonth, queries.filterYear, queries.filterOutlet]);
 
   return { data, isLoading, meta, refetch: getPaymentChart };
 };

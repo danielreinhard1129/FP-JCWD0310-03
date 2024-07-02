@@ -31,8 +31,8 @@ export class PaymentController {
   async getPaymentChartController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
-        id: parseInt(req.query.id as string),
-        filterOutlet: req.query.filterOutlet as string,
+        id: parseInt(res.locals.user.id),
+        filterOutlet: parseInt(req.query.filterOutlet as string) || 'all',
         filterMonth: req.query.filterMonth as string,
         filterYear: req.query.filterYear as string,
       };
