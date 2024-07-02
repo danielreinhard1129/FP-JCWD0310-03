@@ -14,11 +14,12 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../public/pictNotFound.jpeg';
+import useGetUser from '@/hooks/api/user/useGetUser';
 
 const Profile = () => {
-  // const token = localStorage.getItem('token');
   const { email, fullName, role, tokenExpiresIn, isVerify, profilePic } =
     useAppSelector((state) => state.user);
+  const { user } = useGetUser();
   const dispatch = useAppDispatch();
   const logout = () => {
     localStorage.removeItem('token');
@@ -130,13 +131,16 @@ const Profile = () => {
             <p>Edit Profile</p>
             <IoIosArrowForward />
           </Button>
-          <Button
-            className="bg-mythemes-white hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2 "
-            onClick={() => router.push(`/user/profile/change-password`)}
-          >
-            <p>Change Password</p>
-            <IoIosArrowForward />
-          </Button>
+          {user?.password == null ? null : (
+            <Button
+              className="bg-mythemes-white hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2 "
+              onClick={() => router.push(`/user/profile/change-password`)}
+            >
+              <p>Change Password</p>
+              <IoIosArrowForward />
+            </Button>
+          )}
+
           <Button
             className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2 "
             onClick={() => router.push(`/order`)}
@@ -152,13 +156,13 @@ const Profile = () => {
             <IoIosArrowForward />
           </Button>
         </div>
-          <Button
-            onClick={logout}
-            className="bg-mythemes-grey mt-auto text-red-500 hover:bg-mythemes-grey gap-2  flex flex-row justify-center rounded-full"
-          >
-            <LogOut />
-            <p>Logout</p>
-          </Button>
+        <Button
+          onClick={logout}
+          className="bg-mythemes-grey mt-auto text-red-500 hover:bg-mythemes-grey gap-2  flex flex-row justify-center rounded-full"
+        >
+          <LogOut />
+          <p>Logout</p>
+        </Button>
       </div>
     </main>
   );

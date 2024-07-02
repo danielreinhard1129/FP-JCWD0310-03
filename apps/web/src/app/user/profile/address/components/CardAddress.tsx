@@ -44,9 +44,6 @@ const CardAddress: FC<Address> = ({ addressLine, isPrimary, id, refetch }) => {
         {isPrimary}
       </Badge>
       <div className="grid grid-cols-8 gap-2">
-        {/* <Button className="col-span-7 rounded-xl bg-white text-blackn border hover:ring-mythemes-maingreen hover:ring hover:bg-mythemes-grey">
-          Edit Address
-        </Button> */}
         <UpdateAddress addressId={id} />
         <AlertDialog>
           <AlertDialogTrigger

@@ -1,4 +1,5 @@
 import { DeliveryOrderController } from '@/controllers/deliveryOrder.controller';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class DeliveryOrderRouter {
@@ -12,9 +13,21 @@ export class DeliveryOrderRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', this.deliveryOrderController.getDeliveryOrdersController);
-    this.router.post('/', this.deliveryOrderController.createDeliveryOrderController);
-    this.router.patch('/', this.deliveryOrderController.updateDeliveryOrderController);
+    this.router.get(
+      '/',
+      verifyToken,
+      this.deliveryOrderController.getDeliveryOrdersController,
+    );
+    this.router.post(
+      '/',
+      verifyToken,
+      this.deliveryOrderController.createDeliveryOrderController,
+    );
+    this.router.patch(
+      '/',
+      verifyToken,
+      this.deliveryOrderController.updateDeliveryOrderController,
+    );
   }
 
   getRouter(): Router {

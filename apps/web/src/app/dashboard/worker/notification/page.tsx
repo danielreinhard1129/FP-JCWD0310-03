@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 const Notification = () => {
   const { id } = useAppSelector((state) => state.user);
   const { data: UserNotifications, refetch } = useGetUserNotifications({
-    userId: id,
+    // userId: id,
   });
 
   const router = useRouter();

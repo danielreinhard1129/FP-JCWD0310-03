@@ -29,7 +29,7 @@ export const forgotPasswordService = async (body: Pick<User, 'email'>) => {
     });
 
     return {
-      message: 'email has been sent',
+      message: 'Email has been sent to your email !',
     };
   } catch (error) {
     throw error;

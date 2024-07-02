@@ -11,7 +11,7 @@ const MenuCustomer = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
   const { data: users, meta, refetch } = useGetUsers({
-    id: id,
+    // id: id,
     page,
     take: 10,
   });

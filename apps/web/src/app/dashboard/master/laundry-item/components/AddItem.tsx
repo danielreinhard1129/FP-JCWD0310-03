@@ -14,22 +14,31 @@ import { Label } from '@/components/ui/label';
 import useCreateLaundryItem from '@/hooks/api/laundryItem/useCreateLaundryItem';
 import { LaundryItem } from '@/types/laundryItem.type';
 import { PlusCircle } from 'lucide-react';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 interface CreateItemArgs extends Pick<LaundryItem, 'itemName'> {}
 interface Refetch {
   refetch: () => void;
 }
 
-export function AddItem(refetch: Refetch) {
+const AddItem = ({ refetch }: Refetch) => {
   const { createLaundryItem } = useCreateLaundryItem();
   const [itemName, setItemName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
+  // const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   refetch();
+  //   event.preventDefault();
+  //   const values: CreateItemArgs = { itemName };
+  //   createLaundryItem(values);
+  //   setItemName('');
+  //   setIsOpen(false);
+  // };
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const values: CreateItemArgs = { itemName };
-    createLaundryItem(values);
+    await createLaundryItem(values);
+    refetch();
     setItemName('');
     setIsOpen(false);
   };
@@ -50,8 +59,8 @@ export function AddItem(refetch: Refetch) {
         <DialogHeader>
           <DialogTitle>Add new item</DialogTitle>
           <DialogDescription>
-            Complete the form below to add a new item. Dont forget to click
-            Save to confirm.
+            Complete the form below to add a new item. Dont forget to click Save
+            to confirm.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="grid gap-4 py-4">
@@ -74,4 +83,5 @@ export function AddItem(refetch: Refetch) {
       </DialogContent>
     </Dialog>
   );
-}
+};
+export default AddItem;

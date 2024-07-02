@@ -19,6 +19,7 @@ const Home = () => {
     useAppSelector((state) => state.user);
   const { getLocation, data } = useGetLocationByCoord();
 
+
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -28,7 +29,7 @@ const Home = () => {
       },
       (error) => {
         console.error(error);
-        setCurrentPosition([0, 0]); // fallback to default location
+        setCurrentPosition([0, 0]);
       },
     );
   }, []);

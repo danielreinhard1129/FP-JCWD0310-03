@@ -1,5 +1,6 @@
 //import { verifyToken } from '@/lib/jwt';
 import { PickupOrderController } from '@/controllers/pickupOrder.controller';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class PickupOrderRouter {
@@ -13,10 +14,26 @@ export class PickupOrderRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', this.pickupOrderController.getPickupOrdersController);
-    this.router.get('/:id', this.pickupOrderController.getPickupOrderController);
-    this.router.post('/', this.pickupOrderController.createPickupOrderController);
-    this.router.patch('/', this.pickupOrderController.updatePickupOrderController);
+    this.router.get(
+      '/',
+      verifyToken,
+      this.pickupOrderController.getPickupOrdersController,
+    );
+    this.router.get(
+      '/:id',
+      verifyToken,
+      this.pickupOrderController.getPickupOrderController,
+    );
+    this.router.post(
+      '/',
+      verifyToken,
+      this.pickupOrderController.createPickupOrderController,
+    );
+    this.router.patch(
+      '/',
+      verifyToken,
+      this.pickupOrderController.updatePickupOrderController,
+    );
   }
 
   getRouter(): Router {

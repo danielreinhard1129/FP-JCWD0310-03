@@ -12,16 +12,16 @@ import { useAppSelector } from '@/redux/hooks'
 
 const PickupOrderList = () => {
   const [page, setPage] = useState<number>(1);
-  const { id } = useAppSelector((state) => state.user)
+  // const { id } = useAppSelector((state) => state.user)
   const { data: pickupOrders, meta, refetch } = useGetPickupOrders({
-    id: id,
+    // id: id,
     page,
     take: 5,
     pickupStatus: String(PickupStatus.RECEIVED_BY_OUTLET),
     isOrderCreated: Number(Boolean(false))
   });
 
-  const {user} = useGetUser(id);
+  const {user} = useGetUser();
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);

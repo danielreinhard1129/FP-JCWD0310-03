@@ -9,8 +9,7 @@ import CardAddress from './components/CardAddress';
 import AddAddress from './components/AddAddress';
 
 const UserAddress = () => {
-  const { id } = useAppSelector((state) => state.user);
-  const { address, isLoading, refetch } = useGetUserAddress(Number(id));
+  const { address, isLoading, refetch } = useGetUserAddress();
   const router = useRouter();
 
   return (

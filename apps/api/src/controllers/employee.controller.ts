@@ -19,7 +19,8 @@ export class EmployeeController {
   async getEmployeesController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
-        id: parseInt(req.query.id as string),
+        // id: parseInt(req.query.id as string),
+        id: parseInt(res.locals.user.id as string),
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',

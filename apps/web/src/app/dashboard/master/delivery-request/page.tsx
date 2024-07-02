@@ -1,16 +1,12 @@
 'use client'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import useGetOrders from '@/hooks/api/order/useGetOrders';
-import React, { useState } from 'react'
-import ItemFilterOutlet from '../order/components/ItemFilterOutlet';
-import Link from 'next/link';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import TableOrder from '../order/components/TableOrder';
 import Pagination from '@/components/Pagination';
-import { OrderStatus } from '@/types/order.type';
-import TableDeliveryRequest from './components/TableDeliveryRequest';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import useGetOrders from '@/hooks/api/order/useGetOrders';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
+import { OrderStatus } from '@/types/order.type';
+import { useState } from 'react';
+import TableDeliveryRequest from './components/TableDeliveryRequest';
 
 const DeliveryRequest = () => {
   const [page, setPage] = useState<number>(1);
@@ -19,7 +15,7 @@ const DeliveryRequest = () => {
   const [sortOrder, setSortOrder] = useState('asc')
 
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     filterOutlet,
@@ -27,7 +23,7 @@ const DeliveryRequest = () => {
     sortOrder,
   });
 
-  const {user} = useGetUser(id);
+  const {user} = useGetUser();
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);

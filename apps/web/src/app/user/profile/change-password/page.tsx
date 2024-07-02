@@ -15,8 +15,8 @@ interface IFormEditUser {
 }
 
 const ChangePassword = () => {
-  const { id } = useAppSelector((state) => state.user);
-  const { user, isLoading: isLoadingGetUser } = useGetUser(Number(id));
+  // const { id } = useAppSelector((state) => state.user);
+  const { user, isLoading: isLoadingGetUser } = useGetUser();
   const { updateUser, isLoading } = useUpdateUser();
 
   const router = useRouter();

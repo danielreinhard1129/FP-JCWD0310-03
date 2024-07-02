@@ -22,7 +22,7 @@ const OrderSearch: FC<ShipmentCardProps> = ({
 }) => {
   const router = useRouter();
   const [search, setSearch] = useState<string>('');
-  const { data, isLoading } = useGetOrders({ id, search });
+  const { data, isLoading } = useGetOrders({  search });
   const loadOptions = (
     inputValue: string,
     callback: (options: OrderOption[]) => void,

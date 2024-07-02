@@ -19,7 +19,7 @@ const MenuOrder = () => {
   const [sortOrder, setSortOrder] = useState('asc')
 
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     filterOutlet,

@@ -11,7 +11,7 @@ const PickupOrderPickup = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
   const { data: pickupOrders, meta: meta, refetch: refetch } = useGetPickupOrders({
-    id: id,
+    // id: id,
     pickupStatus: String(PickupStatus.ON_THE_WAY_TO_CUSTOMER),
     page: page,
     take: 10,

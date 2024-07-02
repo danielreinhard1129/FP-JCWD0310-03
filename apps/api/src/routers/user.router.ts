@@ -26,6 +26,7 @@ export class UserRouter {
       verifyToken,
       this.userController.getUserController,
     );
+    this.router.get('/', verifyToken, this.userController.getUsersController);
   }
 
   getRouter(): Router {

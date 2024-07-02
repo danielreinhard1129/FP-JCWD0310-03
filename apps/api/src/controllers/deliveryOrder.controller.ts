@@ -1,16 +1,19 @@
-
 import { createDeliveryOrderService } from '@/services/deliveryOrder/createDeliveryOrder.service';
 import { getDeliveryOrdersService } from '@/services/deliveryOrder/getDeliveryOrders.service';
 import { updateDeliveryOrderService } from '@/services/deliveryOrder/updateDeliveryOrder.service';
 import { NextFunction, Request, Response } from 'express';
 
-
 export class DeliveryOrderController {
-  async getDeliveryOrdersController(req: Request, res: Response, next: NextFunction) {
+  async getDeliveryOrdersController(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const query = {
-        id: parseInt(req.query.id as string),
-        deliveryStatus: req.query.deliveryStatus as string || 'all',
+        // id: parseInt(req.query.id as string),
+        id: parseInt(res.locals.user.id as string),
+        deliveryStatus: (req.query.deliveryStatus as string) || 'all',
         isClaimedbyDriver: parseInt(req.query.isClaimedbyDriver as string),
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
@@ -23,8 +26,12 @@ export class DeliveryOrderController {
       next(error);
     }
   }
-  
-  async createDeliveryOrderController(req: Request, res: Response, next: NextFunction) {
+
+  async createDeliveryOrderController(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const result = await createDeliveryOrderService(req.body);
       res.status(200).send(result);
@@ -33,7 +40,11 @@ export class DeliveryOrderController {
     }
   }
 
-  async updateDeliveryOrderController(req: Request, res: Response, next: NextFunction) {
+  async updateDeliveryOrderController(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const result = await updateDeliveryOrderService(req.body);
       res.status(200).send(result);

@@ -13,13 +13,13 @@ const PackingRequest = () => {
   const [page, setPage] = useState<number>(1);  
   const { id } = useAppSelector((state) => state.user);
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     filterStatus: String(OrderStatus.IRONING_COMPLETED)
   });
 
-  const {user} = useGetUser(id); 
+  const {user} = useGetUser(); 
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);

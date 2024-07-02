@@ -13,13 +13,13 @@ const WashingRequest = () => {
   const [page, setPage] = useState<number>(1);  
   const { id: id } = useAppSelector((state) => state.user);
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     filterStatus: String(OrderStatus.READY_FOR_WASHING)
   });
 
-  const {user} = useGetUser(id); 
+  const {user} = useGetUser(); 
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);

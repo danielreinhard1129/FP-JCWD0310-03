@@ -9,16 +9,16 @@ import React, { useState } from 'react'
 const Shipment = () => {
   const [page, setPage] = useState<number>(1);
   const [pageDelivery, setPageDelivery] = useState<number>(1);
-  const { id } = useAppSelector((state) => state.user);
+  // const { id } = useAppSelector((state) => state.user);
   const { data: pickupOrders, meta, refetch } = useGetPickupOrders({
-    id: 0,
+    // id: 0,
     page,
     take: 10,
     isClaimedbyDriver: Number(Boolean(true))
   }); 
   
   const { data: deliveryOrders, meta: metaDelivery, refetch: refetchDelivery } = useGetDeliveryOrders({
-    id: 0,
+    // id: 0,
     page: pageDelivery,
     take: 10,
     isClaimedbyDriver: Number(Boolean(true))

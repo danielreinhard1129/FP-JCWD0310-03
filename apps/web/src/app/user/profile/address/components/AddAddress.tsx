@@ -1,17 +1,12 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import useUpdateUser from '@/hooks/api/user/useUpdateUser';
 import { ChevronLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import FormAddress from './FormAddAddress';
 
 const AddAddress = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const { updateUser, isLoading } = useUpdateUser();
-
 
   return (
     <>

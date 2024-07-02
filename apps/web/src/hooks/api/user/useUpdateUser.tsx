@@ -82,7 +82,7 @@ const useUpdateUser = () => {
         longitude,
       } = payload;
       const updateUserForm = new FormData();
-
+ 
       if (fullName) updateUserForm.append('fullName', fullName);
       if (email) updateUserForm.append('email', email);
       if (password) updateUserForm.append('password', password);

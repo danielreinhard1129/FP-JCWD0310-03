@@ -17,7 +17,7 @@ export class AddressRouter {
 
   private initializeRoutes(): void {
     this.router.get(
-      '/user/:id',
+      '/user/',
       verifyToken,
       this.addressController.getUserAddressController,
     );
@@ -31,6 +31,11 @@ export class AddressRouter {
       '/:id',
       verifyToken,
       this.addressController.deleteUserAddressController,
+    );
+    this.router.post(
+      '/',
+      verifyToken,
+      this.addressController.createUserAddressController,
     );
   }
 

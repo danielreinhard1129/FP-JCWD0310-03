@@ -13,30 +13,26 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useGetLaundryItem from '@/hooks/api/laundryItem/useGetLaundryItem';
 import useUpdateLaundryItem from '@/hooks/api/laundryItem/useUpdateLaundryItem';
-import { LaundryItem } from '@/types/laundryItem.type';
 import { SquarePen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface UpdateItemArgs {
   itemName: string;
 }
-
 interface UpdateItemProps {
   id: number;
   refetch: () => void;
+  isLoading: boolean;
 }
 
-export function UpdateItem({ id, refetch }: UpdateItemProps) {
+export function UpdateItem({ id, refetch, isLoading }: UpdateItemProps) {
   const { laundryItem, isLoading: isLoadingGetLaundryItem } =
     useGetLaundryItem(id);
-  const { updateLaundryItem, isLoading } = useUpdateLaundryItem(id);
+  const { updateLaundryItem, isLoading: isLoadingUpdateLaundryItem } =
+    useUpdateLaundryItem(id);
   const [itemName, setItemName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
-  //   const onSubmit = (values: UpdateItemArgs) => {
-  //     updateLaundryItem(values);
-  //     setIsOpen(false);
-  //   };
   useEffect(() => {
     if (laundryItem) {
       setItemName(laundryItem.itemName);
@@ -44,10 +40,10 @@ export function UpdateItem({ id, refetch }: UpdateItemProps) {
   }, [laundryItem]);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    refetch();
     event.preventDefault();
     const values: UpdateItemArgs = { itemName };
     await updateLaundryItem(values);
+    refetch();
     setIsOpen(false);
   };
 
@@ -84,7 +80,9 @@ export function UpdateItem({ id, refetch }: UpdateItemProps) {
             />
           </div>
           <DialogFooter>
-            <Button type="submit">Save item</Button>
+            <Button type="submit" disabled={isLoadingUpdateLaundryItem}>
+              Save item
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

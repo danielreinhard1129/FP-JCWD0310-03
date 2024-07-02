@@ -11,7 +11,7 @@ const DeliveryOrderRequest = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
   const { data: deliveryOrders, meta: meta, refetch: refetch } = useGetDeliveryOrders({
-    id: id,
+    // id: id,
     deliveryStatus: String(DeliveryStatus.WAITING_FOR_DRIVER),
     page: page,
     take: 10,

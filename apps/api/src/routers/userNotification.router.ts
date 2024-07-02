@@ -1,4 +1,5 @@
 import { UserNotificationController } from '@/controllers/userNotification.controller';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class UserNotificationRouter {
@@ -12,8 +13,16 @@ export class UserNotificationRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', this.userNotificationController.getUserNotificationsController);
-    this.router.patch('/', this.userNotificationController.updateUserNotificationController);
+    this.router.get(
+      '/',
+      verifyToken,
+      this.userNotificationController.getUserNotificationsController,
+    );
+    this.router.patch(
+      '/',
+      verifyToken,
+      this.userNotificationController.updateUserNotificationController,
+    );
   }
 
   getRouter(): Router {
