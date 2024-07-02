@@ -9,36 +9,36 @@ import Link from 'next/link';
 import React, { useEffect } from 'react'
 
 const Transaction = ({ params }: { params: { id: string } }) => {
-  const { data, refetch, isLoading } = useGetPayment({orderId: Number(params.id)});
+  const { data, refetch, isLoading } = useGetPayment({ orderId: Number(params.id) });
   let formattedDate
-  let paymentMethode 
+  let paymentMethode
   if (data) {
     formattedDate = format(new Date(data?.createdAt), 'dd-MM-yyyy');
-    if (data?.paymentMethode == 'credit_card'){
+    if (data?.paymentMethode == 'credit_card') {
       paymentMethode = 'CREDIT CARD'
     }
-    if (data?.paymentMethode == 'echannel'){
+    if (data?.paymentMethode == 'echannel') {
       paymentMethode = 'E CHANNEL'
     }
-    if (data?.paymentMethode == 'bank_transfer'){
+    if (data?.paymentMethode == 'bank_transfer') {
       paymentMethode = 'BANK TRANSFER'
     }
-    if (data?.paymentMethode =='bca_klikpay'){
+    if (data?.paymentMethode == 'bca_klikpay') {
       paymentMethode = 'BCA KLICKPAY'
     }
-    if (data?.paymentMethode =='bca_klikbca'){
+    if (data?.paymentMethode == 'bca_klikbca') {
       paymentMethode = 'BCA KLICKBCA'
     }
-    if (data?.paymentMethode == 'bri_epay'){
+    if (data?.paymentMethode == 'bri_epay') {
       paymentMethode = 'BRI EPAY'
     }
-    if (data?.paymentMethode == 'gopay'){
+    if (data?.paymentMethode == 'gopay') {
       paymentMethode = 'GOPAY'
     }
-    if (data?.paymentMethode == 'qris'){
+    if (data?.paymentMethode == 'qris') {
       paymentMethode = 'QRIS'
     }
-    if (data?.paymentMethode == 'cstore'){
+    if (data?.paymentMethode == 'cstore') {
       paymentMethode = 'CS STORE'
     }
   }
@@ -81,6 +81,8 @@ const Transaction = ({ params }: { params: { id: string } }) => {
               alert('Close Kah?');
             },
           });
+        } else {
+          alert('Snap is not loaded yet. Please try again.');
         }
       }
 
@@ -95,8 +97,8 @@ const Transaction = ({ params }: { params: { id: string } }) => {
       <div className='flex flex-col gap-4 container p-4 bg-white px-6'>
         <div className='relative flex gap-2'>
           <Link className='absolute h-6 my-auto' href={`/user/order/${params.id}`}>
-          <ChevronLeft className='h-6 my-auto' />
-        </Link>
+            <ChevronLeft className='h-6 my-auto' />
+          </Link>
           <h1 className='font-bold mx-auto my-auto'>Transaction</h1>
         </div>
       </div>

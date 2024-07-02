@@ -35,7 +35,7 @@ const PickupDetailDialog: React.FC<ItemCheckingDialogProps> = ({
     userId: userId,
     userAddressId: userAddressId,
     pickupPrice: pickupPrice,
-    distance: distance,
+    distance: Math.ceil(distance!),
   };
 
   const { createPickupOrder } = useCreatePickupOrder();

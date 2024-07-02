@@ -13,16 +13,17 @@ import Link from 'next/link';
 import { useState } from 'react';
 import TableEmployees from './components/TableEmployee';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 const MenuEmployee = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
+  const { id } = useAppSelector((state) => state.user);
   const {
     data: employees,
     meta,
     refetch,
   } = useGetEmployees({
-    id: 0,
+    id: id,
     page,
     take: 5,
   });

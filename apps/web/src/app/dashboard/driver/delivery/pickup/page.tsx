@@ -5,11 +5,11 @@ import { DeliveryStatus } from '@/types/deliveryOrder.type';
 import { useState } from 'react';
 import ShipmentCard from '../../components/CardShipment';
 import DriverAuthGuard from '@/hoc/DriverAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 const DeliveryOrderPickup = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 4;
+  const { id } = useAppSelector((state) => state.user);
   const { data: deliveryOrders, meta: meta, refetch: refetch } = useGetDeliveryOrders({
     id: id,
     deliveryStatus: String(DeliveryStatus.ON_THE_WAY_TO_OUTLET),

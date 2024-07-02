@@ -8,11 +8,11 @@ import { useState } from 'react'
 import TablePickupOrder from './components/TablePickupOrder'
 import { PickupStatus } from '@/types/pickupOrder.type'
 import useGetUser from '@/hooks/api/user/useGetUser'
+import { useAppSelector } from '@/redux/hooks'
 
 const PickupOrderList = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 0
+  const { id } = useAppSelector((state) => state.user)
   const { data: pickupOrders, meta, refetch } = useGetPickupOrders({
     id: id,
     page,
