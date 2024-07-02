@@ -33,7 +33,7 @@ const UserOrder = () => {
     meta,
     refetch,
   } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     search,
@@ -149,6 +149,7 @@ const UserOrder = () => {
                 orderId={order.id}
                 orderNumber={order.orderNumber}
                 orderStatus={order.orderStatus}
+                isPaid={order.isPaid}
                 createAt={formattedDate}
                 refetch={refetch}
               />

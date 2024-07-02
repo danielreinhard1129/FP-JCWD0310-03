@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetPickupOrdersQuery extends IPaginationQueries {
-  id: number;
+  // id: number;
   pickupStatus?: string;
   isOrderCreated?: number;
   isClaimedbyDriver?: number;
@@ -39,7 +39,7 @@ const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
   useEffect(() => {
     getPickupOrders();
   
-  }, [queries?.page, queries.id]);
+  }, [queries?.page, ]);
 
   return { data, isLoading, meta, refetch: getPickupOrders };
 };

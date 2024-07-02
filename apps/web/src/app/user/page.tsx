@@ -12,7 +12,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
-import useGetUser from '@/hooks/api/user/useGetUser';
 
 const Home = () => {
   const [currentPosition, setCurrentPosition] = useState<[number, number]>();

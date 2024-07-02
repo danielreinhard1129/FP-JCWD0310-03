@@ -6,14 +6,14 @@ import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import { EmployeeStation } from '@/types/employee.type';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 
 const IroningOngoing = () => {
   const [page, setPage] = useState<number>(1);  
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 3;
+  const { id } = useAppSelector((state) => state.user);
   const { data: orderWorkers, meta, refetch } = useGetOrderWorkers({
-    id: id,
+    // id: id,
     page,
     take: 10,
     isComplete: Number(Boolean(false)),
@@ -34,7 +34,7 @@ const IroningOngoing = () => {
               key={index}
               workerId={id}
               orderId={orderWorker.orderId}
-              targetStatus={OrderStatus.BEING_IRONED}
+              targetStatus={OrderStatus.IRONING_COMPLETED}
               referenceNumber={orderWorker.order.orderNumber}
               fullName={orderWorker.order.pickupOrder.user.fullName}
               email={orderWorker.order.pickupOrder.user.email}

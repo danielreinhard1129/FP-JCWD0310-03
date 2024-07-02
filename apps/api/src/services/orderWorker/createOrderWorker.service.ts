@@ -12,6 +12,15 @@ export const createOrderWorkerService = async (
   try {
     const { orderId, workerId, orderStatus } = body;
 
+    const existingEmployee = await prisma.user.findFirst({
+      where: {id: workerId},
+      select: {employee: {select: {id: true}}}
+    })
+
+    if (!existingEmployee?.employee?.id){
+      throw new Error('Employee not Found!')
+    }
+
     let station
 
     if(orderStatus == String(OrderStatus.BEING_WASHED)){
@@ -34,7 +43,7 @@ export const createOrderWorkerService = async (
     const createOrderWorker = await prisma.orderWorker.create({
         data: { 
           orderId: orderId,
-          workerId: workerId,
+          workerId: existingEmployee.employee.id,
           station: station,
           bypassRequest: true
       },

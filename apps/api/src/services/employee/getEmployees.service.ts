@@ -1,7 +1,7 @@
 import prisma from '@/prisma';
 import { PaginationQueryParams } from '@/types/pagination.type';
 
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 
 interface GetEmployeesQuery extends PaginationQueryParams {
   id: number;
@@ -13,12 +13,14 @@ export const getEmployeesService = async (query: GetEmployeesQuery) => {
 
     const existingUser = await prisma.user.findFirst({
       where: { id: id },
-      select: { employee: true },
+      select: { employee: true, role: true },
     });
 
-    const whereClause: Prisma.EmployeeWhereInput = {
-      outletId: existingUser?.employee?.outletId,
-    };
+    const whereClause: Prisma.EmployeeWhereInput = {};
+
+    if(existingUser?.role != Role.SUPER_ADMIN){
+      whereClause.outletId = existingUser?.employee?.outletId
+    }
 
     const employees = await prisma.employee.findMany({
       where: whereClause,

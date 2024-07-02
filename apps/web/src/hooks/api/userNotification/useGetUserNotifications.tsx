@@ -6,7 +6,7 @@ import useAxios from '../useAxios';
 import { UserNotification } from '@/types/notification.type';
 
 interface GetUserNotificationsQuery {
-  userId?: number;
+  // userId?: number;
 }
 
 const useGetUserNotifications = (queries: GetUserNotificationsQuery) => {
@@ -32,7 +32,7 @@ const useGetUserNotifications = (queries: GetUserNotificationsQuery) => {
   useEffect(() => {
     getUserNotifications();
 
-  }, [queries.userId]);
+  }, []);
 
   return { data, isLoading, refetch: getUserNotifications };
 };

@@ -16,7 +16,7 @@ const useGetPayment = (queries: IGetPaymentQuery) => {
 
   const getPayment = async () => {
     try {
-      const { data } = await axiosInstance.get<Payment>(`/payments`,
+      const { data } = await axiosInstance.get<Payment>(`/payments/order`,
         {
           params: queries,
         }

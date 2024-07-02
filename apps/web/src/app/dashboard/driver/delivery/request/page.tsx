@@ -5,13 +5,13 @@ import { DeliveryStatus } from '@/types/deliveryOrder.type';
 import { useState } from 'react';
 import ShipmentCard from '../../components/CardShipment';
 import DriverAuthGuard from '@/hoc/DriverAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 const DeliveryOrderRequest = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 4;
+  const { id } = useAppSelector((state) => state.user);
   const { data: deliveryOrders, meta: meta, refetch: refetch } = useGetDeliveryOrders({
-    id: id,
+    // id: id,
     deliveryStatus: String(DeliveryStatus.WAITING_FOR_DRIVER),
     page: page,
     take: 10,

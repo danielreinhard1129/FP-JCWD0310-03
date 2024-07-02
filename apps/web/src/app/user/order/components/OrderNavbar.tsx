@@ -15,8 +15,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 
 const OrderNavbar = () => {
-  // const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
+  const [page, setPage] = useState<number>(1);
+  const { id } = useAppSelector((state) => state.user);
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
   const [date, setDate] = useState<Date>()
   const [search, setSearch] = useState<string>('')

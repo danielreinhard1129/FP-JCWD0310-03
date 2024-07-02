@@ -1,5 +1,6 @@
 import { createPaymentService } from '@/services/payment/createPayment.service';
 import { getPaymentService } from '@/services/payment/getPayment.service';
+import { getPaymentChartService } from '@/services/payment/getPaymentChart.service';
 import { updatePaymentService } from '@/services/payment/updatePayment.service';
 import { NextFunction, Request, Response } from 'express';
 
@@ -13,13 +14,29 @@ export class PaymentController {
       next(error);
     }
   }
+
   async getPaymentController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
         id: parseInt(req.query.id as string),
-        orderId: parseInt(req.query.orderId as string),        
+        orderId: parseInt(req.query.orderId as string),
       };
       const result = await getPaymentService(query);
+      return res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getPaymentChartController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const query = {
+        id: parseInt(req.query.id as string),
+        filterOutlet: req.query.filterOutlet as string,
+        filterMonth: req.query.filterMonth as string,
+        filterYear: req.query.filterYear as string,
+      };
+      const result = await getPaymentChartService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);

@@ -3,6 +3,7 @@ import Pagination from '@/components/Pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import useGetDeliveryOrders from '@/hooks/api/deliveryOrder/useGetDeliveryOrders';
 import useGetPickupOrders from '@/hooks/api/pickupOrder/useGetPickupOrders';
+import { useAppSelector } from '@/redux/hooks';
 import React, { useState } from 'react'
 
 const Shipment = () => {
@@ -10,14 +11,14 @@ const Shipment = () => {
   const [pageDelivery, setPageDelivery] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
   const { data: pickupOrders, meta, refetch } = useGetPickupOrders({
-    id: 0,
+    // id: 0,
     page,
     take: 10,
     isClaimedbyDriver: Number(Boolean(true))
   }); 
   
   const { data: deliveryOrders, meta: metaDelivery, refetch: refetchDelivery } = useGetDeliveryOrders({
-    id: 0,
+    // id: 0,
     page: pageDelivery,
     take: 10,
     isClaimedbyDriver: Number(Boolean(true))

@@ -9,17 +9,17 @@ import TableOrder from './components/TableOrder'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import ItemFilterOutlet from './components/ItemFilterOutlet'
 import ItemFilterStatus from './components/ItemFilterStatus'
+import { useAppSelector } from '@/redux/hooks'
 
 const MenuOrder = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 1
+  const { id } = useAppSelector((state) => state.user);
   const [filterOutlet, setFilterOutlet] = useState("all")
   const [filterStatus, setFilterStatus] = useState("all")
   const [sortOrder, setSortOrder] = useState('asc')
 
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     filterOutlet,

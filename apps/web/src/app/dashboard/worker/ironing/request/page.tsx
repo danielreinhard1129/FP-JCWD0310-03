@@ -6,21 +6,20 @@ import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 
 const IroningRequest = () => {
-  const [page, setPage] = useState<number>(1);
-  
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 3;
+  const [page, setPage] = useState<number>(1);  
+  const { id } = useAppSelector((state) => state.user)
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     filterStatus: String(OrderStatus.WASHING_COMPLETED)
   });
 
-  const {user} = useGetUser(id); 
+  const {user} = useGetUser(); 
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);

@@ -1,6 +1,6 @@
-
 //import { verifyToken } from '@/lib/jwt';
 import { EmployeeController } from '@/controllers/employee.controller';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class EmployeeRouter {
@@ -14,10 +14,26 @@ export class EmployeeRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.post('/', this.employeeController.addEmployeeController);
-    this.router.get('/', this.employeeController.getEmployeesController);
-    this.router.get('/:id', this.employeeController.getEmployeeController);
-    this.router.patch('/:id', this.employeeController.updateEmployeeController);
+    this.router.post(
+      '/',
+      verifyToken,
+      this.employeeController.addEmployeeController,
+    );
+    this.router.get(
+      '/',
+      verifyToken,
+      this.employeeController.getEmployeesController,
+    );
+    this.router.get(
+      '/:id',
+      verifyToken,
+      this.employeeController.getEmployeeController,
+    );
+    this.router.patch(
+      '/:id',
+      verifyToken,
+      this.employeeController.updateEmployeeController,
+    );
   }
 
   getRouter(): Router {

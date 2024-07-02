@@ -5,11 +5,11 @@ import React, { useState } from 'react'
 import TableCustomers from './components/TableCustomer';
 import useGetUsers from '@/hooks/api/user/useGetUsers';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 const MenuCustomer = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
-  // const id = 1
+  const { id } = useAppSelector((state) => state.user);
   const { data: users, meta, refetch } = useGetUsers({
     // id: id,
     page,

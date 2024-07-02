@@ -12,7 +12,7 @@ export default function DriverAuthGuard(Component: any) {
     const router = useRouter();
 
     const { id, role } = useAppSelector((state) => state.user);
-    const { user } = useGetUser(Number(id));
+
 
     useEffect(() => {
       setTimeout(() => {

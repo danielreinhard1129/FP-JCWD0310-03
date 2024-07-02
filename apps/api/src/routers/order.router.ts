@@ -1,6 +1,7 @@
 //import { verifyToken } from '@/lib/jwt';
 
 import { OrderController } from '@/controllers/order.controller';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class OrderRouter {
@@ -14,10 +15,22 @@ export class OrderRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', this.orderController.getOrdersController);
-    this.router.get('/:id', this.orderController.getOrderController);
-    this.router.post('/', this.orderController.createOrderController);
-    this.router.patch('/', this.orderController.updateOrderStatusController);
+    this.router.get('/', verifyToken, this.orderController.getOrdersController);
+    this.router.get(
+      '/:id',
+      verifyToken,
+      this.orderController.getOrderController,
+    );
+    this.router.post(
+      '/',
+      verifyToken,
+      this.orderController.createOrderController,
+    );
+    this.router.patch(
+      '/',
+      verifyToken,
+      this.orderController.updateOrderStatusController,
+    );
   }
 
   getRouter(): Router {

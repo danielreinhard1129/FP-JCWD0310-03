@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetDeliveryOrdersQuery extends IPaginationQueries {
-  id: number;
+  // id: number;
   deliveryStatus?: string;
   isClaimedbyDriver?: number;
 }
@@ -37,7 +37,7 @@ const useGetDeliveryOrders = (queries: IGetDeliveryOrdersQuery) => {
   useEffect(() => {
     getDeliveryOrders();
   
-  }, [queries?.page, queries.id]);
+  }, [queries?.page]);
 
   return { data, isLoading, meta, refetch: getDeliveryOrders };
 };

@@ -40,9 +40,7 @@ interface Data {
 
 const RequestPickup = () => {
   const { id } = useAppSelector((state) => state.user);
-  const { address, isLoading: isLoadingAddress } = useGetUserAddress(
-    Number(id),
-  );
+  const { address, isLoading: isLoadingAddress } = useGetUserAddress();
   const [selectedOutlet, setSelectedOutlet] = useState<Data | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<AddressResult | null>(
     null,
