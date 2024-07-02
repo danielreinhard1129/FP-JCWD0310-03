@@ -6,13 +6,12 @@ import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 
 const PackingRequest = () => {
-  const [page, setPage] = useState<number>(1);
-  
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 3;
+  const [page, setPage] = useState<number>(1);  
+  const { id } = useAppSelector((state) => state.user);
   const { data: orders, meta, refetch } = useGetOrders({
     id: id,
     page,

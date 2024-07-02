@@ -11,9 +11,7 @@ import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 
 const WashingRequest = () => {
   const [page, setPage] = useState<number>(1);  
-  const { id: inId } = useAppSelector((state) => state.user);
-
-  const id = 3;
+  const { id: id } = useAppSelector((state) => state.user);
   const { data: orders, meta, refetch } = useGetOrders({
     id: id,
     page,

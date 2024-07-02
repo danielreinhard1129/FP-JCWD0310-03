@@ -37,7 +37,7 @@ export const getOrderWorkersService = async (query: GetOrderWorkersQuery) => {
     }
 
     if(existingUser?.role=="WORKER"){
-      whereClause.workerId=id
+      whereClause.workerId= existingUser.employee?.id
     }
     
     if(station!='all'){

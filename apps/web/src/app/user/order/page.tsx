@@ -149,6 +149,7 @@ const UserOrder = () => {
                 orderId={order.id}
                 orderNumber={order.orderNumber}
                 orderStatus={order.orderStatus}
+                isPaid={order.isPaid}
                 createAt={formattedDate}
                 refetch={refetch}
               />

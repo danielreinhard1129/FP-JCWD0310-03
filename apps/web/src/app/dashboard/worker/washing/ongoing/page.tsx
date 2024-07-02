@@ -6,12 +6,12 @@ import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
 import { EmployeeStation } from '@/types/employee.type';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 
 const WashingOngoing = () => {
   const [page, setPage] = useState<number>(1);  
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 3;
+  const { id } = useAppSelector((state) => state.user);
   const { data: orderWorkers, meta, refetch } = useGetOrderWorkers({
     id: id,
     page,

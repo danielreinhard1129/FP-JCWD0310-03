@@ -21,6 +21,15 @@ export const updateOrderStatusService = async (
             throw new Error('Order not Found!')
         }
 
+        const existingEmployee = await prisma.user.findFirst({
+            where: {id: workerId},
+            select: {employee: {select: {id: true}}}
+          })
+      
+          if (!existingEmployee?.employee?.id){
+            throw new Error('Employee not Found!')
+          }
+
         let setOrderStatus = orderStatus
 
         if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == true) {
@@ -66,7 +75,7 @@ export const updateOrderStatusService = async (
 
             if (orderStatus == 'WASHING_COMPLETED') {
                 const orderWorker = await prisma.orderWorker.findFirst({
-                    where: { orderId: orderId, workerId: workerId, station: 'WASHING' },
+                    where: { orderId: orderId, workerId: existingEmployee.employee?.id, station: 'WASHING' },
                     select: { id: true }
                 })
                 await prisma.orderWorker.update({
@@ -105,7 +114,7 @@ export const updateOrderStatusService = async (
 
             if (orderStatus == 'IRONING_COMPLETED') {
                 const orderWorker = await prisma.orderWorker.findFirst({
-                    where: { orderId: orderId, workerId: workerId, station: 'IRONING' },
+                    where: { orderId: orderId, workerId: existingEmployee.employee?.id, station: 'IRONING' },
                     select: { id: true }
                 })
                 await prisma.orderWorker.update({
@@ -144,7 +153,7 @@ export const updateOrderStatusService = async (
 
             if (orderStatus == 'AWAITING_PAYMENT') {
                 const orderWorker = await prisma.orderWorker.findFirst({
-                    where: { orderId: orderId, workerId: workerId, station: 'PACKING' },
+                    where: { orderId: orderId, workerId: existingEmployee.employee?.id, station: 'PACKING' },
                     select: { id: true }
                 })
                 await prisma.orderWorker.update({
@@ -159,7 +168,7 @@ export const updateOrderStatusService = async (
                 await prisma.orderWorker.create({
                     data: {
                         orderId: orderId,
-                        workerId: workerId,
+                        workerId: existingEmployee.employee?.id,
                         station: EmployeeStation.IRONING
                     }
                 })
@@ -169,7 +178,7 @@ export const updateOrderStatusService = async (
                 await prisma.orderWorker.create({
                     data: {
                         orderId: orderId,
-                        workerId: workerId,
+                        workerId: existingEmployee.employee?.id,
                         station: EmployeeStation.WASHING
                     }
                 })
@@ -179,7 +188,7 @@ export const updateOrderStatusService = async (
                 await prisma.orderWorker.create({
                     data: {
                         orderId: orderId,
-                        workerId: workerId,
+                        workerId: existingEmployee.employee?.id,
                         station: EmployeeStation.PACKING
                     }
                 })

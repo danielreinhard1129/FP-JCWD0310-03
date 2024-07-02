@@ -17,11 +17,12 @@ import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 import { PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/redux/hooks';
 
 const MenuOutlet = () => {
   const [page, setPage] = useState<number>(1);
   const router = useRouter();
-  // const { id } = useAppSelector((state) => state.user);
+  const { id } = useAppSelector((state) => state.user);
   const { data, meta, refetch } = useGetOutletList({
     take: 1000,
   });

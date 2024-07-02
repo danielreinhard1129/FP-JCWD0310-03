@@ -10,11 +10,11 @@ import Pagination from '@/components/Pagination';
 import { OrderStatus } from '@/types/order.type';
 import TableDeliveryRequest from './components/TableDeliveryRequest';
 import useGetUser from '@/hooks/api/user/useGetUser';
+import { useAppSelector } from '@/redux/hooks';
 
 const DeliveryRequest = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 1
+  const { id } = useAppSelector((state) => state.user);
   const [filterOutlet, setFilterOutlet] = useState("all")
   const [sortOrder, setSortOrder] = useState('asc')
 

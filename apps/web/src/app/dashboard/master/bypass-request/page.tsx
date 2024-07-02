@@ -5,12 +5,11 @@ import React, { useState } from 'react'
 import TableBypassRequest from '../order/components/TableBypaassRequest';
 import Pagination from '@/components/Pagination';
 import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
+import { useAppSelector } from '@/redux/hooks';
 
 const BypassRequest = () => {
   const [pageBypass, setPageBypass] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 1
-
+  const { id } = useAppSelector((state) => state.user);
   const { data: orderWorkers, meta: metaBypass, refetch: refetchBypass } = useGetOrderWorkers({
     id: id,
     page: pageBypass,

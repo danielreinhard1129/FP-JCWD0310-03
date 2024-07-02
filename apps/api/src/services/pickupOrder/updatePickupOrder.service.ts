@@ -18,7 +18,16 @@ export const updatePickupOrderService = async (
     })
 
     if (!existingPickupOrder) {
-      throw new Error('User not Found!')
+      throw new Error('Pickup Order not Found!')
+    }
+
+    const existingEmployee = await prisma.user.findFirst({
+      where: {id: driverId},
+      select: {employee: {select: {id: true}}}
+    })
+
+    if (!existingEmployee){
+      throw new Error('Employee not Found!')
     }
 
     let orderStatus
@@ -42,7 +51,7 @@ export const updatePickupOrderService = async (
       where: { id: shipmentOrderId },
       data: {
         pickupStatus: status as PickupStatus,
-        driverId: driverId
+        driverId: existingEmployee.employee?.id
       },
     });
 
