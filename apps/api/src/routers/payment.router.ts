@@ -13,7 +13,8 @@ export class PaymentRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', this.paymentController.getPaymentController);
+    this.router.get('/order', this.paymentController.getPaymentController);
+    this.router.get('/report-chart', this.paymentController.getPaymentChartController);
     this.router.post('/', this.paymentController.createPaymentController);
     this.router.post('/midtrans-callback', this.paymentController.updatePaymentController);
   }

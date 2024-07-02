@@ -1,6 +1,6 @@
 'use client'
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
-import ChartEvents from './ChartEvents';
+import ChartEvents from './components/ChartEvents';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAppSelector } from '@/redux/hooks';
 import { useState } from 'react';
@@ -13,7 +13,6 @@ const Overview = () => {
   const [filterOutlet, setFilterOutlet] = useState("all")
   const [filterMonth, setFilterMonth] = useState("january")
   const [filterYear, setFilterYear] = useState('2024')
-  const [page, setPage] = useState<number>(1);
   
 
 
@@ -26,9 +25,7 @@ const Overview = () => {
   const handleChangeFilterYear = (value: 'asc' | 'desc') => {
     setFilterYear(value)
   }
-  const handleChangePaginate = ({ selected }: { selected: number }) => {
-    setPage(selected + 1);
-  };
+ 
 
   return (
     <div className='container flex flex-col gap-5 p-6'>

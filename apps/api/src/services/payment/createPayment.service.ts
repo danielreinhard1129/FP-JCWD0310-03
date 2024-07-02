@@ -44,7 +44,7 @@ export const createPaymentService = async (
 
         if (existingOrder.isPaid === false) {
             const outstandingPayment = await prisma.payment.findFirst({
-                where: { orderId: orderId, paymentStatus: 'PENDING' }
+                where: { orderId: orderId, paymentStatus: 'PENDING', snapToken: { not: null } }
             })
             if (outstandingPayment) {
                 return outstandingPayment
@@ -129,7 +129,7 @@ export const createPaymentService = async (
             }
         }
 
-        return({
+        return ({
             message: 'Success'
         })
     } catch (error) {
