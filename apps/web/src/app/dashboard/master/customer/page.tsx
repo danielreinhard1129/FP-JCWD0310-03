@@ -9,9 +9,9 @@ import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 const MenuCustomer = () => {
   const [page, setPage] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
-  const id = 1
+  // const id = 1
   const { data: users, meta, refetch } = useGetUsers({
-    id: id,
+    // id: id,
     page,
     take: 10,
   });

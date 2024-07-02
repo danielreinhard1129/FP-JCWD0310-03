@@ -27,13 +27,13 @@ const useResetPassword = () => {
         },
       );
 
-      toast(data.message);
+      toast.success(data.message);
 
       router.replace('/user');
     } catch (error) {
       console.log(error);
       if (error instanceof AxiosError) {
-        toast.error(error?.response?.data.message);
+        toast.error(error?.response?.data);
       }
     } finally {
       setIsLoading(false);

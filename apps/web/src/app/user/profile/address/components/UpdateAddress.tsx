@@ -83,7 +83,7 @@ const UpdateAddress: FC<UpdateAddressProps> = ({ addressId }) => {
               <h1 className="font-extrabold ml-8">Edit Address</h1>
             </div>
           </div>
-          <Separator />
+          <Separator /> 
           <div>
             <FormUpdateAddress
               initialValues={initialValues}

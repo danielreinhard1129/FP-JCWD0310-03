@@ -8,6 +8,8 @@ import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
 import { OutletType } from '@/types/outlet.type';
 import { getChangedValues } from '@/utils/getChangeValues';
 import FormEditOutlet from './components/FormEditOutlet';
+import { useRouter } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
 
 interface UpdateOutletArgs {
   outletName: string;
@@ -17,16 +19,21 @@ interface UpdateOutletArgs {
 }
 
 const EditOutlet = ({ params }: { params: { id: number } }) => {
+  const router = useRouter();
   const { updateOutlet, isLoading } = useUpdateOutlet(Number(params.id));
-  const { outlet, isLoading: isLoadingGetOutlet } = useGetOutlet(
-    Number(params.id),
-  );
+  const {
+    outlet,
+    isLoading: isLoadingGetOutlet,
+    refetch,
+  } = useGetOutlet(Number(params.id));
 
   const initialValues = {
     outletName: outlet?.outletName || '',
     outletType: outlet?.outletType || '',
     addressLine: outlet?.address[0].addressLine || '',
     city: outlet?.address[0].city || '',
+    latitude: outlet?.address[0].latitude || '',
+    longitude: outlet?.address[0].longitude || '',
   };
 
   if (isLoadingGetOutlet) {
@@ -37,24 +44,26 @@ const EditOutlet = ({ params }: { params: { id: number } }) => {
     );
   }
 
-  const onSubmit = (values: Partial<UpdateOutletArgs>) => {
+  const onSubmit = async (values: Partial<UpdateOutletArgs>) => {
     const payload = getChangedValues(values, initialValues);
-    updateOutlet(payload);
+    await updateOutlet(payload);
+    refetch();
   };
 
   return (
     <div className="flex flex-col">
       <div className="p-6 flex gap-2 my-auto ">
-        <Link className="my-auto" href={'/dashboard/master/employee'}>
-          <ChevronLeft />
-        </Link>
-        <h1 className="text-lg font-bold my-auto">Add New Outlet</h1>
+        <ChevronLeft className="my-auto" onClick={() => router.back()} />
+        <h1 className="text-lg font-bold my-auto">Outlet Detail</h1>
       </div>
-      <div className="mx-8 mb-8 p-5 w-8/12 rounded-xl bg-mythemes-secondarygreen">
+      <Separator className="bg-black" />
+      <div className="p-6 rounded-xl bg-white">
         <FormEditOutlet
           initialValues={initialValues}
           isLoading={isLoading}
           onSubmit={onSubmit}
+          id={params.id}
+          refetch={refetch}
         />
       </div>
     </div>

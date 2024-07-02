@@ -36,7 +36,7 @@ const FormResetPassword: FC<FormResetPasswordProps> = ({
         <FormInput
           name="password"
           type="password"
-          label="New Password"
+          label="Enter New Password"
           placeholder="Your New Password"
           form={form}
         />

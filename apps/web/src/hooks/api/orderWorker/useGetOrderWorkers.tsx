@@ -7,7 +7,7 @@ import useAxios from '../useAxios';
 import { OrderWorker } from '@/types/orderWorker.type';
 
 interface IGetOrderWorkersQuery extends IPaginationQueries {
-  id: number;
+  // id: number;
   station?: string;
   isComplete?: number;
   bypassRequest?: number;
@@ -39,7 +39,7 @@ const useGetOrderWorkers = (queries: IGetOrderWorkersQuery) => {
   useEffect(() => {
     getOrderWorkers();
 
-  }, [queries?.isComplete, queries?.station, queries?.sortOrder, queries?.page, queries.id]);
+  }, [queries?.isComplete, queries?.station, queries?.sortOrder, queries?.page]);
 
   return { data, isLoading, meta, refetch: getOrderWorkers };
 };

@@ -5,17 +5,29 @@ export const createLaundryItemService = async (body: LaundryItem) => {
   try {
     const { itemName } = body;
     const existingItem = await prisma.laundryItem.findFirst({
-      where: { itemName },
+      where: { itemName, isDelete: false },
     });
 
     if (existingItem) {
       throw new Error('Item already exist');
     }
 
-    const newItem = await prisma.laundryItem.create({
-      data: { ...body },
+    const deletedItem = await prisma.laundryItem.findFirst({
+      where: { itemName, isDelete: true },
     });
-    return { message: 'Create laundry item success !', data: newItem };
+
+    if (deletedItem) {
+      await prisma.laundryItem.update({
+        where: { id: deletedItem.id },
+        data: { isDelete: false },
+      });
+    } else {
+      const newItem = await prisma.laundryItem.create({
+        data: { ...body },
+      });
+    }
+
+    return { message: 'Create laundry item success !' };
   } catch (error) {
     throw error;
   }

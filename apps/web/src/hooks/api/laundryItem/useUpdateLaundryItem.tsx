@@ -12,7 +12,7 @@ import { AxiosError } from 'axios';
 const useUpdateLaundryItem = (id: number) => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const updateLaundryItem = async (payload: Partial<LaundryItem>) => {
     setIsLoading(true);
     try {

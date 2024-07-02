@@ -32,8 +32,8 @@ const MenuEmployee = () => {
   };
 
   return (
-    <div className='container flex flex-col gap-5 pt-6 px-6'>
-      <div className='flex justify-between my-auto'>
+    <div className="container flex flex-col gap-5 pt-6 px-6">
+      <div className="flex justify-between my-auto">
         <div>
           <h1 className="font-bold text-xl">Your Employees</h1>
         </div>
@@ -46,15 +46,27 @@ const MenuEmployee = () => {
         </Link>
       </div>
       <div>
-        <Table className="bg-mythemes-secondarygreen rounded-xl">
+        <Table className="bg-mythemes-maingreen bg-opacity-15 rounded-xl ">
           <TableHeader>
             <TableRow>
-              <TableHead>Full Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Outlet</TableHead>
-              <TableHead>Work Shift</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="font-bold text-lg text-black">
+                Full Name
+              </TableHead>
+              <TableHead className="font-bold text-lg text-black">
+                Email
+              </TableHead>
+              <TableHead className="font-bold text-lg text-black">
+                Role
+              </TableHead>
+              <TableHead className="font-bold text-lg text-black">
+                Outlet
+              </TableHead>
+              <TableHead className="font-bold text-lg text-black">
+                Work Shift
+              </TableHead>
+              <TableHead className="font-bold text-lg text-black">
+                Status
+              </TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>

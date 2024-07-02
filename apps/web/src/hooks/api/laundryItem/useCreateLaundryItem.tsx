@@ -19,7 +19,7 @@ const useCreateLaundyItem = () => {
       router.push('/dashboard/master/laundry-item');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(error.response?.data);
       }
     }
   };

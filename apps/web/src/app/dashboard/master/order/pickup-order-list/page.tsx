@@ -21,7 +21,7 @@ const PickupOrderList = () => {
     isOrderCreated: Number(Boolean(false))
   });
 
-  const {user} = useGetUser(id);
+  const {user} = useGetUser();
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);

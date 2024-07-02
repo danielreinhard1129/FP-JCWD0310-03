@@ -14,12 +14,12 @@ import useGetUser from '@/hooks/api/user/useGetUser';
 const DeliveryRequest = () => {
   const [page, setPage] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
-  const id = 1
+
   const [filterOutlet, setFilterOutlet] = useState("all")
   const [sortOrder, setSortOrder] = useState('asc')
 
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
     filterOutlet,
@@ -27,7 +27,7 @@ const DeliveryRequest = () => {
     sortOrder,
   });
 
-  const {user} = useGetUser(id);
+  const {user} = useGetUser();
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);

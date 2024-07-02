@@ -33,25 +33,29 @@ const FormUpdateAddress: FC<FormEditAddressProps> = ({
   isLoading,
   onSubmit,
 }) => {
-  const { id } = useAppSelector((state) => state.user);
-  //   const { updateUserAddress, isLoading } = useUpdateUserAddress(id);
+  const [open, setOpen] = useState<boolean>(false);
+  const [location, setLocation] = useState<any>();
   const [locationData, setLocationData] = useState({
-    addressLine: '',
-    city: '',
-    latitude: '',
-    longitude: '',
-    isPrimary: false,
+    // addressLine: '',
+    // city: '',
+    // latitude: '',
+    // longitude: '',
+    // isPrimary: false,
   });
+
+  const handleDialogOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpen(false);
+  };
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
     mode: 'all',
     resolver: zodResolver(ValidationSchema),
     defaultValues: initialValues,
   });
-
-  // useEffect(() => {
-  //   form.reset(initialValues);
-  // }, [initialValues, form]);
 
   const onLocationSelect = (location: any) => {
     setLocationData(location);

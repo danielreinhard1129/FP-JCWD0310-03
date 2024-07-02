@@ -26,7 +26,7 @@ export const resetPasswordService = async (
     });
 
     return {
-      message: 'reset password success',
+      message: 'Reset password success !',
     };
   } catch (error) {
     throw error;

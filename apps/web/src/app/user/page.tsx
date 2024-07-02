@@ -12,12 +12,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
+import useGetUser from '@/hooks/api/user/useGetUser';
 
 const Home = () => {
   const [currentPosition, setCurrentPosition] = useState<[number, number]>();
   const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
     useAppSelector((state) => state.user);
   const { getLocation, data } = useGetLocationByCoord();
+
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
@@ -28,7 +30,7 @@ const Home = () => {
       },
       (error) => {
         console.error(error);
-        setCurrentPosition([0, 0]); // fallback to default location
+        setCurrentPosition([0, 0]);
       },
     );
   }, []);

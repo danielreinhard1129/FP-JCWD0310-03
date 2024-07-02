@@ -1,7 +1,7 @@
 'use client';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   MapContainer,
   Marker,
@@ -21,7 +21,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow.src,
 });
 
-const CardMap = ({ onLocationSelect }: any) => {
+interface CardMapProps {
+  onLocationSelect: any;
+}
+
+const CardMap: FC<CardMapProps> = ({ onLocationSelect }) => {
   const { getLocation, data } = useGetLocationByCoord();
   const [currentPosition, setCurrentPosition] = useState<
     [number, number] | null
@@ -33,7 +37,7 @@ const CardMap = ({ onLocationSelect }: any) => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentPosition([latitude, longitude]);
-          getLocation(latitude, longitude);
+          // getLocation(latitude, longitude);
         },
         (error) => {
           console.error(error);

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetOrdersQuery extends IPaginationQueries {
-  id?: number;
+  // id?: number;
   filterOutlet?: string,
   filterStatus?: string,
   filterDate?: Date,
@@ -40,7 +40,7 @@ const useGetOrders = (queries: IGetOrdersQuery) => {
   useEffect(() => {
     getOrders();      
 
-  }, [queries.filterCategory ,queries.search, queries.filterDate ,queries?.filterOutlet, queries?.filterStatus, queries?.sortOrder, queries?.page, queries.id]);
+  }, [queries.filterCategory ,queries.search, queries.filterDate ,queries?.filterOutlet, queries?.filterStatus, queries?.sortOrder, queries?.page]);
 
   return { data, isLoading, meta, refetch: getOrders };
 };

@@ -126,7 +126,7 @@ export class AuthController {
     next: NextFunction,
   ) {
     try {
-      const userId = Number(req.body.user.id);
+      const userId = res.locals.user.id;
       const password = req.body.password;
       const result = await resetPasswordService(password, userId);
 

@@ -9,8 +9,9 @@ import {
 } from '@/components/ui/table';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 import useGetLaundryItemList from '@/hooks/api/laundryItem/useGetLaundryItemList';
-import { AddItem } from './components/AddItem';
+
 import TableLaundryItem from './components/TableLaundryItem';
+import AddItem from './components/AddItem';
 
 const LaundryItem = () => {
   const { isData, refetch, isLoading } = useGetLaundryItemList();
@@ -21,7 +22,7 @@ const LaundryItem = () => {
         <div>
           <h1 className="font-bold text-xl">Laundry item</h1>
         </div>
-        <AddItem refetch={async () => await refetch()} />
+        <AddItem refetch={refetch} />
       </div>
       <div>
         <Table className="bg-white mx-auto w-[700px] rounded-xl text-center">

@@ -3,6 +3,7 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
+import { toast } from 'sonner';
 
 interface UserResult {
   fullname: string;
@@ -17,19 +18,19 @@ interface AddressResult {
   isPrimary: boolean;
   id: number;
 }
- 
-const useGetUserAddress = (id: number) => {
+
+const useGetUserAddress = () => {
   const { axiosInstance } = useAxios();
   const [data, setData] = useState<AddressResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getUserAddress = async () => {
     try {
-      const { data } = await axiosInstance.get(`/address/user/${id}`);
+      const { data } = await axiosInstance.get(`/address/user/`);
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // TODO : replace console.log with toast
+        toast.error(error.response?.data);
         console.log(error);
       }
     } finally {
@@ -39,7 +40,7 @@ const useGetUserAddress = (id: number) => {
 
   useEffect(() => {
     getUserAddress();
-  }, [id]);
+  }, []);
   return { address: data, isLoading, refetch: getUserAddress };
 };
 

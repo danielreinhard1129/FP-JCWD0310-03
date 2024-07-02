@@ -8,7 +8,7 @@ export class OrderWorkerController {
   async getOrderWorkersController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
-        id: parseInt(req.query.id as string),
+        id: parseInt(res.locals.user.id as string),
         station: req.query.station as string || 'all',
         isComplete: parseInt(req.query.isComplete as string),
         bypassRequest: parseInt(req.query.bypassRequest as string) || 'all',

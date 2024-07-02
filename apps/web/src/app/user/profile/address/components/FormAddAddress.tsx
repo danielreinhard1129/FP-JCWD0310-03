@@ -2,23 +2,20 @@
 import FormCheckBox from '@/components/FormCheckBock';
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
-import {
-  Form
-} from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
-import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
-import dynamic from 'next/dynamic';
+import useCreateUserAddress from '@/hooks/api/address/useCreateUserAddress';
 
 const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
 
 const FormAddress = () => {
-  const { id } = useAppSelector((state) => state.user);
-  const { updateUser, isLoading } = useUpdateUser();
+  const { createUserAddress } = useCreateUserAddress();
   const [locationData, setLocationData] = useState({
     addressLine: '',
     city: '',
@@ -49,7 +46,7 @@ const FormAddress = () => {
   };
 
   function onSubmit(values: z.infer<typeof ValidationSchema>) {
-    updateUser(values);
+    createUserAddress(values);
   }
 
   const errors = form.formState.errors;

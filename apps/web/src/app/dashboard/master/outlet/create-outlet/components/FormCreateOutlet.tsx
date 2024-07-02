@@ -23,7 +23,7 @@ const FormCreateOutlet = () => {
     latitude: '',
     longitude: '',
   });
-
+ 
   const form = useForm<z.infer<typeof ValidationSchema>>({
     mode: 'all',
     resolver: zodResolver(ValidationSchema),
