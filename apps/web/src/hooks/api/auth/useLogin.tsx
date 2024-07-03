@@ -41,7 +41,7 @@ const useLogin = () => {
         router.push('/dashboard/driver');
       }
       if (data.data.role === Role.OUTLET_ADMIN) {
-        router.push('/outlet-admin');
+        router.push('/dashboard/master');
       }
       if (data.data.role === Role.SUPER_ADMIN) {
         router.push('/dashboard/master');

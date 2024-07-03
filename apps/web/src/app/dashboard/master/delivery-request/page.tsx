@@ -7,6 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import TableDeliveryRequest from './components/TableDeliveryRequest';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 
 const DeliveryRequest = () => {
   const [page, setPage] = useState<number>(1);
@@ -85,4 +86,4 @@ const DeliveryRequest = () => {
   )
 }
 
-export default DeliveryRequest
+export default AdminAuthGuard(DeliveryRequest)

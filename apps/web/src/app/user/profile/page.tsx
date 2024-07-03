@@ -143,7 +143,7 @@ const Profile = () => {
 
           <Button
             className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2 "
-            onClick={() => router.push(`/order`)}
+            onClick={() => router.push(`/user/order`)}
           >
             <p>Your Order</p>
             <IoIosArrowForward />

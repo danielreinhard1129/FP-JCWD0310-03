@@ -12,6 +12,7 @@ import TableBypassRequest from '../order/components/TableBypaassRequest';
 import Pagination from '@/components/Pagination';
 import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
 import { useAppSelector } from '@/redux/hooks';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 
 const BypassRequest = () => {
   const [pageBypass, setPageBypass] = useState<number>(1);
@@ -77,4 +78,4 @@ const BypassRequest = () => {
   );
 };
 
-export default BypassRequest;
+export default AdminAuthGuard(BypassRequest);

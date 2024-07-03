@@ -1,5 +1,6 @@
 
 import { PaymentController } from '@/controllers/payment.controller';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class PaymentRouter {
@@ -13,10 +14,11 @@ export class PaymentRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/order', this.paymentController.getPaymentController);
-    this.router.get('/report-chart', this.paymentController.getPaymentChartController);
-    this.router.post('/', this.paymentController.createPaymentController);
-    this.router.post('/midtrans-callback', this.paymentController.updatePaymentController);
+    this.router.get('/',verifyToken, this.paymentController.getPaymentsController);
+    this.router.get('/order',verifyToken, this.paymentController.getPaymentController);
+    this.router.get('/report-chart',verifyToken, this.paymentController.getPaymentChartController);
+    this.router.post('/',verifyToken, this.paymentController.createPaymentController);
+    this.router.post('/midtrans-callback',verifyToken, this.paymentController.updatePaymentController);
   }
 
   getRouter(): Router {

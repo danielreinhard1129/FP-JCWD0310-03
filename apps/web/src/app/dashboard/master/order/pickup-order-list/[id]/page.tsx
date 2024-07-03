@@ -1,12 +1,10 @@
 'use client'
-import { ChevronLeft, Weight } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
-import FormCreateOrder from './components/FormCreateOrder';
-import { ValidationSchema } from './validationSchema';
-import { z } from 'zod';
-import useGetPickupOrder from '@/hooks/api/pickupOrder/useGetPickupOrder';
 import useCreateOrder from '@/hooks/api/order/useCreateOrder';
+import useGetPickupOrder from '@/hooks/api/pickupOrder/useGetPickupOrder';
+import { ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
+import FormCreateOrder from './components/FormCreateOrder';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 
 const CreateOrder = ({ params }: { params: { id: string } }) => {
 const { pickupOrder, isLoading: isLoadingGetPickupOrder } = useGetPickupOrder(Number(params.id));
@@ -47,4 +45,4 @@ const onSubmit = (values: any) => {
   )
 }
 
-export default CreateOrder
+export default AdminAuthGuard(CreateOrder)
