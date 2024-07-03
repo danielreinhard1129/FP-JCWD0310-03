@@ -14,7 +14,7 @@ export const updateOrderStatusService = async (
 
         const existingOrder = await prisma.order.findFirst({
             where: { id: orderId },
-            select: { orderStatus: true,orderNumber: true, isPaid: true, pickupOrder: { select: { outletId: true , userId: true} } }
+            select: { orderStatus: true, orderNumber: true, isPaid: true, pickupOrder: { select: { outletId: true, userId: true } } }
         })
 
         if (!existingOrder) {
@@ -22,13 +22,9 @@ export const updateOrderStatusService = async (
         }
 
         const existingEmployee = await prisma.user.findFirst({
-            where: {id: workerId},
-            select: {employee: {select: {id: true}}}
-          })
-      
-          if (!existingEmployee?.employee?.id){
-            throw new Error('Employee not Found!')
-          }
+            where: { id: workerId },
+            select: { employee: { select: { id: true } } }
+        })        
 
         let setOrderStatus = orderStatus
 
@@ -60,6 +56,10 @@ export const updateOrderStatusService = async (
         }
 
         if (!Number.isNaN(workerId)) {
+            if (!existingEmployee?.employee?.id) {
+                throw new Error('Employee not Found!')
+            }
+
             const now = new Date();
             const currentHour = now.getHours();
             let setWorkShift

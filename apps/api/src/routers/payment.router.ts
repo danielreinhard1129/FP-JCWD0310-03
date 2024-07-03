@@ -14,6 +14,7 @@ export class PaymentRouter {
   }
 
   private initializeRoutes(): void {
+    this.router.get('/',verifyToken, this.paymentController.getPaymentsController);
     this.router.get('/order',verifyToken, this.paymentController.getPaymentController);
     this.router.get('/report-chart',verifyToken, this.paymentController.getPaymentChartController);
     this.router.post('/',verifyToken, this.paymentController.createPaymentController);

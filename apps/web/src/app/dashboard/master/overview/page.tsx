@@ -1,25 +1,43 @@
 'use client'
+import Pagination from '@/components/Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import SuperAdminGuard from '@/hoc/SuperAdminGuard';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 import useGetPaymentChart from '@/hooks/api/payment/useGetPaymentReportChart';
+import useGetPayments from '@/hooks/api/payment/useGetPayments';
 import { format, getDaysInMonth } from 'date-fns';
 import { useState } from 'react';
 import ItemFilterOutlet from '../order/components/ItemFilterOutlet';
 import ChartEvents from './components/ChartEvents';
+import ItemFilterMonth from './components/ItemFilterMonth';
+import { useAppSelector } from '@/redux/hooks';
+import { Role } from '@/types/user.type';
 
 const Overview = () => {
-  // const { id } = useAppSelector((state) => state.user);
   const [filterOutlet, setFilterOutlet] = useState("all")
   const now = new Date();
   const [filterMonth, setFilterMonth] = useState(`${now.getMonth()}`)
   const [filterYear, setFilterYear] = useState('2024')
+  const [page, setPage] = useState<number>(1);  
+  const { role } = useAppSelector((state) => state.user);
 
-  const { data, isLoading, meta, refetch } = useGetPaymentChart({
+  const { data, isLoading, refetch } = useGetPaymentChart({
     filterMonth,
     filterOutlet,
     filterYear,
   })
+
+  const { data: dataPayments, isLoading: isLoadingPayments, meta, refetch: refetchPayments } = useGetPayments({
+    filterMonth,
+    filterOutlet,
+    filterYear,
+    page,
+    take: 10,
+  })
+
+  const handleChangePaginate = ({ selected }: { selected: number }) => {
+    setPage(selected + 1);
+  };
 
   const month = filterMonth ? Number(filterMonth) - 1 : now.getMonth();
   const year = filterYear ? Number(filterYear) : now.getFullYear();
@@ -48,30 +66,19 @@ const Overview = () => {
           <h1 className='font-bold text-xl'>Your Transaction</h1>
         </div>
         <div className='flex gap-2'>
+          <div className={`${role!==Role.SUPER_ADMIN?'hidden':'block'}`}>
           <Select name='outlet' onValueChange={handleChangeFilterOutlet} defaultValue='all'>
             <SelectTrigger className='min-w-40'>
               <SelectValue placeholder={"Outlet"} />
             </SelectTrigger>
             <ItemFilterOutlet />
           </Select>
+          </div>
           <Select name='month' onValueChange={handleChangeFilterMonth} defaultValue={`${now.getMonth()}`}>
             <SelectTrigger className='min-w-40'>
               <SelectValue placeholder={"Month"} />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='1'>January</SelectItem>
-              <SelectItem value='2'>February</SelectItem>
-              <SelectItem value='3'>March</SelectItem>
-              <SelectItem value='4'>April</SelectItem>
-              <SelectItem value='5'>May</SelectItem>
-              <SelectItem value='6'>June</SelectItem>
-              <SelectItem value='7'>July</SelectItem>
-              <SelectItem value='8'>Agust</SelectItem>
-              <SelectItem value='9'>September</SelectItem>
-              <SelectItem value='10'>Oktober</SelectItem>
-              <SelectItem value='11'>November</SelectItem>
-              <SelectItem value='12'>Desember</SelectItem>
-            </SelectContent>
+            <ItemFilterMonth />
           </Select>
           <Select name='sortYear' onValueChange={handleChangeFilterYear} defaultValue='2024'>
             <SelectTrigger className='min-w-40'>
@@ -101,7 +108,7 @@ const Overview = () => {
         <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
           <ChartEvents
             dataSet={data?.incomeDaily}
-            daysInMonth = {daysInMonth}
+            daysInMonth={daysInMonth}
             label='Income'
             title='Daily Income'
           />
@@ -118,7 +125,7 @@ const Overview = () => {
         <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
           <ChartEvents
             dataSet={data?.transactionDaily}
-            daysInMonth = {daysInMonth}
+            daysInMonth={daysInMonth}
             label='Transaction'
             title='Daily Transaction'
           />
@@ -135,7 +142,7 @@ const Overview = () => {
         <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
           <ChartEvents
             dataSet={data?.weightDaily}
-            daysInMonth = {daysInMonth}
+            daysInMonth={daysInMonth}
             label='Weight'
             title='Daily Weight'
           />
@@ -167,7 +174,7 @@ const Overview = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.payments.map((item, index) => {
+            {dataPayments.map((item, index) => {
               const formattedDate = format(new Date(item.updatedAt), 'dd-MM-yyyy');
               return (
                 <TableRow key={index} >
@@ -181,14 +188,14 @@ const Overview = () => {
             })}
           </TableBody>
         </Table>
-        {/* <Pagination
+        <Pagination
           total={meta?.total || 0}
           take={meta?.take || 0}
           onChangePage={handleChangePaginate}
-        /> */}
+        />
       </div>
     </div>
   );
 }
 
-export default SuperAdminGuard(Overview)
+export default AdminAuthGuard(Overview)

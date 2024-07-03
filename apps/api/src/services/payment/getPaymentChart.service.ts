@@ -26,9 +26,6 @@ export const getPaymentChartService = async (query: GetPaymentChartQuery) => {
         const whereClause: Prisma.PaymentWhereInput = {
             paymentStatus: "SUCCESSED"
         }
-        const whereClauseMonthly: Prisma.PaymentWhereInput = {
-            paymentStatus: "SUCCESSED"
-        }
 
         if (existingUser.role != "SUPER_ADMIN") {
             const pickupOrders = await prisma.pickupOrder.findMany({
@@ -46,7 +43,6 @@ export const getPaymentChartService = async (query: GetPaymentChartQuery) => {
             const orderIds = orders.map(order => order.id)
 
             whereClause.orderId = { in: orderIds }
-            whereClauseMonthly.orderId = { in: orderIds }
         } else {
             if (filterOutlet != "all") {
                 const pickupOrders = await prisma.pickupOrder.findMany({
@@ -64,19 +60,18 @@ export const getPaymentChartService = async (query: GetPaymentChartQuery) => {
                 const orderIds = orders.map(order => order.id)
 
                 whereClause.orderId = { in: orderIds }
-                whereClauseMonthly.orderId = { in: orderIds }
             }
         }
 
         const now = new Date();
         const month = filterMonth ? Number(filterMonth) - 1 : now.getMonth();
         const year = filterYear ? Number(filterYear) : now.getFullYear();
-    
+
         function getDaysInSpecificMonth(year: number, month: number): number {
             const date = new Date(year, month);
             return getDaysInMonth(date);
         }
-        const daysInMonth = getDaysInSpecificMonth(year, month)        
+        const daysInMonth = getDaysInSpecificMonth(year, month)
 
         const incomeDaily: number[] = [];
         const transactionDaily: number[] = [];
@@ -90,7 +85,7 @@ export const getPaymentChartService = async (query: GetPaymentChartQuery) => {
                 const endOfDay = new Date(day.setHours(23, 59, 59, 999));
 
                 const dailyWhereClause = {
-                    ...whereClauseMonthly,
+                    ...whereClause,
                     updatedAt: {
                         gte: startOfDay,
                         lt: endOfDay,
@@ -128,7 +123,7 @@ export const getPaymentChartService = async (query: GetPaymentChartQuery) => {
                 const endDate = endOfMonth(startDate);
 
                 const monthlyWhereClause = {
-                    ...whereClauseMonthly,
+                    ...whereClause,
                     updatedAt: {
                         gte: startDate,
                         lt: endDate,
@@ -183,7 +178,6 @@ export const getPaymentChartService = async (query: GetPaymentChartQuery) => {
 
         return {
             data: {
-                payments: payments,
                 totalIncome: totalIncome,
                 totalTransaction: totalTransaction,
                 totalWeight: totalWeight,

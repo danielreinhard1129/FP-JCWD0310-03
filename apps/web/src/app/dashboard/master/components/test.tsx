@@ -47,50 +47,58 @@ const Sidebar = () => {
       </Link>
       <div className="flex flex-col text-md font-medium">
         <Link
-          className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/employee') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+          className={`flex gap-2 w-full h-12 px-10 ${role !== Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/employee') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
           href={'/dashboard/master/employee'}
         >
           <BookUser className="my-auto w-5 h-5" />
           <h2 className="my-auto">Employees</h2>
         </Link>
+
         <div
           onClick={toggleOrdersAccordion}
-          className={`flex gap-2 w-full h-12 px-10`}
+          className={`flex gap-2 w-full h-12 px-10 cursor-pointer ${isActive('/dashboard/master/order') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
         >
           <ClipboardList className="my-auto w-5 h-5" />
           <h2 className="my-auto">Orders</h2>
         </div>
         {isOrdersAccordionOpen && (
-          <div>
+          <div id="demoAcc" className="flex flex-col">
             <Link
-              className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/order') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+              className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/order') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
               href={'/dashboard/master/order'}
             >
-              {/* <ClipboardList className="my-auto w-5 h-5" /> */}
-              <h2 className="my-auto">Your Orders</h2>
+              <ClipboardList className="my-auto w-5 h-5" />
+              <h2 className="my-auto">Orders</h2>
             </Link>
-            <Link className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/bypass-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/bypass-request"}>
-              {/* <ClipboardList className='my-auto w-5 h-5'/> */}
+            <Link
+              className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/bypass-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+              href={"/dashboard/master/bypass-request"}
+            >
               <h2 className='my-auto text-sm'>Bypass Request</h2>
             </Link>
-            <Link className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/delivery-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/delivery-request"}>
-              {/* <ClipboardList className='my-auto w-5 h-5'/> */}
+            <Link
+              className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/delivery-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+              href={"/dashboard/master/delivery-request"}
+            >
               <h2 className='my-auto text-sm'>Delivery Request</h2>
             </Link>
           </div>
         )}
-        <Link className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/customer') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/customer"}>
+
+        <Link
+          className={`flex gap-2 w-full h-12 px-10 ${role !== Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/customer') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+          href={"/dashboard/master/customer"}
+        >
           <BookUser className='my-auto w-5 h-5' />
           <h2 className='my-auto'>Customers</h2>
         </Link>
         <Link
-          className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/outlet') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+          className={`flex gap-2 w-full h-12 px-10 ${role !== Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/outlet') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
           href={'/dashboard/master/outlet'}
         >
           <Store className="my-auto w-5 h-5" />
           <h2 className="my-auto">Outlets</h2>
         </Link>
-
         <Link
           className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/shipment') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
           href={'/dashboard/master/shipment'}
@@ -106,7 +114,7 @@ const Sidebar = () => {
           <h2 className="my-auto">Overview</h2>
         </Link>
         <Link
-          className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/laundry-item') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+          className={`flex gap-2 w-full h-12 px-10 ${role !== Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/laundry-item') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
           href={'/dashboard/master/laundry-item'}
         >
           <Shirt className="my-auto w-5 h-5" />

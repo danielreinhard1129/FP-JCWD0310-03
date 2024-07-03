@@ -9,6 +9,7 @@ import TablePickupOrder from './components/TablePickupOrder'
 import { PickupStatus } from '@/types/pickupOrder.type'
 import useGetUser from '@/hooks/api/user/useGetUser'
 import { useAppSelector } from '@/redux/hooks'
+import AdminAuthGuard from '@/hoc/AdminAuthGuard'
 
 const PickupOrderList = () => {
   const [page, setPage] = useState<number>(1);
@@ -77,4 +78,4 @@ const PickupOrderList = () => {
   )
 }
 
-export default PickupOrderList
+export default AdminAuthGuard(PickupOrderList)

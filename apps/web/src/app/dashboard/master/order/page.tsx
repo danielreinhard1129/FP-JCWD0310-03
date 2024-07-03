@@ -10,16 +10,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import ItemFilterOutlet from './components/ItemFilterOutlet'
 import ItemFilterStatus from './components/ItemFilterStatus'
 import { useAppSelector } from '@/redux/hooks'
+import AdminAuthGuard from '@/hoc/AdminAuthGuard'
+import { Role } from '@/types/user.type'
 
 const MenuOrder = () => {
   const [page, setPage] = useState<number>(1);
-  const { id } = useAppSelector((state) => state.user);
+  const { role } = useAppSelector((state) => state.user);
   const [filterOutlet, setFilterOutlet] = useState("all")
   const [filterStatus, setFilterStatus] = useState("all")
   const [sortOrder, setSortOrder] = useState('asc')
 
   const { data: orders, meta, refetch } = useGetOrders({
-    // id: id,
     page,
     take: 10,
     filterOutlet,
@@ -48,12 +49,14 @@ const MenuOrder = () => {
           <h1 className='font-bold text-xl'>Your Orders</h1>
         </div>
         <div className='flex gap-2'>
+          <div className={`${role!==Role.SUPER_ADMIN?'hidden':'block'}`}>
           <Select name='outlet' onValueChange={handleChangeFilterOutlet} defaultValue='all'>
             <SelectTrigger className='min-w-40'>
               <SelectValue placeholder={"Outlet"} />
             </SelectTrigger>
             <ItemFilterOutlet />
           </Select>
+          </div>
           <Select name='status' onValueChange={handleChangeFilterStatus} defaultValue='all'>
             <SelectTrigger className='min-w-40'>
               <SelectValue placeholder={"Status"} />
@@ -117,4 +120,4 @@ const MenuOrder = () => {
   )
 }
 
-export default MenuOrder
+export default AdminAuthGuard(MenuOrder)

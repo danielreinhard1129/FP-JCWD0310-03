@@ -1,3 +1,6 @@
+'use client'
+import AdminAuthGuard from "@/hoc/AdminAuthGuard"
+
 const DashboardSuperAdmin = () => {
     return (
         <div className="container p-5">
@@ -6,4 +9,4 @@ const DashboardSuperAdmin = () => {
     )
 }
 
-export default DashboardSuperAdmin
+export default AdminAuthGuard(DashboardSuperAdmin)

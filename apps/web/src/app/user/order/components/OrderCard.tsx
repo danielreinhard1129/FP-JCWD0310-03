@@ -41,7 +41,8 @@ const OrderCard: FC<OrderCardProps> = ({
     const { createPayment, data, isLoading } = useCreatePayment()
 
 
-    const handleUpdate = async () => {
+    const handleUpdate = async (event: React.MouseEvent) => {
+        event.stopPropagation();
         try {
             await updateOrderStatus(values);
             refetch();
@@ -50,7 +51,8 @@ const OrderCard: FC<OrderCardProps> = ({
         }
     };
 
-    const handlePayment = async () => {
+    const handlePayment = async (event: React.MouseEvent) => {
+        event.stopPropagation();
         try {
             await createPayment(payValues);
             router.push(`/user/order/${orderId}/transaction`)
@@ -70,43 +72,45 @@ const OrderCard: FC<OrderCardProps> = ({
 
 
     return (
-        <div onClick={() => router.push(`/user/order/${orderId}`)} key={key} className='relative flex overflow-hidden shadow-md bg-white py-3 px-5 rounded-xl'>
-            <div>
-                <p className='text-black text-sm font-bold align-top'>{orderNumber}</p>
-                <div className='flex gap-2'>
-                    <div className='my-auto'>
-                        <p className='text-sm font-medium text-gray-700'>{orderStatus}</p>
+        <div key={key} className='relative z-20 flex overflow-hidden shadow-md bg-white py-3 px-5 rounded-xl'>
+            <div onClick={() => router.push(`/user/order/${orderId}`)}>
+                <div>
+                    <p className='text-black text-sm font-bold align-top'>{orderNumber}</p>
+                    <div className='flex gap-2'>
+                        <div className='my-auto'>
+                            <p className='text-sm font-medium text-gray-700'>{orderStatus}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
-            <p className='font-bold absolute right-3 top-3 text-xs text-gray-500'>{createAt}</p>
-            {orderStatus === OrderStatus.AWAITING_PAYMENT
-                || orderStatus === OrderStatus.READY_FOR_WASHING
-                || orderStatus === OrderStatus.BEING_WASHED
-                || orderStatus === OrderStatus.WASHING_COMPLETED
-                || orderStatus === OrderStatus.BEING_IRONED
-                || orderStatus === OrderStatus.IRONING_COMPLETED
-                || orderStatus === OrderStatus.BEING_PACKED
-                ? (
-                    (isPaid == true ? (
-                        <button disabled className='absolute z-40 right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Paid</button>
-                    ) : (
-                        <button onClick={handlePayment} className='absolute z-40 right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Pay</button>
-                    ))
-                ) : (
-                    (orderStatus == OrderStatus.RECEIVED_BY_CUSTOMER ? (
-                        <button onClick={handleUpdate} className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Confirm</button>
-                    ) : (
-                        (orderStatus == OrderStatus.COMPLETED ? (
-                            <button disabled className='absolute right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Completed</button>
+                <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
+                <p className='font-bold absolute right-3 top-3 text-xs text-gray-500'>{createAt}</p>
+                {orderStatus === OrderStatus.AWAITING_PAYMENT
+                    || orderStatus === OrderStatus.READY_FOR_WASHING
+                    || orderStatus === OrderStatus.BEING_WASHED
+                    || orderStatus === OrderStatus.WASHING_COMPLETED
+                    || orderStatus === OrderStatus.BEING_IRONED
+                    || orderStatus === OrderStatus.IRONING_COMPLETED
+                    || orderStatus === OrderStatus.BEING_PACKED
+                    ? (
+                        (isPaid == true ? (
+                            <button onClick={(event) => event.stopPropagation()} disabled className='absolute z-40 right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Paid</button>
                         ) : (
-                            <>
-                                {/* <button className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Details</button> */}
-                            </>
+                            <button onClick={handlePayment} className='absolute z-40 right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Pay</button>
                         ))
-                    ))
-                )}
+                    ) : (
+                        (orderStatus == OrderStatus.RECEIVED_BY_CUSTOMER ? (
+                            <button onClick={handleUpdate} className='absolute z-40 right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Confirm</button>
+                        ) : (
+                            (orderStatus == OrderStatus.COMPLETED ? (
+                                <button onClick={(event) => event.stopPropagation()} disabled className='absolute z-40 right-3 bottom-3 bg-green-600 text-sm text-white w-1/4 rounded-md'>Completed</button>
+                            ) : (
+                                <>
+                                    {/* <button className='absolute right-3 bottom-3 bg-mythemes-maingreen text-sm text-white w-1/4 rounded-md'>Details</button> */}
+                                </>
+                            ))
+                        ))
+                    )}
+            </div>
         </div>
 
     )

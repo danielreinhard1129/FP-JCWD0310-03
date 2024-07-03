@@ -1,6 +1,7 @@
 'use client';
 import { TableCell, TableRow } from '@/components/ui/table';
-import { SquarePen } from 'lucide-react';
+import useDeleteEmployee from '@/hooks/api/employee/useDeleteEmployee';
+import { SquarePen, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 
@@ -12,8 +13,8 @@ interface EmployeeRowTableProps {
   role?: string;
   outlet: string | undefined;
   workShift: string;
-  status: string;
   station: string | undefined;
+  refetch: () => void;
 }
 
 const TableEmployees: FC<EmployeeRowTableProps> = ({
@@ -25,35 +26,19 @@ const TableEmployees: FC<EmployeeRowTableProps> = ({
   outlet,
   workShift,
   station,
-  status,
+  refetch,
 }) => {
-  const [currentStatus, setCurrentStatus] = useState('');
+  const { isLoading, deleteEmployee } = useDeleteEmployee(Number(employeeId));
 
-  useEffect(() => {
-    const checkStatus = () => {
-      const now = new Date();
-      const currentHour = now.getHours();
+  const handleClick = async () => {
+    try {
+      await deleteEmployee();
+      refetch();
+    } catch (error) {
+      console.error('Failed to update pickup order', error);
+    }
+  };
 
-      if (workShift === 'DAY') {
-        if (currentHour >= 6 && currentHour < 18) {
-          setCurrentStatus('Active');
-        } else {
-          setCurrentStatus('Inactive');
-        }
-      } else if (workShift === 'NIGHT') {
-        if (currentHour >= 18 || currentHour < 6) {
-          setCurrentStatus('Active');
-        } else {
-          setCurrentStatus('Inactive');
-        }
-      }
-    };
-
-    checkStatus();
-    const interval = setInterval(checkStatus, 60000);
-
-    return () => clearInterval(interval);
-  }, [workShift]);
 
   return (
     <TableRow key={key} className="border-4 border-white">
@@ -62,11 +47,15 @@ const TableEmployees: FC<EmployeeRowTableProps> = ({
       <TableCell>{role != 'WORKER' ? role : `${role} - ${station}`}</TableCell>
       <TableCell>{outlet}</TableCell>
       <TableCell>{workShift}</TableCell>
-      <TableCell>{currentStatus}</TableCell>
       <TableCell>
-        <Link href={`/dashboard/master/employee/${employeeId}`}>
-          <SquarePen />
-        </Link>
+        <div className='flex gap-8 px-0'>
+          <Link className='px-0' href={`/dashboard/master/employee/${employeeId}`}>
+            <SquarePen />
+          </Link>
+          
+          <Trash2 className='cursor-pointer' onClick={handleClick} />
+        
+        </div>
       </TableCell>
     </TableRow>
   );
