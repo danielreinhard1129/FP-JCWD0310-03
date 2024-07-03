@@ -6,12 +6,12 @@ import { Separator } from '../ui/separator';
 const AboutUs = () => {
   return (
     <>
-      <div className=" bg-[#ffff] py-6 w-full px-6">
+      <div className=" bg-[#ffff] py-6 w-full px-6 font-poppins md:h-screen md:place-content-center">
         <div className="flex flex-col md:grid md:grid-cols-2 ">
           <div className=" md:place-content-center md:flex md:flex-col md:gap-8">
             <p className="text-main_green text-xl font-bold text-left md:text-3xl mb-6">
               Why Kucekin?
-            <div className='h-2 bg-mythemes-maingreen md:w-56 w-32 md:h-3 mb-2'></div>
+            <div className='h-2 bg-mythemes-mainYellow md:w-56 w-32 md:h-3 mb-2'></div>
             </p>
             <h1 className="text-6xl md:text-8xl font-bold text-left mb-2 ">
               Because life is too short to do <span className='text-mythemes-maingreen'>Laundry.</span> 
@@ -22,11 +22,10 @@ const AboutUs = () => {
               and effort. Experience the ease and reliability of Kucekin today.
             </p>
           </div>
-          <div className=" rounded-xl overflow-hidden shadow-xl hidden md:block">
+          <div className=" rounded-xl overflow-hidden hidden md:block md:mx-auto border-4">
             <Image alt="image" src={image1} />
           </div>
         </div>
-        <Separator className='mt-16 border-mythemes-maingreen  border-2'/>
       </div>
     </>
   );

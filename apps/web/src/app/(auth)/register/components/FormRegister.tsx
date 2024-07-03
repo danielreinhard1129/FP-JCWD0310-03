@@ -1,19 +1,18 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
+import useRegister from '@/hooks/api/auth/useRegister';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import FormInput from '@/components/FormInput';
-import Link from 'next/link';
-import { ValidationSchema } from '../validationSchema';
-import useRegister from '@/hooks/api/auth/useRegister';
-import { Separator } from '@radix-ui/react-separator';
 import { FcGoogle } from 'react-icons/fc';
-import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
+import { z } from 'zod';
+import { ValidationSchema } from '../validationSchema';
 
 export function FormRegister() {
   const { googleLogin } = useLoginByGoogle();

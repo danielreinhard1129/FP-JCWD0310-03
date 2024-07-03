@@ -6,7 +6,7 @@ import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
 import useGetUserAddress from '@/hooks/api/user/useGetUserAddress';
 import { useAppSelector } from '@/redux/hooks';
 import { Outlet } from '@/types/outlet.type';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Locate, Navigation } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import ClosestLatLong from './components/ClosestLatLong';
 import UserAddressList from './components/UserAddressList';
@@ -16,6 +16,8 @@ import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetOutletCoord from '@/hooks/api/outlet/useGetOutletCoord';
 import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
 import PickupDetailDialog from './components/PickupDetailDialog';
+import { Button } from '@/components/ui/button';
+import EmptyAddress from '@/components/EmptyAddress';
 
 interface AddressResult {
   latitude: string;
@@ -48,7 +50,6 @@ const RequestPickup = () => {
   const [pickupCost, setPickupCost] = useState<number | null>(null);
   const [pickupDistance, setPickupDistance] = useState<number | null>(null);
   const { dataOutles, isLoading } = useGetOutletCoord();
-  // const{} = useGetOutletList()
 
   const handleAddressSelect = (address: AddressResult) => {
     setSelectedAddress(address);
@@ -98,9 +99,6 @@ const RequestPickup = () => {
     }).format(value);
   };
 
-  console.log('ini selected outlet:', selectedOutlet);
-  // console.log('ini selected outlet id', selectedOutletId);
-
   if (isLoadingAddress) {
     return <div>Loading addresses...</div>;
   }
@@ -109,7 +107,7 @@ const RequestPickup = () => {
     return <div>Loading outlet...</div>;
   }
   if (address.length == 0) {
-    return <div> Please complete your address to continue.</div>;
+    return <EmptyAddress />;
   }
 
   return (
@@ -140,9 +138,6 @@ const RequestPickup = () => {
             />
           )}
         </div>
-        {/* <div>Selected outlet id : {selectedOutletId}</div> */}
-        <div>Selected outlet : {selectedOutlet?.outletName}</div>
-        <div>Selected outlet.id : {selectedOutlet?.id}</div>
         {pickupCost && selectedOutlet && selectedAddress && (
           <div className="mt-20 bottom-0 border-t flex flex-col gap-3 border-l border-r h-32 place-content-end rounded-t-3xl px-6 py-4 continue-button-container ">
             <div className="flex items-center border border-mythemes-maingreen bg-mythemes-maingreen bg-opacity-5 rounded-xl justify-center py-1">

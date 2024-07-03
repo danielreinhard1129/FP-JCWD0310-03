@@ -8,7 +8,6 @@ import useLogin from '@/hooks/api/auth/useLogin';
 import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
@@ -16,10 +15,8 @@ import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
 
 export function FromLogin() {
-  const router = useRouter();
   const { googleLogin } = useLoginByGoogle();
   const { login } = useLogin();
-  // const { googleLogin } = useImplicitFlow();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({

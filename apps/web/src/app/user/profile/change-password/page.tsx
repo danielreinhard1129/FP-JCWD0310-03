@@ -15,8 +15,6 @@ interface IFormEditUser {
 }
 
 const ChangePassword = () => {
-  // const { id } = useAppSelector((state) => state.user);
-  const { user, isLoading: isLoadingGetUser } = useGetUser();
   const { updateUser, isLoading } = useUpdateUser();
 
   const router = useRouter();
@@ -27,21 +25,11 @@ const ChangePassword = () => {
     confirmPassword: '',
   };
 
-  if (isLoadingGetUser) {
-    return (
-      <div className="container flex justify-center px-4 pt-24 text-4xl font-semibold">
-        Loading bos
-      </div>
-    );
-  }
-
   const handleSubmit = (values: Partial<IFormEditUser>) => {
     updateUser({ password: values.password, newPassword: values.newPassword });
-    console.log('ini values', values.newPassword);
   };
 
   return (
-    // <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
     <main className="container p-0 pt-[32px] bg-[#ffff]">
       <div className="container flex flex-col gap-4">
         <div className="flex relative">
