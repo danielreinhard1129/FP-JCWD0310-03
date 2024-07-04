@@ -1,4 +1,5 @@
 import { createDeliveryOrderService } from '@/services/deliveryOrder/createDeliveryOrder.service';
+import { getDeliveryOrderService } from '@/services/deliveryOrder/getDeliveryOrder.service';
 import { getDeliveryOrdersService } from '@/services/deliveryOrder/getDeliveryOrders.service';
 import { updateDeliveryOrderService } from '@/services/deliveryOrder/updateDeliveryOrder.service';
 import { NextFunction, Request, Response } from 'express';
@@ -21,6 +22,20 @@ export class DeliveryOrderController {
         sortOrder: parseInt(req.query.sortOrder as string) || 'asc',
       };
       const result = await getDeliveryOrdersService(query);
+      return res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getDeliveryOrderController(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const id = req.params.id;
+      const result = await getDeliveryOrderService(Number(id));
       return res.status(200).send(result);
     } catch (error) {
       next(error);

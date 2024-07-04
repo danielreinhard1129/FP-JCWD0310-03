@@ -13,7 +13,6 @@ const PackingRequest = () => {
   const [page, setPage] = useState<number>(1);  
   const { id } = useAppSelector((state) => state.user);
   const { data: orders, meta, refetch } = useGetOrders({
-    // id: id,
     page,
     take: 10,
     filterStatus: String(OrderStatus.IRONING_COMPLETED)

@@ -4,9 +4,9 @@ export const getPickupOrderService = async (id: number) => {
     try {
         const pickupOrder = await prisma.pickupOrder.findFirst({
             where: {id},
-            include: {user: true, outlet:true},
+            include: {user: true, outlet: {include: {address: true}}, order: true, address: true, driver: {include: {user: true}}},
         })
-
+        
         if(!pickupOrder) {
             throw new Error('Pickup Order Not Found')
         }

@@ -4,6 +4,7 @@ import { OrderStatus } from '@/types/order.type';
 import { FC, useEffect, useState } from 'react';
 import ItemCheckingDialog from './ItemCheckingDialog';
 import { EmployeeWorkShift } from '@/types/employee.type';
+import { useRouter } from 'next/navigation';
 
 interface WashingCardProps {
   key: number;
@@ -42,6 +43,7 @@ const WashingCard: FC<WashingCardProps> = ({
   isBypassRejected,
   employeeWorkShift
 }) => {
+  const router = useRouter()
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const values = {
@@ -52,7 +54,8 @@ const WashingCard: FC<WashingCardProps> = ({
 
   const { updateOrderStatus } = useUpdateOrderStatus()
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (event: React.MouseEvent) => {
+    event.stopPropagation();
     try {
       await updateOrderStatus(values);
       refetch();
@@ -61,15 +64,16 @@ const WashingCard: FC<WashingCardProps> = ({
     }
   };
 
-  const handleDialogOpen = () => {
+  const handleDialogOpen = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setIsDialogOpen(true);
   };
 
-  const handleDialogClose = () => {
+  const handleDialogClose = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setIsDialogOpen(false);
   };
 
-  //shift confirmation
   const [isDisable, setIsDisable] = useState(false);
 
   useEffect(() => {
@@ -91,15 +95,39 @@ const WashingCard: FC<WashingCardProps> = ({
         }
       }
     };
-
     checkStatus();
     const interval = setInterval(checkStatus, 60000);
 
     return () => clearInterval(interval);
   }, [employeeWorkShift]);
 
+  const handleClick = () => {
+    let section
+    if (targetStatus == OrderStatus.BEING_WASHED || targetStatus == OrderStatus.WASHING_COMPLETED) {
+      section = "washing"
+    }
+    if (targetStatus == OrderStatus.BEING_IRONED || targetStatus == OrderStatus.IRONING_COMPLETED) {
+      section = "ironing"
+    }
+    if (targetStatus == OrderStatus.BEING_PACKED || targetStatus == OrderStatus.AWAITING_PAYMENT) {
+      section = "packing"
+    }
+    let progress
+    if (isHistory == false) {
+      if (targetStatus == OrderStatus.BEING_WASHED || targetStatus == OrderStatus.BEING_IRONED || targetStatus == OrderStatus.BEING_PACKED) {
+        progress = "request"
+      }
+      if (targetStatus == OrderStatus.WASHING_COMPLETED || targetStatus == OrderStatus.IRONING_COMPLETED || targetStatus == OrderStatus.AWAITING_PAYMENT) {
+        progress = "on-going"
+      }
+    }
+    if (isHistory == true) {
+      progress = "history"
+    }
+    router.push(`/dashboard/worker/bag-details/${orderId}/${section}/${progress}`)
+  }
   return (
-    <div key={key} className='relative flex flex-col gap-2 overflow-hidden shadow-md bg-white py-3 pl-5 pr-3 rounded-xl'>
+    <div onClick={handleClick} key={key} className='relative flex flex-col gap-2 overflow-hidden shadow-md bg-white py-3 pl-5 pr-3 rounded-xl'>
       <div>
         <p className='text-gray-500 text-md font-bold align-top'>{referenceNumber}</p>
         <div className='flex gap-2'>
@@ -135,7 +163,6 @@ const WashingCard: FC<WashingCardProps> = ({
                     <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-dimgrey'></div>
                     <button disabled className='absolute right-3 bottom-3 bg-mythemes-dimgrey font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Requested</button>
                   </>
-
                 ))
               ))
             ))
@@ -150,7 +177,6 @@ const WashingCard: FC<WashingCardProps> = ({
                 refetch={refetch}
                 targetStatus={targetStatus}
                 workerId={workerId}
-
               />
             </>
           )}

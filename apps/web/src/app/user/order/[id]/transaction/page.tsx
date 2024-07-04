@@ -2,6 +2,7 @@
 import { Separator } from '@/components/ui/separator';
 import useGetOrder from '@/hooks/api/order/useGetOrder';
 import useGetPayment from '@/hooks/api/payment/useGetPayment';
+import { PaymentStatus } from '@/types/payment.type';
 import { MIDTRANS_PUBLIC_CLIENT } from '@/utils/config';
 import { format } from 'date-fns';
 import { ChevronLeft, ScrollText } from 'lucide-react';
@@ -164,7 +165,11 @@ const Transaction = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         </div>
-        <button onClick={handlePayment} className='bg-mythemes-maingreen text-white p-1 rounded-xl'>Pay</button>
+        {data?.paymentStatus != PaymentStatus.PENDING ? (
+          <></>
+        ) : (
+          <button onClick={handlePayment} className='bg-mythemes-maingreen text-white p-1 rounded-xl'>Pay</button>
+        )}
       </div>
     </div>
   )

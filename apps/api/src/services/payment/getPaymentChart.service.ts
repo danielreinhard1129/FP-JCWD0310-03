@@ -66,12 +66,12 @@ export const getPaymentChartService = async (query: GetPaymentChartQuery) => {
         const now = new Date();
         const month = filterMonth ? Number(filterMonth) - 1 : now.getMonth();
         const year = filterYear ? Number(filterYear) : now.getFullYear();
-
+    
         function getDaysInSpecificMonth(year: number, month: number): number {
             const date = new Date(year, month);
             return getDaysInMonth(date);
         }
-        const daysInMonth = getDaysInSpecificMonth(year, month)
+        const daysInMonth = getDaysInSpecificMonth(year, month)        
 
         const incomeDaily: number[] = [];
         const transactionDaily: number[] = [];

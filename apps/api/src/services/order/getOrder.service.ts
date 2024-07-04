@@ -16,7 +16,8 @@ export const getOrderService = async (id: number) => {
         payment: true,
         orderItem: {
           include: { laundryItem: true }
-        }
+        },
+        orderWorker: {include: {worker: {include: {user: true}}}}
       },
     });
 

@@ -18,6 +18,11 @@ export class DeliveryOrderRouter {
       verifyToken,
       this.deliveryOrderController.getDeliveryOrdersController,
     );
+    this.router.get(
+      '/:id',
+      verifyToken,
+      this.deliveryOrderController.getDeliveryOrderController,
+    );
     this.router.post(
       '/',
       verifyToken,
