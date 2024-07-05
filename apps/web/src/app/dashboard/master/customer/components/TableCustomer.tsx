@@ -21,7 +21,7 @@ const TableCustomers: FC<CustomerRowTableProps> = ({
 
 }) => {
     return (
-        <TableRow key={key} >
+        <TableRow key={key} className='text-sm' >
             <TableCell>{name}</TableCell>
             <TableCell>{email}</TableCell>
             <TableCell>{role}</TableCell>

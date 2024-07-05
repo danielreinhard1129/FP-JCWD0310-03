@@ -1,26 +1,42 @@
-'use client'
-import Pagination from '@/components/Pagination'
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import useGetOrders from '@/hooks/api/order/useGetOrders'
-import Link from 'next/link'
-import { useState } from 'react'
-import TableOrder from './components/TableOrder'
+'use client';
+import Pagination from '@/components/Pagination';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import useGetOrders from '@/hooks/api/order/useGetOrders';
+import Link from 'next/link';
+import { useState } from 'react';
+import TableOrder from './components/TableOrder';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import ItemFilterOutlet from './components/ItemFilterOutlet'
-import ItemFilterStatus from './components/ItemFilterStatus'
-import { useAppSelector } from '@/redux/hooks'
-import AdminAuthGuard from '@/hoc/AdminAuthGuard'
-import { Role } from '@/types/user.type'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import ItemFilterOutlet from './components/ItemFilterOutlet';
+import ItemFilterStatus from './components/ItemFilterStatus';
+import { useAppSelector } from '@/redux/hooks';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
+import { Role } from '@/types/user.type';
 
 const MenuOrder = () => {
   const [page, setPage] = useState<number>(1);
   const { role } = useAppSelector((state) => state.user);
-  const [filterOutlet, setFilterOutlet] = useState("all")
-  const [filterStatus, setFilterStatus] = useState("all")
-  const [sortOrder, setSortOrder] = useState('asc')
+  const [filterOutlet, setFilterOutlet] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [sortOrder, setSortOrder] = useState('asc');
 
-  const { data: orders, meta, refetch } = useGetOrders({
+  const {
+    data: orders,
+    meta,
+    refetch,
+  } = useGetOrders({
     page,
     take: 10,
     filterOutlet,
@@ -33,64 +49,82 @@ const MenuOrder = () => {
   };
 
   const handleChangeFilterOutlet = (value: string) => {
-    setFilterOutlet(value)
-  }
+    setFilterOutlet(value);
+  };
   const handleChangeFilterStatus = (value: string) => {
-    setFilterStatus(value)
-  }
+    setFilterStatus(value);
+  };
   const handleChangeSortingBy = (value: 'asc' | 'desc') => {
-    setSortOrder(value)
-  }
+    setSortOrder(value);
+  };
 
   return (
-    <div className='container flex flex-col gap-5 p-6'>
-      <div className='flex justify-between'>
+    <div className="container flex flex-col gap-5 p-6">
+      <div className="flex justify-between">
         <div>
-          <h1 className='font-bold text-xl'>Your Orders</h1>
+          <h1 className="font-bold text-xl">Your Orders</h1>
         </div>
-        <div className='flex gap-2'>
-          <div className={`${role!==Role.SUPER_ADMIN?'hidden':'block'}`}>
-          <Select name='outlet' onValueChange={handleChangeFilterOutlet} defaultValue='all'>
-            <SelectTrigger className='min-w-40'>
-              <SelectValue placeholder={"Outlet"} />
-            </SelectTrigger>
-            <ItemFilterOutlet />
-          </Select>
+        <div className="flex gap-2">
+          <div className={`${role !== Role.SUPER_ADMIN ? 'hidden' : 'block'}`}>
+            <Select
+              name="outlet"
+              onValueChange={handleChangeFilterOutlet}
+              defaultValue="all"
+            >
+              <SelectTrigger className="min-w-40">
+                <SelectValue placeholder={'Outlet'} />
+              </SelectTrigger>
+              <ItemFilterOutlet />
+            </Select>
           </div>
-          <Select name='status' onValueChange={handleChangeFilterStatus} defaultValue='all'>
-            <SelectTrigger className='min-w-40'>
-              <SelectValue placeholder={"Status"} />
+          <Select
+            name="status"
+            onValueChange={handleChangeFilterStatus}
+            defaultValue="all"
+          >
+            <SelectTrigger className="min-w-40">
+              <SelectValue placeholder={'Status'} />
             </SelectTrigger>
             <ItemFilterStatus />
           </Select>
-          <Select name='sortOrder' onValueChange={handleChangeSortingBy} defaultValue='asc'>
-            <SelectTrigger className='min-w-40'>
-              <SelectValue placeholder={"Sort By"} />
+          <Select
+            name="sortOrder"
+            onValueChange={handleChangeSortingBy}
+            defaultValue="asc"
+          >
+            <SelectTrigger className="min-w-40">
+              <SelectValue placeholder={'Sort By'} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='asc'>Sort by: Newest</SelectItem>
-              <SelectItem value='desc'>Sort by: Latest</SelectItem>
+              <SelectItem value="asc">Sort by: Newest</SelectItem>
+              <SelectItem value="desc">Sort by: Latest</SelectItem>
             </SelectContent>
           </Select>
-          <Link href={"/dashboard/master/order/pickup-order-list"}>
-            <div className='flex bg-mythemes-maingreen h-full w-40 rounded-lg'>
-              <h1 className='text-white font-medium mx-auto my-auto'>Create Order</h1>
+          <Link href={'/dashboard/master/order/pickup-order-list'}>
+            <div className="flex bg-mythemes-maingreen h-full w-40 rounded-lg">
+              <h1 className="text-white font-medium mx-auto my-auto">
+                Create Order
+              </h1>
             </div>
           </Link>
         </div>
       </div>
       <div>
-
-        <Table className='text-xs bg-mythemes-secondarygreen/40 rounded-xl text-stone-800'>
+        <Table className=" rounded-xl text-stone-800">
           <TableHeader>
             <TableRow>
-              <TableHead>Order Number</TableHead>
-              <TableHead>Pickup Number</TableHead>
-              <TableHead>Weight</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Created Date</TableHead>
-              <TableHead>Status</TableHead>
-              {/* <TableHead></TableHead> */}
+              <TableHead className="text-black font-bold">
+                Order Number
+              </TableHead>
+              <TableHead className="text-black font-bold">
+                Pickup Number
+              </TableHead>
+              <TableHead className="text-black font-bold">Weight</TableHead>
+              <TableHead className="text-black font-bold">Price</TableHead>
+              <TableHead className="text-black font-bold">
+                Created Date
+              </TableHead>
+              <TableHead className="text-black font-bold">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -117,7 +151,7 @@ const MenuOrder = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminAuthGuard(MenuOrder)
+export default AdminAuthGuard(MenuOrder);

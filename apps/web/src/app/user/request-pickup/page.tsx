@@ -1,22 +1,21 @@
 'use client';
-
-import React, { useState, useEffect } from 'react';
+import EmptyAddress from '@/components/EmptyAddress';
 import { Separator } from '@/components/ui/separator';
-import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
-import useGetUserAddress from '@/hooks/api/user/useGetUserAddress';
-import { useAppSelector } from '@/redux/hooks';
-import { Outlet } from '@/types/outlet.type';
-import { ChevronLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import ClosestLatLong from './components/ClosestLatLong';
-import UserAddressList from './components/UserAddressList';
-import haversine from 'haversine-distance';
-import { TbTruckDelivery } from 'react-icons/tb';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetOutletCoord from '@/hooks/api/outlet/useGetOutletCoord';
-import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
+import useGetUserAddress from '@/hooks/api/user/useGetUserAddress';
+import { useAppSelector } from '@/redux/hooks';
+import haversine from 'haversine-distance';
+import { ChevronLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { TbTruckDelivery } from 'react-icons/tb';
+import { toast } from 'sonner';
+import ClosestLatLong from './components/ClosestLatLong';
 import PickupDetailDialog from './components/PickupDetailDialog';
-
+import SkeletonReqPickup from './components/SkeletonReqPickup';
+import UserAddressList from './components/UserAddressList';
+import { RiPinDistanceFill } from 'react-icons/ri';
 interface AddressResult {
   latitude: string;
   longitude: string;
@@ -24,7 +23,6 @@ interface AddressResult {
   isPrimary: boolean;
   id: number;
 }
-
 interface Component {
   latitude: string;
   longitude: string;
@@ -40,6 +38,7 @@ interface Data {
 
 const RequestPickup = () => {
   const { id } = useAppSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true);
   const { address, isLoading: isLoadingAddress } = useGetUserAddress();
   const [selectedOutlet, setSelectedOutlet] = useState<Data | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<AddressResult | null>(
@@ -47,18 +46,24 @@ const RequestPickup = () => {
   );
   const [pickupCost, setPickupCost] = useState<number | null>(null);
   const [pickupDistance, setPickupDistance] = useState<number | null>(null);
-  const { dataOutles, isLoading } = useGetOutletCoord();
-  // const{} = useGetOutletList()
+  const [realDistance, setRealDistance] = useState<number | null>(null);
+  const { dataOutles, isLoading: isLoadingDataOutlet } = useGetOutletCoord();
 
   const handleAddressSelect = (address: AddressResult) => {
     setSelectedAddress(address);
   };
-
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const handleDialogOpen = () => {
-    setIsDialogOpen(true);
+    try {
+      if (pickupDistance! > 3.5) {
+        throw new Error('kejauhan');
+      }
+      setIsDialogOpen(true);
+    } catch (error) {
+      toast.error('Kejauhan bos');
+    }
   };
 
   const handleDialogClose = () => {
@@ -83,10 +88,13 @@ const RequestPickup = () => {
     if (selectedOutlet && selectedAddress) {
       const distanceInMeters = haversine(userCoord, outletCoord);
       const distanceInKm = Math.max(distanceInMeters / 1000, 2);
-      const cost = Math.ceil(distanceInKm * 1500);
-      setPickupDistance(distanceInMeters / 1000);
+      const dist = distanceInMeters / 1000;
+      const actualDist = Math.ceil(dist * 10) / 10;
+      const finalDistance = Math.ceil(distanceInKm * 10) / 10;
+      const cost = Math.ceil(finalDistance * 3000);
+      setPickupDistance(finalDistance);
       setPickupCost(cost);
-      console.log('Distance:', distanceInKm, 'Cost:', cost);
+      setRealDistance(actualDist);
     }
   }, [selectedOutlet, selectedAddress]);
 
@@ -98,23 +106,22 @@ const RequestPickup = () => {
     }).format(value);
   };
 
-  console.log('ini selected outlet:', selectedOutlet);
-  // console.log('ini selected outlet id', selectedOutletId);
-
-  if (isLoadingAddress) {
-    return <div>Loading addresses...</div>;
-  }
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   if (isLoading) {
-    return <div>Loading outlet...</div>;
-  }
-  if (address.length == 0) {
-    return <div> Please complete your address to continue.</div>;
+    return <SkeletonReqPickup />;
   }
 
+  if (address.length === 0) {
+    return <EmptyAddress />;
+  }
   return (
-    <main className="relative container p-0 pt-[32px]">
-      <div className="flex flex-col gap-4 px-6">
+    <main className="relative p-0 pt-[32px]">
+      <div className="flex flex-col gap-4 px-6 h-[900px]">
         <div className="flex relative">
           <ChevronLeft className="absolute" onClick={() => router.back()} />
           <div className="flex justify-between w-full">
@@ -129,34 +136,51 @@ const RequestPickup = () => {
             address={address}
           />
         </div>
-        <div className="flex flex-col gap-4 mt-6">
-          <p className="font-bold">Choose Your Nearest Outlet</p>
-          {selectedAddress && (
+        {selectedAddress && (
+          <div className="flex flex-col gap-4 mt-6">
+            <p className="font-bold">Choose Your Nearest Outlet</p>
             <ClosestLatLong
               targetLocation={selectedAddress}
               dataOutles={dataOutles}
               selectedOutlet={selectedOutlet}
               setSelectedOutlet={setSelectedOutlet}
+              realDistance={realDistance}
             />
-          )}
-        </div>
-        {/* <div>Selected outlet id : {selectedOutletId}</div> */}
-        <div>Selected outlet : {selectedOutlet?.outletName}</div>
-        <div>Selected outlet.id : {selectedOutlet?.id}</div>
+          </div>
+        )}
         {pickupCost && selectedOutlet && selectedAddress && (
-          <div className="mt-20 bottom-0 border-t flex flex-col gap-3 border-l border-r h-32 place-content-end rounded-t-3xl px-6 py-4 continue-button-container ">
-            <div className="flex items-center border border-mythemes-maingreen bg-mythemes-maingreen bg-opacity-5 rounded-xl justify-center py-1">
-              <TbTruckDelivery size={30} className="text-mythemes-maingreen" />
-              <p className="mr-16 ml-2 text-sm font-bold">Pickup cost :</p>
-              <p className="text-sm font-bold">
-                {formatCurrency(Number(pickupCost))}{' '}
-              </p>
+          <div className="mt-auto bottom-0 border-t flex flex-col gap-3 border-l border-r h-40 place-content-end rounded-t-3xl px-6 py-4  ">
+            <div className="flex flex-col gap-2 items-center border border-mythemes-maingreen bg-mythemes-maingreen bg-opacity-5 rounded-xl justify-center py-1">
+              <div className="flex items-center w-[300px] justify-between">
+                <div className="flex items-center">
+                  <RiPinDistanceFill
+                    size={20}
+                    className="text-mythemes-secondaryblue"
+                  />
+                  <p className="mr-16 ml-2 text-sm font-bold">Distance :</p>
+                </div>
+                <p className="text-sm font-bold">
+                  {Number(realDistance?.toFixed(1))} Km.
+                </p>
+              </div>
+              <div className="flex items-center w-[300px] justify-between">
+                <div className="flex items-center">
+                  <TbTruckDelivery
+                    size={20}
+                    className="text-mythemes-secondaryblue"
+                  />
+                  <p className="mr-16 ml-2 text-sm font-bold">Pickup cost :</p>
+                </div>
+                <p className="text-sm font-bold">
+                  {formatCurrency(Number(pickupCost))}{' '}
+                </p>
+              </div>
             </div>
             <div
-              className="bg-mythemes-maingreen text-white p-2 rounded-full text-center font-bold"
+              className="bg-mythemes-maingreen cursor-pointer text-white p-2 rounded-full text-center font-bold"
               onClick={handleDialogOpen}
             >
-              Continue
+              Request Pickup
             </div>
             <PickupDetailDialog
               isOpen={isDialogOpen}
@@ -164,7 +188,7 @@ const RequestPickup = () => {
               outletId={selectedOutlet.id}
               userAddressId={selectedAddress.id}
               userId={Number(id)}
-              distance={pickupDistance!}
+              distance={realDistance!}
               pickupPrice={pickupCost}
             />
           </div>
@@ -173,5 +197,4 @@ const RequestPickup = () => {
     </main>
   );
 };
-
 export default CustomerAuthGuard(RequestPickup);

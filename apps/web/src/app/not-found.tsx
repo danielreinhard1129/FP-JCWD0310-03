@@ -1,28 +1,5 @@
-// import Image from 'next/image';
-// import logo from '../../public/002-washer.png';
-
-// export default function NotFound() {
-//   return (
-//     <main className="bg-mythemes-secondarygreen w-screen h-screen p-10 place-content-center">
-//       <div>
-//         <p>You must not be here !</p>
-//       </div>
-//       <div className="flex">
-//         <p className="font-black text-[500px]">4</p>
-//         <Image alt="" src={logo} />
-//         <p className="font-black text-[500px]">4</p>
-//         <p>4</p>
-//       </div>
-//       <div>
-//       <div>Back to home</div>
-//       </div>
-//     </main>
-//   );
-// }
 'use client';
 
-import Image from 'next/image';
-import logo from '../../public/002-washer.png';
 import { WashingMachine } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 

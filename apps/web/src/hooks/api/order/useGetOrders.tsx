@@ -14,7 +14,7 @@ interface IGetOrdersQuery extends IPaginationQueries {
   search?: string,
   filterCategory?: string
 }
-
+ 
 const useGetOrders = (queries: IGetOrdersQuery) => {
   const { axiosInstance } = useAxios();
   const [data, setData] = useState<Order[]>([]);

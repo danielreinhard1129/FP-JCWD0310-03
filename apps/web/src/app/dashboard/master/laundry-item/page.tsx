@@ -14,7 +14,9 @@ import TableLaundryItem from './components/TableLaundryItem';
 import AddItem from './components/AddItem';
 
 const LaundryItem = () => {
-  const { isData, refetch, isLoading } = useGetLaundryItemList();
+  const { isData, refetch, isLoading } = useGetLaundryItemList({
+    isDelete: Number(Boolean(false))
+  });
 
   return (
     <div className="flex flex-col gap-5 p-6">
@@ -25,11 +27,11 @@ const LaundryItem = () => {
         <AddItem refetch={refetch} />
       </div>
       <div>
-        <Table className="bg-white mx-auto w-[700px] rounded-xl text-center">
+        <Table className="bg-white mx-auto rounded-xl">
           <TableHeader className="">
             <TableRow className="">
-              <TableHead className="font-bold text-center">No.</TableHead>
-              <TableHead className="font-bold text-center">Item name</TableHead>
+              <TableHead className="font-bold text-black">No.</TableHead>
+              <TableHead className="font-bold text-black">Item name</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

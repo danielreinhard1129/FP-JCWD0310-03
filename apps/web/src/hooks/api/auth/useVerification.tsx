@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import useAxios from '../useAxios';
+import { useState } from 'react';
 
 interface VerificationResponses {
   message: string;
@@ -17,7 +18,10 @@ interface VerificationArgs {
 const useVerification = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const verification = async (payload: VerificationArgs) => {
+    setIsLoading(true);
     try {
       console.log('ini payload', payload);
       await axiosInstance.post('auth/verification', payload, {
@@ -32,19 +36,19 @@ const useVerification = () => {
       if (error instanceof AxiosError) {
         if (
           error.response?.status === 401 &&
-          error.response.data?.message === 'token expired'
+          error.response.data === 'token expired'
         ) {
-          // Handle token expired error here
           toast.error('Your token has expired. Resend verification email.');
-          // Redirect or perform action to resend verification email
         } else {
-          toast.error(error.response?.data.message || 'An error occurred.');
+          toast.error(error.response?.data || 'An error occurred.');
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { verification };
+  return { verification, isLoading };
 };
 
 export default useVerification;

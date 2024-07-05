@@ -10,6 +10,8 @@ import { getChangedValues } from '@/utils/getChangeValues';
 import FormEditOutlet from './components/FormEditOutlet';
 import { useRouter } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
+import Image from 'next/image';
+import logo1 from '../../../../../../public/Black Friday Typography Instagram Post.png'
 
 interface UpdateOutletArgs {
   outletName: string;
@@ -39,7 +41,11 @@ const EditOutlet = ({ params }: { params: { id: number } }) => {
   if (isLoadingGetOutlet) {
     return (
       <div className=" container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold">
-        Loading
+        {/* Loading */}
+
+      <div className="animate-pulse">
+      <Image alt="logo" src={logo1} />
+    </div>
       </div>
     );
   }

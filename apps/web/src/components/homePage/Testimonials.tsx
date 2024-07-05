@@ -6,14 +6,14 @@ import { Separator } from '../ui/separator';
 const Testimonials = () => {
   return (
     <>
-      <div className="container">
+      <div className="container text-[#1A1F1F] py-28">
         <h1 className=" font-bold text-2xl text-center mb-5 md:text-3xl">
-          Happy <span className="text-mythemes-maingreen">Customer</span> Vibes
+          Happy Customer <span className="text-mythemes-mainYellow">Vibes</span> 
         </h1>
         <div>
           <ScrollArea className="whitespace-nowrap rounded-md  mx-auto">
             <div className="flex w-max space-x-4 md:mx-auto">
-              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-mythemes-taubmans shadow-md">
+              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-[#f4f4f4] shadow-md">
                 <CardContent className="flex flex-col gap-2">
                   <p className="font-bold ">Christoper Handoyo</p>
                   <Separator className="border-black border" />
@@ -23,7 +23,7 @@ const Testimonials = () => {
                   </p>
                 </CardContent>
               </Card>
-              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-mythemes-taubmans shadow-md">
+              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-[#f4f4f4] shadow-md">
                 <CardContent className="flex flex-col gap-2">
                   <p className="font-bold ">Christoper Handoyo</p>
                   <Separator className="border-black border" />
@@ -33,7 +33,7 @@ const Testimonials = () => {
                   </p>
                 </CardContent>
               </Card>
-              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-mythemes-taubmans shadow-md">
+              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-[#f4f4f4] shadow-md">
                 <CardContent className="flex flex-col gap-2">
                   <p className="font-bold ">Christoper Handoyo</p>
                   <Separator className="border-black border" />
@@ -43,7 +43,7 @@ const Testimonials = () => {
                   </p>
                 </CardContent>
               </Card>
-              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-mythemes-taubmans shadow-md">
+              <Card className="w-60 h-52 md:w-96 md place-content-center text-center rounded-xl py-2 bg-[#f4f4f4] shadow-md">
                 <CardContent className="flex flex-col gap-2">
                   <p className="font-bold ">Christoper Handoyo</p>
                   <Separator className="border-black border" />

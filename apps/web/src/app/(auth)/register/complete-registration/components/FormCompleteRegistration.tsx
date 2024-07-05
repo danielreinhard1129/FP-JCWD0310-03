@@ -13,6 +13,7 @@ import FormInputDisable from '@/components/FormInputDisable';
 import PreviewImages from '@/components/PreviewImages';
 import { ValidationSchema } from '../validationSchema';
 import Dropzone from '@/components/Dropzone';
+import { Loader2 } from 'lucide-react';
 
 interface FormCompleteRegistration {
   email: string;
@@ -25,7 +26,7 @@ interface FormCompleteRegistrationProps {
 export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
   initialValues,
 }) => {
-  const { completeRegistration } = useCompleteRegistration();
+  const { completeRegistration, isLoading } = useCompleteRegistration();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
@@ -67,9 +68,11 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
 
         <Button
           type="submit"
-          className="w-full bg-mythemes-maingreen font-bold bottom-5 mt-24"
+          className="bg-mythemes-maingreen"
+          disabled={isLoading}
         >
-          Submit
+          {isLoading ? <Loader2 className=" animate-spin" /> : 'Submit'}
+          {isLoading ?? 'Success !'}
         </Button>
       </form>
     </Form>

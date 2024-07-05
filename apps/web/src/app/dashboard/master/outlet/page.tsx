@@ -1,6 +1,6 @@
 'use client';
 
-import Pagination from '@/components/Pagination';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -8,58 +8,88 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import useGetEmployees from '@/hooks/api/employee/useGetEmployees';
-import Link from 'next/link';
-import { useState } from 'react';
-import TableOutlet from './components/TableOutlet';
-import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
-import { PlusCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
+import { PlusCircle, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/redux/hooks';
+import { useRef, useState } from 'react';
+import TableOutlet from './components/TableOutlet';
+import { debounce } from 'lodash';
+import { Input } from '@/components/ui/input';
+import Pagination from '@/components/Pagination';
 
 const MenuOutlet = () => {
   const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const { id } = useAppSelector((state) => state.user);
   const { data, meta, refetch } = useGetOutletList({
-    take: 1000,
+    page,
+    take: 10,
+    search,
+    sortOrder: 'desc',
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
   };
 
+  const handleSearch = debounce((value: string) => {
+    setSearch(value);
+  }, 1500);
+
+  const clearSearch = () => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
+      handleSearch('');
+    }
+  };
+
   return (
     <div className="flex flex-col gap-5 p-6">
-      <div className="flex justify-between my-auto">
+      <div className="flex flex-col justify-between my-auto">
         <div>
-          <h1 className="font-bold text-xl">Your Outlet</h1>
+          <h1 className="font-bold text-xl ml-4">Your Outlet</h1>
         </div>
-        {/* <Link href={'/dashboard/master/outlet/create-outlet'}> */}
-        <Button
-          variant="outline"
-          onClick={() => {
-            router.push('/dashboard/master/outlet/create-outlet');
-          }}
-          // onClick={() => setIsOpen(true)}
-          className="font-bold text-mythemes-maingreen flex gap-2 text-md bg-inherit border-none"
-        >
-          <PlusCircle />
-          Add item
-        </Button>
-        {/* </Link> */}
+        <div className="w-full relative flex gap-12 p-4 items-center">
+          <X
+            onClick={clearSearch}
+            className={`cursor-pointer absolute right-2.5 bottom-1.5 h-5 w-5 text-mythemes-maingreen ${search == '' ? `hidden` : `block`}`}
+          />
+          <Input
+            ref={inputRef}
+            className="h-10"
+            type="text"
+            name="search"
+            placeholder="Search Outlet Name"
+            onChange={(e) => {
+              handleSearch(e.target.value);
+            }}
+          />
+          <Button
+            variant="outline"
+            onClick={() => {
+              router.push('/dashboard/master/outlet/create-outlet');
+            }}
+            className="font-bold text-mythemes-maingreen flex gap-2 text-md bg-inherit border-none"
+          >
+            <PlusCircle />
+            Add item
+          </Button>
+        </div>
       </div>
       <div>
         <Table className="bg-white rounded-xl">
           <TableHeader>
             <TableRow className="font-extrabold">
-              <TableHead>No.</TableHead>
-              <TableHead>Outlet name</TableHead>
-              <TableHead>Outlet type</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead>City</TableHead>
+              <TableHead className="text-black font-bold">
+                Outlet name
+              </TableHead>
+              <TableHead className="text-black font-bold">
+                Outlet type
+              </TableHead>
+              <TableHead className="text-black font-bold">Address</TableHead>
+              <TableHead className="text-black font-bold">City</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -68,7 +98,6 @@ const MenuOutlet = () => {
               return (
                 <TableOutlet
                   key={index}
-                  no={index + 1}
                   id={outlet.id}
                   name={outlet.outletName}
                   type={outlet.outletType}
@@ -76,17 +105,18 @@ const MenuOutlet = () => {
                     addressLine: outlet.address[0]?.addressLine,
                     city: outlet.address[0]?.city,
                   }}
+                  refetch={refetch}
                   // city={outlet.address.city}
                 />
               );
             })}
           </TableBody>
         </Table>
-        {/* <Pagination
+        <Pagination
           total={meta?.total || 0}
           take={meta?.take || 0}
           onChangePage={handleChangePaginate}
-        /> */}
+        />
       </div>
     </div>
   );

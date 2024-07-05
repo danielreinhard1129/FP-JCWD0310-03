@@ -5,10 +5,10 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
+import { toast } from 'sonner';
 
 interface IGetOutletsQuery extends IPaginationQueries {
   search?: string;
-  take?: number;
   isDelete?: number;
 }
 
@@ -25,7 +25,7 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
       setMeta(data.meta);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // TODO : replace console.log with toast
+        toast.error(error.response?.data);
         console.log(error);
       }
     } finally {
@@ -35,7 +35,7 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
 
   useEffect(() => {
     getOutlet();
-  }, [queries.page, queries.search,queries.take, queries.isDelete]);
+  }, [queries.page, queries.search, queries.take, queries.sortOrder, queries.isDelete]);
   return { data, isLoading, meta, refetch: getOutlet };
 };
 

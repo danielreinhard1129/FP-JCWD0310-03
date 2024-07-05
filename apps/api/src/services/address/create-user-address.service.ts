@@ -16,25 +16,12 @@ export const createUserAddressService = async (
   try {
     const { addressLine } = body;
 
-    const address = await prisma.address.findFirst({
-      where: { id: id },
+    const existingAddress = await prisma.address.findFirst({
+      where: { addressLine: { equals: addressLine } },
     });
 
-    if (!address) {
-      throw new Error('Address not found !');
-    }
-    if (address.isDelete === true) {
-      throw new Error('Address not found !');
-    }
-
-    if (addressLine) {
-      const existingAddress = await prisma.address.findFirst({
-        where: { addressLine: { equals: addressLine } },
-      });
-
-      if (existingAddress) {
-        throw new Error('Address already exist !');
-      }
+    if (existingAddress) {
+      throw new Error('Address already exist !');
     }
 
     const createUserAddress = await prisma.address.create({
