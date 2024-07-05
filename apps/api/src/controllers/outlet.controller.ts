@@ -26,6 +26,7 @@ export class OutletController {
     try {
       const query = {
         take: parseInt(req.query.take as string) || 1000000000,
+        isDelete: Boolean(parseInt(req.query.isDelete as string)) || false,
       };
       const result = await getOutletListService(query);
       return res.status(200).send(result);

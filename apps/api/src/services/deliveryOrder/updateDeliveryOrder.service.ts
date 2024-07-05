@@ -22,10 +22,26 @@ export const updateDeliveryOrderService = async (
       throw new Error('Deliver Order not Found!')
     }
 
-    if (status == String(DeliveryStatus.ON_THE_WAY_TO_OUTLET)) {
+    const existingEmployee = await prisma.user.findFirst({
+      where: {id: driverId},
+      select: {employee: {select: {id: true}}}
+    })
+
+    if (!existingEmployee){
+      throw new Error('Employee not Found!')
+    }
+
+    if (status == String(DeliveryStatus.ON_THE_WAY_TO_OUTLET)){
       await prisma.order.update({
         where: { id: existingDeliveryOrder.orderId },
         data: { orderStatus: OrderStatus.BEING_DELIVERED_TO_CUSTOMER }
+      })
+    }
+
+    if (status == String(DeliveryStatus.RECEIVED_BY_CUSTOMER)) {
+      await prisma.order.update({
+        where: { id: existingDeliveryOrder.orderId },
+        data: { orderStatus: OrderStatus.RECEIVED_BY_CUSTOMER}
       })
 
       // const schedule = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
@@ -34,24 +50,23 @@ export const updateDeliveryOrderService = async (
         const order = await prisma.order.findFirst({
           where: {
             id: existingDeliveryOrder.orderId,
-            orderStatus: 'BEING_DELIVERED_TO_CUSTOMER',
+            orderStatus: OrderStatus.RECEIVED_BY_CUSTOMER,
           },
         });
         if(order){
           await prisma.order.update({
             where: { id: existingDeliveryOrder.orderId },
-            data: { orderStatus: OrderStatus.RECEIVED_BY_CUSTOMER },
+            data: { orderStatus: OrderStatus.COMPLETED },
           });
         }
-      });
-  
+      });  
     }
 
     return await prisma.deliveryOrder.update({
       where: { id: shipmentOrderId },
       data: {
         deliveryStatus: status as DeliveryStatus,
-        driverId: driverId
+        driverId: existingEmployee.employee?.id
       },
     });
 

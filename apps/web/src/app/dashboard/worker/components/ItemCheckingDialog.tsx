@@ -191,6 +191,7 @@ import ItemLaundryItem from '../../master/components/ItemLaundryItem';
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import { OrderStatus } from '@/types/order.type';
 import useCreateOrderWorker from '@/hooks/api/orderWorker/useCreateOrderWorker';
+import ItemLaundryItemWithDeleted from '../../master/components/itemLaundryItemWithDeleted';
 
 interface ItemCheckingDialogProps {
   workerId: number;
@@ -305,7 +306,7 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
                         label=""
                         placeholder="Select a Laundry Item"
                         form={form}
-                        item={<ItemLaundryItem />}
+                        item={<ItemLaundryItemWithDeleted />}
                       />
                     </div>
                     <div className='w-3/12'>

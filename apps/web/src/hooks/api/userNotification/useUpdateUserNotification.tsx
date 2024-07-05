@@ -1,7 +1,7 @@
 'use client';
 
-import { axiosInstance } from '@/lib/axios';
 import { useState } from 'react';
+import useAxios from '../useAxios';
 
 interface UpdateUserNotificationArgs {
     userNotificationId: number,
@@ -9,6 +9,7 @@ interface UpdateUserNotificationArgs {
 
 const useUpdateUserNotification = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { axiosInstance } = useAxios();
 
     const updateUserNotification = async (payload: UpdateUserNotificationArgs) => {
         setIsLoading(true);

@@ -65,23 +65,25 @@ const Transaction = ({ params }: { params: { id: string } }) => {
     try {
       if (!isLoading && data) {
         if (window.snap) {
-          window.snap.pay(`${data.snapToken}`, {
-            onSuccess: function (result: any) {
-              alert('Payment success!');
-              console.log(result);
-            },
-            onPending: function (result: any) {
-              alert('Waiting for your payment!');
-              console.log(result);
-            },
-            onError: function (result: any) {
-              alert('Payment failed!');
-              console.log(result);
-            },
-            onClose: function () {
-              alert('Close Kah?');
-            },
-          });
+          window.snap.pay(`${data.snapToken}`
+          //   , {
+          //   onSuccess: function (result: any) {
+          //     alert('Payment success!');
+          //     console.log(result);
+          //   },
+          //   onPending: function (result: any) {
+          //     alert('Waiting for your payment!');
+          //     console.log(result);
+          //   },
+          //   onError: function (result: any) {
+          //     alert('Payment failed!');
+          //     console.log(result);
+          //   },
+          //   onClose: function () {
+          //     alert('Close Kah?');
+          //   },
+          // }
+        );
         } else {
           alert('Snap is not loaded yet. Please try again.');
         }

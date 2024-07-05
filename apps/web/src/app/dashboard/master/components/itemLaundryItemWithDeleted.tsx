@@ -1,9 +1,9 @@
 import { SelectContent, SelectItem } from '@/components/ui/select';
 import useGetLaundryItemList from '@/hooks/api/laundryItem/useGetLaundryItemList';
 
-const ItemLaundryItem = () => {
+const ItemLaundryItemWithDeleted = () => {
   const { isData: laundryItems } = useGetLaundryItemList({
-    isDelete: Number(Boolean(false))
+    isDelete: Number(Boolean(true))
   }); 
 
   return (
@@ -19,4 +19,4 @@ const ItemLaundryItem = () => {
   );
 };
 
-export default ItemLaundryItem;
+export default ItemLaundryItemWithDeleted;

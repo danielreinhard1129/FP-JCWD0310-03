@@ -17,7 +17,6 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   const { data, refetch, isLoading } = useGetOrder(Number(params.slug[0]));
   const { id } = useAppSelector((state) => state.user)
   const router = useRouter()
-
   const { user } = useGetUser();
 
   let targetStatus
@@ -48,6 +47,26 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
       buttonLabel = "Finish"
   }
 
+  let isHidden: boolean = true
+
+  if (params.slug[2] == "on-going") {
+    if (params.slug[1] == "washing") {
+      if (data?.orderStatus == OrderStatus.BEING_WASHED) {
+        isHidden = false
+      }
+    }
+    if (params.slug[1] == "ironing") {
+      if (data?.orderStatus == OrderStatus.BEING_IRONED) {
+        isHidden = false
+      }
+    }
+    if (params.slug[1] == "packing") {
+      if (data?.orderStatus == OrderStatus.BEING_PACKED) {
+        isHidden = false
+      }
+    }
+  }
+
   const values = {
     orderId: Number(data?.id),
     workerId: Number(id),
@@ -60,7 +79,7 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
     event.stopPropagation();
     try {
       await updateOrderStatus(values);
-      refetch();
+      router.back();
     } catch (error) {
       console.error('Failed to update pickup order', error);
     }
@@ -190,52 +209,56 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
               <p className='text-sm font-semibold'>Packing by: </p>
               <p className='text-sm font-semibold'> {data?.orderWorker[2]?.worker.user.fullName}</p>
             </div>
-            <div className='flex flex-col'>
+            {/* <div className='flex flex-col'>
               <p className='text-sm font-semibold'>Status :</p>
               <div className='flex text-sm h-10 font-bold bg-mythemes-grey rounded text-mythemes-maingreen'>
                 <p className='my-auto mx-auto text-lg'>{data?.orderStatus}</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
         {params.slug[2] != "history" ? (
           <>
             {params.slug[2] != "request" ? (
-              (isBypassRequest == false ? (
-                <>
-                  <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
-                </>
+              (isHidden ? (
+                <></>
               ) : (
-                (isBypassAccepted == true ? (
+                (isBypassRequest == false ? (
                   <>
-                    <button onClick={handleUpdate} className='bg-yellow-600 text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
+                    <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
                   </>
                 ) : (
-                  (isBypassRejected == true ? (
+                  (isBypassAccepted == true ? (
                     <>
-                      <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
+                      <button onClick={handleUpdate} className='bg-yellow-600 text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
                     </>
                   ) : (
-                    <>
-                      <button disabled className='bg-mythemes-dimgrey text-white p-1 rounded-xl w-full'>Bypass Requested</button>
-                    </>
+                    (isBypassRejected == true ? (
+                      <>
+                        <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
+                      </>
+                    ) : (
+                      <>
+                        <button disabled className='bg-mythemes-dimgrey text-white p-1 rounded-xl w-full'>Bypass Requested</button>
+                      </>
+                    ))
                   ))
                 ))
               ))
             ) : (
               <>
                 <button disabled={isDisable} onClick={handleDialogOpen} className={`text-white p-1 rounded-xl w-full ${isDisable ? 'bg-mythemes-secondarygreen' : 'bg-mythemes-maingreen'}`} >{buttonLabel}</button>
-                
-                  <ItemCheckingDialog
-                    isOpen={isDialogOpen}
-                    onClose={handleDialogClose}
-                    orderId={Number(params.slug[0])}
-                    refetch={refetch}
-                    targetStatus={String(targetStatus)}
-                    workerId={id}
-                  />
-               
+
+                <ItemCheckingDialog
+                  isOpen={isDialogOpen}
+                  onClose={handleDialogClose}
+                  orderId={Number(params.slug[0])}
+                  refetch={refetch}
+                  targetStatus={String(targetStatus)}
+                  workerId={id}
+                />
+
               </>
             )}
           </>
@@ -246,7 +269,6 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
             </>
           ) : (
             <>
-              {/* <div className={`bg-green-600 text-white p-1 rounded-xl w-full`}>{buttonLabel}</div> */}
             </>
           ))
         )}

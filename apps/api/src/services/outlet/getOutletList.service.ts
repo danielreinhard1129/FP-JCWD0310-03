@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 
 interface GetOutlet {
   take: number;
+  isDelete: boolean;
 }
 
 export const getOutletListService = async (query: GetOutlet) => {
@@ -19,10 +20,13 @@ export const getOutletListService = async (query: GetOutlet) => {
     // return {
     //   data: outlets,
     // };
-    const { take } = query;
+    const { take , isDelete} = query;
     const whereClause: Prisma.OutletWhereInput = {
-      isDelete: false,
     };
+
+    if(isDelete==false){
+      whereClause.isDelete = false
+    }
 
     const outlets = await prisma.outlet.findMany({
       where: whereClause,
