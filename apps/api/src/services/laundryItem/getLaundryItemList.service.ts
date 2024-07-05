@@ -1,9 +1,22 @@
 import prisma from '@/prisma';
+import { Prisma } from '@prisma/client';
 
-export const getLaundryItemListService = async () => {
+interface GetLaundryitems {
+  isDelete: boolean;
+}
+
+export const getLaundryItemListService = async (query: GetLaundryitems) => {
   try {
+    const { isDelete } = query;
+    const whereClause: Prisma.LaundryItemWhereInput = {
+    };
+
+    if(isDelete==false){
+      whereClause.isDelete = false
+    }
+    
     const laundryItems = await prisma.laundryItem.findMany({
-      where: { isDelete: false },
+      where: whereClause,
     });
 
     if (!laundryItems) {

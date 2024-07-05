@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 
 interface IGetOutletsQuery extends IPaginationQueries {
   search?: string;
+  isDelete?: number;
 }
 
 const useGetOutletList = (queries: IGetOutletsQuery) => {
@@ -34,7 +35,7 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
 
   useEffect(() => {
     getOutlet();
-  }, [queries.page, queries.search, queries.take, queries.sortOrder]);
+  }, [queries.page, queries.search, queries.take, queries.sortOrder, queries.isDelete]);
   return { data, isLoading, meta, refetch: getOutlet };
 };
 

@@ -2,6 +2,7 @@
 import { Separator } from '@/components/ui/separator';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetPayment from '@/hooks/api/payment/useGetPayment';
+import { PaymentStatus } from '@/types/payment.type';
 import { MIDTRANS_PUBLIC_CLIENT } from '@/utils/config';
 import { format } from 'date-fns';
 import { ChevronLeft, ScrollText } from 'lucide-react';
@@ -65,20 +66,25 @@ const Transaction = ({ params }: { params: { id: string } }) => {
     try {
       if (!isLoading && data) {
         if (window.snap) {
-          window.snap.pay(`${data.snapToken}`, {
-            onSuccess: function (result: any) {
-              alert('Payment success!');
-            },
-            onPending: function (result: any) {
-              alert('Waiting for your payment!');
-            },
-            onError: function (result: any) {
-              alert('Payment failed!');
-            },
-            onClose: function () {
-              alert('Close Kah?');
-            },
-          });
+          window.snap.pay(`${data.snapToken}`
+          //   , {
+          //   onSuccess: function (result: any) {
+          //     alert('Payment success!');
+          //     console.log(result);
+          //   },
+          //   onPending: function (result: any) {
+          //     alert('Waiting for your payment!');
+          //     console.log(result);
+          //   },
+          //   onError: function (result: any) {
+          //     alert('Payment failed!');
+          //     console.log(result);
+          //   },
+          //   onClose: function () {
+          //     alert('Close Kah?');
+          //   },
+          // }
+        );
         } else {
           alert('Snap is not loaded yet. Please try again.');
         }
@@ -182,12 +188,11 @@ const Transaction = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         </div>
-        <button
-          onClick={handlePayment}
-          className="bg-mythemes-maingreen text-white p-1 rounded-xl"
-        >
-          Pay
-        </button>
+        {data?.paymentStatus != PaymentStatus.PENDING ? (
+          <></>
+        ) : (
+          <button onClick={handlePayment} className='bg-mythemes-maingreen text-white p-1 rounded-xl'>Pay</button>
+        )}
       </div>
     </div>
   );

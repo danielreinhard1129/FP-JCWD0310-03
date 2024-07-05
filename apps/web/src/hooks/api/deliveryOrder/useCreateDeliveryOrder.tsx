@@ -1,7 +1,7 @@
 'use client';
 
-import { axiosInstance } from '@/lib/axios';
 import { useState } from 'react';
+import useAxios from '../useAxios';
 
 interface CreateDeliveryOrderArgs {
     orderId: number,
@@ -9,6 +9,7 @@ interface CreateDeliveryOrderArgs {
 
 const useCreateDeliveryOrder = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { axiosInstance } = useAxios();
 
     const createDeliveryOrder = async (payload: CreateDeliveryOrderArgs) => {
         setIsLoading(true);

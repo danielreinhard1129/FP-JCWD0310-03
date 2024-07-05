@@ -31,6 +31,7 @@ export class OutletController {
         sortBy: parseInt(req.query.sortBy as string) || 'id',
         sortOrder: (req.query.sortOrder as string) || 'asc',
         search: (req.query.search as string) || '',
+        isDelete: Boolean(parseInt(req.query.isDelete as string)) || false,
       };
       const result = await getOutletListService(query);
       return res.status(200).send(result);

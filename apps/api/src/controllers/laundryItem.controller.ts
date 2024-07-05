@@ -24,7 +24,10 @@ export class LaundryItemController {
     next: NextFunction,
   ) {
     try {
-      const result = await getLaundryItemListService();
+      const query = {
+        isDelete: Boolean(parseInt(req.query.isDelete as string)) || false,
+      };
+      const result = await getLaundryItemListService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);

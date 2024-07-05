@@ -5,20 +5,24 @@ import { Prisma } from '@prisma/client';
 interface IGetOutletsQuery extends PaginationQueryParams {
   id: number;
   search?: string;
+  isDelete: boolean;
 }
 
 export const getOutletListService = async (query: IGetOutletsQuery) => {
   try {
-    const { take, page, sortBy, sortOrder, search, id } = query;
+    const { take, page, sortBy, sortOrder, search, id, isDelete } = query;
 
     const whereClause: Prisma.OutletWhereInput = {
-      isDelete: false,
     };
 
     if (search !== '') {
       whereClause.outletName = {
         contains: search?.toUpperCase(),
       };
+    }
+
+    if(isDelete==false){
+      whereClause.isDelete = false
     }
 
     const outlets = await prisma.outlet.findMany({

@@ -24,7 +24,7 @@ const useCreatePickupOrder = () => {
     try {
       await axiosInstance.post(`/pickup-orders/`, payload);
       toast.success('Thank you! Your order is being processed.');
-      router.push('/user/pickup-order/pickup-detail');
+      router.push('/user/order');
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data);

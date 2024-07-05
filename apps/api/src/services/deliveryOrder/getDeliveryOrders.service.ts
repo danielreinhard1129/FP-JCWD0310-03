@@ -39,7 +39,7 @@ export const getDeliveryOrdersService = async (query: GetDeliveryOrdersQuery) =>
 
       if (existingUser?.role == "DRIVER") {
         if (deliveryStatus != String(DeliveryStatus.WAITING_FOR_DRIVER)) {
-          whereClause.driverId = id;
+          whereClause.driverId = existingUser.employee?.id;
         }
       }
     }

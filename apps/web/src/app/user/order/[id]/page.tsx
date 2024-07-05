@@ -181,12 +181,16 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        <button
+        {data?.isPaid == true ? (
+          <button onClick={handlePayment} className='bg-mythemes-maingreen text-white p-1 rounded-xl'>Your Invoice</button>
+        ) : (
+          <button
           onClick={handlePayment}
           className="bg-mythemes-maingreen text-white p-1 rounded-xl"
         >
           Pay
         </button>
+        )}
       </div>
     </div>
   );

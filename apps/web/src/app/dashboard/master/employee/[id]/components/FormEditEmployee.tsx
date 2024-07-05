@@ -21,6 +21,7 @@ import ItemRole from '../../../components/ItemRole';
 import ItemStation from '../../../components/ItemStation';
 import ItemWorkShift from '../../../components/ItemWorkShift';
 import { EmployeeStation, EmployeeWorkShift } from '@/types/employee.type';
+import ItemOutletWithDeleted from '../../../components/itemOutletWithDeleted';
 
 interface FormUpdateEmployee {
   fullName: string;
@@ -61,7 +62,7 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
     } else if (selected == 'DRIVER') {
       setSchema(ValidationSchemaDriver);
     }
-  }, [selected]);
+  }, [selected]);  
 
   return (
     <Form {...form}>
@@ -96,7 +97,10 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
+              
             />
             <FormSelect
               name="workShift"
@@ -117,7 +121,9 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
             />
             <FormSelect
               name="workShift"
@@ -145,7 +151,9 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
             />
           </>
         ) : (

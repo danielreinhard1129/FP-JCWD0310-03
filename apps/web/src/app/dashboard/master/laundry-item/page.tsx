@@ -14,7 +14,9 @@ import TableLaundryItem from './components/TableLaundryItem';
 import AddItem from './components/AddItem';
 
 const LaundryItem = () => {
-  const { isData, refetch, isLoading } = useGetLaundryItemList();
+  const { isData, refetch, isLoading } = useGetLaundryItemList({
+    isDelete: Number(Boolean(false))
+  });
 
   return (
     <div className="flex flex-col gap-5 p-6">
