@@ -17,7 +17,11 @@ import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 const BypassRequest = () => {
   const [pageBypass, setPageBypass] = useState<number>(1);
   // const { id } = useAppSelector((state) => state.user);
-  const { data: orderWorkers, meta: metaBypass, refetch: refetchBypass } = useGetOrderWorkers({
+  const {
+    data: orderWorkers,
+    meta: metaBypass,
+    refetch: refetchBypass,
+  } = useGetOrderWorkers({
     // id: id,
     page: pageBypass,
     take: 10,
@@ -36,14 +40,16 @@ const BypassRequest = () => {
         <h1 className="font-bold text-xl">Bypass Request</h1>
       </div>
       <div>
-        <Table className="text-xs bg-mythemes-secondarygreen/40 rounded-xl text-stone-800">
+        <Table className=" rounded-xl">
           <TableHeader>
             <TableRow>
-              <TableHead>Order Number</TableHead>
-              <TableHead>Weight</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Outlet</TableHead>
-              <TableHead>Station</TableHead>
+              <TableHead className="text-black font-bold">
+                Order Number
+              </TableHead>
+              <TableHead className="text-black font-bold">Weight</TableHead>
+              <TableHead className="text-black font-bold">Price</TableHead>
+              <TableHead className="text-black font-bold">Outlet</TableHead>
+              <TableHead className="text-black font-bold">Station</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

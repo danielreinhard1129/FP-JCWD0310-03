@@ -1,5 +1,6 @@
 'use client';
 import NotificationCard from '@/components/NotificationCard';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetUserNotifications from '@/hooks/api/userNotification/useGetUserNotifications';
 import { useAppSelector } from '@/redux/hooks';
 import { ChevronLeft } from 'lucide-react';
@@ -13,7 +14,7 @@ const Notification = () => {
 
   const router = useRouter();
   return (
-    <div className="relative min-h-screen bg-mythemes-grey">
+    <div className="relative min-h-screen">
       <div className="absolute z-50 flex flex-col gap-3 container bg-white px-6">
         <div className="relative flex gap-2 my-4">
           <ChevronLeft
@@ -23,7 +24,7 @@ const Notification = () => {
           <h1 className="font-bold mx-auto my-auto">Notifications</h1>
         </div>
       </div>
-      <div className="flex flex-col gap-2 pt-16 container px-6">
+      <div className="flex flex-col gap-4 pt-16 container px-6">
         {UserNotifications.map((userNotification, index) => {
           return (
             <NotificationCard
@@ -40,4 +41,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default CustomerAuthGuard(Notification);

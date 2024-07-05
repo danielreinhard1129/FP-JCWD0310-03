@@ -1,6 +1,11 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
 import FormAddress from './FormAddAddress';
@@ -11,6 +16,7 @@ const AddAddress = () => {
   return (
     <>
       <Sheet open={isOpen}>
+        <SheetTitle></SheetTitle>
         <SheetTrigger onClick={() => setIsOpen(true)}>Add Address</SheetTrigger>
         <SheetContent className="py-8 w-full">
           <div className="flex flex-col gap-4  ">

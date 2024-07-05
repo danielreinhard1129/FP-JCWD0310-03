@@ -65,7 +65,7 @@ export const getGoogleTokenService = async (code: string) => {
     });
 
     return {
-      message: 'login google success',
+      message: 'Login by Google Success !',
       data: newUser,
       token: token,
     };

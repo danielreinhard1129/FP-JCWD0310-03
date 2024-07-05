@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import useAxios from '../useAxios';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface RegisterResponses {
   message: string;
@@ -18,7 +19,10 @@ interface RegisterArgs extends Pick<User, 'email'> {}
 const useRegister = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const register = async (payload: RegisterArgs) => {
+    setIsLoading(true);
     try {
       const { data } = await axiosInstance.post<RegisterResponses>(
         '/auth/register',
@@ -31,10 +35,12 @@ const useRegister = () => {
         // FIXME = change alert to toast
         toast.error(error.response?.data.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { register };
+  return { register, isLoading };
 };
 
 export default useRegister;

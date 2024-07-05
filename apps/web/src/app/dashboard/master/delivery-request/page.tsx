@@ -1,6 +1,12 @@
-'use client'
+'use client';
 import Pagination from '@/components/Pagination';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import useGetOrders from '@/hooks/api/order/useGetOrders';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
@@ -12,49 +18,57 @@ import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 const DeliveryRequest = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
-  const [filterOutlet, setFilterOutlet] = useState("all")
-  const [sortOrder, setSortOrder] = useState('asc')
+  const [filterOutlet, setFilterOutlet] = useState('all');
+  const [sortOrder, setSortOrder] = useState('asc');
 
-  const { data: orders, meta, refetch } = useGetOrders({
+  const {
+    data: orders,
+    meta,
+    refetch,
+  } = useGetOrders({
     // id: id,
     page,
     take: 10,
     filterOutlet,
-    filterStatus : String(OrderStatus.READY_FOR_DELIVERY),
+    filterStatus: String(OrderStatus.READY_FOR_DELIVERY),
     sortOrder,
   });
 
-  const {user} = useGetUser();
+  const { user } = useGetUser();
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
   };
 
   const handleChangeFilterOutlet = (value: string) => {
-    setFilterOutlet(value)
-  }
+    setFilterOutlet(value);
+  };
 
   const handleChangeSortingBy = (value: 'asc' | 'desc') => {
-    setSortOrder(value)
-  }
+    setSortOrder(value);
+  };
 
   return (
-    <div className='container flex flex-col gap-5 p-6'>
+    <div className="container flex flex-col gap-5 p-6">
       <div>
-        <h1 className='font-bold text-xl'>Delivery Request</h1>
+        <h1 className="font-bold text-xl">Delivery Request</h1>
       </div>
       <div>
-
-        <Table className='text-xs bg-mythemes-secondarygreen/40 rounded-xl text-stone-800'>
+        <Table className="rounded-xl ">
           <TableHeader>
             <TableRow>
-              <TableHead>Order Number</TableHead>
-              <TableHead>Pickup Number</TableHead>
-              <TableHead>Weight</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Created Date</TableHead>
-              <TableHead>Status</TableHead>
-              {/* <TableHead></TableHead> */}
+              <TableHead className="text-black font-bold">
+                Order Number
+              </TableHead>
+              <TableHead className="text-black font-bold">
+                Pickup Number
+              </TableHead>
+              <TableHead className="text-black font-bold">Weight</TableHead>
+              <TableHead className="text-black font-bold">Price</TableHead>
+              <TableHead className="text-black font-bold">
+                Created Date
+              </TableHead>
+              <TableHead className="text-black font-bold">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,9 +95,9 @@ const DeliveryRequest = () => {
           take={meta?.take || 0}
           onChangePage={handleChangePaginate}
         />
-      </div>      
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminAuthGuard(DeliveryRequest)
+export default AdminAuthGuard(DeliveryRequest);

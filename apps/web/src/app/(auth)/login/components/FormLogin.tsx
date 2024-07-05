@@ -8,18 +8,16 @@ import useLogin from '@/hooks/api/auth/useLogin';
 import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
+import { Loader2 } from 'lucide-react';
 
 export function FromLogin() {
-  const router = useRouter();
   const { googleLogin } = useLoginByGoogle();
-  const { login } = useLogin();
-  // const { googleLogin } = useImplicitFlow();
+  const { login, isLoading } = useLogin();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
@@ -53,17 +51,24 @@ export function FromLogin() {
           form={form}
         />
 
-        <Button type="submit" className="bg-mythemes-maingreen">
+        {/* <Button type="submit" className="bg-mythemes-maingreen">
           Submit
+        </Button> */}
+        <Button
+          type="submit"
+          className="bg-mythemes-maingreen"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className=" animate-spin" /> : 'Submit'}
+          {isLoading ?? 'Login Success !'}
         </Button>
-        {/* <div className=''> */}
+
         <Link
           href={`/forgot-password`}
           className="hover:underline hover:text-mythemes-maingreen ml-auto font-light"
         >
           Forgot password?
         </Link>
-        {/* </div> */}
 
         <div className="relative flex py-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>

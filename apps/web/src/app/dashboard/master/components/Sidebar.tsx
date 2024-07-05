@@ -16,6 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logoutAction } from '@/redux/slices/userSlice';
 import { Role } from '@/types/user.type';
+import { Button } from '@/components/ui/button';
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -58,7 +59,7 @@ const Sidebar = () => {
           className={`flex gap-2 w-full h-12 px-10`}
         >
           <ClipboardList className="my-auto w-5 h-5" />
-          <h2 className="my-auto">Orders</h2>
+          <h2 className="my-auto cursor-pointer">Orders</h2>
         </div>
         {isOrdersAccordionOpen && (
           <div>
@@ -66,22 +67,28 @@ const Sidebar = () => {
               className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/order') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
               href={'/dashboard/master/order'}
             >
-              {/* <ClipboardList className="my-auto w-5 h-5" /> */}
               <h2 className="my-auto">Your Orders</h2>
             </Link>
-            <Link className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/bypass-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/bypass-request"}>
-              {/* <ClipboardList className='my-auto w-5 h-5'/> */}
-              <h2 className='my-auto text-sm'>Bypass Request</h2>
+            <Link
+              className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/bypass-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+              href={'/dashboard/master/bypass-request'}
+            >
+              <h2 className="my-auto">Bypass Request</h2>
             </Link>
-            <Link className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/delivery-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/delivery-request"}>
-              {/* <ClipboardList className='my-auto w-5 h-5'/> */}
-              <h2 className='my-auto text-sm'>Delivery Request</h2>
+            <Link
+              className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/delivery-request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+              href={'/dashboard/master/delivery-request'}
+            >
+              <h2 className="my-auto">Delivery Request</h2>
             </Link>
           </div>
         )}
-        <Link className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/customer') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`} href={"/dashboard/master/customer"}>
-          <BookUser className='my-auto w-5 h-5' />
-          <h2 className='my-auto'>Customers</h2>
+        <Link
+          className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/customer') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+          href={'/dashboard/master/customer'}
+        >
+          <BookUser className="my-auto w-5 h-5" />
+          <h2 className="my-auto">Customers</h2>
         </Link>
         <Link
           className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/outlet') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
@@ -99,26 +106,27 @@ const Sidebar = () => {
           <h2 className="my-auto">Shipment</h2>
         </Link>
         <Link
-          className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/overview') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
-          href={'/dashboard/master/overview'}
-        >
-          <FileBarChart2 className="my-auto w-5 h-5" />
-          <h2 className="my-auto">Overview</h2>
-        </Link>
-        <Link
           className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/laundry-item') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
           href={'/dashboard/master/laundry-item'}
         >
           <Shirt className="my-auto w-5 h-5" />
           <h2 className="my-auto">Laundry Items</h2>
         </Link>
-        <div
-          className="absolute bottom-0 w-full py-5 px-10 text-center font-bold text-mythemes-mainYellow flex gap-1 justify-center cursor-pointer"
+        <Button
+          onClick={logout}
+          className="absolute bottom-3 py-5 px-10 text-center bg-white font-bold text-red-500 ml-11 cursor-pointer flex gap-2"
+        >
+          {' '}
+          <p>Logout</p>
+          <LogOut size={15} />
+        </Button>
+        {/* <div
+          className="absolute bottom-0 w-full py-5 px-10 text-center font-bold text-red-500 bg-w flex gap-1 justify-center cursor-pointer"
           onClick={logout}
         >
           <p>Logout</p>
           <LogOut />
-        </div>
+        </div> */}
       </div>
     </div>
   );

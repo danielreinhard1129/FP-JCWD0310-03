@@ -13,7 +13,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import TableEmployees from './components/TableEmployee';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
-import { useAppSelector } from '@/redux/hooks';
 
 const MenuEmployee = () => {
   const [page, setPage] = useState<number>(1);
@@ -22,7 +21,6 @@ const MenuEmployee = () => {
     meta,
     refetch,
   } = useGetEmployees({
-    // id: id,
     page,
     take: 10,
   });
@@ -46,24 +44,14 @@ const MenuEmployee = () => {
         </Link>
       </div>
       <div>
-        <Table className="bg-mythemes-maingreen bg-opacity-15 rounded-xl ">
+        <Table className="bg-white rounded-xl ">
           <TableHeader>
             <TableRow>
-              <TableHead className="font-bold text-lg text-black">
-                Full Name
-              </TableHead>
-              <TableHead className="font-bold text-lg text-black">
-                Email
-              </TableHead>
-              <TableHead className="font-bold text-lg text-black">
-                Role
-              </TableHead>
-              <TableHead className="font-bold text-lg text-black">
-                Outlet
-              </TableHead>
-              <TableHead className="font-bold text-lg text-black">
-                Work Shift
-              </TableHead>
+              <TableHead className="font-bold text-black">Full Name</TableHead>
+              <TableHead className="font-bold text-black">Email</TableHead>
+              <TableHead className="font-bold text-black">Role</TableHead>
+              <TableHead className="font-bold text-black">Outlet</TableHead>
+              <TableHead className="font-bold text-black">Work Shift</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>

@@ -39,22 +39,26 @@ const TableEmployees: FC<EmployeeRowTableProps> = ({
     }
   };
 
-
   return (
-    <TableRow key={key} className="border-4 border-white">
+    <TableRow key={key} className="bg-white text-sm">
       <TableCell>{name}</TableCell>
       <TableCell>{email}</TableCell>
       <TableCell>{role != 'WORKER' ? role : `${role} - ${station}`}</TableCell>
       <TableCell>{outlet}</TableCell>
       <TableCell>{workShift}</TableCell>
       <TableCell>
-        <div className='flex gap-8 px-0'>
-          <Link className='px-0' href={`/dashboard/master/employee/${employeeId}`}>
+        <div className="flex gap-8 px-0">
+          <Link
+            className="px-0"
+            href={`/dashboard/master/employee/${employeeId}`}
+          >
             <SquarePen />
           </Link>
-          
-          <Trash2 className='cursor-pointer' onClick={handleClick} />
-        
+
+          <Trash2
+            className="cursor-pointer text-red-500"
+            onClick={handleClick}
+          />
         </div>
       </TableCell>
     </TableRow>

@@ -13,6 +13,7 @@ import { ValidationSchema } from '../validationSchema';
 import { useSearchParams } from 'next/navigation';
 import { User } from '@/types/user.type';
 import { data } from 'cypress/types/jquery';
+import { Loader2 } from 'lucide-react';
 interface VerificationToken {
   password: string | null;
   // token: string | null;
@@ -20,7 +21,7 @@ interface VerificationToken {
 const FormVerification = () => {
   const searchParams = useSearchParams();
   let tokenParams = searchParams.get('token');
-  const { verification } = useVerification();
+  const { verification, isLoading } = useVerification();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
@@ -36,15 +37,6 @@ const FormVerification = () => {
     };
     verification(payload);
   }
-
-  // const handleSubmit = (data: VerificationArgs) => {
-  //   const finalData = {
-  //     password: data.password,
-  //     token: tokenParams,
-  //   };
-  //   onSubmit(finalData);
-  // };
-
   return (
     <Form {...form}>
       <form
@@ -58,8 +50,13 @@ const FormVerification = () => {
           placeholder="Your Password"
           form={form}
         />
-        <Button type="submit" className="bg-mythemes-maingreen">
-          Verify
+        <Button
+          type="submit"
+          className="bg-mythemes-maingreen"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className=" animate-spin" /> : 'Verify'}
+          {isLoading ?? 'Success !'}
         </Button>
       </form>
     </Form>

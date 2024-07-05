@@ -1,4 +1,5 @@
-const { fontFamily } = require('tailwindcss/defaultTheme');
+// const { fontFamily } = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   //   content: [
@@ -89,7 +90,8 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
+        // sans: ['var(--font-sans)', ...fontFamily.sans],
+        poppins: ['"Poppins"', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {

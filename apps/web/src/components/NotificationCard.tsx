@@ -38,9 +38,9 @@ const NotificationCard: FC<NotificationCardProps> = ({
       <div className='flex justify-between'>
         <p className='text-gray-600 text-md font-bold align-top'>{title}</p>
         <X className='cursor-pointer text-red-600 h-5 w-5' onClick={handleUpdate}/>
-        <div className='absolute top-0 left-0 h-full w-2 bg-yellow-200'></div>
+        <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-mainYellow'></div>
       </div>
-      <p className='text-md text-gray-500'>{description}</p>    
+      <p className='text-sm text-gray-500 mt-5'>{description}</p>    
     </div>
   )
 }

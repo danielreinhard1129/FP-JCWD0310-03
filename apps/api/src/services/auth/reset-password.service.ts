@@ -15,7 +15,7 @@ export const resetPasswordService = async (
     }
 
     if (user && user.profilePic?.includes('googleusercontent.com')) {
-      throw new Error('Please login use Google');
+      throw new Error('Please Login Using Google Account !');
     }
 
     const hashedPassword = await hashPassword(password);

@@ -3,7 +3,6 @@
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { axiosInstance } from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { loginAction } from '@/redux/slices/userSlice';
 import useAxios from '../useAxios';

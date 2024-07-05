@@ -7,10 +7,10 @@ import timerIcon from '../../../public/005-timing.png';
 
 const OurAdventages = () => {
   return (
-    <>
+    <main className="bg-mythemes-mainYellow py-28">
       <div className="container flex flex-col gap-4">
         <h1 className=" font-bold md:text-3xl text-2xl text-center">
-          Here are our advantages expanded
+          Here are <span className='text-mythemes-maingreen'>our advantages</span> expanded
         </h1>
         <p className="text-center md:w-[900px] md:mx-auto">
           At KUCEKIN, we handle your laundry with care, using eco-friendly
@@ -75,7 +75,7 @@ const OurAdventages = () => {
           </p>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
