@@ -8,11 +8,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
 import FormInput from '@/components/FormInput';
+import { Loader2 } from 'lucide-react';
 
 interface FormResetPassword {
   password: string;
 }
- 
+
 interface FormResetPasswordProps {
   isLoading: boolean;
   onSubmit: any;
@@ -29,7 +30,7 @@ const FormResetPassword: FC<FormResetPasswordProps> = ({
     resolver: zodResolver(ValidationSchema),
     defaultValues: initialValues,
   });
- 
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
@@ -48,8 +49,13 @@ const FormResetPassword: FC<FormResetPasswordProps> = ({
           form={form}
         />
 
-        <Button type="submit" disabled={isLoading}>
-          Submit
+        <Button
+          type="submit"
+          className="bg-mythemes-maingreen"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className=" animate-spin" /> : 'Submit'}
+          {isLoading ?? 'Success !'}
         </Button>
       </form>
     </Form>

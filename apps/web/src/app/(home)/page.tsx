@@ -41,7 +41,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="container my-5">
+      <div className="px-6 my-5">
         <PromotionCarousel />
       </div>
 

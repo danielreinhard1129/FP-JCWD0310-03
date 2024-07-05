@@ -7,6 +7,8 @@ import { ChevronLeft } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
 import FormUpdateAddress from './FormUpdateAddress';
 import { getChangedValues } from '@/utils/getChangeValues';
+import Image from 'next/image';
+import logo1 from '../../../../../../public/Black Friday Typography Instagram Post.png'
 
 interface UpdateAddressProps {
   addressId: number;
@@ -59,7 +61,9 @@ const UpdateAddress: FC<UpdateAddressProps> = ({ addressId }) => {
   if (isLoading || !initialValues) {
     return (
       <div className="container flex justify-center px-4 pt-24 text-4xl font-semibold">
-        Loading
+         <div className="animate-pulse">
+          <Image alt="logo" src={logo1} />
+        </div>
       </div>
     );
   }

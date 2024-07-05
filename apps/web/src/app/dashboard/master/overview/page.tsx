@@ -1,20 +1,52 @@
 'use client'
-import SuperAdminGuard from '@/hoc/SuperAdminGuard';
-import ChartEvents from './components/ChartEvents';
+import Pagination from '@/components/Pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useAppSelector } from '@/redux/hooks';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
+import useGetPaymentChart from '@/hooks/api/payment/useGetPaymentReportChart';
+import useGetPayments from '@/hooks/api/payment/useGetPayments';
+import { format, getDaysInMonth } from 'date-fns';
 import { useState } from 'react';
 import ItemFilterOutlet from '../order/components/ItemFilterOutlet';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import Pagination from '@/components/Pagination';
+import ChartEvents from './components/ChartEvents';
+import ItemFilterMonth from './components/ItemFilterMonth';
+import { useAppSelector } from '@/redux/hooks';
+import { Role } from '@/types/user.type';
 
 const Overview = () => {
-  const { id } = useAppSelector((state) => state.user);
   const [filterOutlet, setFilterOutlet] = useState("all")
-  const [filterMonth, setFilterMonth] = useState("january")
+  const now = new Date();
+  const [filterMonth, setFilterMonth] = useState(`${now.getMonth()}`)
   const [filterYear, setFilterYear] = useState('2024')
-  
+  const [page, setPage] = useState<number>(1);  
+  const { role } = useAppSelector((state) => state.user);
 
+  const { data, isLoading, refetch } = useGetPaymentChart({
+    filterMonth,
+    filterOutlet,
+    filterYear,
+  })
+
+  const { data: dataPayments, isLoading: isLoadingPayments, meta, refetch: refetchPayments } = useGetPayments({
+    filterMonth,
+    filterOutlet,
+    filterYear,
+    page,
+    take: 10,
+  })
+
+  const handleChangePaginate = ({ selected }: { selected: number }) => {
+    setPage(selected + 1);
+  };
+
+  const month = filterMonth ? Number(filterMonth) - 1 : now.getMonth();
+  const year = filterYear ? Number(filterYear) : now.getFullYear();
+
+  function getDaysInSpecificMonth(year: number, month: number): number {
+    const date = new Date(year, month);
+    return getDaysInMonth(date);
+  }
+  const daysInMonth = getDaysInSpecificMonth(year, month)
 
   const handleChangeFilterOutlet = (value: string) => {
     setFilterOutlet(value)
@@ -25,7 +57,7 @@ const Overview = () => {
   const handleChangeFilterYear = (value: 'asc' | 'desc') => {
     setFilterYear(value)
   }
- 
+
 
   return (
     <div className='container flex flex-col gap-5 p-6'>
@@ -34,45 +66,96 @@ const Overview = () => {
           <h1 className='font-bold text-xl'>Your Transaction</h1>
         </div>
         <div className='flex gap-2'>
+          <div className={`${role!==Role.SUPER_ADMIN?'hidden':'block'}`}>
           <Select name='outlet' onValueChange={handleChangeFilterOutlet} defaultValue='all'>
             <SelectTrigger className='min-w-40'>
               <SelectValue placeholder={"Outlet"} />
             </SelectTrigger>
             <ItemFilterOutlet />
           </Select>
-          <Select name='month' onValueChange={handleChangeFilterMonth} defaultValue='january'>
+          </div>
+          <Select name='month' onValueChange={handleChangeFilterMonth} defaultValue={`${now.getMonth()}`}>
             <SelectTrigger className='min-w-40'>
               <SelectValue placeholder={"Month"} />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='january'>January</SelectItem>
-              <SelectItem value='february'>February</SelectItem>
-              <SelectItem value='march'>March</SelectItem>
-              <SelectItem value='april'>April</SelectItem>
-              <SelectItem value='may'>May</SelectItem>
-              <SelectItem value='june'>June</SelectItem>
-              <SelectItem value='july'>July</SelectItem>
-              <SelectItem value='agust'>Agust</SelectItem>
-              <SelectItem value='september'>September</SelectItem>
-              <SelectItem value='oktober'>Oktober</SelectItem>
-              <SelectItem value='november'>November</SelectItem>
-              <SelectItem value='desember'>Desember</SelectItem>
-            </SelectContent>
+            <ItemFilterMonth />
           </Select>
           <Select name='sortYear' onValueChange={handleChangeFilterYear} defaultValue='2024'>
             <SelectTrigger className='min-w-40'>
               <SelectValue placeholder={"Sort By"} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='2023'>2023</SelectItem>
               <SelectItem value='2024'>2024</SelectItem>
-              <SelectItem value='2025'>2025</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
+      <div className='flex gap-5'>
+        <div className='p-6 w-1/3 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <p className='text-2xl text-gray-500'>Total Volume</p>
+          <p className='text-4xl font-semibold text-gray-700'>IDR {data?.totalIncome}</p>
+        </div>
+        <div className='p-6 w-1/3 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <p className='text-2xl text-gray-500'>Total Transaction</p>
+          <p className='text-4xl font-semibold text-gray-700'>{data?.totalTransaction}</p>
+        </div>
+        <div className='p-6 w-1/3 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <p className='text-2xl text-gray-500'>Total Weight</p>
+          <p className='text-4xl font-semibold text-gray-700'>{data?.totalWeight} kg</p>
+        </div>
+      </div>
+      <div className='flex gap-5'>
+        <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <ChartEvents
+            dataSet={data?.incomeDaily}
+            daysInMonth={daysInMonth}
+            label='Income'
+            title='Daily Income'
+          />
+        </div>
+        <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <ChartEvents
+            dataSet={data?.incomeMonthly}
+            label='Income'
+            title='Monthly Income'
+          />
+        </div>
+      </div>
+      <div className='flex gap-5'>
+        <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <ChartEvents
+            dataSet={data?.transactionDaily}
+            daysInMonth={daysInMonth}
+            label='Transaction'
+            title='Daily Transaction'
+          />
+        </div>
+        <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <ChartEvents
+            dataSet={data?.transactionMonthly}
+            label='transaction'
+            title='Monthly Transaction'
+          />
+        </div>
+      </div>
+      <div className='flex gap-5'>
+        <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <ChartEvents
+            dataSet={data?.weightDaily}
+            daysInMonth={daysInMonth}
+            label='Weight'
+            title='Daily Weight'
+          />
+        </div>
+        <div className='w-1/2 p-6 bg-mythemes-secondaryblue/25 rounded-3xl'>
+          <ChartEvents
+            dataSet={data?.weightMonthly}
+            label='Weight'
+            title='Monthly Weight'
+          />
+        </div>
+      </div>
       <div className='rounded-sm flex shadow-md'>
-        <ChartEvents />
       </div>
       <div className='flex justify-between my-auto'>
         <div>
@@ -83,33 +166,36 @@ const Overview = () => {
         <Table className='text-xs bg-mythemes-secondarygreen/40 rounded-xl text-stone-800'>
           <TableHeader>
             <TableRow>
-              <TableHead>Driver Name</TableHead>
-              <TableHead>Pickup Number</TableHead>
-              <TableHead>Outlet</TableHead>
-              <TableHead>Position</TableHead>              
+              <TableHead>Invoice Number</TableHead>
+              <TableHead>Order Number</TableHead>
+              <TableHead>Amount</TableHead>
+              <TableHead>Payment Satus</TableHead>
+              <TableHead>Due Date</TableHead>
             </TableRow>
           </TableHeader>
-          {/* <TableBody>
-            {pickupOrders?.map((item, index) => {
+          <TableBody>
+            {dataPayments.map((item, index) => {
+              const formattedDate = format(new Date(item.updatedAt), 'dd-MM-yyyy');
               return (
                 <TableRow key={index} >
-                  <TableCell>{item.driver?.user.fullName}</TableCell>
-                  <TableCell>{item.pickupNumber}</TableCell>
-                  <TableCell>{item.outlet.outletName}</TableCell>
-                  <TableCell>{item.pickupStatus}</TableCell>
+                  <TableCell>{item.order.orderNumber}</TableCell>
+                  <TableCell>{item.invoiceNumber}</TableCell>
+                  <TableCell>{item.amount}</TableCell>
+                  <TableCell>{item.paymentStatus}</TableCell>
+                  <TableCell>{formattedDate}</TableCell>
                 </TableRow>
               );
             })}
-          </TableBody> */}
+          </TableBody>
         </Table>
-        {/* <Pagination
+        <Pagination
           total={meta?.total || 0}
           take={meta?.take || 0}
           onChangePage={handleChangePaginate}
-        /> */}
+        />
       </div>
     </div>
   );
 }
 
-export default SuperAdminGuard(Overview)
+export default AdminAuthGuard(Overview)

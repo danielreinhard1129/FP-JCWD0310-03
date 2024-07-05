@@ -7,6 +7,7 @@ import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import CardAddress from './components/CardAddress';
 import AddAddress from './components/AddAddress';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 
 const UserAddress = () => {
   const { address, isLoading, refetch } = useGetUserAddress();
@@ -40,4 +41,4 @@ const UserAddress = () => {
   );
 };
 
-export default UserAddress;
+export default CustomerAuthGuard(UserAddress);

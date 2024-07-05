@@ -20,7 +20,7 @@ const TableLaundryItem: FC<LaundryItemProps> = ({
   refetch,
 }) => {
   return (
-    <TableRow>
+    <TableRow className='text-sm'>
       <TableCell>{no}</TableCell>
       <TableCell>{itemName}</TableCell>
       <TableCell className="flex gap-6 place-content-end">

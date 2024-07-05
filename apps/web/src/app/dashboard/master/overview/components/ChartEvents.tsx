@@ -13,26 +13,45 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import { FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
-const ChartEvents = () => {
-  const { id } = useAppSelector((state) => state.user);
-//   const { data: event } = useGetP({ id: id });
+interface ShipmentCardProps {
+  dataSet: number[] | undefined;  
+  daysInMonth?: number;
+  label: string;
+  title: string;
+}
 
-  const targetYear = 2024;
+const ChartEvents: FC<ShipmentCardProps> = ({
+  dataSet,
+  daysInMonth,
+  label,
+  title 
+})=> {
 
-  // Initialize counts per month
-  const eventsCountPerMonth = Array(12).fill(0);
+  const labels: (number | string)[] = [];
 
-//   if (event) {
-//     Object.keys(event).forEach((key) => {
-//       const date = new Date(event[Number(key)].createdAt);
-//       if (date.getFullYear() === targetYear) {
-//         const month = date.getMonth();
-//         eventsCountPerMonth[month]++;
-//       }
-//     });
-//   }
+if (daysInMonth) {
+  for (let i = 1; i <= daysInMonth; i++) {
+    labels.push(i);
+  }
+} else {
+  labels.push(
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  );
+}
 
   ChartJS.register(
     CategoryScale,
@@ -52,41 +71,19 @@ const ChartEvents = () => {
       },
       title: {
         display: true,
-        text: 'Statistic per Month in 2024',
+        text: title,
       },
     },
   };
-
-  const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
 
   const data = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
-        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+        label: label,
+        data: dataSet,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        // yAxisID: 'y',
-      },
-      {
-        label: 'Dataset 2',
-        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],
   };

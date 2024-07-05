@@ -13,7 +13,7 @@ export const Footer = () => {
         <Image
           alt="Kucek.logo."
           src={logo}
-          className="object-cover cursor-pointer"
+          className="object-cover cursor-pointer mx-auto md:mx-0"
           width={300}
         />
         {/* </div> */}

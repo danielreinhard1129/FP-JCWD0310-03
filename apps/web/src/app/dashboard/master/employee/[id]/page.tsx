@@ -6,6 +6,8 @@ import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import FormEditEmployee from './components/FormEditEmployee';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
+import logo1 from '../../../../../../public/Black Friday Typography Instagram Post.png'
+import Image from 'next/image';
 
 interface FormUpdateEmployee {
   fullName: string,
@@ -39,9 +41,12 @@ const EditEmployee = ({ params }: { params: { id: string } }) => {
 
   if (isLoadingGetEmployee) {
     return (
-      <div className=' container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold'>
-        Loading
-      </div>
+      // <div className=' container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold'>
+      //   Loading
+      // </div>
+      <div className="animate-pulse">
+      <Image alt="logo" src={logo1} />
+    </div>
     )
   }
 

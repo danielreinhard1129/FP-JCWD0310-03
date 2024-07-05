@@ -8,15 +8,19 @@ import { BASE_API_URL } from '@/utils/config';
 import { ChevronLeft, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { GoXCircleFill } from 'react-icons/go';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../public/pictNotFound.jpeg';
 import useGetUser from '@/hooks/api/user/useGetUser';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
+import SkeletonUser from '../components/SkeletonUser';
+import SkeletonProfile from '../components/SkeletonProfile';
 
 const Profile = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { email, fullName, role, tokenExpiresIn, isVerify, profilePic } =
     useAppSelector((state) => state.user);
   const { user } = useGetUser();
@@ -48,6 +52,15 @@ const Profile = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <SkeletonProfile />;
+  }
   return (
     // <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
     <main className="container p-0 py-[32px]">
@@ -67,7 +80,7 @@ const Profile = () => {
                   ? profilePic.includes('googleusercontent.com')
                     ? profilePic
                     : `${BASE_API_URL}/assets${profilePic}`
-                  : noPic.src // Path to your default image
+                  : noPic.src
               }
               quality={80}
               objectFit="cover"
@@ -143,7 +156,7 @@ const Profile = () => {
 
           <Button
             className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2 "
-            onClick={() => router.push(`/order`)}
+            onClick={() => router.push(`/user/order`)}
           >
             <p>Your Order</p>
             <IoIosArrowForward />
@@ -168,4 +181,4 @@ const Profile = () => {
   );
 };
 
-export default AuthGuard(Profile);
+export default CustomerAuthGuard(Profile);

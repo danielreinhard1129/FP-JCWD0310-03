@@ -1,6 +1,7 @@
 'use client'
 import Pagination from '@/components/Pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 import useGetDeliveryOrders from '@/hooks/api/deliveryOrder/useGetDeliveryOrders';
 import useGetPickupOrders from '@/hooks/api/pickupOrder/useGetPickupOrders';
 import { useAppSelector } from '@/redux/hooks';
@@ -105,4 +106,4 @@ const Shipment = () => {
   )
 }
 
-export default Shipment
+export default AdminAuthGuard(Shipment)

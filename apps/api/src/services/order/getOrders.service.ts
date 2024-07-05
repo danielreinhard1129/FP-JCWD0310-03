@@ -88,14 +88,16 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
                     in: [
                         OrderStatus.READY_FOR_DELIVERY,
                         OrderStatus.WAITING_FOR_DELIVERY_DRIVER,
-                        OrderStatus.BEING_DELIVERED_TO_CUSTOMER
+                        OrderStatus.BEING_DELIVERED_TO_CUSTOMER,
+                        OrderStatus.RECEIVED_BY_CUSTOMER,
+
                     ]
                 };
             }
             if (filterCategory == 'completed') {
                 whereClause.orderStatus = {
                     in: [
-                        OrderStatus.RECEIVED_BY_CUSTOMER
+                        OrderStatus.COMPLETED
                     ]
                 };
             }

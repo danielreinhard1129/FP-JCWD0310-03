@@ -1,5 +1,6 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetPayment from '@/hooks/api/payment/useGetPayment';
 import { MIDTRANS_PUBLIC_CLIENT } from '@/utils/config';
 import { format } from 'date-fns';
@@ -192,4 +193,4 @@ const Transaction = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default Transaction;
+export default CustomerAuthGuard(Transaction);

@@ -4,15 +4,15 @@ import CreatePickupButton from '@/components/CreatePickupButton';
 import StoreProvider from '@/provider/StoreProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import type { Metadata } from 'next';
-import { DM_Sans, Inter, Poppins } from 'next/font/google';
+import { DM_Sans, Inter, Poppins, Rubik } from 'next/font/google';
 import { Toaster } from 'sonner';
 import './globals.css';
 // import './page.module.css';
 // import 'leaflet/dist/leaflet.css';
 
-const inter = Poppins({
+const inter = Rubik({
   subsets: ['latin'],
-  weight: ['400', '500', '700', '900', '200', '300', '800'],
+  weight: ['400', '500', '700', '900', '300', '800'],
 });
 
 export const metadata: Metadata = {

@@ -17,20 +17,12 @@ interface OutletRowProps {
     addressLine: string;
     city: string;
   };
-  no: number;
+  refetch: () => void;
 }
 
-const TableOutlet: FC<OutletRowProps> = ({
-  key,
-  id,
-  name,
-  type,
-  address,
-  no,
-}) => {
+const TableOutlet: FC<OutletRowProps> = ({ key, id, name, type, address,refetch }) => {
   return (
-    <TableRow >
-      <TableCell>{no}</TableCell>
+    <TableRow className="text-sm">
       <TableCell>{name}</TableCell>
       <TableCell>{type}</TableCell>
       <TableCell>{address && address.addressLine}</TableCell>

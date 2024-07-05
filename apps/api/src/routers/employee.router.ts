@@ -34,6 +34,11 @@ export class EmployeeRouter {
       verifyToken,
       this.employeeController.updateEmployeeController,
     );
+    this.router.delete(
+      '/:id',
+      verifyToken,
+      this.employeeController.deleteEmployeeController,
+    );
   }
 
   getRouter(): Router {

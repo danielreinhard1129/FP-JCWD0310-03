@@ -16,7 +16,16 @@ export const getEmployeesService = async (query: GetEmployeesQuery) => {
       select: { employee: true, role: true },
     });
 
-    const whereClause: Prisma.EmployeeWhereInput = {};
+    const activeUsers = await prisma.user.findMany({
+      where: {isDelete: false},
+      select: {id: true}
+    })
+
+    const activeUserIds = activeUsers.map(user => user.id);
+  
+    const whereClause: Prisma.EmployeeWhereInput = {
+      userId: {in: activeUserIds}
+    };
 
     if(existingUser?.role != Role.SUPER_ADMIN){
       whereClause.outletId = existingUser?.employee?.outletId

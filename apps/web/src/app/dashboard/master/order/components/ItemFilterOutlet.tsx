@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 const ItemFilterOutlet = () => {
   const [page, setPage] = useState(1);
-  const { data: outlets } = useGetOutletList({ page, take: 1 });
+  const { data: outlets } = useGetOutletList({ page });
   return (
     <SelectContent>
       <SelectItem key={0} value="all">

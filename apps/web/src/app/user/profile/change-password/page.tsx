@@ -1,12 +1,9 @@
 'use client';
-import AuthGuard from '@/hoc/AuthGuard';
-import useGetUser from '@/hooks/api/user/useGetUser';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
-import { getChangedValues } from '@/utils/getChangeValues';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import FormChangePassword from './components/FormChangePasswor';
-import { useAppSelector } from '@/redux/hooks';
 
 interface IFormEditUser {
   password?: string;
@@ -49,4 +46,4 @@ const ChangePassword = () => {
   );
 };
 
-export default AuthGuard(ChangePassword);
+export default CustomerAuthGuard(ChangePassword);

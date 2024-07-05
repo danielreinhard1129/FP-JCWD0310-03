@@ -2,6 +2,7 @@
 
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import React, { useEffect, useState } from 'react';
 interface Component {
   latitude: string;
@@ -34,7 +35,7 @@ interface TargetLocation {
 const closestLocations = (
   targetLocation: TargetLocation,
   locationData: Location[],
-  count: number = 3,
+  // count: number = 3,
 ): Location[] => {
   if (!locationData || locationData.length === 0) {
     return [];
@@ -60,14 +61,14 @@ const closestLocations = (
     return distanceA - distanceB;
   });
 
-  return sortedLocations.slice(0, count);
+  return sortedLocations.slice(0);
 };
 
 interface ClosestLatLongProps {
   targetLocation: TargetLocation;
   dataOutles: OpenCageData | null;
   selectedOutlet: Data | null;
-  // setSelectedOutlet: Outlet | null;
+  realDistance: number | null;
   setSelectedOutlet: (outlet: Data) => void;
 }
 
@@ -75,6 +76,7 @@ const ClosestLatLong: React.FC<ClosestLatLongProps> = ({
   targetLocation,
   dataOutles,
   selectedOutlet,
+
   setSelectedOutlet,
 }) => {
   const [locationData, setLocationData] = useState<Location[]>([]);
@@ -98,11 +100,7 @@ const ClosestLatLong: React.FC<ClosestLatLongProps> = ({
     return <div>No locations found.</div>;
   }
 
-  const closestLocationsList = closestLocations(
-    targetLocation,
-    locationData,
-    3,
-  );
+  const closestLocationsList = closestLocations(targetLocation, locationData);
 
   const handleChange = (id: string) => {
     const selected = locationData.find((loc) => loc.id === Number(id));
@@ -118,35 +116,37 @@ const ClosestLatLong: React.FC<ClosestLatLongProps> = ({
 
   return (
     <div>
-      <RadioGroup
-        value={selectedOutlet?.id.toString() || ''}
-        onValueChange={handleChange}
-      >
-        {closestLocationsList.map((closest) => (
-          <div
-            className="w-full h-20 p-2 border rounded-xl place-items-center shadow-sm grid grid-cols-9 gap-7"
-            key={String(closest.id)}
-          >
-            <div className="col-span-1">
-              <RadioGroupItem
-                value={String(closest.id)}
-                id={String(closest.id)}
-              />
+      <ScrollArea className=" h-64">
+        <RadioGroup
+          value={selectedOutlet?.id.toString() || ''}
+          onValueChange={handleChange}
+        >
+          {closestLocationsList.map((closest) => (
+            <div
+              className="w-full h-20 p-2 border rounded-xl place-items-center shadow-sm grid grid-cols-9 gap-7"
+              key={String(closest.id)}
+            >
+              <div className="col-span-1">
+                <RadioGroupItem
+                  value={String(closest.id)}
+                  id={String(closest.id)}
+                />
+              </div>
+              <div className="col-span-8 place-content-center">
+                <Label htmlFor={String(closest.id)}>
+                  <h1 className="text-gray-500 font-bold mb-2">
+                    {closest.outletName}
+                  </h1>
+                  <p className="text-xs text-left line-clamp-1 font-bold text-gray-500">
+                    {closest.addressLine}
+                  </p>
+                </Label>
+              </div>
             </div>
-            <div className="col-span-8 place-content-center">
-              <Label htmlFor={String(closest.id)}>
-                <h1 className="text-gray-500 font-bold mb-2">
-                  {closest.outletName}
-                </h1>
-                <p className="text-xs text-left line-clamp-1 font-bold text-gray-500">
-                  {closest.addressLine}
-                </p>
-                <p>{closest.id}</p>
-              </Label>
-            </div>
-          </div>
-        ))}
-      </RadioGroup>
+          ))}
+        </RadioGroup>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
     </div>
   );
 };

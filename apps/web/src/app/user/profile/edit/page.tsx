@@ -1,7 +1,6 @@
 'use client';
-import AuthGuard from '@/hoc/AuthGuard';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
-
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { BASE_API_URL } from '@/utils/config';
 import { getChangedValues } from '@/utils/getChangeValues';
@@ -22,7 +21,6 @@ const EditProfile = () => {
   const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
     useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  // const { user, isLoading: isLoadingGetUser } = useGetUser(Number(id));
   const { updateUser, isLoading } = useUpdateUser();
   const [image, setImage] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -47,14 +45,6 @@ const EditProfile = () => {
     // password: password || '',
     profilePic: [],
   };
-
-  // if (isLoadingGetUser) {
-  //   return (
-  //     <div className="container flex justify-center px-4 pt-24 text-4xl font-semibold">
-  //       Loading bos
-  //     </div>
-  //   );
-  // }
 
   const handleSubmit = (values: Partial<IFormEditUser>) => {
     const payload = getChangedValues(values, initialValues);
@@ -134,4 +124,4 @@ const EditProfile = () => {
   );
 };
 
-export default AuthGuard(EditProfile);
+export default CustomerAuthGuard(EditProfile);

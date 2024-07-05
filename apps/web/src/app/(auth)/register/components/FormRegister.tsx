@@ -13,10 +13,11 @@ import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
+import { Loader2 } from 'lucide-react';
 
 export function FormRegister() {
   const { googleLogin } = useLoginByGoogle();
-  const { register } = useRegister();
+  const { register, isLoading } = useRegister();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
@@ -43,8 +44,13 @@ export function FormRegister() {
           form={form}
         />
 
-        <Button type="submit" className="bg-mythemes-maingreen">
-          Submit
+        <Button
+          type="submit"
+          className="bg-mythemes-maingreen"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className=" animate-spin" /> : 'Submit'}
+          {isLoading ?? 'Email sent !'}
         </Button>
         <div className="relative flex py-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>

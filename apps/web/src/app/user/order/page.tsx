@@ -4,42 +4,49 @@ import Pagination from '@/components/Pagination';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetOrders from '@/hooks/api/order/useGetOrders';
-import { useAppSelector } from '@/redux/hooks';
 import { format } from 'date-fns';
 import { debounce } from 'lodash';
 import { CalendarIcon, ChevronLeft, X } from 'lucide-react';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import OrderCard from './components/OrderCard';
-import { useRouter } from 'next/navigation';
-
+import SkeletonOrder from '../components/SkeletonOrder';
 
 const UserOrder = () => {
-  const router = useRouter();
   const [page, setPage] = useState<number>(1);
-  const { id } = useAppSelector((state) => state.user);
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
-  const [date, setDate] = useState<Date>()
-  const [search, setSearch] = useState<string>('')
+  const [date, setDate] = useState<Date>();
+  const [search, setSearch] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const [filterCategory, setFilterCategory] = useState<string>('pickup')
+  const [filterCategory, setFilterCategory] = useState<string>('pickup');
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     data: orders,
     meta,
     refetch,
   } = useGetOrders({
-    // id: id,
     page,
     take: 10,
     search,
     filterDate: date,
     filterCategory,
-    sortOrder: 'desc'
+    sortOrder: 'desc',
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -47,8 +54,8 @@ const UserOrder = () => {
   };
 
   const handleChangeFilterCategory = (value: string) => {
-    setFilterCategory(value)
-  }
+    setFilterCategory(value);
+  };
 
   const handleSearch = debounce((value: string) => {
     setSearch(value);
@@ -68,42 +75,54 @@ const UserOrder = () => {
     setPopoverOpen(false);
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <SkeletonOrder />;
+  }
+
   return (
     <div>
-      <div className='flex flex-col gap-4 container pt-4 bg-white px-6'>
-        <div className='relative flex gap-2'>
-          <Link className='absolute h-6 my-auto' href={"/user/profile"}>
-            <ChevronLeft className='h-6 my-auto' />
+      <div className="flex flex-col gap-4 container pt-4 bg-white px-6">
+        <div className="relative flex gap-2">
+          <Link className="absolute h-6 my-auto" href={'/user/profile'}>
+            <ChevronLeft className="h-6 my-auto" />
           </Link>
-          <h1 className='font-bold mx-auto my-auto'>Your Order</h1>
+          <h1 className="font-bold mx-auto my-auto">Your Order</h1>
         </div>
-        <div className='flex flex-col gap-2 pb-4'>
+        <div className="flex flex-col gap-2 pb-4">
           <div className={`flex gap-2`}>
-            <div className='w-full relative'>
+            <div className="w-full relative">
               <X
                 onClick={clearSearch}
-                className={`cursor-pointer absolute right-2.5 bottom-1.5 h-5 w-5 text-mythemes-maingreen ${search == '' ? (`hidden`) : (`block`)}`}
+                className={`cursor-pointer absolute right-2.5 bottom-1.5 h-5 w-5 text-mythemes-maingreen ${search == '' ? `hidden` : `block`}`}
               />
               <Input
                 ref={inputRef}
-                className='h-8'
-                type='text'
+                className="h-8"
+                type="text"
                 name="search"
                 placeholder="Search Order No.."
-                onChange={(e) => { handleSearch(e.target.value) }}
+                onChange={(e) => {
+                  handleSearch(e.target.value);
+                }}
               />
             </div>
-            <div className='flex relative'>
+            <div className="flex relative">
               <X
                 onClick={() => setDate(undefined)}
-                className={`cursor-pointer absolute right-2 bottom-1.5 h-5 w-5 text-mythemes-maingreen ${date == undefined ? (`hidden`) : (`block`)}`}
+                className={`cursor-pointer absolute right-2 bottom-1.5 h-5 w-5 text-mythemes-maingreen ${date == undefined ? `hidden` : `block`}`}
               />
-              <div className='flex flex-col'>
+              <div className="flex flex-col">
                 <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
                   <PopoverTrigger asChild>
                     <Button
-                      variant={"outline"}
-                      className={`px-3 justify-start h-8 text-mythemes-maingreen ${date == undefined ? (``) : (`w-16`)}`}
+                      variant={'outline'}
+                      className={`px-3 justify-start h-8 text-mythemes-maingreen ${date == undefined ? `` : `w-16`}`}
                       onClick={() => setPopoverOpen(true)}
                     >
                       <CalendarIcon className="h-4 w-4" />
@@ -124,9 +143,18 @@ const UserOrder = () => {
             </div>
           </div>
           <div>
-            <Select open={selectOpen} onOpenChange={setSelectOpen} name='category' onValueChange={handleChangeFilterCategory} defaultValue='pickup'>
-              <SelectTrigger className='min-w-40 h-8'>
-                <SelectValue placeholder='Status' onClick={() => setSelectOpen(true)} />
+            <Select
+              open={selectOpen}
+              onOpenChange={setSelectOpen}
+              name="category"
+              onValueChange={handleChangeFilterCategory}
+              defaultValue="pickup"
+            >
+              <SelectTrigger className="min-w-40 h-8">
+                <SelectValue
+                  placeholder="Status"
+                  onClick={() => setSelectOpen(true)}
+                />
               </SelectTrigger>
               <SelectContent onSelect={() => setSelectOpen(false)}>
                 <SelectItem value="all">All Orders</SelectItem>
@@ -139,10 +167,13 @@ const UserOrder = () => {
           </div>
         </div>
       </div>
-      <div className='min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6'>
-        <div className='flex flex-col gap-3'>
+      <div className="min-h-dvh flex flex-col gap-2 pt-4 container px-6">
+        <div className="flex flex-col gap-3">
           {orders.map((order, index) => {
-            const formattedDate = format(new Date(order.createdAt), 'dd-MM-yyyy');
+            const formattedDate = format(
+              new Date(order.createdAt),
+              'dd-MM-yyyy',
+            );
             return (
               <OrderCard
                 key={index}
@@ -153,9 +184,9 @@ const UserOrder = () => {
                 createAt={formattedDate}
                 refetch={refetch}
               />
-            )
+            );
           })}
-          <div className='flex justify-center bg-mythemes-secondarygreen content-center rounded-xl mb-2'>
+          <div className="flex justify-center content-center rounded-xl mb-2">
             <Pagination
               total={meta?.total || 0}
               take={meta?.take || 0}
@@ -168,4 +199,4 @@ const UserOrder = () => {
   );
 };
 
-export default UserOrder;
+export default CustomerAuthGuard(UserOrder);

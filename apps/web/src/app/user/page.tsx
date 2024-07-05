@@ -1,7 +1,6 @@
 'use client';
 /* eslint-disable react/no-unescaped-entities */
 import BrowseOutlet from '@/components/homePage/BrowseOutlet';
-import { PromotionCarousel } from '@/components/promotion/PromotionCarousel';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
 import { useAppSelector } from '@/redux/hooks';
@@ -12,13 +11,19 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
+import { PromotionCarousel } from './components/PromotionCarousel';
+import SkeletonUser from './components/SkeletonUser';
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPosition, setCurrentPosition] = useState<[number, number]>();
   const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
     useAppSelector((state) => state.user);
-  const { getLocation, data } = useGetLocationByCoord();
-
+  const {
+    getLocation,
+    data,
+    isLoading: getLocLoading,
+  } = useGetLocationByCoord();
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
@@ -35,6 +40,17 @@ const Home = () => {
   }, []);
 
   const router = useRouter();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return <SkeletonUser />;
+  }
+
   return (
     <>
       <section className="p-0 container relative mx-auto flex flex-col gap-8 mb-5  ">
@@ -83,8 +99,7 @@ const Home = () => {
           </div>
         </div>
         {/* CARD PROMOTION - USE CAROUSEL */}
-        <div className="container">
-          <label className="font-bold md:text-3xl">Promotion</label>
+        <div className="">
           <PromotionCarousel />
         </div>
         {/* BROWSE OUTLET */}
