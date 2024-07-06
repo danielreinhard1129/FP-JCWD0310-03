@@ -25,6 +25,7 @@ const Sidebar = () => {
   const { id, role } = useAppSelector((state) => state.user);
   const router = useRouter();
   const [isOrdersAccordionOpen, setIsOrdersAccordionOpen] = useState(false);
+  const [isShipmentAccordionOpen, setIsShipmentAccordionOpen] = useState(false);
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -34,6 +35,9 @@ const Sidebar = () => {
 
   const toggleOrdersAccordion = () => {
     setIsOrdersAccordionOpen(!isOrdersAccordionOpen);
+  };
+  const toggleShipmentAccordion = () => {
+    setIsShipmentAccordionOpen(!isShipmentAccordionOpen);
   };
 
   return (
@@ -97,14 +101,29 @@ const Sidebar = () => {
           <Store className="my-auto w-5 h-5" />
           <h2 className="my-auto">Outlets</h2>
         </Link>
-
-        <Link
-          className={`flex gap-2 w-full h-12 px-10 ${isActive('/dashboard/master/shipment') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
-          href={'/dashboard/master/shipment'}
+        <div
+          onClick={toggleShipmentAccordion}
+          className={`flex gap-2 w-full h-12 px-10`}
         >
           <Package className="my-auto w-5 h-5" />
-          <h2 className="my-auto">Shipment</h2>
-        </Link>
+          <h2 className="my-auto cursor-pointer">Shipment</h2>
+        </div>
+        {isShipmentAccordionOpen && (
+          <div>
+            <Link
+              className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/pickup-order-tracking') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+              href={'/dashboard/master/pickup-order-tracking'}
+            >
+              <h2 className="my-auto">Pickup Order</h2>
+            </Link>
+            <Link
+              className={`flex gap-2 w-full h-12 pl-20 ${isActive('/dashboard/master/delivery-order-tracking') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+              href={'/dashboard/master/delivery-order-tracking'}
+            >
+              <h2 className="my-auto">Delivery Order</h2>
+            </Link>
+          </div>
+        )}
         <Link
           className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/laundry-item') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
           href={'/dashboard/master/laundry-item'}
@@ -112,21 +131,16 @@ const Sidebar = () => {
           <Shirt className="my-auto w-5 h-5" />
           <h2 className="my-auto">Laundry Items</h2>
         </Link>
+        <div className='absolute flex bottom-0 py-5 w-full'>
         <Button
           onClick={logout}
-          className="absolute bottom-3 py-5 px-10 text-center bg-white font-bold text-red-500 ml-11 cursor-pointer flex gap-2"
+          className="text-center mx-auto bg-white font-bold text-red-500 cursor-pointer flex gap-2"
         >
           {' '}
           <p>Logout</p>
           <LogOut size={15} />
         </Button>
-        {/* <div
-          className="absolute bottom-0 w-full py-5 px-10 text-center font-bold text-red-500 bg-w flex gap-1 justify-center cursor-pointer"
-          onClick={logout}
-        >
-          <p>Logout</p>
-          <LogOut />
-        </div> */}
+        </div>
       </div>
     </div>
   );

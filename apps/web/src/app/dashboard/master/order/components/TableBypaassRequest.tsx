@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import useUpdateOrderWorker from '@/hooks/api/orderWorker/useUpdateOrderWorker';
 import { EmployeeWorkShift } from '@/types/employee.type';
@@ -11,6 +12,7 @@ interface BypassRequestRowTableProps {
   weight: string;
   price: string;
   outlet: string;
+  note: string;
   station: string;
   refetch: () => void;
   isAccept: boolean;
@@ -25,6 +27,7 @@ const TableBypassRequest: FC<BypassRequestRowTableProps> = ({
   weight,
   price,
   outlet,
+  note,
   station,
   refetch,
   isAccept,
@@ -94,24 +97,17 @@ const TableBypassRequest: FC<BypassRequestRowTableProps> = ({
       <TableCell>{price}</TableCell>
       <TableCell>{outlet}</TableCell>
       <TableCell>{station}</TableCell>
+      <TableCell>{note}</TableCell>
       <TableCell>
         {isAccept == true ? (
-          <div>
-            <button
-              disabled
-              className="py-1 rounded-lg bg-green-500 w-1/2 text-white font-bold"
-            >
-              Accepted
-            </button>
+          <div className='flex w-40'>
+            <p className='py-1 rounded-lg w-full text-center font-bold text-green-500'>Accepted</p>
           </div>
         ) : isReject == true ? (
           <div>
-            <button
-              disabled
-              className="py-1 bg-red-500 w-1/2 text-white font-bold"
-            >
-              Rejected
-            </button>
+            <div className='flex w-40'>
+            <p className='py-1 rounded-lg w-full text-center font-bold text-red-500'>Rejected</p>
+          </div>
           </div>
         ) : (
           <div className="flex gap-2 w-40 justify-end">

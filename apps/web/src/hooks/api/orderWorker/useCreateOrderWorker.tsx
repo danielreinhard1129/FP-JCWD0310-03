@@ -7,7 +7,8 @@ import useAxios from '../useAxios';
 interface CreateOrderWorkerArgs {
     orderId: number,
     workerId: number,
-    orderStatus: string
+    orderStatus: string,
+    bypassNote: string,
 }
 
 const useCreateOrderWorker = () => {
@@ -15,7 +16,7 @@ const useCreateOrderWorker = () => {
     const { axiosInstance } = useAxios();
 
     const createOrderWorker = async (payload: CreateOrderWorkerArgs) => {
-        setIsLoading(true);
+        setIsLoading(true);        
         try {
             await axiosInstance.post(`/order-workers/`, payload);
         } catch (error) {

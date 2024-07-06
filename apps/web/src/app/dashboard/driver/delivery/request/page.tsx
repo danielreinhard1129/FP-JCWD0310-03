@@ -2,19 +2,39 @@
 import Pagination from '@/components/Pagination';
 import useGetDeliveryOrders from '@/hooks/api/deliveryOrder/useGetDeliveryOrders';
 import { DeliveryStatus } from '@/types/deliveryOrder.type';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ShipmentCard from '../../components/CardShipment';
 import DriverAuthGuard from '@/hoc/DriverAuthGuard';
 import { useAppSelector } from '@/redux/hooks';
+import useGetDeliveryOrdersByCoord from '@/hooks/api/deliveryOrder/useGetDeliveryOrdersByCoord';
 
 const DeliveryOrderRequest = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
-  const { data: deliveryOrders, meta: meta, refetch: refetch } = useGetDeliveryOrders({
-    // id: id,
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  
+  useEffect(() => {
+    window.navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLatitude(latitude);
+        setLongitude(longitude);
+      },
+      (error) => {
+        console.error(error);
+        setLatitude(0);
+        setLongitude(0);
+      }
+    );
+  }, []); 
+
+  const { data: deliveryOrders, meta: meta, refetch: refetch } = useGetDeliveryOrdersByCoord({
     deliveryStatus: String(DeliveryStatus.WAITING_FOR_DRIVER),
     page: page,
     take: 10,
+    latitude: latitude,
+    longitude: longitude,
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -38,6 +58,7 @@ const DeliveryOrderRequest = () => {
               buttonLabel="Claim"
               isHistory={false}
               shipmentType='delivery'
+              distance={deliveryOrder.realDistance ? deliveryOrder.realDistance.toFixed(1) : '-'}
             />
           )
         })}

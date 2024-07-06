@@ -209,12 +209,6 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
               <p className='text-sm font-semibold'>Packing by: </p>
               <p className='text-sm font-semibold'> {data?.orderWorker[2]?.worker.user.fullName}</p>
             </div>
-            {/* <div className='flex flex-col'>
-              <p className='text-sm font-semibold'>Status :</p>
-              <div className='flex text-sm h-10 font-bold bg-mythemes-grey rounded text-mythemes-maingreen'>
-                <p className='my-auto mx-auto text-lg'>{data?.orderStatus}</p>
-              </div>
-            </div> */}
           </div>
         </div>
 

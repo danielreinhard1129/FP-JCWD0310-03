@@ -29,7 +29,7 @@ import ChartEvents from '../components/ChartEvents';
 const Overview = () => {
   const [filterOutlet, setFilterOutlet] = useState('all');
   const now = new Date();
-  const [filterMonth, setFilterMonth] = useState(`${now.getMonth()}`);
+  const [filterMonth, setFilterMonth] = useState(`${now.getMonth()+1}`);
   const [filterYear, setFilterYear] = useState('2024');
   const [page, setPage] = useState<number>(1);
   const { role } = useAppSelector((state) => state.user);
@@ -52,7 +52,7 @@ const Overview = () => {
     page,
     take: 10,
   });
-
+  
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -106,7 +106,7 @@ const Overview = () => {
           <Select
             name="month"
             onValueChange={handleChangeFilterMonth}
-            defaultValue={`${now.getMonth()}`}
+            defaultValue={`${now.getMonth()+1}`}
           >
             <SelectTrigger className="min-w-40">
               <SelectValue placeholder={'Month'} />

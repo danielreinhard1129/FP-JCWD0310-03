@@ -15,6 +15,8 @@ export class DeliveryOrderController {
         id: parseInt(res.locals.user.id as string),
         deliveryStatus: (req.query.deliveryStatus as string) || 'all',
         isClaimedbyDriver: parseInt(req.query.isClaimedbyDriver as string),
+        latitude: parseFloat(req.query.latitude as string) || 0,
+        longitude: parseFloat(req.query.longitude as string) || 0,
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',

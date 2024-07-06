@@ -11,6 +11,10 @@ export class UserNotificationController {
     try {
       const query = {
         userId: parseInt(res.locals.user.id as string),
+        take: parseInt(req.query.take as string) || 1000000,
+        page: parseInt(req.query.page as string) || 1,
+        sortBy: parseInt(req.query.sortBy as string) || 'id',
+        sortOrder: (req.query.sortOrder as string) || 'asc',
       };
 
       const result = await getUserNotificationsService(query);
@@ -27,7 +31,11 @@ export class UserNotificationController {
     next: NextFunction,
   ) {
     try {
-      const result = await updateUserNotificationService(req.body);
+      const query = {
+        id: parseInt(res.locals.user.id as string),
+        ...req.body
+      }
+      const result = await updateUserNotificationService(query);
       res.status(200).send(result);
     } catch (error) {
       next(error);

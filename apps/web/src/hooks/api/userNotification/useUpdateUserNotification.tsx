@@ -4,7 +4,8 @@ import { useState } from 'react';
 import useAxios from '../useAxios';
 
 interface UpdateUserNotificationArgs {
-    userNotificationId: number,
+    userNotificationId?: number,
+    isAll?: number;
 }
 
 const useUpdateUserNotification = () => {

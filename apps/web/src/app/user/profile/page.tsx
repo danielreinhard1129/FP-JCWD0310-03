@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import AuthGuard from '@/hoc/AuthGuard';
 import useResendVerifEmail from '@/hooks/api/auth/useResendVerifEmail';
+import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logoutAction } from '@/redux/slices/userSlice';
 import { BASE_API_URL } from '@/utils/config';
@@ -14,9 +15,6 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../public/pictNotFound.jpeg';
-import useGetUser from '@/hooks/api/user/useGetUser';
-import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
-import SkeletonUser from '../components/SkeletonUser';
 import SkeletonProfile from '../components/SkeletonProfile';
 import LogoutDialog from '@/components/LogoutDialog';
 
@@ -183,4 +181,4 @@ const Profile = () => {
   );
 };
 
-export default CustomerAuthGuard(Profile);
+export default AuthGuard(Profile);

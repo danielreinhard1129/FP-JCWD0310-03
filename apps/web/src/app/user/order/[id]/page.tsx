@@ -2,7 +2,9 @@
 import { Separator } from '@/components/ui/separator';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetOrder from '@/hooks/api/order/useGetOrder';
+import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import useCreatePayment from '@/hooks/api/payment/useCreatePayment';
+import { OrderStatus } from '@/types/order.type';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -13,11 +15,27 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
 
   const { createPayment } = useCreatePayment();
+  const { updateOrderStatus } = useUpdateOrderStatus();
 
   let formattedDate;
   if (data) {
     formattedDate = format(new Date(data?.createdAt), 'dd-MM-yyyy');
   }
+
+  const handleUpdate = async () => {
+    try {
+      if (data != null) {
+        const values = {
+          orderId: Number(data.id),
+          orderStatus: OrderStatus.COMPLETED,
+        };
+        await updateOrderStatus(values);
+        refetch();
+      }
+    } catch (error) {
+      console.error('Failed to update pickup order', error);
+    }
+  };
 
   const handlePayment = async () => {
     try {
@@ -32,6 +50,27 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
       alert('Payment Error!');
     }
   };
+
+  const statusLabels = {
+    WAITING_FOR_PICKUP_DRIVER: 'Waiting for Pickup Driver',
+    ON_THE_WAY_TO_CUSTOMER: 'On the Way to Customer',
+    ON_THE_WAY_TO_OUTLET: 'On the Way to Outlet',
+    ARRIVED_AT_OUTLET: 'Arrived at Outlet',
+    READY_FOR_WASHING: 'Ready for Washing',
+    BEING_WASHED: 'Being Washed',
+    WASHING_COMPLETED: 'Washing Completed',
+    BEING_IRONED: 'Being Ironed',
+    IRONING_COMPLETED: 'Ironing Completed',
+    BEING_PACKED: 'Being Packed',
+    AWAITING_PAYMENT: 'Awaiting Payment',
+    READY_FOR_DELIVERY: 'Ready for Delivery',
+    WAITING_FOR_DELIVERY_DRIVER: 'Waiting for Delivery Driver',
+    BEING_DELIVERED_TO_CUSTOMER: 'Being Delivered to Customer',
+    RECEIVED_BY_CUSTOMER: 'Received by Customer',
+    COMPLETED: 'Completed'
+  };
+  
+  const orderStatusLabel = data?.orderStatus ? statusLabels[data.orderStatus] : '';
 
   return (
     <div>
@@ -175,24 +214,52 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
             <div className="flex flex-col">
               <p className="text-sm font-semibold">Status :</p>
               <div className="flex text-sm h-10 font-bold bg-mythemes-grey rounded text-mythemes-maingreen">
-                <p className="my-auto mx-auto text-lg">{data?.orderStatus}</p>
+                <p className="my-auto mx-auto text-lg">{orderStatusLabel}
+
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {data?.isPaid == true ? (
-          <button onClick={handlePayment} className='bg-mythemes-maingreen text-white p-1 rounded-xl'>Your Invoice</button>
-        ) : (
+        {data?.orderStatus === OrderStatus.AWAITING_PAYMENT ||
+          data?.orderStatus === OrderStatus.READY_FOR_WASHING ||
+          data?.orderStatus === OrderStatus.BEING_WASHED ||
+          data?.orderStatus === OrderStatus.WASHING_COMPLETED ||
+          data?.orderStatus === OrderStatus.BEING_IRONED ||
+          data?.orderStatus === OrderStatus.IRONING_COMPLETED ||
+          data?.orderStatus === OrderStatus.BEING_PACKED ? (
+          data?.isPaid == true ? (
+            <button
+              onClick={handlePayment}
+              className="bg-green-600 text-white p-1 rounded-xl"
+            >
+              Your Invoice
+            </button>
+          ) : (
+            <button
+              onClick={handlePayment}
+              className="bg-mythemes-maingreen text-white p-1 rounded-xl"
+            >
+              Pay
+            </button>
+          )
+        ) : data?.orderStatus == OrderStatus.RECEIVED_BY_CUSTOMER ? (
           <button
-          onClick={handlePayment}
-          className="bg-mythemes-maingreen text-white p-1 rounded-xl"
-        >
-          Pay
-        </button>
+            onClick={handleUpdate}
+            className="bg-mythemes-maingreen text-white p-1 rounded-xl"
+          >
+            Confirm
+          </button>
+        ) : data?.orderStatus == OrderStatus.COMPLETED ? (
+          <>
+          </>
+      ) : (
+      <>
+      </>
         )}
-      </div>
     </div>
+    </div >
   );
 };
 

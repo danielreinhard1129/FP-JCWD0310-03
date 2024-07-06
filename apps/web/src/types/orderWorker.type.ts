@@ -10,6 +10,7 @@ export interface OrderWorker {
   bypassRequest: boolean;
   bypassAccepted: boolean;
   bypassRejected: boolean;
+  bypassNote: string;
   order: Order;
   worker: Employee;
 }

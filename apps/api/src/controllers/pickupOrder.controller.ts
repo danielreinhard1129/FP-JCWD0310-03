@@ -16,11 +16,14 @@ export class PickupOrderController {
         pickupStatus: (req.query.pickupStatus as string) || 'all',
         isOrderCreated: parseInt(req.query.isOrderCreated as string),
         isClaimedbyDriver: parseInt(req.query.isClaimedbyDriver as string),
+        latitude: parseFloat(req.query.latitude as string) || 0,
+        longitude: parseFloat(req.query.longitude as string) || 0,
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',
         sortOrder: parseInt(req.query.sortOrder as string) || 'asc',
       };
+     
       const result = await getPickupOrdersService(query);
       return res.status(200).send(result);
     } catch (error) {
