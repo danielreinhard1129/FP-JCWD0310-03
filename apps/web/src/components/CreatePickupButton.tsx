@@ -9,15 +9,15 @@ const CreatePickupButton = () => {
   const router = useRouter();
   return (
     <>
-      <div className="container max-w-[430px] sticky bottom-0 py-2 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white ">
+      <div className="container max-w-[430px] sticky bottom-0 py-2 place-items-center mx-auto flex flex-row gap-4 justify-around bg-white ">
         <Home
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
           onClick={() => router.push('/user')}
         />
-        <Shirt
+        {/* <Shirt
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
           onClick={() => router.push('/user/order')}
-        />
+        /> */}
         <CirclePlus
           size={50}
           className="flex flex-col items-center gap-1 text-mythemes-maingreen cursor-pointer"
@@ -27,11 +27,6 @@ const CreatePickupButton = () => {
                 router.push('/user'))
               : router.push(`/user/request-pickup`);
           }}
-        />
-
-        <Bell
-          className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-          onClick={() => router.push(`/user/notification`)}
         />
 
         <User

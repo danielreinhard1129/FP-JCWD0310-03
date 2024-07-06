@@ -16,6 +16,7 @@ import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../public/pictNotFound.jpeg';
 import SkeletonProfile from '../components/SkeletonProfile';
+import LogoutDialog from '@/components/LogoutDialog';
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -167,13 +168,14 @@ const Profile = () => {
             <IoIosArrowForward />
           </Button>
         </div>
-        <Button
+        {/* <Button
           onClick={logout}
           className="bg-mythemes-grey mt-auto text-red-500 hover:bg-mythemes-grey gap-2  flex flex-row justify-center rounded-full"
         >
           <LogOut />
           <p>Logout</p>
-        </Button>
+        </Button> */}
+        <LogoutDialog />
       </div>
     </main>
   );

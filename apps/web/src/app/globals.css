@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -82,6 +81,13 @@
   /* styles.css */
   .bg-hero {
     background-image: url('../../public/kaitlyn-pixley-vpJ-Q16DKAg-unsplash.jpg');
+  }
+
+  .bg-gradient-green {
+    /* background: linear-gradient( to bottom right, #68D2E8,#03AED2); */
+    /* background: linear-gradient(to right, #68D2E8, #03AED2, #68D2E8); */
+
+    background: linear-gradient(to bottom right, #68d2e8, #03aed2, #ff5f6d, #ffc371);
   }
 }
 

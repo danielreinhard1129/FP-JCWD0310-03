@@ -5,9 +5,13 @@ import prisma from '@/prisma';
 import { appConfig } from '@/utils/config';
 import { User } from '@prisma/client';
 import { sign } from 'jsonwebtoken';
+import path from 'path';
+import fs from 'fs';
+import Handlebars from 'handlebars';
 
 interface CompleteRegistrationBody
-  extends Pick<User, 'email' | 'password' | 'fullName' | 'profilePic'> {}
+  extends Pick<User, 'email' | 'password' | 'fullName'> {}
+
 export const completeRegistrationService = async (
   body: CompleteRegistrationBody,
 ) => {
@@ -19,7 +23,7 @@ export const completeRegistrationService = async (
     });
 
     if (existingEmail) {
-      throw new Error('Email already exist! ');
+      throw new Error('Email already exists');
     }
 
     const hashedPassword = await hashPassword(password);
@@ -27,8 +31,8 @@ export const completeRegistrationService = async (
     const newUser = await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
         data: {
-          email,
-          fullName,
+          email: email,
+          fullName: fullName,
           password: hashedPassword,
         },
       });
@@ -37,23 +41,28 @@ export const completeRegistrationService = async (
         expiresIn: '1h',
       });
 
-      let userToken = token;
-      const expiresIn = new Date(new Date().getTime() + 1 * 60 * 60 * 1000);
-
+      const expiresIn = new Date(Date.now() + 1 * 60 * 60 * 1000);
       await tx.user.update({
         where: { id: user.id },
-        data: { token: userToken, tokenExpiresIn: expiresIn },
+        data: { token: token, tokenExpiresIn: expiresIn },
       });
 
-      const confirmationLink =
-        NEXT_BASE_URL + `/register/verification?token=${userToken}`;
-      await transporter.sendMail({
-        from: 'Admin',
-        to: email,
-        subject: 'Verification your account',
-        html: `<a href="${confirmationLink}" target="_blank">Verification yout account</a>`,
-      });
-      return { ...user, token: userToken };
+      return { ...user, token: token };
+    });
+
+    const templatePath = path.join(__dirname, '../../templates/verif.hbs');
+    const templateSource = fs.readFileSync(templatePath, 'utf-8');
+    const compileTemplate = Handlebars.compile(templateSource);
+    const confirmationLink = `${NEXT_BASE_URL}/register/verification?token=${newUser.token}`;
+
+    await transporter.sendMail({
+      from: 'Admin',
+      to: email,
+      subject: 'Verify your account',
+      html: compileTemplate({
+        name: newUser.fullName,
+        link: confirmationLink,
+      }),
     });
 
     return {

@@ -49,3 +49,4 @@ export const Footer = () => {
     </main>
   );
 };
+ 
