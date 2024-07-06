@@ -13,6 +13,7 @@ import { LogOut, MenuIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import logo from '../../../../public/Kucekin_Logo_White_EVO01.png';
+import LogoutDialog from '@/components/LogoutDialog';
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -41,12 +42,13 @@ const Navbar = () => {
           </div>
           <div className="flex gap-6 font-bold text-white text-xl">
             {Boolean(id) ? (
-              <Button
-                className="bg-transparent hover:bg-red-500  font-bold text-white text-lg rounded-xl"
-                onClick={() => logout()}
-              >
-                Log Out
-              </Button>
+              // <Button
+              //   className="bg-transparent hover:bg-red-500  font-bold text-white text-lg rounded-xl"
+              //   onClick={() => logout()}
+              // >
+              //   Log Out
+              // </Button>
+              <LogoutDialog />
             ) : (
               <>
                 <Button

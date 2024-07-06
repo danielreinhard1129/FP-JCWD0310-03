@@ -13,29 +13,10 @@ interface IFormVerification {
 
 const Verification = () => {
   const router = useRouter();
-  // const searchParams = useSearchParams();
-  // const token = searchParams.get('token');
-
-  // const { verification } = useVerification();
-
-  // const handleSubmit = (values: Partial<IFormVerification>) => {
-  //   if (token && values.password) {
-  //     const payload = (values.password, token);
-  //     verification(payload);
-  //   } else {
-  //     console.error('Token or password is missing');
-  //   }
-  // };
-
-  //   const handleSubmit = (values: Partial<IFormVerification>) => {
-  // const payload = (String(values.password),String(values.token))
-  //     verification(payload);
-  //   };
-
   return (
     <main className=" relative overflow-hidden top-0 p-0 min-h-screen  left-0 right-0 z-50">
-      <div className="bg-mythemes-secondarygreen rounded-full size-96 absolute -z-10 -left-48 "></div>
-      <div className="bg-mythemes-taubmans rounded-full size-96 absolute -z-10 -right-48 mt-96"></div>
+      <div className="bg-mythemes-secondaryblue rounded-full size-96 absolute -z-10 -left-48 "></div>
+      <div className="bg-mythemes-mainYellow rounded-full size-96 absolute -z-10 -right-48 mt-96"></div>
       {/* <div className="container h-screen justify-center"> */}
       <div className="container justify-center">
         <div className="w-28 mx-auto ">
@@ -54,7 +35,7 @@ const Verification = () => {
               Verify your account now.
             </span>
           </h1>
-          <FormVerification  />
+          <FormVerification />
         </div>
       </div>
     </main>

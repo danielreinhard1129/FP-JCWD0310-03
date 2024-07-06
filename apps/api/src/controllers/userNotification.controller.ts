@@ -10,7 +10,6 @@ export class UserNotificationController {
   ) {
     try {
       const query = {
-        // userId: parseInt(req.query.userId as string),
         userId: parseInt(res.locals.user.id as string),
       };
 

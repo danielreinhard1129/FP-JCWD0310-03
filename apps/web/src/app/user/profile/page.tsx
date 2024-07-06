@@ -18,6 +18,7 @@ import useGetUser from '@/hooks/api/user/useGetUser';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import SkeletonUser from '../components/SkeletonUser';
 import SkeletonProfile from '../components/SkeletonProfile';
+import LogoutDialog from '@/components/LogoutDialog';
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -169,13 +170,14 @@ const Profile = () => {
             <IoIosArrowForward />
           </Button>
         </div>
-        <Button
+        {/* <Button
           onClick={logout}
           className="bg-mythemes-grey mt-auto text-red-500 hover:bg-mythemes-grey gap-2  flex flex-row justify-center rounded-full"
         >
           <LogOut />
           <p>Logout</p>
-        </Button>
+        </Button> */}
+        <LogoutDialog />
       </div>
     </main>
   );

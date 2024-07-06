@@ -1,6 +1,6 @@
 'use client';
 /* eslint-disable react/no-unescaped-entities */
-import BrowseOutlet from '@/components/homePage/BrowseOutlet';
+import BrowseOutlet from '@/components/homePage/UserOrder';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
 import { useAppSelector } from '@/redux/hooks';
@@ -13,6 +13,8 @@ import { FaLocationDot } from 'react-icons/fa6';
 import noPic from '../../../public/pictNotFound.jpeg';
 import { PromotionCarousel } from './components/PromotionCarousel';
 import SkeletonUser from './components/SkeletonUser';
+import { format } from 'date-fns'; // If using date-fns
+import { Bell } from 'lucide-react';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -50,19 +52,22 @@ const Home = () => {
   if (isLoading) {
     return <SkeletonUser />;
   }
+  const currentDate = format(new Date(), 'ccc, dd MMM yyyy');
+
+  function capitalize(str: string) {
+    return str
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 
   return (
     <>
       <section className="p-0 container relative mx-auto flex flex-col gap-8 mb-5  ">
-        <div className="px-6 bg-mythemes-maingreen text-white rounded-b-3xl py-6 flex flex-col gap-4 h-28">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className=" text-xs">Current Location</p>
-              <div className="flex gap-1 items-center mt-1 font-bold">
-                <FaLocationDot />
-                {data?.results[0].components.county}
-              </div>
-            </div>
+        <div className="px-6 bg-gradient-green text-white rounded-b-3xl py-6 flex flex-col justify-between h-28">
+          <div className="flex justify-between items-start h-20">
+            <p className=" text-sm font-bold">{currentDate}</p>
+
             <div>
               {!id ? (
                 <p
@@ -72,27 +77,16 @@ const Home = () => {
                   Login
                 </p>
               ) : (
-                <div className="flex flex-col">
-                  <div
-                    className="w-10 h-10 rounded-full border-2 my-auto justify-center relative overflow-hidden mx-auto "
-                    onClick={() => router.push(`/user/profile`)}
-                  >
-                    <Image
-                      alt="ProfilePict"
-                      src={
-                        profilePic
-                          ? profilePic.includes('googleusercontent.com')
-                            ? profilePic
-                            : `${BASE_API_URL}/assets${profilePic}`
-                          : noPic.src // Path to your default image
-                      }
-                      quality={80}
-                      objectFit="cover"
-                      fill
-                      loading="lazy"
-                      className="mx-auto"
+                <div className="flex flex-col gap-4 items-center">
+                  <div className=" bg-white/20 p-1 rounded-full">
+                    <Bell
+                      className="flex flex-col items-center gap-1 text-white cursor-pointer"
+                      onClick={() => router.push(`/user/notification`)}
+                      size={20}
                     />
                   </div>
+                  {/* </div> */}
+                  <p className="font-bold text-xs">{capitalize(fullName)}</p>
                 </div>
               )}
             </div>

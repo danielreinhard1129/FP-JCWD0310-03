@@ -16,8 +16,8 @@ const AddEmployee = () => {
 
   return (
     <main className=" relative overflow-hidden min-h-screen top-0 p-0  left-0 right-0 z-50">
-      <div className="bg-mythemes-secondarygreen rounded-full size-96 absolute -z-10 -left-48 "></div>
-      <div className="bg-mythemes-taubmans rounded-full size-96 absolute -z-10 -right-48 mt-96"></div>
+      <div className="bg-mythemes-secondaryblue rounded-full size-96 absolute -z-10 -left-48 "></div>
+      <div className="bg-mythemes-mainYellow rounded-full size-96 absolute -z-10 -right-48 mt-96"></div>
       <div className="px-6  justify-center">
         <div className="w-28 mx-auto ">
           <Image
