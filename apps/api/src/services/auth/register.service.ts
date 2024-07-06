@@ -2,10 +2,18 @@ import { NEXT_BASE_URL } from '@/config';
 import { transporter } from '@/lib/nodemailer';
 import prisma from '@/prisma';
 import { User } from '@prisma/client';
+import path from 'path';
+import fs from 'fs';
+import Handlebars from 'handlebars';
 
 export const registerService = async (body: Pick<User, 'email'>) => {
   try {
     const { email } = body;
+
+    const templatePath = path.join(__dirname, '../../templates/completeRegist.hbs');
+    const templateSource = await fs.promises.readFile(templatePath, 'utf-8');
+
+    const compileTemplate = Handlebars.compile(templateSource);
 
     const existingEmail = await prisma.user.findFirst({
       where: { email: email },
@@ -21,7 +29,7 @@ export const registerService = async (body: Pick<User, 'email'>) => {
       from: 'Admin',
       to: email,
       subject: 'Complete your registration',
-      html: `<a href="${setProfileLink}" target="_blank">Complete your regitration</a>`,
+      html: compileTemplate({ link: setProfileLink }),
     });
 
     return {

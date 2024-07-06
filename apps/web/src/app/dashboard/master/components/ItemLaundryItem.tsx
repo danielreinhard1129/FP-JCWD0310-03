@@ -2,7 +2,9 @@ import { SelectContent, SelectItem } from '@/components/ui/select';
 import useGetLaundryItemList from '@/hooks/api/laundryItem/useGetLaundryItemList';
 
 const ItemLaundryItem = () => {
-  const { isData: laundryItems } = useGetLaundryItemList();
+  const { isData: laundryItems } = useGetLaundryItemList({
+    isDelete: Number(Boolean(false))
+  }); 
 
   return (
     <SelectContent>

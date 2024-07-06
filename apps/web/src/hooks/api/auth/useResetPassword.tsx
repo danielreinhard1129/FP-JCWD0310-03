@@ -17,8 +17,6 @@ const useResetPassword = () => {
   const resetPassword = async (password: string, token: string) => {
     try {
       setIsLoading(true);
-      console.log('ini pw dari use', password);
-
       const { data } = await axiosInstance.patch<ResetPasswordResponse>(
         '/auth/reset-password',
         { password },
@@ -29,9 +27,9 @@ const useResetPassword = () => {
         },
       );
 
-      toast(data.message);
+      toast.success(data.message);
 
-      router.replace('/');
+      router.replace('/user');
     } catch (error) {
       console.log(error);
       if (error instanceof AxiosError) {

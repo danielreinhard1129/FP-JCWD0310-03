@@ -1,66 +1,79 @@
 'use client';
-import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
-import { useAppSelector } from '@/redux/hooks';
 import { ChevronLeft } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
-import image from '../../../../../../public/Kucekin_Logo_Black_EVO1.png';
-import { BASE_API_URL } from '@/utils/config';
+import React from 'react';
 
-const OutletDetail = () => {
-  const { id } = useAppSelector((state) => state.user);
-  const { outlet } = useGetOutlet(Number(id));
+import useUpdateOutlet from '@/hooks/api/outlet/useUpdateOutlet';
+import useGetOutlet from '@/hooks/api/outlet/useGetOutlet';
+import { OutletType } from '@/types/outlet.type';
+import { getChangedValues } from '@/utils/getChangeValues';
+import FormEditOutlet from './components/FormEditOutlet';
+import { useRouter } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
+import Image from 'next/image';
+import logo1 from '../../../../../../public/Black Friday Typography Instagram Post.png'
+
+interface UpdateOutletArgs {
+  outletName: string;
+  outletType: string;
+  addressLine: string;
+  city: string;
+}
+
+const EditOutlet = ({ params }: { params: { id: number } }) => {
+  const router = useRouter();
+  const { updateOutlet, isLoading } = useUpdateOutlet(Number(params.id));
+  const {
+    outlet,
+    isLoading: isLoadingGetOutlet,
+    refetch,
+  } = useGetOutlet(Number(params.id));
+
+  const initialValues = {
+    outletName: outlet?.outletName || '',
+    outletType: outlet?.outletType || '',
+    addressLine: outlet?.address[0].addressLine || '',
+    city: outlet?.address[0].city || '',
+    latitude: outlet?.address[0].latitude || '',
+    longitude: outlet?.address[0].longitude || '',
+  };
+
+  if (isLoadingGetOutlet) {
+    return (
+      <div className=" container flex h-screen justify-center px-4 pt-24 text-4xl font-semibold">
+        {/* Loading */}
+
+      <div className="animate-pulse">
+      <Image alt="logo" src={logo1} />
+    </div>
+      </div>
+    );
+  }
+
+  const onSubmit = async (values: Partial<UpdateOutletArgs>) => {
+    const payload = getChangedValues(values, initialValues);
+    await updateOutlet(payload);
+    refetch();
+  };
+
   return (
     <div className="flex flex-col">
       <div className="p-6 flex gap-2 my-auto ">
-        <Link className="my-auto" href={'/dashboard/master/employee'}>
-          <ChevronLeft />
-        </Link>
+        <ChevronLeft className="my-auto" onClick={() => router.back()} />
+        <h1 className="text-lg font-bold my-auto">Outlet Detail</h1>
       </div>
-      <div className="p-6 grid grid-cols-3 bg-mythemes-grey">
-        <div className="p-4">
-          {/* <Label className=" font-bold text-lg">Outlet Image</Label> */}
-          <div className="w-full h-80 shadow-xl rounded-xl my-auto justify-center relative overflow-hidden mx-auto ">
-            <Image
-              alt="ProfilePict"
-              src={
-                outlet?.outletImage
-
-                  ? `${BASE_API_URL}/assets${outlet.outletImage}`
-
-                  : image.src // Path to your default image
-              }
-              quality={80}
-              objectFit="contain"
-              fill
-              loading="lazy"
-              className="mx-auto"
-            />
-          </div>
-        </div>
-        <div className="p-4">
-          <div className="grid grid-cols-2 h-full p-4 bg-mythemes-taubmans rounded-xl">
-            <div className="place-content-center">
-              <label className="font-bold text-md">Outlet Name</label>
-              <p className="text-lg ">lalalalallalalala</p>
-            </div>
-            <div className="place-content-center">
-              <label className="font-bold text-md">Outlet Type</label>
-              <p className="text-lg ">MAIN</p>
-            </div>
-            <div className="place-content-center">
-              <label className="font-bold text-md">Outlet Address</label>
-              <p className="text-lg ">Pogung</p>
-            </div>
-            <div className="place-content-center">
-              <label className="font-bold text-md">City</label>
-              <p className="text-lg ">Sleman</p>
-            </div>
-          </div>
-        </div>
+      <Separator className="bg-black" />
+      <div className="p-6 rounded-xl bg-white">
+        <FormEditOutlet
+          initialValues={initialValues}
+          isLoading={isLoading}
+          onSubmit={onSubmit}
+          id={params.id}
+          refetch={refetch}
+        />
       </div>
     </div>
   );
 };
 
-export default OutletDetail;
+export default EditOutlet;

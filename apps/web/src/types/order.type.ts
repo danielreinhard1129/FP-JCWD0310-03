@@ -1,30 +1,41 @@
+import { DeliveryOrder } from "./deliveryOrder.type";
 import { OrderItem } from "./orderItem.type";
+import { OrderWorker } from "./orderWorker.type";
+import { Payment } from "./payment.type";
 import { PickupOrder } from "./pickupOrder.type";
 
 export enum OrderStatus {
-    Waiting_for_Driver_Pickup = 'Waiting_for_Driver_Pickup',
-    Laundry_On_The_Way_To_Outlet = 'Laundry_On_The_Way_To_Outlet',
-    Laundry_Has_Arrived_At_Outlet = 'Laundry_Has_Arrived_At_Outlet',
-    Laundry_Being_Washed = 'Laundry_Being_Washed',
-    Laundry_Finished_Washing = 'Laundry_Finished_Washing',
-    Laundry_Being_Ironed = 'Laundry_Being_Ironed',
-    Laundry_Finished_Ironing = 'Laundry_Finished_Ironing',
-    Laundry_Being_Packed = 'Laundry_Being_Packed',
-    Laundry_Finished_Packing = 'Laundry_Finished_Packing',
-    Awaiting_Payment = 'Awaiting_Payment',
-    Laundry_Being_Delivered_To_Customer = 'Laundry_Being_Delivered_To_Customer',
-    Laundry_Received_By_Customer = 'Laundry_Received_By_Customer'
-  }
+  WAITING_FOR_PICKUP_DRIVER = 'WAITING_FOR_PICKUP_DRIVER',
+  ON_THE_WAY_TO_CUSTOMER = 'ON_THE_WAY_TO_CUSTOMER',
+  ON_THE_WAY_TO_OUTLET = 'ON_THE_WAY_TO_OUTLET',
+  ARRIVED_AT_OUTLET = 'ARRIVED_AT_OUTLET',
+  READY_FOR_WASHING = 'READY_FOR_WASHING',
+  BEING_WASHED = 'BEING_WASHED',
+  WASHING_COMPLETED = 'WASHING_COMPLETED',
+  BEING_IRONED = 'BEING_IRONED',
+  IRONING_COMPLETED = 'IRONING_COMPLETED',
+  BEING_PACKED = 'BEING_PACKED',
+  AWAITING_PAYMENT = 'AWAITING_PAYMENT',
+  READY_FOR_DELIVERY = 'READY_FOR_DELIVERY',
+  WAITING_FOR_DELIVERY_DRIVER = 'WAITING_FOR_DELIVERY_DRIVER',
+  BEING_DELIVERED_TO_CUSTOMER = 'BEING_DELIVERED_TO_CUSTOMER',
+  RECEIVED_BY_CUSTOMER = 'RECEIVED_BY_CUSTOMER',
+  COMPLETED = 'COMPLETED'
+}
 
 export interface Order {
-    id: number;
-    orderNumber: string;
-    orderStatus: OrderStatus;
-    weight: number;
-    laundryPrice: number;
-    createdAt: Date;
-    updatedAt: Date;
-    pickupOrderId: number;
-    pickupOrder: PickupOrder;
-    orderItem: OrderItem[];
+  id: number;
+  orderNumber: string;
+  orderStatus: OrderStatus;
+  weight: number;
+  laundryPrice: number;
+  createdAt: Date;
+  updatedAt: Date;
+  pickupOrderId: number;
+  isPaid: boolean;
+  pickupOrder: PickupOrder;
+  orderItem: OrderItem[];
+  deliveryOrder: DeliveryOrder[];
+  orderWorker: OrderWorker[];
+  payment: Payment[];
 }

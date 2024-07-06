@@ -23,7 +23,7 @@ const useForgotPassword = () => {
         payload,
       );
 
-      toast(data.message);
+      toast.success(data.message);
 
       router.replace('/login');
     } catch (error) {

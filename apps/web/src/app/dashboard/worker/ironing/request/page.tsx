@@ -4,19 +4,22 @@ import useGetOrders from '@/hooks/api/order/useGetOrders';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
+import useGetUser from '@/hooks/api/user/useGetUser';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 
 const IroningRequest = () => {
-  const [page, setPage] = useState<number>(1);
-  
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 3;
+  const [page, setPage] = useState<number>(1);  
+  const { id } = useAppSelector((state) => state.user)
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
+    // id: id,
     page,
     take: 10,
-    filterStatus: String(OrderStatus.Laundry_Finished_Washing)
+    filterStatus: String(OrderStatus.WASHING_COMPLETED)
   });
+
+  const {user} = useGetUser(); 
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -32,7 +35,7 @@ const IroningRequest = () => {
               key={index}
               workerId={id}
               orderId={order.id}
-              targetStatus={OrderStatus.Laundry_Being_Ironed}
+              targetStatus={OrderStatus.BEING_IRONED}
               referenceNumber={order.orderNumber}
               fullName={order.pickupOrder?.user?.fullName}
               email={order.pickupOrder?.user?.email}
@@ -44,6 +47,7 @@ const IroningRequest = () => {
               isBypassRequest={false}
               isBypassAccepted={false}
               isBypassRejected={false}
+              employeeWorkShift={user?.employee?.workShift}
             />
           )
         })}
@@ -60,4 +64,4 @@ const IroningRequest = () => {
   )
 }
 
-export default IroningRequest
+export default WorkerAuthGuard(IroningRequest)

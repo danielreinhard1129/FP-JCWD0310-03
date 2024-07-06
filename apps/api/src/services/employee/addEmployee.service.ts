@@ -1,19 +1,14 @@
-
+import { hashPassword } from '@/lib/bcrypt';
 import prisma from '@/prisma';
 import { EmployeeStation, EmployeeWorkShift, User } from '@prisma/client';
 
-// 
-interface AddEmployeeBody
-    extends Pick<User, 'email' | 'fullName' | 'password' | 'role' | 'isVerify'> {
+interface AddEmployeeBody extends Pick<User, 'email' | 'fullName' | 'password' | 'role' | 'isVerify'> {
     workShift: EmployeeWorkShift;
     station: EmployeeStation;
     outletId: string;
 }
 
-
-export const addEmployeeService = async (
-    body: AddEmployeeBody,
-) => {
+export const addEmployeeService = async (body: AddEmployeeBody) => {
     try {
         const { email, fullName, password, role, isVerify, workShift, station, outletId } = body;
 
@@ -21,46 +16,81 @@ export const addEmployeeService = async (
             where: { email },
         });
 
-        if (existingUser) {
-            throw new Error('An Account With That Email Already Exists!');
+        if (existingUser && existingUser.isDelete === false) {
+            throw new Error('An account with that email already exists!');
         }
 
-        let IsSuperAdmin = false
+        const hashedPassword = await hashPassword(password);
 
-        if(role=="SUPER_ADMIN"){
-            IsSuperAdmin = true
+        let outletIdForUpdate: number | null = Number(outletId);
+        let workShiftForUpdate: EmployeeWorkShift | null = workShift;
+        let stationForUpdate: EmployeeStation | null = station;
+        let isSuperAdminForUpdate = role === 'SUPER_ADMIN';
+
+        if (role === 'SUPER_ADMIN') {
+            outletIdForUpdate = null;
+            workShiftForUpdate = null;
+            stationForUpdate = null;
+        } else if (role === 'OUTLET_ADMIN') {
+            stationForUpdate = null;
+        } else if (role === 'DRIVER') {
+            workShiftForUpdate = null;
+            stationForUpdate = null;
         }
 
-        //const hashedPassword = await hashPassword(password);
+        if (existingUser?.isDelete === true) {
+            const updatedUser = await prisma.user.update({
+                where: { id: existingUser.id },
+                data: {
+                    email,
+                    fullName,
+                    password: hashedPassword,
+                    role,
+                    isVerify: true,
+                    isDelete: false,
+                }
+            });
 
-        //add generate referral code trial
+            const updatedEmployee = await prisma.employee.update({
+                where: { userId: existingUser.id },
+                data: {
+                    outletId: outletIdForUpdate,
+                    workShift: workShiftForUpdate,
+                    station: stationForUpdate,
+                    isSuperAdmin: isSuperAdminForUpdate,
+                }
+            });
 
-        const addDataUser = await prisma.user.create({
-            data: {
-                email,
-                fullName,
-                password,
-                role,
-                isVerify,
-            },
+            return {
+                user: updatedUser,
+                employee: updatedEmployee,
+            };
+        } else {
+            const newUser = await prisma.user.create({
+                data: {
+                    email,
+                    fullName,
+                    password: hashedPassword,
+                    role,
+                    isVerify,
+                }
+            });
 
-        });
-        const addDataEmployee = await prisma.employee.create({
-            data: {
-                userId: Number(addDataUser.id),
-                outletId: Number(outletId),
-                workShift,
-                station,
-                isSuperAdmin: IsSuperAdmin,
-            },
+            const newEmployee = await prisma.employee.create({
+                data: {
+                    userId: newUser.id,
+                    outletId: Number(outletId),
+                    workShift,
+                    station,
+                    isSuperAdmin: isSuperAdminForUpdate,
+                }
+            });
 
-        });
-
-        return {
-            user: addDataUser,
-            employee: addDataEmployee,
+            return {
+                user: newUser,
+                employee: newEmployee,
+            };
         }
-
     } catch (error) {
         throw error;
     }

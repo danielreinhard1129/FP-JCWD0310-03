@@ -1,39 +1,54 @@
 'use client';
 
 // import { axiosInstance } from '@/lib/axios';
-import { cn } from '@/lib/utils';
-import { User } from '@/types/user.type';
 import { AxiosError } from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
-import useAxios from '../useAxios';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import useAxios from '../useAxios';
+import { useState } from 'react';
 
 interface VerificationResponses {
   message: string;
 }
 
-interface VerificationArgs extends Pick<User, 'password'> {}
+interface VerificationArgs {
+  password: string | null;
+  token: string | null;
+}
 const useVerification = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const verification = async (payload: VerificationArgs) => {
+    setIsLoading(true);
     try {
-      await axiosInstance.post<VerificationResponses>(
-        'auth/verification',
-        payload,
-      );
+      console.log('ini payload', payload);
+      await axiosInstance.post('auth/verification', payload, {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      });
 
       toast.success('Your account has been verified, please log in!');
       router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
-        // FIXME = change alert to toast
-        toast.error(error.response?.data);
+        if (
+          error.response?.status === 401 &&
+          error.response.data === 'token expired'
+        ) {
+          toast.error('Your token has expired. Resend verification email.');
+        } else {
+          toast.error(error.response?.data || 'An error occurred.');
+        }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { verification };
+  return { verification, isLoading };
 };
 
 export default useVerification;

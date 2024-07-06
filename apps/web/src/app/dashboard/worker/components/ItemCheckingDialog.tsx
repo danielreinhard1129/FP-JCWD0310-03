@@ -12,21 +12,22 @@ import FormSelectDisable from '../../master/components/FormSelectDisable';
 import ItemLaundryItem from '../../master/components/ItemLaundryItem';
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import { OrderStatus } from '@/types/order.type';
-import useUpdateOrderWorker from '@/hooks/api/orderWorker/useUpdateOrderWorker';
 import useCreateOrderWorker from '@/hooks/api/orderWorker/useCreateOrderWorker';
+import ItemLaundryItemWithDeleted from '../../master/components/itemLaundryItemWithDeleted';
 
 interface ItemCheckingDialogProps {
   workerId: number;
   orderId: number;
   targetStatus: string;
   isOpen: boolean;
-  onClose: () => void;
+  onClose: any;
   refetch: () => void;
 }
 
 const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose, orderId, workerId, targetStatus, refetch }) => {
   const [formItems, setFormItems] = useState([{ id: 1 }]);
   const [requestAccess, setRequestAccess] = useState<boolean>(false);
+  const [note, setNote] = useState<string>('')
 
   const { data: orderItems } = useGetOrderItems({
     orderId: orderId,
@@ -36,10 +37,17 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
     orderId: Number(orderId),
     workerId: Number(workerId),
     orderStatus: targetStatus as OrderStatus
-  }
+  };
 
-  const { updateOrderStatus } = useUpdateOrderStatus()
-  const { createOrderWorker } = useCreateOrderWorker()
+  const bypassValues = {
+    orderId: Number(orderId),
+    workerId: Number(workerId),
+    orderStatus: targetStatus as OrderStatus,
+    bypassNote: note
+  };
+
+  const { updateOrderStatus } = useUpdateOrderStatus();
+  const { createOrderWorker } = useCreateOrderWorker();
 
   const handleUpdate = async () => {
     try {
@@ -47,32 +55,20 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
       refetch();
       onClose();
     } catch (error) {
-      console.error('Failed to update pickup order', error);
+      console.error('Failed to update order status', error);
     }
   };
 
   const handleBypassRequest = async () => {
     try {
-      await createOrderWorker(values);  
+      await createOrderWorker(bypassValues);
       refetch();
-      onClose();   
+      onClose();
     } catch (error) {
-      console.error('Failed to bypass request', error)
+      console.error('Failed to create bypass request', error);
     }
-  }
-
-  useEffect(() => {
-    if (orderItems) {
-      const initialValues = orderItems.reduce((acc: any, orderItem, index) => {
-        acc[`laundryItemId_${index + 1}`] = `${orderItem.laundryItemId}`;
-        acc[`qty_${index + 1}`] = `${orderItem.qty}`;
-        return acc;
-      }, {});
-      setFormItems(orderItems.map((_, index) => ({ id: index + 1 })));
-      form.reset(initialValues);
-    }
-  }, [orderItems]);
-
+  };
+  
   const dynamicSchema = formItems.reduce((acc, item) => {
     acc[`laundryItemId_${item.id}`] = z.string({ required_error: "Required" }).min(1, "Required");
     acc[`qty_${item.id}`] = z.string({ required_error: "Required" }).min(1, "Required");
@@ -87,15 +83,27 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
   const form = useForm<z.infer<typeof ValidationSchema>>({
     mode: "all",
     resolver: zodResolver(ValidationSchema),
-    defaultValues: {
+    defaultValues: {},
+  });
+
+  useEffect(() => {
+    if (orderItems) {
+      const initialValues = orderItems.reduce((acc: any, orderItem, index) => {
+        acc[`laundryItemId_${index + 1}`] = `${orderItem.laundryItemId}`;
+        acc[`qty_${index + 1}`] = `${orderItem.qty}`;
+        return acc;
+      }, {});
+      setFormItems(orderItems.map((_, index) => ({ id: index + 1 })));
+      form.reset(initialValues);
     }
-  })
+  }, [orderItems, form]);
+
 
   const handleSubmit = (data: any) => {
     const orderItem = formItems.map(item => ({
       laundryItemId: data[`laundryItemId_${item.id}`],
       qty: data[`qty_${item.id}`],
-      check_qty: data[`check_qty_${item.id}`]
+      check_qty: data[`check_qty_${item.id}`],
     }));
 
     const allQuantitiesMatch = orderItem.every(item => item.qty === item.check_qty);
@@ -103,6 +111,7 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
     if (allQuantitiesMatch) {
       handleUpdate();
     } else {
+      setNote("Laundry Item Does Not Match")
       setRequestAccess(true);
     }
   };
@@ -111,24 +120,24 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Check the order item.</DialogTitle>
+          <DialogTitle>Check the order item</DialogTitle>
           <DialogDescription>
-            <h1>Before you can start, you must first check the order item.</h1>
+            <p>Before you can start, you must first check the order item.</p>
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
             <div className="flex flex-col gap-3">
-              <div className="flex flex-col bg-mythemes-grey px-4 pt-2 pb-4 rounded-md" >
+              <div className="flex flex-col bg-mythemes-grey px-4 pt-2 pb-4 rounded-md">
                 {formItems.map((item, index) => (
-                  <div key={index} className="flex gap-4 ">
+                  <div key={index} className="flex gap-4">
                     <div className="w-6/12">
                       <FormSelectDisable
                         name={`laundryItemId_${item.id}`}
                         label=""
                         placeholder="Select a Laundry Item"
                         form={form}
-                        item={<ItemLaundryItem />}
+                        item={<ItemLaundryItemWithDeleted />}
                       />
                     </div>
                     <div className='w-3/12'>
@@ -153,16 +162,15 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
                 ))}
               </div>
             </div>
-            {(requestAccess == false) ? (
+            {requestAccess === false ? (
               <div className='flex justify-end'>
-                <Button className='bg-mythemes-maingreen' type="submit" >Start Job</Button>
+                <Button className='bg-mythemes-maingreen' type="submit">Start Job</Button>
               </div>
             ) : (
               <div className='flex flex-col gap-3'>
-                <h1 className='text-sm text-red-500'>Order item quantities do not match. You Must Bypass Request To Your Outlet Admin First!</h1>
+                <p className='text-sm text-red-500'>Order item quantities do not match. You must bypass request to your outlet admin first!</p>
                 <div className='flex justify-end'>
-                <button onClick={handleBypassRequest} className='bg-mythemes-maingreen font-bold text-md text-white w-1/2 p-0.5 rounded-md'>Bypass Request</button>
-                {/* <Button onClick={()=>{handleBypassRequest()}} className='bg-mythemes-maingreen'>Bypass Request</Button> */}
+                  <button onClick={handleBypassRequest} className='bg-mythemes-maingreen font-bold text-md text-white w-1/2 p-0.5 rounded-md'>Bypass Request</button>
                 </div>
               </div>
             )}
@@ -170,7 +178,7 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default ItemCheckingDialog
+export default ItemCheckingDialog;

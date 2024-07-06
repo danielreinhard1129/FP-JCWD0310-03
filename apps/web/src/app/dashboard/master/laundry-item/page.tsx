@@ -9,16 +9,14 @@ import {
 } from '@/components/ui/table';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 import useGetLaundryItemList from '@/hooks/api/laundryItem/useGetLaundryItemList';
-import { AddItem } from './components/AddItem';
+
 import TableLaundryItem from './components/TableLaundryItem';
+import AddItem from './components/AddItem';
 
 const LaundryItem = () => {
-  const { isData, refetch, isLoading } = useGetLaundryItemList();
-
-  // useEffect(() => {
-  //   refetch();
-  //   console.log('jalan sekali');
-  // }, [isLoading]);
+  const { isData, refetch, isLoading } = useGetLaundryItemList({
+    isDelete: Number(Boolean(false))
+  });
 
   return (
     <div className="flex flex-col gap-5 p-6">
@@ -26,14 +24,14 @@ const LaundryItem = () => {
         <div>
           <h1 className="font-bold text-xl">Laundry item</h1>
         </div>
-        <AddItem refetch={async () => await refetch()} />
+        <AddItem refetch={refetch} />
       </div>
       <div>
-        <Table className="bg-white mx-auto w-[700px] rounded-xl text-center">
+        <Table className="bg-white mx-auto rounded-xl">
           <TableHeader className="">
             <TableRow className="">
-              <TableHead className="font-bold text-center">No.</TableHead>
-              <TableHead className="font-bold text-center">Item name</TableHead>
+              <TableHead className="font-bold text-black">No.</TableHead>
+              <TableHead className="font-bold text-black">Item name</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

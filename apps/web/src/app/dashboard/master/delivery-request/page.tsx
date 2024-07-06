@@ -1,0 +1,103 @@
+'use client';
+import Pagination from '@/components/Pagination';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import useGetOrders from '@/hooks/api/order/useGetOrders';
+import useGetUser from '@/hooks/api/user/useGetUser';
+import { useAppSelector } from '@/redux/hooks';
+import { OrderStatus } from '@/types/order.type';
+import { useState } from 'react';
+import TableDeliveryRequest from './components/TableDeliveryRequest';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
+
+const DeliveryRequest = () => {
+  const [page, setPage] = useState<number>(1);
+  const { id } = useAppSelector((state) => state.user);
+  const [filterOutlet, setFilterOutlet] = useState('all');
+  const [sortOrder, setSortOrder] = useState('asc');
+
+  const {
+    data: orders,
+    meta,
+    refetch,
+  } = useGetOrders({
+    // id: id,
+    page,
+    take: 10,
+    filterOutlet,
+    filterStatus: String(OrderStatus.READY_FOR_DELIVERY),
+    sortOrder,
+  });
+
+  const { user } = useGetUser();
+
+  const handleChangePaginate = ({ selected }: { selected: number }) => {
+    setPage(selected + 1);
+  };
+
+  const handleChangeFilterOutlet = (value: string) => {
+    setFilterOutlet(value);
+  };
+
+  const handleChangeSortingBy = (value: 'asc' | 'desc') => {
+    setSortOrder(value);
+  };
+
+  return (
+    <div className="container flex flex-col gap-5 p-6">
+      <div>
+        <h1 className="font-bold text-xl">Delivery Request</h1>
+      </div>
+      <div>
+        <Table className="rounded-xl ">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-black font-bold">
+                Order Number
+              </TableHead>
+              <TableHead className="text-black font-bold">
+                Pickup Number
+              </TableHead>
+              <TableHead className="text-black font-bold">Weight</TableHead>
+              <TableHead className="text-black font-bold">Price</TableHead>
+              <TableHead className="text-black font-bold">
+                Created Date
+              </TableHead>
+              <TableHead className="text-black font-bold">Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orders?.map((order, index) => {
+              return (
+                <TableDeliveryRequest
+                  key={index}
+                  orderId={order.id}
+                  orderNumber={order.orderNumber}
+                  pickupNumber={order.pickupOrder.pickupNumber}
+                  weight={String(order.weight)}
+                  price={String(order.laundryPrice)}
+                  createdAt={String(order.createdAt)}
+                  status={order.orderStatus}
+                  refetch={refetch}
+                  employeeWorkShift={user?.employee?.workShift}
+                />
+              );
+            })}
+          </TableBody>
+        </Table>
+        <Pagination
+          total={meta?.total || 0}
+          take={meta?.take || 0}
+          onChangePage={handleChangePaginate}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default AdminAuthGuard(DeliveryRequest);

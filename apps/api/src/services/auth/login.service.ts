@@ -7,7 +7,7 @@ import { sign } from 'jsonwebtoken';
 export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
   try {
     const { email, password } = body;
-
+ 
     const user = await prisma.user.findFirst({
       where: { email: email },
     });
@@ -16,7 +16,7 @@ export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
       throw new Error('Incorrect email address or password !');
     }
     if (user && user.profilePic?.includes('googleusercontent.com')) {
-      throw new Error('Please login use Google');
+      throw new Error('Please Login Using Google Account !');
     }
     const isPasswordValid = await comparePassword(password, user.password);
   

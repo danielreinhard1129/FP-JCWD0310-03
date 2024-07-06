@@ -1,10 +1,10 @@
 'use client'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import { OrderStatus } from '@/types/order.type';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ItemCheckingDialog from './ItemCheckingDialog';
-import useUpdateOrderWorker from '@/hooks/api/orderWorker/useUpdateOrderWorker';
+import { EmployeeWorkShift } from '@/types/employee.type';
+import { useRouter } from 'next/navigation';
 
 interface WashingCardProps {
   key: number;
@@ -12,8 +12,8 @@ interface WashingCardProps {
   orderId: number;
   targetStatus: string;
   referenceNumber: string
-  fullName: string
-  email: string
+  fullName?: string
+  email?: string
   weight: number
   refetch: () => void
   buttonLabel: string
@@ -22,55 +22,51 @@ interface WashingCardProps {
   isBypassRequest: boolean
   isBypassAccepted: boolean
   isBypassRejected: boolean
+  employeeWorkShift?: EmployeeWorkShift
 }
 
 const WashingCard: FC<WashingCardProps> = ({
   key,
-  workerId,
   orderId,
   targetStatus,
   referenceNumber,
   fullName,
   email,
   weight,
-  refetch,
   buttonLabel,
   isHistory,
-  isItemChecking,
   isBypassRequest,
   isBypassAccepted,
-  isBypassRejected
+  isBypassRejected,
 }) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-
-  const values = {
-    orderId: Number(orderId),
-    workerId: Number(workerId),
-    orderStatus: targetStatus as OrderStatus
-  }
-
-  const { updateOrderStatus } = useUpdateOrderStatus()
+  const router = useRouter()
 
 
-  const handleUpdate = async () => {
-    try {
-      await updateOrderStatus(values);
-      refetch();
-    } catch (error) {
-      console.error('Failed to update pickup order', error);
+  const handleClick = () => {
+    let section
+    if (targetStatus == OrderStatus.BEING_WASHED || targetStatus == OrderStatus.WASHING_COMPLETED) {
+      section = "washing"
     }
-  };
-
-  const handleDialogOpen = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
-  };
-
-
-
+    if (targetStatus == OrderStatus.BEING_IRONED || targetStatus == OrderStatus.IRONING_COMPLETED) {
+      section = "ironing"
+    }
+    if (targetStatus == OrderStatus.BEING_PACKED || targetStatus == OrderStatus.AWAITING_PAYMENT) {
+      section = "packing"
+    }
+    let progress
+    if (isHistory == false) {
+      if (targetStatus == OrderStatus.BEING_WASHED || targetStatus == OrderStatus.BEING_IRONED || targetStatus == OrderStatus.BEING_PACKED) {
+        progress = "request"
+      }
+      if (targetStatus == OrderStatus.WASHING_COMPLETED || targetStatus == OrderStatus.IRONING_COMPLETED || targetStatus == OrderStatus.AWAITING_PAYMENT) {
+        progress = "on-going"
+      }
+    }
+    if (isHistory == true) {
+      progress = "history"
+    }
+    router.push(`/dashboard/worker/bag-details/${orderId}/${section}/${progress}`)
+  }
   return (
     <div key={key} className='relative flex flex-col gap-2 overflow-hidden shadow-md bg-white py-3 pl-5 pr-3 rounded-xl'>
       <div>
@@ -84,50 +80,31 @@ const WashingCard: FC<WashingCardProps> = ({
       </div>
       <p className='font-bold absolute right-3 top-3 text-xs text-gray-500'>{weight} kg</p>
       {isHistory == false ? (
-        <>
-          {isItemChecking == false ? (
-            (isBypassRequest == false ? (
+        (isBypassRequest == false ? (
+          <>
+            <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
+            <button onClick={handleClick} className='absolute right-3 bottom-3 bg-mythemes-maingreen font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>{buttonLabel}</button>
+          </>
+        ) : (
+          (isBypassAccepted == true ? (
+            <>
+              <div className='absolute top-0 left-0 h-full w-2 bg-yellow-200'></div>
+              <button onClick={handleClick} className='absolute right-3 bottom-3 bg-yellow-600 font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>{buttonLabel}</button>
+            </>
+          ) : (
+            (isBypassRejected == true ? (
               <>
-                <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
-                <button onClick={handleUpdate} className='absolute right-3 bottom-3 bg-mythemes-maingreen font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>{buttonLabel}</button>
+                <div className='absolute top-0 left-0 h-full w-2 bg-red-200'></div>
+                <button disabled className='absolute right-3 bottom-3 bg-red-600 font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Rejected</button>
               </>
             ) : (
-              (isBypassAccepted == true ? (
-                <>
-                  <div className='absolute top-0 left-0 h-full w-2 bg-yellow-200'></div>
-                  <button onClick={handleUpdate} className='absolute right-3 bottom-3 bg-yellow-600 font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>{buttonLabel}</button>
-                </>
-              ) : (
-                (isBypassRejected == true ? (
-                  <>
-                    <div className='absolute top-0 left-0 h-full w-2 bg-red-200'></div>
-                    <button disabled className='absolute right-3 bottom-3 bg-red-600 font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Rejected</button>
-                  </>
-                ) : (
-                  <>
-                    <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-dimgrey'></div>
-                    <button disabled className='absolute right-3 bottom-3 bg-mythemes-dimgrey font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Requested</button>
-                  </>
-
-                ))
-              ))
+              <>
+                <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-dimgrey'></div>
+                <button disabled className='absolute right-3 bottom-3 bg-mythemes-dimgrey font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Requested</button>
+              </>
             ))
-          ) : (
-            <>
-              <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
-              <button onClick={handleDialogOpen} className='absolute right-3 bottom-3 bg-mythemes-maingreen font-bold text-sm text-white p-0.5 w-1/4 rounded-md' >{buttonLabel}</button>
-              <ItemCheckingDialog
-                isOpen={isDialogOpen}
-                onClose={handleDialogClose}
-                orderId={orderId}
-                refetch={refetch}
-                targetStatus={targetStatus}
-                workerId={workerId}
-
-              />
-            </>
-          )}
-        </>
+          ))
+        ))
       ) : (
         (isBypassRejected == true ? (
           <>
@@ -137,7 +114,7 @@ const WashingCard: FC<WashingCardProps> = ({
         ) : (
           <>
             <div className='absolute top-0 left-0 h-full w-2 bg-green-200'></div>
-            <div className='absolute right-3 bottom-3 bg-green-600 font-bold text-white p-0.5 w-1/4 text-sm text-center rounded-md'>{buttonLabel}</div>
+            <div className={`absolute right-3 bottom-3 bg-green-600 font-bold text-white p-0.5 w-1/4 text-sm text-center rounded-md`}>{buttonLabel}</div>
           </>
         ))
       )}

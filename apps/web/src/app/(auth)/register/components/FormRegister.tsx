@@ -1,23 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
+import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
+import useRegister from '@/hooks/api/auth/useRegister';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import FormInput from '@/components/FormInput';
-import Link from 'next/link';
-import { ValidationSchema } from '../validationSchema';
-import useRegister from '@/hooks/api/auth/useRegister';
-import { Separator } from '@radix-ui/react-separator';
 import { FcGoogle } from 'react-icons/fc';
-import useLoginByGoogle from '@/hooks/api/auth/useLoginByGoogle';
+import { z } from 'zod';
+import { ValidationSchema } from '../validationSchema';
+import { Loader2 } from 'lucide-react';
 
 export function FormRegister() {
   const { googleLogin } = useLoginByGoogle();
-  const { register } = useRegister();
+  const { register, isLoading } = useRegister();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
@@ -25,7 +25,7 @@ export function FormRegister() {
     resolver: zodResolver(schema),
     defaultValues: {},
   });
-  
+
   function onSubmit(values: z.infer<typeof schema>) {
     register(values);
   }
@@ -44,8 +44,13 @@ export function FormRegister() {
           form={form}
         />
 
-        <Button type="submit" className="bg-mythemes-maingreen">
-          Submit
+        <Button
+          type="submit"
+          className="bg-mythemes-maingreen"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className=" animate-spin" /> : 'Submit'}
+          {isLoading ?? 'Email sent !'}
         </Button>
         <div className="relative flex py-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>
@@ -60,6 +65,15 @@ export function FormRegister() {
           >
             <FcGoogle size={25} /> Register with your Google account.
           </Button>
+        </div>
+        <div className="mx-auto font-light">
+          Already have an account?{' '}
+          <Link
+            href={`/login`}
+            className="text-mythemes-maingreen hover:underline font-bold hover:text-mythemes-secondarygreen"
+          >
+            Login
+          </Link>
         </div>
       </form>
     </Form>

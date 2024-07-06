@@ -21,6 +21,9 @@ import ItemRole from '../../../components/ItemRole';
 import ItemStation from '../../../components/ItemStation';
 import ItemWorkShift from '../../../components/ItemWorkShift';
 import { EmployeeStation, EmployeeWorkShift } from '@/types/employee.type';
+import ItemOutletWithDeleted from '../../../components/itemOutletWithDeleted';
+import FormInputDisable from '@/components/FormInputDisable';
+import FormSelectRoleDisable from '../../../components/FormSelectRoleDisable';
 
 interface FormUpdateEmployee {
   fullName: string;
@@ -61,7 +64,7 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
     } else if (selected == 'DRIVER') {
       setSchema(ValidationSchemaDriver);
     }
-  }, [selected]);
+  }, [selected]);  
 
   return (
     <Form {...form}>
@@ -73,14 +76,14 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
           placeholder="Your Full Name"
           form={form}
         />
-        <FormInput
+        <FormInputDisable
           name="email"
           type="email"
           label="Email"
           placeholder="Your Email"
           form={form}
         />
-        <FormSelectRole
+        <FormSelectRoleDisable
           name="role"
           label="Role"
           placeholder="Select a Role"
@@ -96,7 +99,10 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
+              
             />
             <FormSelect
               name="workShift"
@@ -117,7 +123,9 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
             />
             <FormSelect
               name="workShift"
@@ -145,7 +153,9 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
             />
           </>
         ) : (

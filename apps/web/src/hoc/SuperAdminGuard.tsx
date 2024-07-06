@@ -1,11 +1,12 @@
 'use client';
 
-import useGetEmployee from '@/hooks/api/employee/useGetEmployee';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
+import Image from 'next/image';
 import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import logo1 from '../../public/Black Friday Typography Instagram Post.png';
 
 export default function SuperAdminGuard(Component: any) {
   return function IsAuth(props: any) {
@@ -13,7 +14,7 @@ export default function SuperAdminGuard(Component: any) {
     const router = useRouter();
 
     const { id, role } = useAppSelector((state) => state.user);
-    const { user } = useGetUser(Number(id));
+
 
     useEffect(() => {
       setTimeout(() => {
@@ -28,7 +29,7 @@ export default function SuperAdminGuard(Component: any) {
       }
       if (role !== 'SUPER_ADMIN' && role === 'CUSTOMER' && !isLoading) {
         toast.error("You don't have permission to access this page.");
-        redirect('/');
+        redirect('/user');
       }
       if (role !== 'SUPER_ADMIN' && role === 'OUTLET_ADMIN' && !isLoading) {
         toast.error("You don't have permission to access this page.");
@@ -46,9 +47,11 @@ export default function SuperAdminGuard(Component: any) {
 
     if (isLoading || !id) {
       return (
-        <h1 className="container flex h-screen justify-center px-4 text-4xl pt-24 font-extrabold">
-          Loading...
-        </h1>
+        <div className="flex flex-col px-6 h-screen place-content-center items-center gap-4">
+          <div className="animate-pulse">
+            <Image alt="logo" src={logo1} />
+          </div>
+        </div>
       );
     }
 

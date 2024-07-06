@@ -4,19 +4,21 @@ import useGetOrders from '@/hooks/api/order/useGetOrders';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
+import useGetUser from '@/hooks/api/user/useGetUser';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 
 
 const PackingRequest = () => {
-  const [page, setPage] = useState<number>(1);
-  
-  // const { id } = useAppSelector((state) => state.user);
-  const id = 3;
+  const [page, setPage] = useState<number>(1);  
+  const { id } = useAppSelector((state) => state.user);
   const { data: orders, meta, refetch } = useGetOrders({
-    id: id,
     page,
     take: 10,
-    filterStatus: String(OrderStatus.Laundry_Finished_Ironing)
+    filterStatus: String(OrderStatus.IRONING_COMPLETED)
   });
+
+  const {user} = useGetUser(); 
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -32,7 +34,7 @@ const PackingRequest = () => {
               key={index}
               workerId={id}
               orderId={order.id}
-              targetStatus={OrderStatus.Laundry_Being_Packed}
+              targetStatus={OrderStatus.BEING_PACKED}
               referenceNumber={order.orderNumber}
               fullName={order.pickupOrder?.user?.fullName}
               email={order.pickupOrder?.user?.email}
@@ -44,6 +46,7 @@ const PackingRequest = () => {
               isBypassRequest={false}
               isBypassAccepted={false}
               isBypassRejected={false}
+              employeeWorkShift={user?.employee?.workShift}
             />
           )
         })}
@@ -60,4 +63,4 @@ const PackingRequest = () => {
   )
 }
 
-export default PackingRequest
+export default WorkerAuthGuard(PackingRequest)

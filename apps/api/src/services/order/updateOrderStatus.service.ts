@@ -1,5 +1,5 @@
 import prisma from '@/prisma';
-import { EmployeeStation, OrderStatus } from '@prisma/client';
+import { EmployeeStation, EmployeeWorkShift, OrderStatus } from '@prisma/client';
 
 interface UpdateOrderStatusBody {
     orderId: number,
@@ -14,98 +14,192 @@ export const updateOrderStatusService = async (
 
         const existingOrder = await prisma.order.findFirst({
             where: { id: orderId },
-            select: { orderStatus: true }
+            select: { orderStatus: true, orderNumber: true, isPaid: true, pickupOrder: { select: { outletId: true, userId: true } } }
         })
 
         if (!existingOrder) {
             throw new Error('Order not Found!')
         }
 
+        const existingEmployee = await prisma.user.findFirst({
+            where: { id: workerId },
+            select: { employee: { select: { id: true } } }
+        })        
+
+        let setOrderStatus = orderStatus
+
+        if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == true) {
+            setOrderStatus = OrderStatus.READY_FOR_DELIVERY
+        }
+
         const updateStatusUpdate = await prisma.order.update({
             where: { id: orderId },
             data: {
-                orderStatus: orderStatus,
+                orderStatus: setOrderStatus,
             },
         });
 
-        const orderWorker = await prisma.orderWorker.findFirst({
-            where: {orderId: orderId, workerId: workerId, station: 'WASHING'}
-        })
-
-        if (orderStatus == 'Laundry_Finished_Washing'){
-            const orderWorker = await prisma.orderWorker.findFirst({
-                where: {orderId: orderId, workerId: workerId, station: 'WASHING'},
-                select: {id: true}
-            })
-            await prisma.orderWorker.update({
-                where: {id: orderWorker?.id},
+        if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == false) {
+            const createNotification = await prisma.notification.create({
                 data: {
-                    isComplete: true
+                    title: "Payment Reminder",
+                    description: `Your laundry with order number ${existingOrder.orderNumber} has been packed. Please complete the payment to proceed with the delivery process. Thank you.`,
                 }
             })
+
+            await prisma.userNotification.create({
+                data: {
+                    notificationId: createNotification.id,
+                    userId: existingOrder.pickupOrder.userId
+                }
+            });
         }
 
-        if (orderStatus == 'Laundry_Finished_Ironing'){
-            const orderWorker = await prisma.orderWorker.findFirst({
-                where: {orderId: orderId, workerId: workerId, station: 'IRONING'},
-                select: {id: true}
-            })
-            await prisma.orderWorker.update({
-                where: {id: orderWorker?.id},
-                data: {
-                    isComplete: true
-                }
-            })
-        }
+        if (!Number.isNaN(workerId)) {
+            if (!existingEmployee?.employee?.id) {
+                throw new Error('Employee not Found!')
+            }
 
-        if (orderStatus == 'Laundry_Finished_Packing'){
-            const orderWorker = await prisma.orderWorker.findFirst({
-                where: {orderId: orderId, workerId: workerId, station: 'PACKING'},
-                select: {id: true}
-            })
-            await prisma.orderWorker.update({
-                where: {id: orderWorker?.id},
-                data: {
-                    isComplete: true
-                }
-            })
-        }
+            const now = new Date();
+            const currentHour = now.getHours();
+            let setWorkShift
 
-        if (orderStatus == 'Laundry_Being_Ironed') {
-            await prisma.orderWorker.create({
-                data: {
-                    orderId: orderId,
-                    workerId: workerId,
-                    station: EmployeeStation.IRONING
-                }
-            })
-        }
+            if (currentHour >= 6 && currentHour < 18) {
+                setWorkShift = EmployeeWorkShift.DAY
+            }
+            if (currentHour >= 18 || currentHour < 6) {
+                setWorkShift = EmployeeWorkShift.NIGHT
+            }
 
-        if (orderStatus == 'Laundry_Being_Washed') {
-            await prisma.orderWorker.create({
-                data: {
-                    orderId: orderId,
-                    workerId: workerId,
-                    station: EmployeeStation.WASHING
-                }
-            })
-        }
 
-        if (orderStatus == 'Laundry_Being_Packed') {
-            await prisma.orderWorker.create({
-                data: {
-                    orderId: orderId,
-                    workerId: workerId,
-                    station: EmployeeStation.PACKING
-                }
-            })
+
+            if (orderStatus == 'WASHING_COMPLETED') {
+                const orderWorker = await prisma.orderWorker.findFirst({
+                    where: { orderId: orderId, workerId: existingEmployee.employee?.id, station: 'WASHING' },
+                    select: { id: true }
+                })
+                await prisma.orderWorker.update({
+                    where: { id: orderWorker?.id },
+                    data: {
+                        isComplete: true
+                    }
+                })
+
+                // create notifications
+                const createNotification = await prisma.notification.create({
+                    data: {
+                        title: "Incoming Laundry Task",
+                        description: "New laundry arrived at ironing station",
+                    }
+                })
+                // distribute notifications
+                const getUserId = await prisma.employee.findMany({
+                    where: {
+                        outletId: existingOrder.pickupOrder.outletId,
+                        workShift: setWorkShift,//hapus jika ga perlu
+                        station: { not: null },//ubah jika berdasarkan station
+                    },
+                    select: { userId: true }
+                })
+                const userIds = getUserId.map(user => user.userId)
+                await Promise.all(userIds.map(async (userId) => {
+                    await prisma.userNotification.create({
+                        data: {
+                            notificationId: createNotification.id,
+                            userId: userId
+                        }
+                    });
+                }));
+            }
+
+            if (orderStatus == 'IRONING_COMPLETED') {
+                const orderWorker = await prisma.orderWorker.findFirst({
+                    where: { orderId: orderId, workerId: existingEmployee.employee?.id, station: 'IRONING' },
+                    select: { id: true }
+                })
+                await prisma.orderWorker.update({
+                    where: { id: orderWorker?.id },
+                    data: {
+                        isComplete: true
+                    }
+                })
+
+                // create notifications
+                const createNotification = await prisma.notification.create({
+                    data: {
+                        title: "Incoming Laundry Task",
+                        description: "New laundry arrived at packing station",
+                    }
+                })
+                // distribute notifications
+                const getUserId = await prisma.employee.findMany({
+                    where: {
+                        outletId: existingOrder.pickupOrder.outletId,
+                        workShift: setWorkShift,//hapus jika ga perlu
+                        station: { not: null },//ubah jika berdasarkan station
+                    },
+                    select: { userId: true }
+                })
+                const userIds = getUserId.map(user => user.userId)
+                await Promise.all(userIds.map(async (userId) => {
+                    await prisma.userNotification.create({
+                        data: {
+                            notificationId: createNotification.id,
+                            userId: userId
+                        }
+                    });
+                }));
+            }
+
+            if (orderStatus == 'AWAITING_PAYMENT') {
+                const orderWorker = await prisma.orderWorker.findFirst({
+                    where: { orderId: orderId, workerId: existingEmployee.employee?.id, station: 'PACKING' },
+                    select: { id: true }
+                })
+                await prisma.orderWorker.update({
+                    where: { id: orderWorker?.id },
+                    data: {
+                        isComplete: true
+                    }
+                })
+            }
+
+            if (orderStatus == 'BEING_IRONED') {
+                await prisma.orderWorker.create({
+                    data: {
+                        orderId: orderId,
+                        workerId: existingEmployee.employee?.id,
+                        station: EmployeeStation.IRONING
+                    }
+                })
+            }
+
+            if (orderStatus == 'BEING_WASHED') {
+                await prisma.orderWorker.create({
+                    data: {
+                        orderId: orderId,
+                        workerId: existingEmployee.employee?.id,
+                        station: EmployeeStation.WASHING
+                    }
+                })
+            }
+
+            if (orderStatus == 'BEING_PACKED') {
+                await prisma.orderWorker.create({
+                    data: {
+                        orderId: orderId,
+                        workerId: existingEmployee.employee?.id,
+                        station: EmployeeStation.PACKING
+                    }
+                })
+            }
         }
 
         return {
-        order: updateStatusUpdate,
-    }
+            order: updateStatusUpdate,
+        }
 
-} catch (error) {
-    throw error;
-}
+    } catch (error) {
+        throw error;
+    }
 };

@@ -1,5 +1,6 @@
 
 import { addEmployeeService } from '@/services/employee/addEmployee.service';
+import { deleteEmployeeService } from '@/services/employee/deleteEmployee.service';
 import { getEmployeeService } from '@/services/employee/getEmployee.service';
 import { getEmployeesService } from '@/services/employee/getEmployees.service';
 import { updateEmployeeService } from '@/services/employee/updateEmployee.service';
@@ -19,7 +20,7 @@ export class EmployeeController {
   async getEmployeesController(req: Request, res: Response, next: NextFunction) {
     try {
       const query = {
-        id: parseInt(req.query.id as string),
+        id: parseInt(res.locals.user.id as string),
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',
@@ -48,6 +49,16 @@ export class EmployeeController {
       const result = await updateEmployeeService(
         Number(req.params.id),
         req.body,        
+      );
+      return res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async deleteEmployeeController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await deleteEmployeeService(
+        Number(req.params.id)      
       );
       return res.status(200).send(result);
     } catch (error) {

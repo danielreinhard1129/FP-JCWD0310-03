@@ -5,14 +5,18 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
-const useGetLaundryItemList = () => {
+interface IGetItemLaundryQuery {
+  isDelete?: number;
+}
+
+const useGetLaundryItemList = (queries: IGetItemLaundryQuery) => {
   const { axiosInstance } = useAxios();
   const [isData, setIsData] = useState<LaundryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getLaundryItemList = async () => {
     try {
-      const { data } = await axiosInstance.get(`/laundry-items`);
+      const { data } = await axiosInstance.get(`/laundry-items`, { params: queries });
       setIsData(data.data);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -26,7 +30,7 @@ const useGetLaundryItemList = () => {
 
   useEffect(() => {
     getLaundryItemList();
-  }, []);
+  }, [queries?.isDelete]);
   return { isData, isLoading, refetch: getLaundryItemList };
 };
 

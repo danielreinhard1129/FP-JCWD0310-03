@@ -1,6 +1,7 @@
 //import { verifyToken } from '@/lib/jwt';
 import { OutletController } from '@/controllers/outlet.controller';
 import { uploader } from '@/lib/uploader';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class OutletRouter {
@@ -16,17 +17,29 @@ export class OutletRouter {
   private initializeRoutes(): void {
     this.router.post(
       '/',
-      uploader('IMG', '/images').array('outletImage', 1),
+      verifyToken,
       this.outletController.createOutletController,
     );
-    this.router.get('/', this.outletController.getOutletListController);
-    this.router.get('/:id', this.outletController.getOutletController);
+    this.router.get(
+      '/',
+      verifyToken,
+      this.outletController.getOutletListController,
+    );
+    this.router.get(
+      '/:id',
+      verifyToken,
+      this.outletController.getOutletController,
+    );
     this.router.patch(
       '/:id',
-      uploader('IMG', '/images').array('outletImage', 1),
+      verifyToken,
       this.outletController.updateOutletController,
     );
-    this.router.delete('/:id', this.outletController.deleteOutletController);
+    this.router.delete(
+      '/:id',
+      verifyToken,
+      this.outletController.deleteOutletController,
+    );
   }
 
   getRouter(): Router {

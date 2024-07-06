@@ -1,14 +1,13 @@
 import useAxios from '@/hooks/api/useAxios';
+import { Address } from '@/types/address.type';
 
-export default function useCreateAddressByCoord() {
+export default function useCreateAddressByCoord(id: number) {
   const { axiosInstance } = useAxios();
 
-  async function createAddress(city: any, address: any) {
-    const { data } = await axiosInstance.post('/user/create-address', {
-      city,
-      address,
+  async function createAddress(payload: Partial<Address>) {
+    const { data } = await axiosInstance.patch(`/user/profile/${id}`, {
+      payload,
     });
-    console.log('ini hook create', data);
   }
 
   return { createAddress };

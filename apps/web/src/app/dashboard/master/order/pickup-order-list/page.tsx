@@ -6,16 +6,23 @@ import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import TablePickupOrder from './components/TablePickupOrder'
+import { PickupStatus } from '@/types/pickupOrder.type'
+import useGetUser from '@/hooks/api/user/useGetUser'
+import { useAppSelector } from '@/redux/hooks'
+import AdminAuthGuard from '@/hoc/AdminAuthGuard'
 
 const PickupOrderList = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
+  // const { id } = useAppSelector((state) => state.user)
   const { data: pickupOrders, meta, refetch } = useGetPickupOrders({
-    id: 0,
+    // id: id,
     page,
     take: 5,
-    pickupStatus:''
+    pickupStatus: String(PickupStatus.RECEIVED_BY_OUTLET),
+    isOrderCreated: Number(Boolean(false))
   });
+
+  const {user} = useGetUser();
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -28,10 +35,12 @@ const PickupOrderList = () => {
         </Link>
         <h1 className="text-lg font-bold my-auto">Create Order</h1>
       </div>
-      <div className="mx-8 mb-8">
-        <h1 className="text-md font-bold my-auto">Choose Pickup Order to Create Order</h1>
+      <div className="flex flex-col gap-5 mx-8 mb-8">
+
+        <h1 className="text-2xl font-bold my-auto text-center p-1 rounded-xl mb-6 border-mythemes-maingreen/25">Choose Pickup Order to Create Order</h1>
         
-        <Table className='bg-mythemes-secondarygreen rounded-xl'>
+        
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Pickup Number</TableHead>
@@ -45,6 +54,7 @@ const PickupOrderList = () => {
           </TableHeader>
           <TableBody>
             {pickupOrders.map((pickupOrder, index) => {
+              const options:Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }
               return (
                 <TablePickupOrder
                   key={index}
@@ -54,7 +64,10 @@ const PickupOrderList = () => {
                   email={pickupOrder.user.email}
                   outlet={pickupOrder.outlet.outletName}
                   status={pickupOrder.pickupStatus}
-                  createdAt={String(pickupOrder.createdAt)}
+                  createdAt={String(
+                    new Date(pickupOrder.createdAt).toLocaleDateString('en-US',options),
+                  )}
+                  employeeWorkShift={user?.employee?.workShift}
                 />
               );
             })}
@@ -70,4 +83,4 @@ const PickupOrderList = () => {
   )
 }
 
-export default PickupOrderList
+export default AdminAuthGuard(PickupOrderList)

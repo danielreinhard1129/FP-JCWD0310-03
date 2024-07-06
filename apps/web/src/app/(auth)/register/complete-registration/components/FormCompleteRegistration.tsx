@@ -13,6 +13,7 @@ import FormInputDisable from '@/components/FormInputDisable';
 import PreviewImages from '@/components/PreviewImages';
 import { ValidationSchema } from '../validationSchema';
 import Dropzone from '@/components/Dropzone';
+import { Loader2 } from 'lucide-react';
 
 interface FormCompleteRegistration {
   email: string;
@@ -25,9 +26,7 @@ interface FormCompleteRegistrationProps {
 export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
   initialValues,
 }) => {
-  console.log('ini intial', initialValues);
-
-  const { completeRegistration } = useCompleteRegistration();
+  const { completeRegistration, isLoading } = useCompleteRegistration();
   const [schema, setSchema] = useState(ValidationSchema);
 
   const form = useForm<z.infer<typeof ValidationSchema>>({
@@ -41,14 +40,10 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        {/* <PreviewImages
-          fileImages={initialValues.profilePic}
-          onRemoveImage={(idx: number) =>
-            form.setValue('profilePic', initialValues.profilePic.splice(idx, 1))
-          }
-        /> */}
-
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-3 mt-9 h-[480px] flex flex-col"
+      >
         <FormInput
           name="fullName"
           type="text"
@@ -70,8 +65,14 @@ export const CompleteRegistrationForm: FC<FormCompleteRegistrationProps> = ({
           placeholder="Entry Password"
           form={form}
         />
-        <Button type="submit" className="w-full bg-mythemes-maingreen">
-          Submit
+
+        <Button
+          type="submit"
+          className="bg-mythemes-maingreen"
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className=" animate-spin" /> : 'Submit'}
+          {isLoading ?? 'Success !'}
         </Button>
       </form>
     </Form>

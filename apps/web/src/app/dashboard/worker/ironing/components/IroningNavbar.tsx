@@ -16,7 +16,9 @@ const IroningNavbar = () => {
           <ChevronLeft className='h-6 my-auto' />
         </Link>
         <h1 className='font-bold mx-auto my-auto'>Ironning Station</h1>
-        <Bell className='absolute h-5 my-auto top-0.5 right-0' />
+        <Link href={'/dashboard/worker/notification'} >
+          <Bell className="h-5 text-mythemes-maingreen my-auto" />
+          </Link>
       </div>
       <div className='flex gap-2 text-center text-xs font-semibold justify-between'>
         <Link className={`w-1/3 rounded-t-xl p-1 active ${isActive('/dashboard/worker/ironing/request') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'bg-white text-mythemes-maingreen/60'}`} href={'/dashboard/worker/ironing/request'} >

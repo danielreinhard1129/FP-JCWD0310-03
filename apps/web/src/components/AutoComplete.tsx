@@ -17,6 +17,7 @@ const Autocomplete = () => {
   const [search, setSearch] = useState<string>('');
   const { data, isLoading } = useGetOutletList({
     search,
+    take: 100,
   });
 
   const loadOptions = (

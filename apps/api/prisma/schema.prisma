@@ -71,15 +71,17 @@ model Address {
   id          Int     @id @default(autoincrement())
   addressLine String
   city        String
-  isPrimary   Boolean @default(true)
+  isPrimary   Boolean @default(false)
   latitude    String?
   longitude   String?
   isDelete    Boolean @default(false)
   outletId    Int?
   userId      Int?
 
-  outlet Outlet? @relation(fields: [outletId], references: [id])
-  user   User?   @relation(fields: [userId], references: [id])
+  outlet        Outlet?         @relation(fields: [outletId], references: [id])
+  user          User?           @relation(fields: [userId], references: [id])
+  pickupOrder   PickupOrder[]
+  deliveryOrder DeliveryOrder[]
 
   @@map("addresses")
 }
@@ -88,7 +90,6 @@ model Outlet {
   id          Int           @id @default(autoincrement())
   outletName  String
   outletType  OutletType
-  outletImage String?
   createdAt   DateTime      @default(now())
   deletedAt   DateTime?
   updatedAt   DateTime      @updatedAt
@@ -108,62 +109,70 @@ enum OutletType {
 model PickupOrder {
   id             Int          @id @default(autoincrement())
   pickupNumber   String       @unique
-  pickupStatus   PickupStatus @default(Waiting_for_Driver)
+  pickupStatus   PickupStatus @default(WAITING_FOR_DRIVER)
   distance       Int
   pickupPrice    Int
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  isOrderCreated Boolean      @default(false)
   userId         Int
   outletId       Int?
-  isOrderCreated Boolean      @default(false)
   driverId       Int?
+  addressId      Int?
 
-  user   User      @relation(fields: [userId], references: [id])
-  outlet Outlet?   @relation(fields: [outletId], references: [id])
-  order  Order[]
-  driver Employee? @relation(fields: [driverId], references: [id])
+  user    User      @relation(fields: [userId], references: [id])
+  outlet  Outlet?   @relation(fields: [outletId], references: [id])
+  order   Order[]
+  driver  Employee? @relation(fields: [driverId], references: [id])
+  address Address?  @relation(fields: [addressId], references: [id])
 
   @@map("pickup_orders")
 }
 
 enum PickupStatus {
-  Waiting_for_Driver
-  On_The_Way_to_Client
-  On_The_Way_to_Outlet
-  Received_by_Outlet
+  WAITING_FOR_DRIVER
+  ON_THE_WAY_TO_CUSTOMER
+  ON_THE_WAY_TO_OUTLET
+  RECEIVED_BY_OUTLET
 }
 
 model Order {
   id            Int         @id @default(autoincrement())
   orderNumber   String
-  orderStatus   OrderStatus @default(Waiting_for_Driver_Pickup)
-  weight        Int
-  laundryPrice  Int
+  orderStatus   OrderStatus @default(WAITING_FOR_PICKUP_DRIVER)
+  weight        Int?
+  laundryPrice  Int?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   pickupOrderId Int         @unique
+  isPaid        Boolean     @default(false)
 
-  pickupOrder  PickupOrder     @relation(fields: [pickupOrderId], references: [id])
-  orderItem    OrderItem[]
-  deliverOrder DeliveryOrder[]
-  orderWorker  OrderWorker[]
+  pickupOrder   PickupOrder     @relation(fields: [pickupOrderId], references: [id])
+  orderItem     OrderItem[]
+  deliveryOrder DeliveryOrder[]
+  orderWorker   OrderWorker[]
+  payment       Payment[]
 
   @@map("orders")
 }
 
 enum OrderStatus {
-  Waiting_for_Driver_Pickup
-  Laundry_On_The_Way_To_Outlet
-  Laundry_Has_Arrived_At_Outlet
-  Laundry_Being_Washed
-  Laundry_Finished_Washing
-  Laundry_Being_Ironed
-  Laundry_Finished_Ironing
-  Laundry_Being_Packed
-  Laundry_Finished_Packing
-  Awaiting_Payment
-  Laundry_Being_Delivered_To_Customer
-  Laundry_Received_By_Customer
+  WAITING_FOR_PICKUP_DRIVER
+  ON_THE_WAY_TO_CUSTOMER
+  ON_THE_WAY_TO_OUTLET
+  ARRIVED_AT_OUTLET
+  READY_FOR_WASHING
+  BEING_WASHED
+  WASHING_COMPLETED
+  BEING_IRONED
+  IRONING_COMPLETED
+  BEING_PACKED
+  AWAITING_PAYMENT
+  READY_FOR_DELIVERY
+  WAITING_FOR_DELIVERY_DRIVER
+  BEING_DELIVERED_TO_CUSTOMER
+  RECEIVED_BY_CUSTOMER
+  COMPLETED
 }
 
 model OrderItem {
@@ -190,25 +199,30 @@ model LaundryItem {
 model DeliveryOrder {
   id             Int            @id @default(autoincrement())
   deliveryNumber String         @unique
-  deliveryStatus DeliveryStatus @default(Waiting_for_Driver)
+  deliveryStatus DeliveryStatus @default(NOT_READY_TO_DELIVER)
+  distance       Int
+  deliveryPrice  Int
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   userId         Int
   driverId       Int?
-  orderId        Int
+  orderId        Int            @unique
+  addressId      Int?
 
-  user   User      @relation(fields: [userId], references: [id])
-  driver Employee? @relation(fields: [driverId], references: [id])
-  order  Order     @relation(fields: [orderId], references: [id])
+  user    User      @relation(fields: [userId], references: [id])
+  driver  Employee? @relation(fields: [driverId], references: [id])
+  order   Order     @relation(fields: [orderId], references: [id])
+  address Address?  @relation(fields: [addressId], references: [id])
 
   @@map("delivery_orders")
 }
 
 enum DeliveryStatus {
-  Waiting_for_Driver
-  On_The_Way_to_Outlet
-  On_The_Way_to_Client
-  Received_by_Client
+  NOT_READY_TO_DELIVER
+  WAITING_FOR_DRIVER
+  ON_THE_WAY_TO_OUTLET
+  ON_THE_WAY_TO_CUSTOMER
+  RECEIVED_BY_CUSTOMER
 }
 
 model OrderWorker {
@@ -218,6 +232,7 @@ model OrderWorker {
   station        EmployeeStation?
   isComplete     Boolean          @default(false)
   bypassRequest  Boolean          @default(false)
+  bypassNote     String?
   bypassAccepted Boolean          @default(false)
   bypassRejected Boolean          @default(false)
 
@@ -248,4 +263,28 @@ model Notification {
   userNotification UserNotification[]
 
   @@map("notifications")
+}
+
+model Payment {
+  id              Int           @id @default(autoincrement())
+  invoiceNumber   String        @unique
+  amount          Int
+  paymentMethode  String?
+  paymentStatus   PaymentStatus @default(PENDING)
+  snapToken       String?
+  snapRedirectUrl String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  orderId         Int
+  order           Order         @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  SUCCESSED
+  CANCELLED
+  DENIED
+  EXPIRED
+  PENDING
 }

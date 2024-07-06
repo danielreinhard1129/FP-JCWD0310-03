@@ -13,18 +13,20 @@ import Link from 'next/link';
 import { useState } from 'react';
 import TableEmployees from './components/TableEmployee';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
+import { PlusCircle, Router } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const MenuEmployee = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
+  const router = useRouter()
   const {
     data: employees,
     meta,
     refetch,
   } = useGetEmployees({
-    id: 0,
     page,
-    take: 5,
+    take: 10,
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -32,29 +34,32 @@ const MenuEmployee = () => {
   };
 
   return (
-    <div className='container flex flex-col gap-5 pt-6 px-6'>
-      <div className='flex justify-between my-auto'>
+    <div className="container flex flex-col gap-5 pt-6 px-6">
+      <div className="flex justify-between my-auto">
         <div>
           <h1 className="font-bold text-xl">Your Employees</h1>
         </div>
-        <Link href={'/dashboard/master/employee/add-employee'}>
-          <div className="flex bg-mythemes-maingreen h-full w-40 rounded-lg">
-            <h1 className="text-white font-medium mx-auto my-auto">
+        <Button
+          className=' bg-mythemes-maingreen rounded-lg text-md px-6 text-white font-medium'
+          onClick={() => router.push('/dashboard/master/employee/add-employee')}
+        >
+          <div className='flex gap-2'>
+            <PlusCircle className='my-auto'/>
+            <p className='my-auto'>
               Add Employee
-            </h1>
+            </p>
           </div>
-        </Link>
+        </Button>
       </div>
       <div>
-        <Table className="bg-mythemes-secondarygreen rounded-xl">
+        <Table className="bg-white rounded-xl ">
           <TableHeader>
             <TableRow>
-              <TableHead>Full Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Outlet</TableHead>
-              <TableHead>Work Shift</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="font-bold text-black">Full Name</TableHead>
+              <TableHead className="font-bold text-black">Email</TableHead>
+              <TableHead className="font-bold text-black">Role</TableHead>
+              <TableHead className="font-bold text-black">Outlet</TableHead>
+              <TableHead className="font-bold text-black">Work Shift</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -69,8 +74,8 @@ const MenuEmployee = () => {
                   outlet={employee.outlet?.outletName}
                   role={employee.user.role}
                   workShift={employee.workShift}
-                  status={employee.workShift}
                   station={employee.station}
+                  refetch={refetch}
                 />
               );
             })}

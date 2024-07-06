@@ -11,8 +11,10 @@ import { useRouter } from 'next/navigation';
 import useAxios from '../useAxios';
 
 interface AddEmployeeArgs
-  extends Pick<User, 'email' | 'fullName' | 'password' | 'role' | 'isVerify'> {
+  extends Pick<User, 'email' | 'fullName' | 'password' > {
   outletId?: string;
+  isVerify?: boolean;
+  role: string
 }
 
 const useAddEmployee = () => {

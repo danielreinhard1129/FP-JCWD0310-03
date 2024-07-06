@@ -20,13 +20,12 @@ const TableLaundryItem: FC<LaundryItemProps> = ({
   refetch,
 }) => {
   return (
-    <TableRow>
+    <TableRow className='text-sm'>
       <TableCell>{no}</TableCell>
       <TableCell>{itemName}</TableCell>
       <TableCell className="flex gap-6 place-content-end">
-        <UpdateItem id={id} refetch={refetch} />
+        <UpdateItem id={id} refetch={refetch} isLoading={isLoading} />
         <DeleteItem id={id} refetch={refetch} />
-        {/* <Trash2 size={20} className="text-red-500" /> */}
       </TableCell>
     </TableRow>
   );

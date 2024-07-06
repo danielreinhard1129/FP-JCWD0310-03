@@ -12,18 +12,16 @@ import { AxiosError } from 'axios';
 const useUpdateLaundryItem = (id: number) => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const updateLaundryItem = async (payload: Partial<LaundryItem>) => {
     setIsLoading(true);
     try {
       await axiosInstance.patch(`/laundry-items/${id}`, { ...payload });
-      console.log('ini pay dan id', payload, id);
-
       toast.success('Update laundry item success !');
       router.push('/dashboard/master/laundry-item');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
+        toast.error(error.response?.data.message);
       }
     } finally {
       setIsLoading(false);

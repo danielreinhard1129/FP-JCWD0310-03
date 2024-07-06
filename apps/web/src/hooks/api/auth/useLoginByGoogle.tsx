@@ -3,7 +3,6 @@
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { axiosInstance } from '@/lib/axios';
 import { useRouter } from 'next/navigation';
 import { loginAction } from '@/redux/slices/userSlice';
 import useAxios from '../useAxios';
@@ -27,10 +26,10 @@ export default function useLoginByGoogle() {
         localStorage.setItem('token', data.token);
 
         toast.success('Login by Google Succes');
-        router.push('/');
+        router.push('/user');
       } catch (error) {
         if (error instanceof AxiosError) {
-          toast.error(error.response?.data);
+          toast.error(error.response?.data.message);
         }
       }
     },

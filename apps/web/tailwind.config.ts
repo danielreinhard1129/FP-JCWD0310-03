@@ -1,22 +1,24 @@
-// /** @type {import('tailwindcss').Config} */
-// module.exports = {
-//   content: [
-//     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-//     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-//     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+// const { fontFamily } = require('tailwindcss/defaultTheme');
 
-//     // Or if using `src` directory:
-//     "./src/**/*.{js,ts,jsx,tsx,mdx}",
-//   ],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// }
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  //   content: [
+  //     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  //     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+  //     "./components/**/*.{js,ts,jsx,tsx,mdx}",
 
-import type { Config } from 'tailwindcss';
+  //     // Or if using `src` directory:
+  //     "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  //   ],
+  //   theme: {
+  //     extend: {},
+  //   },
+  //   plugins: [],
+  // }
 
-const config = {
+  // import type { Config } from 'tailwindcss';
+
+  // const config = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
@@ -30,7 +32,7 @@ const config = {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1536px',
+        '2xl': '1800px',
       },
     },
     extend: {
@@ -70,25 +72,26 @@ const config = {
         },
 
         mythemes: {
-          maingreen: '#116A7B',
-          secondarygreen: '#C2DEDC',
+          mainYellow: '#FDDE55',
+          secondaryYellow: '#FEEFAD',
+          maingreen: '#03AED2',
+          secondaryblue: '#68D2E8',
+          secondarygreen: '#e3f6f5',
+          tertiarygreen: '#bae8e8',
+          white: '#fffffe',
           grey: '#F8F9FB',
           taubmans: '#ECE5C7',
           dimgrey: '#CDC2AE',
         },
       },
-      // backgroundImage: {
-      //   'my_bg_logo': "url('../public/Kucekin_Logo_Black_EVO1.png')"
-      // },
-
-      // container: {
-      //   'container-mobile': '430px',
-      //   'container-super-admin': '1440px',
-      // },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      fontFamily: {
+        // sans: ['var(--font-sans)', ...fontFamily.sans],
+        poppins: ['"Poppins"', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {
@@ -107,6 +110,7 @@ const config = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-} satisfies Config;
+};
+// satisfies Config;
 
-export default config;
+// export default config;

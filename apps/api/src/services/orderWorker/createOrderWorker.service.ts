@@ -4,23 +4,33 @@ import { EmployeeStation, OrderStatus } from '@prisma/client';
 interface CreateOrderWorkerBody {
     orderId: number,
     workerId: number,
-    orderStatus: string
+    orderStatus: string,
+    bypassNote: string
 }
 export const createOrderWorkerService = async (
   body: CreateOrderWorkerBody,
 ) => {
   try {
-    const { orderId, workerId, orderStatus } = body;
+    const { orderId, workerId, orderStatus, bypassNote } = body;
+
+    const existingEmployee = await prisma.user.findFirst({
+      where: {id: workerId},
+      select: {employee: {select: {id: true}}}
+    })
+
+    if (!existingEmployee?.employee?.id){
+      throw new Error('Employee not Found!')
+    }
 
     let station
 
-    if(orderStatus == String(OrderStatus.Laundry_Being_Washed)){
+    if(orderStatus == String(OrderStatus.BEING_WASHED)){
         station = EmployeeStation.WASHING
     }
-    if(orderStatus == String(OrderStatus.Laundry_Being_Ironed)){
+    if(orderStatus == String(OrderStatus.BEING_IRONED)){
         station = EmployeeStation.IRONING
     }
-    if(orderStatus == String(OrderStatus.Laundry_Being_Packed)){
+    if(orderStatus == String(OrderStatus.BEING_PACKED)){
         station = EmployeeStation.PACKING
     }
 
@@ -34,9 +44,10 @@ export const createOrderWorkerService = async (
     const createOrderWorker = await prisma.orderWorker.create({
         data: { 
           orderId: orderId,
-          workerId: workerId,
+          workerId: existingEmployee.employee.id,
           station: station,
-          bypassRequest: true
+          bypassRequest: true,
+          bypassNote: bypassNote,
       },
       });
 

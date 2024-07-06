@@ -2,13 +2,15 @@ import { comparePassword } from '@/lib/bcrypt';
 import prisma from '@/prisma';
 
 interface VerificationArgs {
-  userId: number;
   password: string;
-  tokenParams: string;
+  token: string;
 }
-export const verificationService = async (body: VerificationArgs) => {
+export const verificationService = async (
+  body: VerificationArgs,
+  userId: number,
+) => {
   try {
-    const { password, tokenParams, userId } = body;
+    const { password, token } = body;
     const user = await prisma.user.findFirst({
       where: { id: userId },
     });
@@ -22,11 +24,7 @@ export const verificationService = async (body: VerificationArgs) => {
     if (!isPasswordValid) {
       throw new Error('incorrect password');
     }
-
-    if (user.token !== tokenParams) {
-      throw new Error('Please resend your verification email');
-    }
-    if (user.tokenExpiresIn && user.tokenExpiresIn > new Date()) {
+    if (user.token !== token) {
       throw new Error('Please resend your verification email');
     }
 
@@ -35,13 +33,7 @@ export const verificationService = async (body: VerificationArgs) => {
       data: { isVerify: true },
     });
 
-    // const token = sign({ id: userId }, appConfig.jwtSecretKey, {
-    //   expiresIn: '2h',
-    // });
-
-    return {
-      message: 'verification success !',
-    };
+    return verify;
   } catch (error) {
     throw error;
   }

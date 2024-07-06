@@ -1,5 +1,6 @@
 
 import { OrderWorkerController } from '@/controllers/orderWorker.controller';
+import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
 export class OrderWorkerRouter {
@@ -13,7 +14,7 @@ export class OrderWorkerRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/', this.orderWorkerController.getOrderWorkersController);
+    this.router.get('/',verifyToken, this.orderWorkerController.getOrderWorkersController);
     this.router.patch('/', this.orderWorkerController.updateOrderWorkerController);
     this.router.post('/', this.orderWorkerController.createOrderWorkerController);
   }

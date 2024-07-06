@@ -1,54 +1,37 @@
 'use client';
 import { useAppSelector } from '@/redux/hooks';
-import { CirclePlus, Home, Search, Shirt, User } from 'lucide-react';
+import { Bell, CirclePlus, Home, Search, Shirt, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const CreatePickupButton = () => {
   const { id, isVerify } = useAppSelector((state) => state.user);
   const router = useRouter();
-
-  // const handleClick = () => {
-  //   if (!id) {
-  //     toast.warning('Please Login');
-  //     router.push('/login');
-  //   } else if (isVerify === false) {
-  //     router.push('/login');
-  //   } else {
-  //     router.push('/outlet');
-  //   }
-  // };
-
   return (
     <>
-      {/* <div className="flex mx-auto fixed bottom-0"> */}
-      <div className="container sticky bottom-0 py-2 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white ">
+      <div className="container max-w-[430px] sticky bottom-0 py-2 place-items-center mx-auto flex flex-row gap-4 justify-around bg-white ">
         <Home
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/user')}
         />
-
-        {/* <div
+        {/* <Shirt
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-          onClick={() =>
-            !id
-              ? (toast.warning('Please login to continue'),
-                router.push('/login'))
-              : router.push('/order-list')
-          }
-        > */}
-        <Shirt className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer" />
-        {/* </div> */}
-
+          onClick={() => router.push('/user/order')}
+        /> */}
         <CirclePlus
           size={50}
           className="flex flex-col items-center gap-1 text-mythemes-maingreen cursor-pointer"
+          onClick={() => {
+            isVerify === false
+              ? (toast.error('Please verify your account to continue !'),
+                router.push('/user'))
+              : router.push(`/user/request-pickup`);
+          }}
         />
-
-        <Search className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer" />
 
         <User
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
-          onClick={() => router.push(`/profile/${id}`)}
+          onClick={() => router.replace(`/user/profile`)}
         />
       </div>
     </>

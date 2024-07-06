@@ -1,17 +1,18 @@
 'use client';
 
-import { axiosInstance } from '@/lib/axios';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
+import useAxios from '../useAxios';
 
 interface UpdateOrderStatusArgs {
     orderId: number,
-    workerId: number,
+    workerId?: number,
     orderStatus: OrderStatus,
 }
 
 const useUpdateOrderStatus = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { axiosInstance } = useAxios();
 
     const updateOrderStatus = async (payload: UpdateOrderStatusArgs) => {
         setIsLoading(true);

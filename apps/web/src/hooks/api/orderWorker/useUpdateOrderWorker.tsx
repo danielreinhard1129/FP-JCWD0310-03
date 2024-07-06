@@ -2,6 +2,7 @@
 
 import { axiosInstance } from '@/lib/axios';
 import { useState } from 'react';
+import useAxios from '../useAxios';
 
 interface UpdateOrderWorkerArgs {
     orderWorkerId: number,
@@ -10,6 +11,7 @@ interface UpdateOrderWorkerArgs {
 
 const useUpdateOrderWorker = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { axiosInstance } = useAxios();
 
     const updateOrderWorker = async (payload: UpdateOrderWorkerArgs) => {
         setIsLoading(true);

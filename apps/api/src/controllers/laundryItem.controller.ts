@@ -24,7 +24,10 @@ export class LaundryItemController {
     next: NextFunction,
   ) {
     try {
-      const result = await getLaundryItemListService();
+      const query = {
+        isDelete: Boolean(parseInt(req.query.isDelete as string)) || false,
+      };
+      const result = await getLaundryItemListService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);
@@ -51,7 +54,6 @@ export class LaundryItemController {
     try {
       const id = req.params.id;
       const result = await updateLaundryItemService(Number(id), req.body);
-      console.log('dari kontrol', id, req.body);
 
       return res.status(200).send(result);
     } catch (error) {

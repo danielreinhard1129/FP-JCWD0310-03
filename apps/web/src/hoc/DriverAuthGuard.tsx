@@ -2,9 +2,11 @@
 
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
+import Image from 'next/image';
 import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import logo1 from '../../public/Black Friday Typography Instagram Post.png';
 
 export default function DriverAuthGuard(Component: any) {
   return function IsAuth(props: any) {
@@ -12,7 +14,7 @@ export default function DriverAuthGuard(Component: any) {
     const router = useRouter();
 
     const { id, role } = useAppSelector((state) => state.user);
-    const { user } = useGetUser(Number(id));
+
 
     useEffect(() => {
       setTimeout(() => {
@@ -27,7 +29,7 @@ export default function DriverAuthGuard(Component: any) {
       }
       if (role !== 'DRIVER' && role === 'CUSTOMER' && !isLoading) {
         toast.error("You don't have permission to access this page.");
-        redirect('/');
+        redirect('/user');
       }
       if (role !== 'DRIVER' && role === 'OUTLET_ADMIN' && !isLoading) {
         toast.error("You don't have permission to access this page.");
@@ -45,9 +47,9 @@ export default function DriverAuthGuard(Component: any) {
 
     if (isLoading || !id) {
       return (
-        <h1 className="container flex h-screen justify-center px-4 text-4xl pt-24 font-extrabold">
-          Loading...
-        </h1>
+        <div className="animate-pulse">
+          <Image alt="logo" src={logo1} />
+        </div>
       );
     }
 
