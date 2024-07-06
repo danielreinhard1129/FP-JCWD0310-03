@@ -1,7 +1,6 @@
 'use client';
 
 import { toast } from '@/components/ui/use-toast';
-// import { axiosInstance } from '@/lib/axios';
 import { cn } from '@/lib/utils';
 import { Order } from '@/types/order.type';
 import { AxiosError } from 'axios';

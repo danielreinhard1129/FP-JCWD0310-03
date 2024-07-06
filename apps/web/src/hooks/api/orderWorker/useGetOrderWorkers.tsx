@@ -7,7 +7,6 @@ import useAxios from '../useAxios';
 import { OrderWorker } from '@/types/orderWorker.type';
 
 interface IGetOrderWorkersQuery extends IPaginationQueries {
-  // id: number;
   station?: string;
   isComplete?: number;
   bypassRequest?: number;

@@ -3,6 +3,7 @@ import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 import { AddEmployeeForm } from "./components/FormAddEmployee"
 import SuperAdminGuard from "@/hoc/SuperAdminGuard"
+import { Separator } from "@/components/ui/separator"
 
 const AddEmployee = () => {
   return (
@@ -13,10 +14,12 @@ const AddEmployee = () => {
         </Link>
         <h1 className="text-lg font-bold my-auto">Add New Employee</h1>
       </div>
-      <div className="mx-8 mb-8 p-5 w-8/12 rounded-xl bg-mythemes-secondarygreen">
+      <Separator className="bg-black" />
+      <div className="p-6 rounded-xl bg-white">
           <AddEmployeeForm />
       </div>
     </div>
+    
   )
 }
  

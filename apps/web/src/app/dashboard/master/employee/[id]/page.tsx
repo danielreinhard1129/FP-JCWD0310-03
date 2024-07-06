@@ -8,6 +8,7 @@ import FormEditEmployee from './components/FormEditEmployee';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 import logo1 from '../../../../../../public/Black Friday Typography Instagram Post.png'
 import Image from 'next/image';
+import { Separator } from '@/components/ui/separator';
 
 interface FormUpdateEmployee {
   fullName: string,
@@ -61,7 +62,8 @@ const EditEmployee = ({ params }: { params: { id: string } }) => {
         </Link>
         <h1 className="text-lg font-bold my-auto">Edit Employee Data</h1>
       </div>
-      <div className="mx-8 mb-8 p-5 w-8/12 rounded-xl bg-mythemes-secondarygreen">
+      <Separator className="bg-black" />
+      <div className="p-6 rounded-xl bg-white">
         <FormEditEmployee
           isLoading={isLoading}
           onSubmit={onSubmit}

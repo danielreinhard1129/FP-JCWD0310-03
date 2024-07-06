@@ -1,7 +1,9 @@
 'use client';
 
-import { axiosInstance } from '@/lib/axios';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import useAxios from '../useAxios';
+import { AxiosError } from 'axios';
 
 interface UpdatePickupOrderArgs {
     shipmentOrderId: number,
@@ -11,14 +13,19 @@ interface UpdatePickupOrderArgs {
 
 const useUpdatePickupOrder = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { axiosInstance } = useAxios();
 
     const updatePickupOrder = async (payload: UpdatePickupOrderArgs) => {
         setIsLoading(true);
         try {
             await axiosInstance.patch(`/pickup-orders/`, payload);
         } catch (error) {
-            console.log(error);
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data.message || 'Something went wrong');
+                console.log(error);
+            }
         } finally {
+
             setIsLoading(false);
         }
     };

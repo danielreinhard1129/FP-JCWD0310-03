@@ -1,10 +1,9 @@
 'use client';
-
-
 import { Payment } from '@/types/payment.type';
 import { useState } from 'react';
 import useAxios from '../useAxios';
-import { log } from 'console';
+import { AxiosError } from 'axios';
+import { toast } from 'sonner';
 
 interface CreatePaymentArgs {
     orderId: number,
@@ -22,13 +21,16 @@ const useCreatePayment = () => {
             setData(data)
             return data
         } catch (error) {
-            console.log(error);
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data.message || 'Something went wrong');
+                console.log(error);
+            }
         } finally {
             setIsLoading(false);
-        }        
+        }
     };
-    
-    return {data , createPayment, isLoading };
+
+    return { data, createPayment, isLoading };
 };
 
 export default useCreatePayment;

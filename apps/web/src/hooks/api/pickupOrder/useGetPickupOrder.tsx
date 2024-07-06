@@ -3,6 +3,7 @@ import { PickupOrder } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
+import { toast } from 'sonner';
 
 const useGetPickupOrder = (id: number) => {
   const [data, setData] = useState<PickupOrder | null>(null);
@@ -16,9 +17,8 @@ const useGetPickupOrder = (id: number) => {
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // TODO : replace console.log with toast
         console.log(error);
-      }
+    }
     } finally {
       setIsLoading(false);
     }

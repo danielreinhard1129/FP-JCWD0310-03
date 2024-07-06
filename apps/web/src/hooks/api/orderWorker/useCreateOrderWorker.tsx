@@ -1,7 +1,8 @@
 'use client';
 
-import { axiosInstance } from '@/lib/axios';
+import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import useAxios from '../useAxios';
 
 interface CreateOrderWorkerArgs {
@@ -20,7 +21,10 @@ const useCreateOrderWorker = () => {
         try {
             await axiosInstance.post(`/order-workers/`, payload);
         } catch (error) {
-            console.log(error);
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data.message || 'Something went wrong');
+                console.log(error);
+            }
         } finally {
             setIsLoading(false);
         }
