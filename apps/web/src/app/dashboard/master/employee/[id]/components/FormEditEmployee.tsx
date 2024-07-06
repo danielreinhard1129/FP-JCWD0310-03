@@ -22,6 +22,8 @@ import ItemStation from '../../../components/ItemStation';
 import ItemWorkShift from '../../../components/ItemWorkShift';
 import { EmployeeStation, EmployeeWorkShift } from '@/types/employee.type';
 import ItemOutletWithDeleted from '../../../components/itemOutletWithDeleted';
+import FormInputDisable from '@/components/FormInputDisable';
+import FormSelectRoleDisable from '../../../components/FormSelectRoleDisable';
 
 interface FormUpdateEmployee {
   fullName: string;
@@ -74,14 +76,14 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
           placeholder="Your Full Name"
           form={form}
         />
-        <FormInput
+        <FormInputDisable
           name="email"
           type="email"
           label="Email"
           placeholder="Your Email"
           form={form}
         />
-        <FormSelectRole
+        <FormSelectRoleDisable
           name="role"
           label="Role"
           placeholder="Select a Role"

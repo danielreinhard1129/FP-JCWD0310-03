@@ -7,13 +7,14 @@ import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetDeliveryOrdersQuery extends IPaginationQueries {
-  // id: number;
   deliveryStatus?: string;
   isClaimedbyDriver?: number;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 const useGetDeliveryOrders = (queries: IGetDeliveryOrdersQuery) => {
-  const [data, setData] = useState<DeliveryOrder[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const [meta, setMeta] = useState<IPaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { axiosInstance } = useAxios();
@@ -37,7 +38,7 @@ const useGetDeliveryOrders = (queries: IGetDeliveryOrdersQuery) => {
   useEffect(() => {
     getDeliveryOrders();
   
-  }, [queries?.page]);
+  }, [queries.page, queries.take]);
 
   return { data, isLoading, meta, refetch: getDeliveryOrders };
 };

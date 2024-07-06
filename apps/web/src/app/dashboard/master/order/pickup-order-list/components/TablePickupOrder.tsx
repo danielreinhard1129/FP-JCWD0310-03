@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { EmployeeWorkShift } from '@/types/employee.type';
 import Link from 'next/link';
@@ -69,11 +70,11 @@ const TablePickupOrder: FC<PickupOrderRowTableProps> = ({
             <TableCell>{status}</TableCell>
             <TableCell>{createdAt}</TableCell>
             <TableCell>
-                <button 
+                <Button 
                 disabled={isDisable}
                 className='font-bold bg-mythemes-maingreen text-center text-white rounded-md' 
                 onClick={() => router.push(`/dashboard/master/order/pickup-order-list/${pickupOrderId}`)}
-                >Create Order</button>
+                >Create Order</Button>
                 {/* <Link  href={`/dashboard/master/order/pickup-order-list/${pickupOrderId}`}>
                     <div className='font-bold bg-mythemes-maingreen text-center text-white rounded-md'>
                         <h1 >Create Order</h1>

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+
 export const ValidationSchemaSuperAdmin = z.object({
     fullName: z.string({
         required_error: "Full Name is Required.",
@@ -9,10 +11,16 @@ export const ValidationSchemaSuperAdmin = z.object({
     email: z.string({
         required_error: "Email is Required",
     }).email(),
-    password: z.string({
-        required_error: "Password is Required",
-    }).min(2, {
-        message: "Password must be at least 2 characters.",
+    password: z
+    .string({
+      required_error: 'Password is Required',
+    })
+    .min(2, {
+      message: 'Password must be at least 2 characters.',
+    })
+    .refine((value) => passwordRegex.test(value), {
+      message:
+        'Password must contain at least one uppercase letter and one special character.',
     }),
     role: z.string({
         required_error: "Please select an role to display.",
@@ -30,10 +38,16 @@ export const ValidationSchemaOutletAdmin = z.object({
     email: z.string({
         required_error: "Email is Required",
     }).email(),
-    password: z.string({
-        required_error: "Password is Required",
-    }).min(2, {
-        message: "Password must be at least 2 characters.",
+    password: z
+    .string({
+      required_error: 'Password is Required',
+    })
+    .min(2, {
+      message: 'Password must be at least 2 characters.',
+    })
+    .refine((value) => passwordRegex.test(value), {
+      message:
+        'Password must contain at least one uppercase letter and one special character.',
     }),
     role: z.string({
         required_error: "Please select an role to display.",
@@ -61,10 +75,16 @@ export const ValidationSchemaWorker = z.object({
     email: z.string({
         required_error: "Email is Required",
     }).email(),
-    password: z.string({
-        required_error: "Password is Required",
-    }).min(2, {
-        message: "Password must be at least 2 characters.",
+    password: z
+    .string({
+      required_error: 'Password is Required',
+    })
+    .min(2, {
+      message: 'Password must be at least 2 characters.',
+    })
+    .refine((value) => passwordRegex.test(value), {
+      message:
+        'Password must contain at least one uppercase letter and one special character.',
     }),
     role: z.string({
         required_error: "Please select an role to display.",
@@ -97,10 +117,16 @@ export const ValidationSchemaDriver = z.object({
     email: z.string({
         required_error: "Email is Required",
     }).email(),
-    password: z.string({
-        required_error: "Password is Required",
-    }).min(2, {
-        message: "Password must be at least 2 characters.",
+    password: z
+    .string({
+      required_error: 'Password is Required',
+    })
+    .min(2, {
+      message: 'Password must be at least 2 characters.',
+    })
+    .refine((value) => passwordRegex.test(value), {
+      message:
+        'Password must contain at least one uppercase letter and one special character.',
     }),
     role: z.string({
         required_error: "Please select an role to display.",

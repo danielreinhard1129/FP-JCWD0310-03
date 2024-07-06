@@ -77,7 +77,7 @@ export const getPaymentsService = async (query: GetPaymentsQuery) => {
 
         const now = new Date();
         const month = filterMonth ? Number(filterMonth) - 1 : now.getMonth();
-        const year = filterYear ? Number(filterYear) : now.getFullYear();
+        const year = filterYear ? Number(filterYear) : now.getFullYear();        
        
         const startDate = new Date(year, month, 1);
         const endDate = endOfMonth(startDate);

@@ -11,18 +11,15 @@ import React, { useState } from 'react';
 import TableBypassRequest from '../order/components/TableBypaassRequest';
 import Pagination from '@/components/Pagination';
 import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
-import { useAppSelector } from '@/redux/hooks';
 import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 
 const BypassRequest = () => {
   const [pageBypass, setPageBypass] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user);
   const {
     data: orderWorkers,
     meta: metaBypass,
     refetch: refetchBypass,
   } = useGetOrderWorkers({
-    // id: id,
     page: pageBypass,
     take: 10,
     bypassRequest: Number(Boolean(true)),
@@ -50,6 +47,7 @@ const BypassRequest = () => {
               <TableHead className="text-black font-bold">Price</TableHead>
               <TableHead className="text-black font-bold">Outlet</TableHead>
               <TableHead className="text-black font-bold">Station</TableHead>
+              <TableHead className="text-black font-bold">Note</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -67,6 +65,7 @@ const BypassRequest = () => {
                     orderWorker.order.pickupOrder.outlet.outletName,
                   )}
                   station={String(orderWorker.station)}
+                  note={String(orderWorker.bypassNote)}
                   refetch={refetchBypass}
                   employeeWorkShift={user?.employee?.workShift}
                 />

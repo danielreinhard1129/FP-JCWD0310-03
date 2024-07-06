@@ -129,6 +129,7 @@ const MenuOrder = () => {
           </TableHeader>
           <TableBody>
             {orders?.map((order, index) => {
+              const options:Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }
               return (
                 <TableOrder
                   key={index}
@@ -137,7 +138,9 @@ const MenuOrder = () => {
                   pickupNumber={order.pickupOrder.pickupNumber}
                   weight={String(order.weight)}
                   price={String(order.laundryPrice)}
-                  createdAt={String(order.createdAt)}
+                  createdAt={String(
+                    new Date(order.createdAt).toLocaleDateString('en-US',options),
+                  )}
                   status={order.orderStatus}
                 />
               );

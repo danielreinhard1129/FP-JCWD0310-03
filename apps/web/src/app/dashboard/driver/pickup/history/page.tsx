@@ -11,7 +11,6 @@ const PickupOrderHistory = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
   const { data: pickupOrders, meta: meta, refetch: refetch } = useGetPickupOrders({
-    // id: id,
     pickupStatus: String(PickupStatus.RECEIVED_BY_OUTLET),
     page: page,
     take: 10,
@@ -38,6 +37,7 @@ const PickupOrderHistory = () => {
               buttonLabel="Complete"
               isHistory={true}
               shipmentType='pickup'
+              distance=''
             />
           )
         })}

@@ -13,9 +13,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import TableEmployees from './components/TableEmployee';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
+import { PlusCircle, Router } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const MenuEmployee = () => {
   const [page, setPage] = useState<number>(1);
+  const router = useRouter()
   const {
     data: employees,
     meta,
@@ -35,13 +39,17 @@ const MenuEmployee = () => {
         <div>
           <h1 className="font-bold text-xl">Your Employees</h1>
         </div>
-        <Link href={'/dashboard/master/employee/add-employee'}>
-          <div className="flex bg-mythemes-maingreen h-full w-40 rounded-lg">
-            <h1 className="text-white font-medium mx-auto my-auto">
+        <Button
+          className=' bg-mythemes-maingreen rounded-lg text-md px-6 text-white font-medium'
+          onClick={() => router.push('/dashboard/master/employee/add-employee')}
+        >
+          <div className='flex gap-2'>
+            <PlusCircle className='my-auto'/>
+            <p className='my-auto'>
               Add Employee
-            </h1>
+            </p>
           </div>
-        </Link>
+        </Button>
       </div>
       <div>
         <Table className="bg-white rounded-xl ">

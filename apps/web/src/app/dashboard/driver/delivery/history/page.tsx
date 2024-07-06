@@ -38,6 +38,7 @@ const DeliveryOrderHistory = () => {
               buttonLabel="Complete"
               isHistory={true}
               shipmentType='delivery'
+              distance=''
             />
           )
         })}

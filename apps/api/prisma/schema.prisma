@@ -232,6 +232,7 @@ model OrderWorker {
   station        EmployeeStation?
   isComplete     Boolean          @default(false)
   bypassRequest  Boolean          @default(false)
+  bypassNote     String?
   bypassAccepted Boolean          @default(false)
   bypassRejected Boolean          @default(false)
 

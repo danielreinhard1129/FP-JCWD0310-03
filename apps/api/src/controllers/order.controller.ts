@@ -2,7 +2,7 @@ import { CreateOrderService } from '@/services/order/createOrder.service';
 import { getOrderService } from '@/services/order/getOrder.service';
 import { getOrdersService } from '@/services/order/getOrders.service';
 import { updateOrderStatusService } from '@/services/order/updateOrderStatus.service';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, query, Request, Response } from 'express';
 
 
 export class OrderController {
@@ -48,8 +48,11 @@ export class OrderController {
 
   async getOrderController(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.params.id;
-      const result = await getOrderService(Number(id));
+      const query={        
+        id : parseInt(req.params.id as string),
+        userId : parseInt(res.locals.user.id as string),
+      }
+      const result = await getOrderService(query);
       return res.status(200).send(result);
     } catch (error) {
       next(error);

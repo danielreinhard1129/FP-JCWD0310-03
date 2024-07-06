@@ -4,13 +4,14 @@ import { EmployeeStation, OrderStatus } from '@prisma/client';
 interface CreateOrderWorkerBody {
     orderId: number,
     workerId: number,
-    orderStatus: string
+    orderStatus: string,
+    bypassNote: string
 }
 export const createOrderWorkerService = async (
   body: CreateOrderWorkerBody,
 ) => {
   try {
-    const { orderId, workerId, orderStatus } = body;
+    const { orderId, workerId, orderStatus, bypassNote } = body;
 
     const existingEmployee = await prisma.user.findFirst({
       where: {id: workerId},
@@ -45,7 +46,8 @@ export const createOrderWorkerService = async (
           orderId: orderId,
           workerId: existingEmployee.employee.id,
           station: station,
-          bypassRequest: true
+          bypassRequest: true,
+          bypassNote: bypassNote,
       },
       });
 
