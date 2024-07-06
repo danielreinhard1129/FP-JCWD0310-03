@@ -12,7 +12,6 @@ export class PickupOrderController {
   ) {
     try {
       const query = {
-        // id: parseInt(req.query.id as string),
         id: parseInt(res.locals.user.id as string),
         pickupStatus: (req.query.pickupStatus as string) || 'all',
         isOrderCreated: parseInt(req.query.isOrderCreated as string),

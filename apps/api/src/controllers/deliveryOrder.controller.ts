@@ -12,7 +12,6 @@ export class DeliveryOrderController {
   ) {
     try {
       const query = {
-        // id: parseInt(req.query.id as string),
         id: parseInt(res.locals.user.id as string),
         deliveryStatus: (req.query.deliveryStatus as string) || 'all',
         isClaimedbyDriver: parseInt(req.query.isClaimedbyDriver as string),

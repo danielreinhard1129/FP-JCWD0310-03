@@ -164,7 +164,7 @@ const UserOrder = () => {
                 <SelectItem value="completed">Completed</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </div> 
         </div>
       </div>
       <div className="min-h-dvh flex flex-col gap-2 pt-4 container px-6">

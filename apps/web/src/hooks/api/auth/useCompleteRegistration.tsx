@@ -24,13 +24,17 @@ const useCompleteRegistration = () => {
   const completeRegistration = async (payload: Partial<IFormUser>) => {
     setIsLoading(true);
     try {
-      await axiosInstance.post<User>(`/auth/complete-registration`, payload);
+      await axiosInstance.post<CompleteRegistrationResponse>(
+        `/auth/complete-registration`,
+        payload,
+      );
 
       toast.success('Verification email has been sent to your email');
       router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data);
+        console.error(error);
       }
     } finally {
       setIsLoading(false);

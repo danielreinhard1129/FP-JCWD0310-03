@@ -59,7 +59,7 @@ export default function AdminAuthGuard(Component: any) {
         </div>
       );
     }
-
+ 
     return <Component {...props} />;
   };
 }
