@@ -7,6 +7,7 @@ import { DeliveryStatus } from '@/types/deliveryOrder.type';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const DeliveryDetails = ({ params }: { params: { id: string } }) => {
   const { deliveryOrder, refetch, isLoading } = useGetDeliveryOrder(Number(params.id));
@@ -48,6 +49,7 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
   const handleUpdate = async () => {
     try {
       await updateDeliveryOrder(values);
+      toast.success(`Succeess!`);
       router.back()
     } catch (error) {
       console.error('Failed to update delivery order', error);

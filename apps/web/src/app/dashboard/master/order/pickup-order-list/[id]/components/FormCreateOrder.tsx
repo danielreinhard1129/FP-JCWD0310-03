@@ -86,11 +86,12 @@ const FormCreateOrder: FC<FormCreateOrderProps> = ({isLoading, initialValues, on
                     type="number"
                     label="Weight"
                     placeholder="Entry Laundry Weight"
+                    min={1}
                     form={form}
                 />
                 <div className="flex flex-col gap-3">
                     <Label className="mt-1">Laundry Item</Label>
-                    <div className="flex flex-col bg-mythemes-grey px-4 pt-2 pb-4 rounded-md" >
+                    <div className="flex flex-col bg-mythemes-secondaryblue/20 px-4 pt-2 pb-4 rounded-md" >
                         {formItems.map((item, index) => (
                             <div key={index} className="flex gap-4 ">
                                 <div className="w-3/4">
@@ -108,6 +109,7 @@ const FormCreateOrder: FC<FormCreateOrderProps> = ({isLoading, initialValues, on
                                         type="number"
                                         label=""
                                         placeholder="Entry Qty"
+                                        min={1}
                                         form={form}
                                     />
                                 </div>
@@ -116,18 +118,18 @@ const FormCreateOrder: FC<FormCreateOrderProps> = ({isLoading, initialValues, on
                                         {formItems.length > 1 ? (
                                             <Trash2 onClick={() => deleteFormLaundryItem(item.id)} className="text-mythemes-maingreen cursor-pointer" />
                                         ) : (
-                                            <Trash2 className="text-mythemes-secondarygreen cursor-pointer" />
+                                            <Trash2 className="text-mythemes-secondaryblue cursor-pointer" />
                                         )}
                                     </div>
                                 </div>
                             </div>
                         ))}
-                        <div onClick={addFormLaundryItem} className="bg-mythemes-secondarygreen rounded-md mt-4 p-1 cursor-pointer">
+                        <div onClick={addFormLaundryItem} className="bg-mythemes-secondaryblue/40 rounded-md mt-4 p-1 cursor-pointer">
                             <Plus className="text-mythemes-maingreen mx-auto" />
                         </div>
                     </div>
                 </div>
-                <Button type="submit" disabled={isLoading}>Submit</Button>
+                <Button type="submit" disabled={isLoading} className="bg-mythemes-maingreen">Submit</Button>
             </form>
         </Form>
     )

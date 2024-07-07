@@ -14,7 +14,9 @@ const UserOrder = () => {
   const [date, setDate] = useState<Date>();
   const [isLoading, setIsLoading] = useState(true);
 
+
   const dateNow = new Date();
+  setDate(dateNow)
 
   const {
     data: orders,
@@ -23,7 +25,7 @@ const UserOrder = () => {
   } = useGetOrders({
     page,
     take: 10,
-    filterDate: dateNow,
+    filterDate: date,
   });
 
   return (

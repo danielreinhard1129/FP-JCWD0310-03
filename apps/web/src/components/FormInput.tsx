@@ -10,6 +10,7 @@ interface FormInputProps {
     type: string;
     placeholder: string;
     form: any;
+    min?: number
 }
 
 
@@ -19,6 +20,7 @@ const FormInput: React.FC<FormInputProps> = ({
     type = 'text',
     placeholder,
     form,
+    min,
 
 }) => {
     return (
@@ -33,6 +35,7 @@ const FormInput: React.FC<FormInputProps> = ({
                             type={type}
                             placeholder={placeholder}
                             className=''
+                            min={min}
                             {...field} />
                     </FormControl>
                     <FormMessage />

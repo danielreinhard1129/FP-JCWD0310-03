@@ -44,14 +44,16 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
     return <SkeletonUser />;
   }
+  
   const currentDate = format(new Date(), 'ccc, dd MMM yyyy');
 
   function capitalize(str: string) {

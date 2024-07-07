@@ -1,6 +1,7 @@
 'use client';
 
 import Pagination from '@/components/Pagination';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -8,14 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 import useGetEmployees from '@/hooks/api/employee/useGetEmployees';
-import Link from 'next/link';
+import { PlusCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import TableEmployees from './components/TableEmployee';
-import SuperAdminGuard from '@/hoc/SuperAdminGuard';
-import { PlusCircle, Router } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
 
 const MenuEmployee = () => {
   const [page, setPage] = useState<number>(1);
