@@ -21,6 +21,10 @@ export const getDeliveryOrdersService = async (query: GetDeliveryOrdersQuery) =>
     })
     const whereClause: Prisma.DeliveryOrderWhereInput = {}
 
+    if (deliveryStatus != 'all') {
+      whereClause.deliveryStatus = deliveryStatus as DeliveryStatus;
+    }
+
     if (existingUser?.role != "SUPER_ADMIN") {
 
       const pickupOrders = await prisma.pickupOrder.findMany({
@@ -80,11 +84,7 @@ export const getDeliveryOrdersService = async (query: GetDeliveryOrdersQuery) =>
           };
         }
       }
-    }
-
-    if (deliveryStatus != 'all') {
-      whereClause.deliveryStatus = deliveryStatus as DeliveryStatus;
-    }
+    }    
 
     if (Boolean(isClaimedbyDriver) == true) {
       whereClause.driverId = {

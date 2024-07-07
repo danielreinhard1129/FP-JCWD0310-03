@@ -116,7 +116,7 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
           <Separator />
           <div className='flex flex-col'>
             <div className='flex justify-start gap-2'>
-              <p className='text-sm font-semibold'>Pickup By : </p>
+              <p className='text-sm font-semibold'>Delivery By : </p>
               <p className='text-sm font-semibold'> {deliveryOrder?.driver?.user.fullName}</p>
             </div>
             <div className='flex flex-col'>
@@ -127,7 +127,7 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         </div>
-        <div className={`${deliveryOrder?.deliveryStatus == DeliveryStatus.RECEIVED_BY_CUSTOMER ? 'hidden' : 'block'}`}>
+        <div className={`${deliveryOrder?.deliveryStatus == DeliveryStatus.RECEIVED_BY_CUSTOMER || deliveryOrder?.deliveryStatus == DeliveryStatus.NOT_READY_TO_DELIVER  ? 'hidden' : 'block'}`}>
           <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{label}</button>
         </div>
       </div>
