@@ -17,12 +17,16 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logoutAction } from '@/redux/slices/userSlice';
 import { Role } from '@/types/user.type';
 import { Button } from '@/components/ui/button';
+import { BASE_API_URL } from '@/utils/config';
+import noPic from '../../../../../public/pictNotFound.jpeg';
 
 const Sidebar = () => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname.startsWith(path);
   const dispatch = useAppDispatch();
-  const { id, role } = useAppSelector((state) => state.user);
+  const { id, role, fullName, profilePic } = useAppSelector(
+    (state) => state.user,
+  );
   const router = useRouter();
   const [isOrdersAccordionOpen, setIsOrdersAccordionOpen] = useState(false);
   const [isShipmentAccordionOpen, setIsShipmentAccordionOpen] = useState(false);
@@ -131,15 +135,40 @@ const Sidebar = () => {
           <Shirt className="my-auto w-5 h-5" />
           <h2 className="my-auto">Laundry Items</h2>
         </Link>
-        <div className='absolute flex bottom-0 py-5 w-full'>
-        <Button
-          onClick={logout}
-          className="text-center mx-auto bg-white font-bold text-red-500 cursor-pointer flex gap-2"
-        >
-          {' '}
-          <p>Logout</p>
-          <LogOut size={15} />
-        </Button>
+        <div className="absolute flex flex-col bottom-0 py-5 w-full gap-6 px-6">
+          <div className=" flex flex-col items-center gap-1 ">
+            <div className="w-10 h-10 rounded-full border-2 my-auto justify-center relative overflow-hidden mx-auto ">
+              <Image
+                alt="ProfilePict"
+                src={
+                  profilePic
+                    ? profilePic.includes('googleusercontent.com')
+                      ? profilePic
+                      : `${BASE_API_URL}/assets${profilePic}`
+                    : noPic.src
+                }
+                quality={80}
+                objectFit="cover"
+                fill
+                loading="lazy"
+                className="mx-auto"
+              />
+            </div>
+            <div className="">
+              <p>{fullName}</p>
+              <p className="font-normal text-sm">
+                {role == Role.SUPER_ADMIN ? 'Super Admin' : 'Outlet Admin'}
+              </p>
+            </div>
+          </div>
+          <Button
+            onClick={logout}
+            className="text-center mx-auto bg-white font-bold text-red-500 cursor-pointer flex gap-2 hover:bg-red-500 hover:text-white"
+          >
+            {' '}
+            <p>Logout</p>
+            <LogOut size={15} />
+          </Button>
         </div>
       </div>
     </div>

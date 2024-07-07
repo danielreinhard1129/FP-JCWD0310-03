@@ -42,7 +42,7 @@ const UserOrder = () => {
     refetch,
   } = useGetOrders({
     page,
-    take: 10,
+    take: 7,
     search,
     filterDate: date,
     filterCategory,
@@ -164,10 +164,10 @@ const UserOrder = () => {
                 <SelectItem value="completed">Completed</SelectItem>
               </SelectContent>
             </Select>
-          </div> 
+          </div>
         </div>
       </div>
-      <div className="min-h-dvh flex flex-col gap-2 pt-4 container px-6">
+      <div className=" flex flex-col gap-2 pt-4 container px-6">
         <div className="flex flex-col gap-3">
           {orders.map((order, index) => {
             const formattedDate = format(
