@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const OrderDetail = ({ params }: { params: { id: string } }) => {
   const { data, refetch, isLoading } = useGetOrder(Number(params.id));
@@ -30,6 +31,7 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
           orderStatus: OrderStatus.COMPLETED,
         };
         await updateOrderStatus(values);
+        toast.success('Confirmation Success!');
         refetch();
       }
     } catch (error) {

@@ -86,6 +86,7 @@ const FormCreateOrder: FC<FormCreateOrderProps> = ({isLoading, initialValues, on
                     type="number"
                     label="Weight"
                     placeholder="Entry Laundry Weight"
+                    min={1}
                     form={form}
                 />
                 <div className="flex flex-col gap-3">
@@ -108,6 +109,7 @@ const FormCreateOrder: FC<FormCreateOrderProps> = ({isLoading, initialValues, on
                                         type="number"
                                         label=""
                                         placeholder="Entry Qty"
+                                        min={1}
                                         form={form}
                                     />
                                 </div>

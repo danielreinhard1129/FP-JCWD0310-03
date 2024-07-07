@@ -1,5 +1,4 @@
 import prisma from '@/prisma';
-import { EmployeeStation, OrderStatus } from '@prisma/client';
 
 interface CreatePickupOrderBody {
     outletId: number
@@ -87,67 +86,70 @@ export const createOrderPickupOrderService = async (
         const nextDeliveryNumber = getNextNumber(lastDeliveryNumber?.deliveryNumber);
         const deliveryNumber = `DO-${padNumber(existingUser.id, 4)}-${padNumber(outletId, 3)}-${nextDeliveryNumber}`
 
-        const createPickupOrder = await prisma.pickupOrder.create({
-            data: {
-                pickupNumber: pickupNumber,
-                outletId: outletId,
-                userId: userId,
-                addressId: userAddressId,
-                distance: distance,
-                pickupPrice: pickupPrice,
-            },
-        });
+        const newPickup = await prisma.$transaction(async (tx) => {
 
-        const createOrder = await prisma.order.create({
-            data: {
-                orderNumber: orderNumber,
-                pickupOrderId: createPickupOrder.id,
-            }
-        })
-
-        const createDeliveryOrder = await prisma.deliveryOrder.create({
-            data: {
-                deliveryNumber: deliveryNumber,
-                orderId: createOrder.id,
-                userId: userId,
-                addressId: userAddressId,
-                distance: distance,
-                deliveryPrice: pickupPrice
-            }
-        })
-
-        const createNotification = await prisma.notification.create({
-            data: {
-                title: "Incoming Pickup Order",
-                description: "New pickup request at your outlet",
-            }
-        })
-
-        const getUserId = await prisma.employee.findMany({
-            where: {
-                outletId: outletId,
-                workShift: null,
-                station: null,
-            },
-            select: { userId: true }
-        })
-        const userIds = getUserId.map(user => user.userId)
-        const createUserNotification = await Promise.all(userIds.map(async (userId) => {
-            await prisma.userNotification.create({
+            const createPickupOrder = await tx.pickupOrder.create({
                 data: {
-                    notificationId: createNotification.id,
-                    userId: userId
-                }
+                    pickupNumber: pickupNumber,
+                    outletId: outletId,
+                    userId: userId,
+                    addressId: userAddressId,
+                    distance: distance,
+                    pickupPrice: pickupPrice,
+                },
             });
-        }));
 
-        return {
-            pickupOrder: createPickupOrder,
-            order: createOrder,
-            deliveryOrder: createDeliveryOrder,
-            userNotification: createUserNotification,
-        }
+            const createOrder = await tx.order.create({
+                data: {
+                    orderNumber: orderNumber,
+                    pickupOrderId: createPickupOrder.id,
+                }
+            })
 
+            const createDeliveryOrder = await tx.deliveryOrder.create({
+                data: {
+                    deliveryNumber: deliveryNumber,
+                    orderId: createOrder.id,
+                    userId: userId,
+                    addressId: userAddressId,
+                    distance: distance,
+                    deliveryPrice: pickupPrice
+                }
+            })
+
+            const createNotification = await tx.notification.create({
+                data: {
+                    title: "Incoming Pickup Order",
+                    description: "New pickup request at your outlet",
+                }
+            })
+
+            const getUserId = await tx.employee.findMany({
+                where: {
+                    outletId: outletId,
+                    workShift: null,
+                    station: null,
+                },
+                select: { userId: true }
+            })
+            const userIds = getUserId.map(user => user.userId)
+            const createUserNotification = await Promise.all(userIds.map(async (userId) => {
+                await tx.userNotification.create({
+                    data: {
+                        notificationId: createNotification.id,
+                        userId: userId
+                    }
+                });
+            }));
+
+            return {
+                pickupOrder: createPickupOrder,
+                order: createOrder,
+                deliveryOrder: createDeliveryOrder,
+                userNotification: createUserNotification,
+            }
+        })
+        return newPickup
     } catch (error) {
         throw error;
     }

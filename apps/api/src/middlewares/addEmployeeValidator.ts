@@ -54,8 +54,8 @@ export const addEmployeeValidator = [
       const existingUser = await prisma.user.findFirst({
         where: { email: value },
       });
-      if (existingUser) {
-        throw new Error('E-mail already in use');
+      if (existingUser && existingUser.isDelete === false) {
+        throw new Error('An account with that email already exists!');
       }
     }),
 

@@ -44,8 +44,7 @@ export const updateDeliveryOrderService = async (
         data: { orderStatus: OrderStatus.RECEIVED_BY_CUSTOMER}
       })
 
-      // const schedule = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
-      const schedule = new Date(Date.now() + 2 * 60 * 1000);
+      const schedule = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
       scheduleJob('run every ', schedule, async () => {
         const order = await prisma.order.findFirst({
           where: {

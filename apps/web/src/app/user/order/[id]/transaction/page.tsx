@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ChevronLeft, ScrollText } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 const Transaction = ({ params }: { params: { id: string } }) => {
   const { data, refetch, isLoading } = useGetPayment({
@@ -67,23 +68,17 @@ const Transaction = ({ params }: { params: { id: string } }) => {
       if (!isLoading && data) {
         if (window.snap) {
           window.snap.pay(`${data.snapToken}`
-          //   , {
-          //   onSuccess: function (result: any) {
-          //     alert('Payment success!');
-          //     console.log(result);
-          //   },
-          //   onPending: function (result: any) {
-          //     alert('Waiting for your payment!');
-          //     console.log(result);
-          //   },
-          //   onError: function (result: any) {
-          //     alert('Payment failed!');
-          //     console.log(result);
-          //   },
-          //   onClose: function () {
-          //     alert('Close Kah?');
-          //   },
-          // }
+            , {
+            onSuccess: function (result: any) {
+              toast.success('Payment success!');
+            },
+            onPending: function (result: any) {
+              toast.success('Waiting for your payment!');
+            },
+            onError: function (result: any) {
+              toast.success('Payment failed!');
+            },
+          }
         );
         } else {
           alert('Snap is not loaded yet. Please try again.');

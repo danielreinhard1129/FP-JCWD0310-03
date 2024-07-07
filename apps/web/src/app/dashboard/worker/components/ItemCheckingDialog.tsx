@@ -3,17 +3,18 @@ import FormInputDisable from '@/components/FormInputDisable';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
+import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import useGetOrderItems from '@/hooks/api/orderItem/useGetOrderItems';
+import useCreateOrderWorker from '@/hooks/api/orderWorker/useCreateOrderWorker';
+import { OrderStatus } from '@/types/order.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import FormSelectDisable from '../../master/components/FormSelectDisable';
-import ItemLaundryItem from '../../master/components/ItemLaundryItem';
-import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
-import { OrderStatus } from '@/types/order.type';
-import useCreateOrderWorker from '@/hooks/api/orderWorker/useCreateOrderWorker';
 import ItemLaundryItemWithDeleted from '../../master/components/itemLaundryItemWithDeleted';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface ItemCheckingDialogProps {
   workerId: number;
@@ -28,6 +29,7 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
   const [formItems, setFormItems] = useState([{ id: 1 }]);
   const [requestAccess, setRequestAccess] = useState<boolean>(false);
   const [note, setNote] = useState<string>('')
+  const router = useRouter()
 
   const { data: orderItems } = useGetOrderItems({
     orderId: orderId,
@@ -53,7 +55,9 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
     try {
       await updateOrderStatus(values);
       refetch();
+      toast.success(`Claim Succeess!`);
       onClose();
+      router.back();
     } catch (error) {
       console.error('Failed to update order status', error);
     }
@@ -63,7 +67,9 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
     try {
       await createOrderWorker(bypassValues);
       refetch();
+      toast.success(`Sending Bypass Request Succeess!`);
       onClose();
+      router.back();
     } catch (error) {
       console.error('Failed to create bypass request', error);
     }
@@ -154,6 +160,7 @@ const ItemCheckingDialog: React.FC<ItemCheckingDialogProps> = ({ isOpen, onClose
                         name={`check_qty_${item.id}`}
                         type="number"
                         label=""
+                        min={0}
                         placeholder="Entry Qty"
                         form={form}
                       />

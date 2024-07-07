@@ -1,12 +1,12 @@
 'use client';
 
-import { toast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
 import { User } from '@/types/user.type';
 import { AxiosError } from 'axios';
 
 import { useRouter } from 'next/navigation';
 import useAxios from '../useAxios';
+import { toast } from 'sonner';
 
 interface AddEmployeeArgs
   extends Pick<User, 'email' | 'fullName' | 'password' > {
@@ -21,16 +21,14 @@ const useAddEmployee = () => {
   const addEmployee = async (payload: AddEmployeeArgs) => {
     try {
       await axiosInstance.post('/employees', payload);
+
+      toast.success('Add Employee Success !');
       router.push("/dashboard/master/employee");
     } catch (error) {          
       if (error instanceof AxiosError) {
-        toast({
-          className: cn(
-            'top-0 right-0 flex fixed md:max-w-[420px] md:top-16 md:right-4 border-mythemes-darkpink text-mythemes-darkpink',
-          ),
-          variant: 'default',
-          title: error?.response?.data,
-        });
+        toast.error(error.response?.data.errors[0].msg);
+        console.log(error);
+        
       }
     }
   };

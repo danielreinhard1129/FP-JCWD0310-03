@@ -77,7 +77,7 @@ export const addEmployeeService = async (body: AddEmployeeBody) => {
                         fullName,
                         password: hashedPassword,
                         role,
-                        isVerify,
+                        isVerify: true,
                     }
                 });
 

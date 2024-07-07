@@ -11,6 +11,7 @@ import ItemCheckingDialog from '../../components/ItemCheckingDialog';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { OrderStatus } from '@/types/order.type';
 import { EmployeeWorkShift } from '@/types/employee.type';
+import { toast } from 'sonner';
 
 const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -109,6 +110,7 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   const handleUpdate = async () => {
     try {
       await updateOrderStatus(values);
+      toast.success(`Succeess!`);
       router.back();
     } catch (error) {
       console.error('Failed to update pickup order', error);
@@ -122,8 +124,6 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
-
-  //handle workShift
 
   const [isDisable, setIsDisable] = useState(false);
 

@@ -10,6 +10,7 @@ interface IGetOrderWorkersQuery extends IPaginationQueries {
   station?: string;
   isComplete?: number;
   bypassRequest?: number;
+  filterOutlet?: string;
 }
 
 const useGetOrderWorkers = (queries: IGetOrderWorkersQuery) => {
@@ -38,7 +39,7 @@ const useGetOrderWorkers = (queries: IGetOrderWorkersQuery) => {
   useEffect(() => {
     getOrderWorkers();
 
-  }, [queries?.isComplete, queries?.station, queries?.sortOrder, queries?.page]);
+  }, [queries?.isComplete, queries?.station, queries?.sortOrder, queries?.page, queries.filterOutlet]);
 
   return { data, isLoading, meta, refetch: getOrderWorkers };
 };

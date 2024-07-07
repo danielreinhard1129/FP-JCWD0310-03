@@ -1,5 +1,9 @@
 import prisma from '@/prisma';
 import { EmployeeStation, EmployeeWorkShift, OrderStatus } from '@prisma/client';
+import path from 'path';
+import fs from 'fs';
+import Handlebars from 'handlebars';
+import { transporter } from '@/lib/nodemailer';
 
 interface UpdateOrderStatusBody {
     orderId: number,
@@ -24,7 +28,7 @@ export const updateOrderStatusService = async (
         const existingEmployee = await prisma.user.findFirst({
             where: { id: workerId },
             select: { employee: { select: { id: true } } }
-        })        
+        })
 
         let setOrderStatus = orderStatus
 
@@ -38,6 +42,27 @@ export const updateOrderStatusService = async (
                 orderStatus: setOrderStatus,
             },
         });
+
+        if (orderStatus == 'AWAITING_PAYMENT') {
+            const customer = await prisma.user.findFirst({
+                where: { id: existingOrder.pickupOrder.userId },
+                select: {email: true, fullName: true}
+            });
+
+            const templatePath = path.join(__dirname, '../../templates/laundryfinish.hbs');
+            const templateSource = fs.readFileSync(templatePath, 'utf-8');
+            const compileTemplate = Handlebars.compile(templateSource);
+
+            await transporter.sendMail({
+                from: 'Admin',
+                to: customer?.email,
+                subject: 'Verify your account',
+                html: compileTemplate({
+                    name: customer?.fullName,
+                    orderNumber: existingOrder.orderNumber
+                }),
+            });
+        }
 
         if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == false) {
             const createNotification = await prisma.notification.create({

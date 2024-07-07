@@ -4,6 +4,8 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import useAxios from '../useAxios';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 interface updateEmployeeArgs {
   workShift: string;
@@ -25,9 +27,12 @@ const useUpdateEmployee = (employeeId: number) => {
       await axiosInstance.patch(`/employees/${employeeId}`, {
         ...payload,
       });
+      toast.success('Edit Employee Success !');
       router.push('/dashboard/master/employee');
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
     } finally {
       setIsLoading(false);
     }
