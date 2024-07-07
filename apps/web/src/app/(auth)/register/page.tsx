@@ -24,6 +24,7 @@ const Register = () => {
           <h1 className="text-4xl font-bold mt-24">Create Your Account.</h1>
           <FormRegister />
         </div>
+    
       </div>
     </main>
   );

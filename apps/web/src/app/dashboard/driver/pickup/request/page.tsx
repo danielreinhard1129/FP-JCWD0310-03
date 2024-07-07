@@ -8,6 +8,9 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import noAct from '../../../../../../public/No activity yet.png';
 import ShipmentCard from '../../components/CardShipment';
+import DriverAuthGuard from '@/hoc/DriverAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
+import useGetPickupOrdersByCoord from '@/hooks/api/pickupOrder/useGetPickupOrdersByCoord';
 
 const PickupOrderRequest = () => {
   const [page, setPage] = useState<number>(1);

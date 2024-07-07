@@ -64,7 +64,7 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
     } else if (selected == 'DRIVER') {
       setSchema(ValidationSchemaDriver);
     }
-  }, [selected]);
+  }, [selected]);  
 
   const renderConditionalFields = () => {
     switch (selected) {
@@ -76,7 +76,10 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
+              
             />
             <FormSelect
               name="workShift"
@@ -95,7 +98,9 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
               label="Outlet"
               placeholder="Select an Outlet"
               form={form}
-              item={<ItemOutlet />}
+              item={<ItemOutletWithDeleted 
+                defaultValue={initialValues.outletId}
+              />}
             />
             <FormSelect
               name="workShift"
