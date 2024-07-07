@@ -4,7 +4,7 @@ import useGetOrder from '@/hooks/api/order/useGetOrder';
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import { useAppSelector } from '@/redux/hooks';
 import { format } from 'date-fns';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ItemCheckingDialog from '../../components/ItemCheckingDialog';
@@ -12,10 +12,11 @@ import useGetUser from '@/hooks/api/user/useGetUser';
 import { OrderStatus } from '@/types/order.type';
 import { EmployeeWorkShift } from '@/types/employee.type';
 import { toast } from 'sonner';
+import SkeletonDetails from '@/app/dashboard/driver/components/SkeletonDetails';
 
 const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const { data, refetch } = useGetOrder(Number(params.slug[0]));
+  const { data, refetch, isLoading: getLoading } = useGetOrder(Number(params.slug[0]));
   const { id } = useAppSelector((state) => state.user)
   const router = useRouter()
   const { user } = useGetUser();
@@ -70,7 +71,6 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
 
     }
     if (process == "history") {
-
     }
 
   }
@@ -97,15 +97,13 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
     }
   }
 
-  //handle Update
-
   const values = {
     orderId: Number(data?.id),
     workerId: Number(id),
     orderStatus: targetStatus as OrderStatus
   }
 
-  const { updateOrderStatus } = useUpdateOrderStatus()
+  const { updateOrderStatus, isLoading } = useUpdateOrderStatus()
 
   const handleUpdate = async () => {
     try {
@@ -156,6 +154,10 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   let formattedDate
   if (data) {
     formattedDate = format(new Date(data?.createdAt), 'dd-MM-yyyy');
+  }
+
+  if (getLoading) {
+    return <SkeletonDetails />;
   }
 
   return (
@@ -243,7 +245,10 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
           ) : (
             (isBypassRequest ? (
               (isBypassAccepted ? (
-                <button onClick={handleUpdate} className='bg-yellow-600 text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
+                <button disabled={isLoading} onClick={handleUpdate} className='bg-yellow-600 text-white p-1 rounded-xl w-full'>
+                  {isLoading ? <Loader2 className="mx-auto animate-spin" /> : `${buttonLabel}`}
+                  {isLoading ?? 'Success !'}
+                </button>
               ) : (
                 (isBypassRejected ? (
                   <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
@@ -252,67 +257,13 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
                 ))
               ))
             ) : (
-              <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
+              <button disabled={isLoading} onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>
+                {isLoading ? <Loader2 className="mx-auto animate-spin" /> : `${buttonLabel}`}
+                {isLoading ?? 'Success !'}                
+                </button>
             ))
           ))
         )}
-
-
-
-        {/* {isItemChecking ? (
-          <>
-            {params.slug[2] != "request" ? (
-              (isHidden ? (
-                <></>
-              ) : (
-                (isBypassRequest == false ? (
-                  <>
-                    <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
-                  </>
-                ) : (
-                  (isBypassAccepted == true ? (
-                    <>
-                      <button onClick={handleUpdate} className='bg-yellow-600 text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
-                    </>
-                  ) : (
-                    (isBypassRejected == true ? (
-                      <>
-                        <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
-                      </>
-                    ) : (
-                      <>
-                        <button disabled className='bg-mythemes-dimgrey text-white p-1 rounded-xl w-full'>Bypass Requested</button>
-                      </>
-                    ))
-                  ))
-                ))
-              ))
-            ) : (
-              <>
-                <button disabled={isDisable} onClick={handleDialogOpen} className={`text-white p-1 rounded-xl w-full ${isDisable ? 'bg-mythemes-secondarygreen' : 'bg-mythemes-maingreen'}`} >{buttonLabel}</button>
-
-                <ItemCheckingDialog
-                  isOpen={isDialogOpen}
-                  onClose={handleDialogClose}
-                  orderId={Number(params.slug[0])}
-                  refetch={refetch}
-                  targetStatus={String(targetStatus)}
-                  workerId={id}
-                />
-
-              </>
-            )}
-          </>
-        ) : (
-          (isBypassRejected == true ? (
-            <>
-              <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
-            </>
-          ) : (
-            <>
-            </>
-          ))
-        )} */}
       </div>
     </div >
   )

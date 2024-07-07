@@ -22,7 +22,7 @@ import ItemStation from '../../../components/ItemStation';
 import ItemWorkShift from '../../../components/ItemWorkShift';
 
 export function AddEmployeeForm() {
-  const { addEmployee } = useAddEmployee();
+  const { addEmployee, isLoading } = useAddEmployee();
   const [selected, setSelected] = useState<string>('');
   const [schema, setSchema] = useState(ValidationSchemaSuperAdmin);
 
@@ -150,7 +150,7 @@ export function AddEmployeeForm() {
           </div>
         </div>
 
-        <Button type="submit">Submit</Button>
+        <Button disabled={isLoading} type="submit">Submit</Button>
       </form>
     </Form>
   );
