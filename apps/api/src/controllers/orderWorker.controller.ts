@@ -12,6 +12,7 @@ export class OrderWorkerController {
         station: req.query.station as string || 'all',
         isComplete: parseInt(req.query.isComplete as string),
         bypassRequest: parseInt(req.query.bypassRequest as string) || 'all',
+        filterOutlet: parseInt(req.query.filterOutlet as string) || 'all',
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',

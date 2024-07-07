@@ -6,9 +6,6 @@ import React, { useState } from 'react';
 const ItemOutlet = () => {
   const [page, setPage] = useState(1);
   const { data: outlets } = useGetOutletList({
-    page,
-    take: 1,
-    search: '',
   });
   return (
     <SelectContent>

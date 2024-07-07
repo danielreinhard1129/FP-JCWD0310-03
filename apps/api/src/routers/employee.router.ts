@@ -1,4 +1,6 @@
 import { EmployeeController } from '@/controllers/employee.controller';
+import { addEmployeeValidator } from '@/middlewares/addEmployeeValidator';
+import { updateEmployeeValidator } from '@/middlewares/updateEmployeeValidator';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
@@ -16,6 +18,7 @@ export class EmployeeRouter {
     this.router.post(
       '/',
       verifyToken,
+      addEmployeeValidator,
       this.employeeController.addEmployeeController,
     );
     this.router.get(
@@ -31,6 +34,7 @@ export class EmployeeRouter {
     this.router.patch(
       '/:id',
       verifyToken,
+      updateEmployeeValidator,
       this.employeeController.updateEmployeeController,
     );
     this.router.delete(

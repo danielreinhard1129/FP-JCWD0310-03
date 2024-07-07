@@ -14,8 +14,6 @@ const UserOrder = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState(true);
 
-  const dateNow = new Date();
-
   const {
     data: orders,
     meta,

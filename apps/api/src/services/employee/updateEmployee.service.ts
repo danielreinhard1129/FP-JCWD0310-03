@@ -54,29 +54,33 @@ export const updateEmployeeService = async (id: number, body: any) => {
       (WorkShift = null), (Stasion = null);
     }
 
-    const updateDataEmployee = await prisma.employee.update({
-      where: { id },
-      data: {
-        outletId: OutletId,
-        workShift: WorkShift,
-        station: Stasion,
-        isSuperAdmin: IsSuperAdmin,
-      },
-    });
+    const updateEmployee = await prisma.$transaction(async (tx) => {
+      const updateDataEmployee = await tx.employee.update({
+        where: { id },
+        data: {
+          outletId: OutletId,
+          workShift: WorkShift,
+          station: Stasion,
+          isSuperAdmin: IsSuperAdmin,
+        },
+      });
 
-    const updateDataUser = await prisma.user.update({
-      where: { id: employee.userId },
-      data: {
-        email,
-        fullName,
-        role,
-      },
-    });
+      const updateDataUser = await tx.user.update({
+        where: { id: employee.userId },
+        data: {
+          email,
+          fullName,
+          role,
+        },
+      });
 
-    return {
-      user: updateDataUser,
-      employee: updateDataEmployee,
-    };
+      return {
+        user: updateDataUser,
+        employee: updateDataEmployee,
+      };
+    })
+    return updateEmployee
+    
   } catch (error) {
     throw error;
   }

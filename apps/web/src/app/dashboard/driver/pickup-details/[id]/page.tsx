@@ -7,6 +7,7 @@ import { PickupStatus } from '@/types/pickupOrder.type';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const PickupDetails = ({ params }: { params: { id: string } }) => {
   const { pickupOrder, refetch, isLoading } = useGetPickupOrder(Number(params.id));
@@ -48,6 +49,7 @@ const PickupDetails = ({ params }: { params: { id: string } }) => {
   const handleUpdate = async () => {
     try {
       await updatePickupOrder(values);
+      toast.success(`Succeess!`);
       router.back()
     } catch (error) {
       console.error('Failed to update pickup order', error);

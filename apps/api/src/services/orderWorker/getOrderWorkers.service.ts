@@ -8,6 +8,7 @@ interface GetOrderWorkersQuery extends PaginationQueryParams {
   station: string;
   isComplete: number;
   bypassRequest: number | string;
+  filterOutlet?: string | number;
 }
 
 export const getOrderWorkersService = async (query: GetOrderWorkersQuery) => {
@@ -21,6 +22,7 @@ export const getOrderWorkersService = async (query: GetOrderWorkersQuery) => {
       station,
       isComplete,
       bypassRequest,
+      filterOutlet
     } = query;
 
     const existingUser = await prisma.user.findFirst({
@@ -35,17 +37,24 @@ export const getOrderWorkersService = async (query: GetOrderWorkersQuery) => {
     const workerIds = workers.map((worker) => worker.id);
 
     const whereClause: Prisma.OrderWorkerWhereInput = {
-      // isComplete: Boolean(isComplete),
     };
-
-    // const whereSecondClause: Prisma.OrderWorkerWhereInput = {}
+    if (existingUser?.role == 'SUPER_ADMIN') {
+      if (filterOutlet != 'all') {
+        const workers = await prisma.employee.findMany({
+          where: { outletId: Number(filterOutlet) },
+          select: { id: true },
+        });
+        const workerIds = workers.map((worker) => worker.id);
+        whereClause.workerId = { in: workerIds };
+      }
+    }
 
     if (existingUser?.role == 'OUTLET_ADMIN') {
       whereClause.workerId = { in: workerIds };
     }
 
-    if(existingUser?.role=="WORKER"){
-      whereClause.workerId= existingUser.employee?.id
+    if (existingUser?.role == "WORKER") {
+      whereClause.workerId = existingUser.employee?.id
     }
 
     if (station != 'all') {
@@ -59,17 +68,6 @@ export const getOrderWorkersService = async (query: GetOrderWorkersQuery) => {
     if (bypassRequest != 'all') {
       whereClause.bypassRequest = Boolean(bypassRequest);
     }
-
-    // if(!Number.isNaN(isBypassRejected)){
-    //   if(Boolean(isBypassRejected)==false){
-    //     whereClause.bypassRejected = Boolean(isBypassRejected)
-    //   }
-
-    //   if(Boolean(isBypassRejected)==true){
-    //     whereSecondClause.bypassRejected = Boolean(isBypassRejected)
-
-    //   }
-    // }
 
     const orderWorkers = await prisma.orderWorker.findMany({
       where: whereClause,

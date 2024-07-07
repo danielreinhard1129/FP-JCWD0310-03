@@ -1,5 +1,6 @@
 'use client';
 import Pagination from '@/components/Pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -7,34 +8,32 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 import useGetOrders from '@/hooks/api/order/useGetOrders';
-import useGetUser from '@/hooks/api/user/useGetUser';
 import { useAppSelector } from '@/redux/hooks';
 import { OrderStatus } from '@/types/order.type';
+import { Role } from '@/types/user.type';
 import { useState } from 'react';
+import ItemFilterOutlet from '../order/components/ItemFilterOutlet';
 import TableDeliveryRequest from './components/TableDeliveryRequest';
-import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 
 const DeliveryRequest = () => {
   const [page, setPage] = useState<number>(1);
-  const { id } = useAppSelector((state) => state.user);
   const [filterOutlet, setFilterOutlet] = useState('all');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState('asc');  
+  const { role } = useAppSelector((state) => state.user);
 
   const {
     data: orders,
     meta,
     refetch,
   } = useGetOrders({
-    // id: id,
     page,
     take: 10,
     filterOutlet,
     filterStatus: String(OrderStatus.READY_FOR_DELIVERY),
     sortOrder,
   });
-
-  const { user } = useGetUser();
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
@@ -50,8 +49,37 @@ const DeliveryRequest = () => {
 
   return (
     <div className="container flex flex-col gap-5 p-6">
+      <div className='flex justify-between'>
       <div>
         <h1 className="font-bold text-xl">Delivery Request</h1>
+      </div>
+      <div className="flex gap-2">
+          <div className={`${role !== Role.SUPER_ADMIN ? 'hidden' : 'block'}`}>
+            <Select
+              name="outlet"
+              onValueChange={handleChangeFilterOutlet}
+              defaultValue="all"
+            >
+              <SelectTrigger className="min-w-40">
+                <SelectValue placeholder={'Outlet'} />
+              </SelectTrigger>
+              <ItemFilterOutlet />
+            </Select>
+          </div>
+          <Select
+            name="sortOrder"
+            onValueChange={handleChangeSortingBy}
+            defaultValue="asc"
+          >
+            <SelectTrigger className="min-w-40">
+              <SelectValue placeholder={'Sort By'} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">Sort by: Newest</SelectItem>
+              <SelectItem value="desc">Sort by: Latest</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <div>
         <Table className="rounded-xl ">
@@ -73,6 +101,7 @@ const DeliveryRequest = () => {
           </TableHeader>
           <TableBody>
             {orders?.map((order, index) => {
+              const options:Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }
               return (
                 <TableDeliveryRequest
                   key={index}
@@ -81,10 +110,11 @@ const DeliveryRequest = () => {
                   pickupNumber={order.pickupOrder.pickupNumber}
                   weight={String(order.weight)}
                   price={String(order.laundryPrice)}
-                  createdAt={String(order.createdAt)}
+                  createdAt={String(
+                    new Date(order.createdAt).toLocaleDateString('en-US',options),
+                  )}
                   status={order.orderStatus}
                   refetch={refetch}
-                  employeeWorkShift={user?.employee?.workShift}
                 />
               );
             })}

@@ -39,57 +39,64 @@ export const addEmployeeService = async (body: AddEmployeeBody) => {
         }
 
         if (existingUser?.isDelete === true) {
-            const updatedUser = await prisma.user.update({
-                where: { id: existingUser.id },
-                data: {
-                    email,
-                    fullName,
-                    password: hashedPassword,
-                    role,
-                    isVerify: true,
-                    isDelete: false,
-                }
-            });
+            const newEmployee = await prisma.$transaction(async (tx) => {
+                const updatedUser = await tx.user.update({
+                    where: { id: existingUser.id },
+                    data: {
+                        email,
+                        fullName,
+                        password: hashedPassword,
+                        role,
+                        isVerify: true,
+                        isDelete: false,
+                    }
+                });
 
-            const updatedEmployee = await prisma.employee.update({
-                where: { userId: existingUser.id },
-                data: {
-                    outletId: outletIdForUpdate,
-                    workShift: workShiftForUpdate,
-                    station: stationForUpdate,
-                    isSuperAdmin: isSuperAdminForUpdate,
-                }
-            });
+                const updatedEmployee = await tx.employee.update({
+                    where: { userId: existingUser.id },
+                    data: {
+                        outletId: outletIdForUpdate,
+                        workShift: workShiftForUpdate,
+                        station: stationForUpdate,
+                        isSuperAdmin: isSuperAdminForUpdate,
+                    }
+                });
 
-            return {
-                user: updatedUser,
-                employee: updatedEmployee,
-            };
+                return {
+                    user: updatedUser,
+                    employee: updatedEmployee,
+                };
+            })
+            return newEmployee
         } else {
-            const newUser = await prisma.user.create({
-                data: {
-                    email,
-                    fullName,
-                    password: hashedPassword,
-                    role,
-                    isVerify,
-                }
-            });
+            const newEmployee = await prisma.$transaction(async (tx) => {
 
-            const newEmployee = await prisma.employee.create({
-                data: {
-                    userId: newUser.id,
-                    outletId: Number(outletId),
-                    workShift,
-                    station,
-                    isSuperAdmin: isSuperAdminForUpdate,
-                }
-            });
+                const newUser = await tx.user.create({
+                    data: {
+                        email,
+                        fullName,
+                        password: hashedPassword,
+                        role,
+                        isVerify: true,
+                    }
+                });
 
-            return {
-                user: newUser,
-                employee: newEmployee,
-            };
+                const newEmployee = await tx.employee.create({
+                    data: {
+                        userId: newUser.id,
+                        outletId: Number(outletId),
+                        workShift,
+                        station,
+                        isSuperAdmin: isSuperAdminForUpdate,
+                    }
+                });
+
+                return {
+                    user: newUser,
+                    employee: newEmployee,
+                };
+            })
+            return newEmployee
         }
     } catch (error) {
         throw error;

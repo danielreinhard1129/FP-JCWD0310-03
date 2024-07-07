@@ -15,13 +15,13 @@ import SkeletonUser from './components/SkeletonUser';
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPosition, setCurrentPosition] = useState<[number, number]>();
-  const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
-    useAppSelector((state) => state.user);
+  const { id, fullName } = useAppSelector((state) => state.user);
   const {
     getLocation,
     data,
     isLoading: getLocLoading,
   } = useGetLocationByCoord();
+  const router = useRouter();
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
@@ -37,7 +37,14 @@ const Home = () => {
     );
   }, []);
 
-  const router = useRouter();
+  const currentDate = format(new Date(), 'ccc, dd MMM yyyy');
+
+  function capitalize(str: string) {
+    return str
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -47,14 +54,6 @@ const Home = () => {
 
   if (isLoading) {
     return <SkeletonUser />;
-  }
-  const currentDate = format(new Date(), 'ccc, dd MMM yyyy');
-
-  function capitalize(str: string) {
-    return str
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
   }
 
   return (
