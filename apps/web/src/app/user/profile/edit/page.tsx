@@ -1,6 +1,6 @@
 'use client';
+import AuthGuard from '@/hoc/AuthGuard';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
-import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { BASE_API_URL } from '@/utils/config';
 import { getChangedValues } from '@/utils/getChangeValues';
@@ -103,4 +103,4 @@ const EditProfile = () => {
   );
 };
 
-export default CustomerAuthGuard(EditProfile);
+export default AuthGuard(EditProfile);

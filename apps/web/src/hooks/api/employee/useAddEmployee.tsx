@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import useAxios from '../useAxios';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface AddEmployeeArgs
   extends Pick<User, 'email' | 'fullName' | 'password' > {
@@ -18,7 +19,9 @@ interface AddEmployeeArgs
 const useAddEmployee = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const addEmployee = async (payload: AddEmployeeArgs) => {
+    setIsLoading(true);
     try {
       await axiosInstance.post('/employees', payload);
 
@@ -30,9 +33,11 @@ const useAddEmployee = () => {
         console.log(error);
         
       }
+    } finally {
+      setIsLoading(false);
     }
   };
-  return { addEmployee };
+  return { addEmployee, isLoading };
 };
 
 export default useAddEmployee;

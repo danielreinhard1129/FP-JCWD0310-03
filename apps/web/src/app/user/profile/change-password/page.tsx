@@ -1,5 +1,5 @@
 'use client';
-import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
+import AuthGuard from '@/hoc/AuthGuard';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -46,4 +46,4 @@ const ChangePassword = () => {
   );
 };
 
-export default CustomerAuthGuard(ChangePassword);
+export default AuthGuard(ChangePassword);

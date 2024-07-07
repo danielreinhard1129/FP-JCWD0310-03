@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import noPic from '../../../../public/pictNotFound.jpeg';
 import SkeletonProfile from '../components/SkeletonProfile';
 import LogoutDialog from '@/components/LogoutDialog';
+import { Role } from '@/types/user.type';
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -153,18 +154,22 @@ const Profile = () => {
           )}
 
           <Button
-            className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2 "
+            className={`${role !== Role.CUSTOMER ? `hidden` : `block`} bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black border-mythemes-mainYellow border-b-2 `}
             onClick={() => router.push(`/user/order`)}
           >
-            <p>Your Order</p>
-            <IoIosArrowForward />
+            <div className='flex flex-row justify-between'>
+              <p>Your Order</p>
+              <IoIosArrowForward />
+            </div>
           </Button>
           <Button
-            className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2"
+            className={`${role !== Role.CUSTOMER ? `hidden` : `block`} bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black border-mythemes-mainYellow border-b-2`}
             onClick={() => router.push('/user/profile/address')}
           >
-            <p>Your Address</p>
-            <IoIosArrowForward />
+            <div className='flex flex-row justify-between'>
+              <p>Your Address</p>
+              <IoIosArrowForward />
+            </div>
           </Button>
         </div>
         <div className="mx-auto mt-auto">

@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import FormInput from '../../../../../components/FormInput';
 import { ValidationSchema } from '../validationSchema';
+import { Role } from '@/types/user.type';
 
 interface FormEditUser {
   fullName: string;
@@ -35,7 +36,7 @@ const FormEditUser: FC<FormEditUserProps> = ({
     defaultValues: initialValues,
   });
  
-  const { profilePic } = useAppSelector((state) => state.user);
+  const { profilePic, role } = useAppSelector((state) => state.user);
 
   return (
     <Form {...form}>
@@ -56,13 +57,23 @@ const FormEditUser: FC<FormEditUserProps> = ({
             form={form}
           />
         ) : (
-          <FormInput
+          (role!==Role.CUSTOMER?(
+            <FormInputDisable
             name="email"
             type="email"
             label="Email"
             placeholder="Your Email"
             form={form}
           />
+          ):(
+            <FormInput
+              name="email"
+              type="email"
+              label="Email"
+              placeholder="Your Email"
+              form={form}
+            />
+          ))
         )}
 
         <div className="flex">

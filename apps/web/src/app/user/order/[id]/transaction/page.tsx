@@ -1,4 +1,5 @@
 'use client';
+import SkeletonTransactionPage from '@/app/user/components/SkeletonTransaction';
 import { Separator } from '@/components/ui/separator';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetPayment from '@/hooks/api/payment/useGetPayment';
@@ -88,6 +89,10 @@ const Transaction = ({ params }: { params: { id: string } }) => {
       alert('Payment Error!');
     }
   };
+
+  if (isLoading) {
+    return <SkeletonTransactionPage />;
+  }
 
   return (
     <div>

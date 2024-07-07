@@ -6,17 +6,18 @@ import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import useCreatePayment from '@/hooks/api/payment/useCreatePayment';
 import { OrderStatus } from '@/types/order.type';
 import { format } from 'date-fns';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import SkeletonOrderDetail from '../../components/SkeletonOrderDetail';
 
 const OrderDetail = ({ params }: { params: { id: string } }) => {
-  const { data, refetch, isLoading } = useGetOrder(Number(params.id));
+  const { data, refetch, isLoading: getLoading } = useGetOrder(Number(params.id));
   const router = useRouter();
 
-  const { createPayment } = useCreatePayment();
-  const { updateOrderStatus } = useUpdateOrderStatus();
+  const { createPayment, isLoading: loadingCreate } = useCreatePayment();
+  const { updateOrderStatus , isLoading: loadingUpdate } = useUpdateOrderStatus();
 
   let formattedDate;
   if (data) {
@@ -73,6 +74,11 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
   };
   
   const orderStatusLabel = data?.orderStatus ? statusLabels[data.orderStatus] : '';
+
+  
+  if (getLoading) {
+    return <SkeletonOrderDetail />;
+  }
 
   return (
     <div>
@@ -235,23 +241,29 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
             <button
               onClick={handlePayment}
               className="bg-green-600 text-white p-1 rounded-xl"
+              disabled={loadingCreate}
             >
-              Your Invoice
+               {loadingCreate ? <Loader2 className="mx-auto animate-spin" /> : `Your Invoice`}
+               {loadingCreate ?? 'Success !'}
             </button>
           ) : (
             <button
               onClick={handlePayment}
               className="bg-mythemes-maingreen text-white p-1 rounded-xl"
+              disabled={loadingCreate}
             >
-              Pay
+              {loadingCreate ? <Loader2 className="mx-auto animate-spin" /> : `Pay`}
+              {loadingCreate ?? 'Success !'}
             </button>
           )
         ) : data?.orderStatus == OrderStatus.RECEIVED_BY_CUSTOMER ? (
           <button
             onClick={handleUpdate}
             className="bg-mythemes-maingreen text-white p-1 rounded-xl"
+            disabled={loadingUpdate}
           >
-            Confirm
+            {loadingUpdate ? <Loader2 className="mx-auto animate-spin" /> : `Confirm`}
+            {loadingUpdate ?? 'Success !'}
           </button>
         ) : data?.orderStatus == OrderStatus.COMPLETED ? (
           <>

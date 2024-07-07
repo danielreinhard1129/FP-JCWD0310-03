@@ -13,7 +13,7 @@ const CreateOrder = ({ params }: { params: { id: string } }) => {
   const { pickupOrder, isLoading: isLoadingGetPickupOrder } = useGetPickupOrder(
     Number(params.id),
   );
-  const { createOrder } = useCreateOrder();
+  const { createOrder, isLoading } = useCreateOrder();
 
   const initialValues = {
     pickupNumber: pickupOrder?.pickupNumber || '',
@@ -48,7 +48,7 @@ const CreateOrder = ({ params }: { params: { id: string } }) => {
       <div className="p-6 rounded-xl bg-white w-1/2">
         <FormCreateOrder
           initialValues={initialValues}
-          isLoading={isLoadingGetPickupOrder}
+          isLoading={isLoading}
           onSubmit={onSubmit}
         />
       </div>
