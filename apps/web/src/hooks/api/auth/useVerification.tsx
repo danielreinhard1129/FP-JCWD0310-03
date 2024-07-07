@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import useAxios from '../useAxios';
 import { useState } from 'react';
+import { useAppDispatch } from '@/redux/hooks';
+import { loginAction } from '@/redux/slices/userSlice';
 
 interface VerificationResponses {
   message: string;
@@ -19,18 +21,19 @@ const useVerification = () => {
   const { axiosInstance } = useAxios();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const verification = async (payload: VerificationArgs) => {
     setIsLoading(true);
     try {
       console.log('ini payload', payload);
-      await axiosInstance.post('auth/verification', payload, {
+      const { data } = await axiosInstance.post('auth/verification', payload, {
         headers: {
           Authorization: `Bearer ${payload.token}`,
         },
       });
-
-      toast.success('Your account has been verified, please log in!');
+      dispatch(loginAction(data));
+      toast.success('Your account has been verified !');
       router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {

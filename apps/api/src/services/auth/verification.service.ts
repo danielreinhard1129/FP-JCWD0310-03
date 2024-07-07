@@ -19,6 +19,10 @@ export const verificationService = async (
       throw new Error('User not found');
     }
 
+    if (user.isVerify === true) {
+      throw new Error('Oops! Your account has been verified !');
+    }
+
     const isPasswordValid = await comparePassword(password, user.password);
 
     if (!isPasswordValid) {

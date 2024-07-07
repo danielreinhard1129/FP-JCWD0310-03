@@ -58,11 +58,13 @@ const RequestPickup = () => {
   const handleDialogOpen = () => {
     try {
       if (pickupDistance! > 3.5) {
-        throw new Error('kejauhan');
+        throw new Error('The distance between your address and the outlet address exceeds the maximum allowed distance of 3,5 km. Please select another outlet nearby.');
       }
       setIsDialogOpen(true);
     } catch (error) {
-      toast.error('Kejauhan bos');
+      toast.error(
+        'The distance between your address and the outlet address exceeds the maximum allowed distance of 3,5 km. Please select another outlet nearby.',
+      );
     }
   };
 

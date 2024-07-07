@@ -7,12 +7,25 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import '../page.module.css'; // Pastikan jalur ini sesuai dengan struktur proyek Anda;
 import { Poppins } from 'next/font/google';
+import { useEffect } from 'react';
 
 const Home = () => {
   const router = useRouter();
+  useEffect(() => {
+    const hash = window.location.hash.substr(1);
+    if (hash) {
+      const element = document.getElementById(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
   return (
     <main>
-      <div className="bg-hero bg-cover bg-center bg w-full md:h-screen ">
+      <div
+        className="bg-hero bg-cover bg-center bg w-full md:h-screen "
+        id="home"
+      >
         <div className="container flex flex-col place-content-center h-screen gap-6">
           <div className="font-bold md:text-6xl text-4xl text-white text-center text-pretty text-background mt-72 mb-36 ">
             {' '}
@@ -32,7 +45,7 @@ const Home = () => {
           <div className="flex justify-center">
             <Button
               className=" mx-auto md:text-xl text-md bg-white text-[#1A1F1F] rounded-xl font-bold hover:bg-mythemes-secondarygreen"
-              onClick={() => router.push('/user')}
+              onClick={() => router.push('/login')}
             >
               Get Started
             </Button>
@@ -41,19 +54,18 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="px-6 my-5">
+      <div className="px-6 my-5 z-0">
         <PromotionCarousel />
       </div>
 
       <div className="flex flex-col gap-16 pb-10">
         {/* ABOUT US */}
-        <AboutUs />
+        <div id="about-us">
+          <AboutUs />
+        </div>
 
         {/* OUR ADVENTAGES */}
         <OurAdventages />
-
-        {/* BROWSE OUTLET */}
-        {/* <BrowseOutlet /> */}
 
         {/* TESTIMONIAL */}
         <Testimonials />

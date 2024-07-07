@@ -3,6 +3,7 @@ import Image from 'next/image';
 import logo from '../../../../public/Kucekin_Logo_Black_EVO1.png';
 import { FromLogin } from './components/FormLogin';
 import { useRouter } from 'next/navigation';
+import LoggedIn from '@/hoc/LoggedIn';
 
 const Login = () => {
   const router = useRouter();
@@ -30,5 +31,4 @@ const Login = () => {
   );
 };
 
-export default Login;
- 
+export default LoggedIn(Login);

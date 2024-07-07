@@ -57,9 +57,15 @@ const FormChangePassword: FC<FormEditUserProps> = ({
           form={form}
         />
 
-        <Button type="submit" disabled={isLoading}>
-          Submit
-        </Button>
+        <div className="flex">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="bg-mythemes-secondaryblue ml-auto"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   );

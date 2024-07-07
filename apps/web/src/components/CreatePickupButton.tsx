@@ -9,7 +9,7 @@ const CreatePickupButton = () => {
   const router = useRouter();
   return (
     <>
-      <div className="container max-w-[430px] sticky bottom-0 py-2 place-items-center mx-auto flex flex-row gap-4 justify-around bg-white ">
+      <div className="container max-w-[430px] sticky py-2 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white bottom-3">
         <Home
           className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
           onClick={() => router.push('/user')}
@@ -20,7 +20,7 @@ const CreatePickupButton = () => {
         /> */}
         <CirclePlus
           size={50}
-          className="flex flex-col items-center gap-1 text-mythemes-maingreen cursor-pointer"
+          className=" text-mythemes-maingreen cursor-pointer absolute left-1/2 transform -translate-x-1/2"
           onClick={() => {
             isVerify === false
               ? (toast.error('Please verify your account to continue !'),

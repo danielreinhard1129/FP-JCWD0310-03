@@ -1,9 +1,11 @@
 'use client';
 
+import FormInputDisable from '@/components/FormInputDisable';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FC, useRef, useState } from 'react';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import FormInput from '../../../../../components/FormInput';
@@ -32,6 +34,8 @@ const FormEditUser: FC<FormEditUserProps> = ({
     resolver: zodResolver(ValidationSchema),
     defaultValues: initialValues,
   });
+ 
+  const { profilePic } = useAppSelector((state) => state.user);
 
   return (
     <Form {...form}>
@@ -43,16 +47,33 @@ const FormEditUser: FC<FormEditUserProps> = ({
           placeholder="Your Full Name"
           form={form}
         />
-        <FormInput
-          name="email"
-          type="email"
-          label="Email"
-          placeholder="Your Email"
-          form={form}
-        />
-        <Button type="submit" disabled={isLoading}>
-          Submit
-        </Button>
+        {profilePic && profilePic.includes('googleusercontent.com') ? (
+          <FormInputDisable
+            name="email"
+            type="email"
+            label="Email"
+            placeholder="Your Email"
+            form={form}
+          />
+        ) : (
+          <FormInput
+            name="email"
+            type="email"
+            label="Email"
+            placeholder="Your Email"
+            form={form}
+          />
+        )}
+
+        <div className="flex">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="bg-mythemes-secondaryblue ml-auto"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   );
