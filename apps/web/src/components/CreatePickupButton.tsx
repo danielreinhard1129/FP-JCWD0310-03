@@ -11,21 +11,22 @@ const CreatePickupButton = () => {
   return (
     <>
       <div className="container max-w-[430px] h-14 sticky py-2 place-items-center mx-auto flex flex-row gap-4 justify-between bg-white bottom-0">
-        {role==Role.CUSTOMER?(
+        {role == Role.CUSTOMER ? (
           <Home
             className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
             onClick={() => router.push('/user')}
           />
-        ):(
+        ) : (
           <Bell
             className="flex flex-col items-center gap-1 text-gray-500 cursor-pointer"
             onClick={() => {
-              role == Role.DRIVER ? router.push('/dashboard/driver/notification'): router.push('/dashboard/worker/notification')
+              role == Role.DRIVER
+                ? router.push('/dashboard/driver/notification')
+                : router.push('/dashboard/worker/notification');
             }}
           />
-
         )}
-        {role==Role.CUSTOMER?(
+        {role == Role.CUSTOMER ? (
           <CirclePlus
             size={50}
             className=" text-mythemes-maingreen cursor-pointer absolute left-1/2 transform -translate-x-1/2"
@@ -36,13 +37,15 @@ const CreatePickupButton = () => {
                 : router.push(`/user/request-pickup`);
             }}
           />
-        ):(
+        ) : (
           <Home
-          size={40}
-            className=" text-mythemes-maingreen cursor-pointer absolute left-1/2 transform -translate-x-1/2"   
-            onClick={()=>{
-              role == Role.DRIVER ? router.push('/dashboard/driver'): router.push('/dashboard/worker')
-            }}       
+            size={40}
+            className=" text-mythemes-maingreen cursor-pointer absolute left-1/2 transform -translate-x-1/2"
+            onClick={() => {
+              role == Role.DRIVER
+                ? router.push('/dashboard/driver')
+                : router.push('/dashboard/worker');
+            }}
           />
         )}
 

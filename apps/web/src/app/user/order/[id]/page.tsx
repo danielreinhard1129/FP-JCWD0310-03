@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetOrder from '@/hooks/api/order/useGetOrder';
@@ -21,7 +22,7 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
 
   let formattedDate;
   if (data) {
-    formattedDate = format(new Date(data?.createdAt), 'dd-MM-yyyy');
+    formattedDate = format(new Date(data?.createdAt), 'ccc, dd MMMM yyyy');
   }
 
   const handleUpdate = async () => {
@@ -70,10 +71,20 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
     WAITING_FOR_DELIVERY_DRIVER: 'Waiting for Delivery Driver',
     BEING_DELIVERED_TO_CUSTOMER: 'Being Delivered to Customer',
     RECEIVED_BY_CUSTOMER: 'Received by Customer',
-    COMPLETED: 'Completed'
+    COMPLETED: 'Completed',
   };
-  
-  const orderStatusLabel = data?.orderStatus ? statusLabels[data.orderStatus] : '';
+
+  const orderStatusLabel = data?.orderStatus
+    ? statusLabels[data.orderStatus]
+    : '';
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(value);
+  };
 
   
   if (getLoading) {
@@ -92,66 +103,68 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
       </div>
       <div className="flex flex-col gap-4 container bg-mythemes-grey px-6 min-h-screen py-6">
         <div className="flex flex-col gap-2 p-6 rounded-xl shadow-lg bg-white">
-          <div className="flex flex-col pb-4">
-            <div className="flex gap-2 justify-start">
-              <p className="text-md font-bold text-gray-500">Order</p>
-              <p className="text-md font-bold text-mythemes-maingreen">
-                {data?.orderNumber}
-              </p>
-            </div>
-            <p className="text-xs font-bold text-gray-500">
-              Created on: {formattedDate}
+          {/* <div className="flex flex-col pb-4"> */}
+          <div className="flex gap-2 justify-start mx-auto">
+            <p className="text-md text-center font-bold text-mythemes-maingreen mb-2">
+              {data?.orderNumber}
             </p>
           </div>
-          <div className="flex flex-col text-gray-700">
+          {/* </div>s */}
+          <div className="flex flex-col gap-2">
+            <div className=" flex justify-between">
+              <p className="text-sm font-bold ">Order Date</p>
+              <p className="text-sm text-gray-500 ">{formattedDate}</p>
+            </div>
             <div className="flex justify-between">
               <p className="text-sm font-semibold">Name</p>
-              <p className="text-sm"> {data?.pickupOrder.user.fullName}</p>
+              <p className="text-sm text-gray-500">
+                {' '}
+                {data?.pickupOrder.user.fullName}
+              </p>
             </div>
             <div className="flex justify-between">
               <p className="text-sm font-semibold">Email</p>
-              <p className="text-sm ">{data?.pickupOrder.user.email}</p>
+              <p className="text-sm text-gray-500">
+                {data?.pickupOrder.user.email}
+              </p>
             </div>
           </div>
           <Separator />
           <div>
             <div className="flex flex-col gap-2">
               <div>
-                <div className="flex justify-between text-gray-500">
-                  <p className="text-sm font-semibold">Base address</p>
+                <div className="flex justify-between">
+                  <p className="text-sm font-semibold">Customer Address</p>
                 </div>
                 <div className="flex flex-col pl-5 text-left">
-                  <p className="text-xs font-semibold text-gray-800">
-                    {data?.pickupOrder.user.fullName} HOME
-                  </p>
-                  <p className="text-xs font-semibold text-gray-500">
+                  <p className="text-sm  text-gray-500 ">
                     {data?.pickupOrder.address.city}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm text-gray-500 ">
                     {data?.pickupOrder.address.addressLine}
                   </p>
                 </div>
               </div>
               <div>
-                <div className="flex justify-between text-gray-500">
+                <div className="flex justify-between ">
                   <p className="text-sm font-semibold">Outlet address</p>
                 </div>
-                <div className="flex flex-col pl-5 text-left ">
-                  <p className="text-xs font-semibold text-gray-800">
+                <div className="flex flex-col pl-5 text-left text-gray-500 ">
+                  <p className="text-sm ">
                     {data?.pickupOrder.outlet.outletName}
                   </p>
-                  <p className="text-xs font-semibold text-gray-500">
+                  <p className="text-sm  ">
                     {data?.pickupOrder.outlet.address[0].city}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm ">
                     {data?.pickupOrder.outlet.address[0].addressLine}
                   </p>
                 </div>
               </div>
               <div className="flex justify-between">
                 <p className="text-sm font-semibold">Distance</p>
-                <p className="text-sm font-semibold">
-                  {data?.pickupOrder.distance} km
+                <p className="text-sm text-gray-500">
+                  {data?.pickupOrder.distance} km.
                 </p>
               </div>
             </div>
@@ -159,60 +172,54 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
           <Separator />
           <div>
             <div className="flex flex-col gap-2">
-              <div className="flex justify-between text-gray-500">
+              <div className="flex justify-between ">
                 <p className="text-sm font-semibold">Laundry Items</p>
               </div>
               <div className="flex flex-col pl-5 text-left ">
                 {data?.orderItem.map((item, index) => {
                   return (
                     <div key={index} className="flex justify-between">
-                      <p className="text-xs font-semibold text-gray-800">
-                        {item.laundryItem.itemName}
-                      </p>
-                      <p className="text-xs font-semibold text-gray-800">
-                        {item.qty} Pcs
-                      </p>
+                      <p className="text-sm ">{item.laundryItem.itemName}</p>
+                      <p className="text-sm ">{item.qty} Pcs</p>
                     </div>
                   );
                 })}
               </div>
               <div className="flex justify-between">
-                <p className="text-sm font-semibold">Weight</p>
-                <p className="text-sm font-semibold">{data?.weight} kg</p>
+                <p className="text-sm font-semibold">Total Weight</p>
+                <p className="text-sm ">{data?.weight} kg</p>
               </div>
             </div>
           </div>
           <Separator />
           <div>
             <div className="flex flex-col">
-              <div className="flex justify-between text-gray-500">
+              <div className="flex justify-between ">
                 <p className="text-sm font-semibold">Price</p>
               </div>
               <div className="flex flex-col pl-5">
                 <div className="flex justify-between">
-                  <p className="text-xs font-semibold text-gray-800">
-                    Pickup Change
-                  </p>
-                  <p className="text-xs font-semibold text-gray-800">
-                    IDR {data?.pickupOrder.pickupPrice}
+                  <p className="text-sm ">Pickup Cost</p>
+                  <p className="text-sm ">
+                    {formatCurrency(Number(data?.pickupOrder.pickupPrice))}
                   </p>
                 </div>
                 <div className="flex justify-between">
-                  <p className="text-xs font-semibold text-gray-800">
-                    Delivery Change
-                  </p>
-                  <p className="text-xs font-semibold text-gray-800">
-                    IDR {data?.pickupOrder.pickupPrice}
+                  <p className="text-sm ">Delivery Cost</p>
+                  <p className="text-sm ">
+                    {formatCurrency(Number(data?.pickupOrder.pickupPrice))}
                   </p>
                 </div>
                 <div className="flex justify-between">
-                  <p className="text-sm">Laundry Change</p>
+                  <p className="text-sm ">Laundry Cost</p>
                 </div>
-                <div className="pl-4 flex justify-between text-xs font-semibold text-gray-800">
+                <div className="pl-4 flex justify-between text-sm">
                   <p className="my-auto">{data?.weight}KG</p>
                   <p className="my-auto">x</p>
-                  <p className="my-auto">IDR 6000/KG</p>
-                  <p className="">IDR {data?.laundryPrice}</p>
+                  <p className="my-auto">Rp 6.000/kg</p>
+                  <p className=" font-bold">
+                    {formatCurrency(Number(data?.laundryPrice))}
+                  </p>
                 </div>
               </div>
             </div>
@@ -222,58 +229,54 @@ const OrderDetail = ({ params }: { params: { id: string } }) => {
             <div className="flex flex-col">
               <p className="text-sm font-semibold">Status :</p>
               <div className="flex text-sm h-10 font-bold bg-mythemes-grey rounded text-mythemes-maingreen">
-                <p className="my-auto mx-auto text-lg">{orderStatusLabel}
-
-                </p>
+                <p className="my-auto mx-auto text-lg">{orderStatusLabel}</p>
               </div>
             </div>
           </div>
         </div>
 
         {data?.orderStatus === OrderStatus.AWAITING_PAYMENT ||
-          data?.orderStatus === OrderStatus.READY_FOR_WASHING ||
-          data?.orderStatus === OrderStatus.BEING_WASHED ||
-          data?.orderStatus === OrderStatus.WASHING_COMPLETED ||
-          data?.orderStatus === OrderStatus.BEING_IRONED ||
-          data?.orderStatus === OrderStatus.IRONING_COMPLETED ||
-          data?.orderStatus === OrderStatus.BEING_PACKED ? (
+        data?.orderStatus === OrderStatus.READY_FOR_WASHING ||
+        data?.orderStatus === OrderStatus.BEING_WASHED ||
+        data?.orderStatus === OrderStatus.WASHING_COMPLETED ||
+        data?.orderStatus === OrderStatus.BEING_IRONED ||
+        data?.orderStatus === OrderStatus.IRONING_COMPLETED ||
+        data?.orderStatus === OrderStatus.BEING_PACKED ? (
           data?.isPaid == true ? (
-            <button
+            <Button
               onClick={handlePayment}
               className="bg-green-600 text-white p-1 rounded-xl"
               disabled={loadingCreate}
             >
                {loadingCreate ? <Loader2 className="mx-auto animate-spin" /> : `Your Invoice`}
                {loadingCreate ?? 'Success !'}
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
               onClick={handlePayment}
-              className="bg-mythemes-maingreen text-white p-1 rounded-xl"
+              className="bg-mythemes-maingreen text-white p-1 rounded-xl font-bold"
               disabled={loadingCreate}
             >
               {loadingCreate ? <Loader2 className="mx-auto animate-spin" /> : `Pay`}
               {loadingCreate ?? 'Success !'}
-            </button>
+            </Button>
           )
         ) : data?.orderStatus == OrderStatus.RECEIVED_BY_CUSTOMER ? (
-          <button
+          <Button
             onClick={handleUpdate}
             className="bg-mythemes-maingreen text-white p-1 rounded-xl"
             disabled={loadingUpdate}
           >
             {loadingUpdate ? <Loader2 className="mx-auto animate-spin" /> : `Confirm`}
             {loadingUpdate ?? 'Success !'}
-          </button>
+          </Button>
         ) : data?.orderStatus == OrderStatus.COMPLETED ? (
-          <>
-          </>
-      ) : (
-      <>
-      </>
+          <></>
+        ) : (
+          <></>
         )}
+      </div>
     </div>
-    </div >
   );
 };
 
