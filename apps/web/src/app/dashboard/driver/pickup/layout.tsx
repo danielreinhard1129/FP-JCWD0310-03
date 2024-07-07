@@ -4,9 +4,11 @@ import PickupNavbar from "./components/PickupNavbar";
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <main>
-                    <PickupNavbar/>
-                    {children}
-                                   
+            <PickupNavbar />
+            <div className="min-h-screen">
+                {children}
+            </div>
+
         </main>
     );
 }

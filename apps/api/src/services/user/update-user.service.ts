@@ -7,6 +7,8 @@ import { User } from '@prisma/client';
 import fs from 'fs';
 import { sign } from 'jsonwebtoken';
 import { join } from 'path';
+import path from 'path';
+import Handlebars from 'handlebars';
 
 const defaultDir = '../../../public/images';
 
@@ -78,13 +80,22 @@ export const updateUserService = async (
       body.token = userToken;
       body.tokenExpiresIn = expiresIn;
 
+      const templatePath = path.join(
+        __dirname,
+        '../../../templates/verif.html',
+      );
+      const templateSource = fs.readFileSync(templatePath, 'utf-8');
+      const compileTemplate = Handlebars.compile(templateSource);
       const confirmationLink =
         NEXT_BASE_URL + `/register/verification?token=${userToken}`;
+
       await transporter.sendMail({
         from: 'Admin',
         to: email,
         subject: 'Verification your account',
-        html: `<a href="${confirmationLink}" target="_blank">Verification yout account</a>`,
+        html: compileTemplate({
+          link: confirmationLink,
+        }),
       });
     }
 

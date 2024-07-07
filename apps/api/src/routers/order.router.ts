@@ -1,6 +1,7 @@
 //import { verifyToken } from '@/lib/jwt';
 
 import { OrderController } from '@/controllers/order.controller';
+import { createOrderValidator } from '@/middlewares/createOrderValidator';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
@@ -24,6 +25,7 @@ export class OrderRouter {
     this.router.post(
       '/',
       verifyToken,
+      createOrderValidator,
       this.orderController.createOrderController,
     );
     this.router.patch(
@@ -37,3 +39,4 @@ export class OrderRouter {
     return this.router;
   }
 }
+

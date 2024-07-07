@@ -1,22 +1,16 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
-import { PickupOrder } from '@/types/pickupOrder.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import useAxios from '../useAxios';
 
 interface IGetPickupOrdersQuery extends IPaginationQueries {
-  // id: number;
   pickupStatus?: string;
   isOrderCreated?: number;
   isClaimedbyDriver?: number;
   latitude?: number | null;
   longitude?: number | null;
-}
-
-interface ReponseDatas extends PickupOrder {
-  realDistance: number
 }
 
 const useGetPickupOrdersByCoord = (queries: IGetPickupOrdersQuery) => {
@@ -37,7 +31,7 @@ const useGetPickupOrdersByCoord = (queries: IGetPickupOrdersQuery) => {
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error);
-      }
+    }
     } finally {
       setIsLoading(false);
     };

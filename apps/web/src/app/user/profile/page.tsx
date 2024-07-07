@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import noPic from '../../../../public/pictNotFound.jpeg';
 import SkeletonProfile from '../components/SkeletonProfile';
 import LogoutDialog from '@/components/LogoutDialog';
+import { Role } from '@/types/user.type';
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,16 +62,15 @@ const Profile = () => {
     return <SkeletonProfile />;
   }
   return (
-    // <main className="container p-0 pt-[32px] h-screen bg-[#ffff]">
-    <main className="container p-0 py-[32px]">
-      <div className=" px-6 flex flex-col gap-10 h-[900px]">
+    <main className="container py-[32px] pb-20 p-0 flex flex-col h-screen">
+      <div className=" px-6 flex flex-col gap-10 flex-grow  ">
         <div className="flex relative ">
           <ChevronLeft className="absolute" onClick={() => router.back()} />
           <h1 className=" font-extrabold mx-auto">My profile</h1>
         </div>
 
         {/* Profile */}
-        <div className=" flex flex-row text-black rounded-xl p-2  gap-2 shadow-lg border-b-8 border-mythemes-maingreen bg-[#fffffe]">
+        <div className=" flex flex-row text-black rounded-xl p-2 gap-2 shadow-lg border-b-8 border-mythemes-maingreen bg-[#fffffe]">
           <div className="w-20 h-20 rounded-full border-2 my-auto justify-center relative overflow-hidden mx-auto ">
             <Image
               alt="ProfilePict"
@@ -135,7 +135,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-4 h-[569px]">
+        <div className="w-full flex flex-col gap-4">
           <Button
             className="bg-mythemes-white hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2"
             onClick={() => router.push(`/user/profile/edit`)}
@@ -154,28 +154,27 @@ const Profile = () => {
           )}
 
           <Button
-            className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2 "
+            className={`${role !== Role.CUSTOMER ? `hidden` : `block`} bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black border-mythemes-mainYellow border-b-2 `}
             onClick={() => router.push(`/user/order`)}
           >
-            <p>Your Order</p>
-            <IoIosArrowForward />
+            <div className='flex flex-row justify-between'>
+              <p>Your Order</p>
+              <IoIosArrowForward />
+            </div>
           </Button>
           <Button
-            className="bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black flex flex-row justify-between border-mythemes-mainYellow border-b-2"
+            className={`${role !== Role.CUSTOMER ? `hidden` : `block`} bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black border-mythemes-mainYellow border-b-2`}
             onClick={() => router.push('/user/profile/address')}
           >
-            <p>Your Address</p>
-            <IoIosArrowForward />
+            <div className='flex flex-row justify-between'>
+              <p>Your Address</p>
+              <IoIosArrowForward />
+            </div>
           </Button>
         </div>
-        {/* <Button
-          onClick={logout}
-          className="bg-mythemes-grey mt-auto text-red-500 hover:bg-mythemes-grey gap-2  flex flex-row justify-center rounded-full"
-        >
-          <LogOut />
-          <p>Logout</p>
-        </Button> */}
-        <LogoutDialog />
+        <div className="mx-auto mt-auto">
+          <LogoutDialog />
+        </div>
       </div>
     </main>
   );

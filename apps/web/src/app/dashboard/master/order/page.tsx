@@ -101,7 +101,7 @@ const MenuOrder = () => {
             </SelectContent>
           </Select>
           <Link href={'/dashboard/master/order/pickup-order-list'}>
-            <div className="flex bg-mythemes-maingreen h-full w-40 rounded-lg">
+            <div className="flex bg-mythemes-maingreen h-full w-40 rounded-lg hover:bg-slate-800">
               <h1 className="text-white font-medium mx-auto my-auto">
                 Create Order
               </h1>

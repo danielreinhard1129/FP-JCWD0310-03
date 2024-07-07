@@ -23,29 +23,31 @@ export function PromotionCarousel() {
   const banners = [banner1, banner2, banner3];
 
   return (
-    <Carousel
-      plugins={[plugin.current]}
-      className="w-full "
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
-    >
-      <CarouselContent>
-        {banners.map((banner, index) => (
-          <CarouselItem key={index}>
-            <div className="p-1">
-              <Card className="">
-                <CardContent className="items-center relative justify-center p-6 w-full  bg-main_green h-[100px] md:h-[400px]    rounded-xl text-center overflow-hidden text-white ">
-                  <div className="w-full h-full">
-                    <Image alt="banner" src={banner} layout="fill" fill />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious className="ml-14 size-5 opacity-15" />
-      <CarouselNext className="mr-14 size-5 opacity-15" />
-    </Carousel>
+    <div className="z-0">
+      <Carousel
+        plugins={[plugin.current]}
+        className="w-full "
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+      >
+        <CarouselContent>
+          {banners.map((banner, index) => (
+            <CarouselItem key={index}>
+              <div className="p-1">
+                <Card className="">
+                  <CardContent className="items-center relative justify-center p-6 w-full  h-[100px] md:h-[400px]  rounded-xl text-center ">
+                    <div className="w-full h-full z-0">
+                      <Image alt="banner" src={banner} fill />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="ml-14 size-5 opacity-15" />
+        <CarouselNext className="mr-14 size-5 opacity-15" />
+      </Carousel>
+    </div>
   );
 }

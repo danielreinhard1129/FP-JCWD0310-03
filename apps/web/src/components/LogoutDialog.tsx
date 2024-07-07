@@ -29,24 +29,6 @@ const LogoutDialog = () => {
   };
 
 
-//   const handleLogout = () => {
-//     useEffect(() => {
-//       setTimeout(() => {
-//         setIsLoading(false);
-//       }, 500);
-//     }, []);
-
-//     if (isLoading) {
-//       return (
-//         <div className="flex flex-col px-6 h-screen place-content-center items-center gap-4">
-//           <div className="animate-pulse">
-//             <Image alt="logo" src={logo1} />
-//           </div>
-//         </div>
-//       );
-//     }
-//   };
-
   return (
     <AlertDialog>
       <AlertDialogTrigger className=" text-red-500 hover:bg-red-500 w-32 mx-auto p-1 font-bold hover:text-white text-lg rounded-xl">

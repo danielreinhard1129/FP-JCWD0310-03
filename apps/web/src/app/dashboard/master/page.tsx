@@ -25,6 +25,7 @@ import { Role } from '@/types/user.type';
 import ItemFilterOutlet from './order/components/ItemFilterOutlet';
 import ItemFilterMonth from '../components/ItemFilterMonth';
 import ChartEvents from '../components/ChartEvents';
+import SkeletonOverview from './components/SkeletonOverview';
 
 const Overview = () => {
   const [filterOutlet, setFilterOutlet] = useState('all');
@@ -83,6 +84,10 @@ const Overview = () => {
   const handleChangeFilterYear = (value: 'asc' | 'desc') => {
     setFilterYear(value);
   };
+
+  if (isLoading) {
+    return <SkeletonOverview />;
+  }
 
   return (
     <div className="container flex flex-col gap-5 p-6 bg-[#f4f4f4]">

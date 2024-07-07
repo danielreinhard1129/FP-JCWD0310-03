@@ -87,7 +87,26 @@
     /* background: linear-gradient( to bottom right, #68D2E8,#03AED2); */
     /* background: linear-gradient(to right, #68D2E8, #03AED2, #68D2E8); */
 
-    background: linear-gradient(to bottom right, #68d2e8, #03aed2, #ff5f6d, #ffc371);
+    background: linear-gradient(
+      to bottom right,
+      #68d2e8,
+      #03aed2,
+      #ff5f6d,
+      #ffc371
+    );
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+  .bg-gradient-one {
+    background: linear-gradient(to bottom right, #0081A7, #00AFB9);
+  }
+  .bg-gradient-two {
+    background: linear-gradient(to bottom right, #00AFB9, #FED9B7);
+  }
+  .bg-gradient-three {
+    background: linear-gradient(to bottom right, #FED9B7, #F07167);
   }
 }
 

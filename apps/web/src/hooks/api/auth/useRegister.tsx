@@ -33,7 +33,8 @@ const useRegister = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         // FIXME = change alert to toast
-        toast.error(error.response?.data.message);
+        toast.error(error.response?.data);
+        console.error(error);
       }
     } finally {
       setIsLoading(false);

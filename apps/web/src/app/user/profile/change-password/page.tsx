@@ -1,5 +1,5 @@
 'use client';
-import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
+import AuthGuard from '@/hoc/AuthGuard';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -31,7 +31,7 @@ const ChangePassword = () => {
       <div className="container flex flex-col gap-4">
         <div className="flex relative">
           <ChevronLeft className="absolute" onClick={() => router.back()} />
-          <h1 className="font-extrabold mx-auto">Edit profile</h1>
+          <h1 className="font-extrabold mx-auto">Change Password</h1>
         </div>
 
         <div className="w-full flex flex-col gap-4">
@@ -46,4 +46,4 @@ const ChangePassword = () => {
   );
 };
 
-export default CustomerAuthGuard(ChangePassword);
+export default AuthGuard(ChangePassword);

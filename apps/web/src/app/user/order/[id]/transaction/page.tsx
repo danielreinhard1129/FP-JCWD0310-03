@@ -1,4 +1,6 @@
 'use client';
+import { Button } from '@/components/ui/button';
+import SkeletonTransactionPage from '@/app/user/components/SkeletonTransaction';
 import { Separator } from '@/components/ui/separator';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetPayment from '@/hooks/api/payment/useGetPayment';
@@ -8,6 +10,7 @@ import { format } from 'date-fns';
 import { ChevronLeft, ScrollText } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 const Transaction = ({ params }: { params: { id: string } }) => {
   const { data, refetch, isLoading } = useGetPayment({
@@ -16,7 +19,7 @@ const Transaction = ({ params }: { params: { id: string } }) => {
   let formattedDate;
   let paymentMethode;
   if (data) {
-    formattedDate = format(new Date(data?.createdAt), 'dd-MM-yyyy');
+    formattedDate = format(new Date(data?.createdAt), 'ccc, dd MMMM yyyy');
     if (data?.paymentMethode == 'credit_card') {
       paymentMethode = 'CREDIT CARD';
     }
@@ -66,25 +69,17 @@ const Transaction = ({ params }: { params: { id: string } }) => {
     try {
       if (!isLoading && data) {
         if (window.snap) {
-          window.snap.pay(`${data.snapToken}`
-          //   , {
-          //   onSuccess: function (result: any) {
-          //     alert('Payment success!');
-          //     console.log(result);
-          //   },
-          //   onPending: function (result: any) {
-          //     alert('Waiting for your payment!');
-          //     console.log(result);
-          //   },
-          //   onError: function (result: any) {
-          //     alert('Payment failed!');
-          //     console.log(result);
-          //   },
-          //   onClose: function () {
-          //     alert('Close Kah?');
-          //   },
-          // }
-        );
+          window.snap.pay(`${data.snapToken}`, {
+            onSuccess: function (result: any) {
+              toast.success('Payment success!');
+            },
+            onPending: function (result: any) {
+              toast.success('Waiting for your payment!');
+            },
+            onError: function (result: any) {
+              toast.success('Payment failed!');
+            },
+          });
         } else {
           alert('Snap is not loaded yet. Please try again.');
         }
@@ -93,6 +88,18 @@ const Transaction = ({ params }: { params: { id: string } }) => {
       alert('Payment Error!');
     }
   };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(value);
+  };
+
+  if (isLoading) {
+    return <SkeletonTransactionPage />;
+  }
 
   return (
     <div>
@@ -109,14 +116,15 @@ const Transaction = ({ params }: { params: { id: string } }) => {
       </div>
       <div className="flex flex-col gap-4 container bg-mythemes-grey px-6 min-h-screen py-6">
         <div className="flex flex-col gap-4 p-6 rounded-xl shadow-lg bg-white">
-          <ScrollText className="mx-auto h-10 w-10 text-mythemes-secondarygreen" />
+          <ScrollText className="mx-auto h-10 w-10 text-mythemes-maingreen text-opacity-50" />
           <div className="flex flex-col">
             <p className="mx-auto text-md font-bold text-gray-500">INVOICE</p>
             <p className="mx-auto text-sm font-bold text-mythemes-maingreen">
               {data?.invoiceNumber}
             </p>
             <p className="mx-auto text-xs font-bold text-gray-500">
-              Due on: {formattedDate}
+              Due on:
+              {formattedDate}
             </p>
           </div>
           <div className="flex flex-col text-gray-700">
@@ -140,15 +148,15 @@ const Transaction = ({ params }: { params: { id: string } }) => {
           <div>
             <div className="flex flex-col">
               <div className="flex justify-between">
-                <p className="text-sm">Pickup Change</p>
-                <p className="text-sm font-semibold">
-                  IDR {data?.order.pickupOrder.pickupPrice}
+                <p className="text-sm font-bold">Pickup Change</p>
+                <p className="text-sm ">
+                  {formatCurrency(Number(data?.order.pickupOrder.pickupPrice))}
                 </p>
               </div>
               <div className="flex justify-between">
                 <p className="text-sm">Delivery Change</p>
-                <p className="text-sm font-semibold">
-                  IDR {data?.order.pickupOrder.pickupPrice}
+                <p className="text-sm ">
+                  {formatCurrency(Number(data?.order.pickupOrder.pickupPrice))}
                 </p>
               </div>
               <div className="flex justify-between">
@@ -160,14 +168,14 @@ const Transaction = ({ params }: { params: { id: string } }) => {
                 </p>
                 <p className="text-xs font-medium my-auto">x</p>
                 <p className="text-xs font-medium my-auto">IDR 6000/KG</p>
-                <p className="text-sm font-semibold">
-                  IDR {data?.order.laundryPrice}
+                <p className="text-sm ">
+                  {formatCurrency(Number(data?.order.laundryPrice))}
                 </p>
               </div>
               <div className="flex justify-between">
                 <p className="text-sm font-semibold">Amount</p>
                 <p className="text-sm font-bold text-mythemes-maingreen">
-                  IDR {data?.amount}
+                  {formatCurrency(Number(data?.amount))}
                 </p>
               </div>
             </div>
@@ -191,7 +199,12 @@ const Transaction = ({ params }: { params: { id: string } }) => {
         {data?.paymentStatus != PaymentStatus.PENDING ? (
           <></>
         ) : (
-          <button onClick={handlePayment} className='bg-mythemes-maingreen text-white p-1 rounded-xl'>Pay</button>
+          <Button
+            onClick={handlePayment}
+            className="bg-mythemes-maingreen text-white p-1 rounded-xl font-bold"
+          >
+            Pay
+          </Button>
         )}
       </div>
     </div>

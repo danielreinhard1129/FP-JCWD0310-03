@@ -1,13 +1,16 @@
 'use client';
 
+import FormInputDisable from '@/components/FormInputDisable';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FC, useRef, useState } from 'react';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import FormInput from '../../../../../components/FormInput';
 import { ValidationSchema } from '../validationSchema';
+import { Role } from '@/types/user.type';
 
 interface FormEditUser {
   fullName: string;
@@ -32,6 +35,8 @@ const FormEditUser: FC<FormEditUserProps> = ({
     resolver: zodResolver(ValidationSchema),
     defaultValues: initialValues,
   });
+ 
+  const { profilePic, role } = useAppSelector((state) => state.user);
 
   return (
     <Form {...form}>
@@ -43,16 +48,43 @@ const FormEditUser: FC<FormEditUserProps> = ({
           placeholder="Your Full Name"
           form={form}
         />
-        <FormInput
-          name="email"
-          type="email"
-          label="Email"
-          placeholder="Your Email"
-          form={form}
-        />
-        <Button type="submit" disabled={isLoading}>
-          Submit
-        </Button>
+        {profilePic && profilePic.includes('googleusercontent.com') ? (
+          <FormInputDisable
+            name="email"
+            type="email"
+            label="Email"
+            placeholder="Your Email"
+            form={form}
+          />
+        ) : (
+          (role!==Role.CUSTOMER?(
+            <FormInputDisable
+            name="email"
+            type="email"
+            label="Email"
+            placeholder="Your Email"
+            form={form}
+          />
+          ):(
+            <FormInput
+              name="email"
+              type="email"
+              label="Email"
+              placeholder="Your Email"
+              form={form}
+            />
+          ))
+        )}
+
+        <div className="flex">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="bg-mythemes-secondaryblue ml-auto"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   );

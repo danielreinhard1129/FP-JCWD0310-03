@@ -7,12 +7,13 @@ import FormCreateOrder from './components/FormCreateOrder';
 import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 import Image from 'next/image';
 import logo1 from '../../../../../../../public/Black Friday Typography Instagram Post.png';
+import { Separator } from '@/components/ui/separator';
 
 const CreateOrder = ({ params }: { params: { id: string } }) => {
   const { pickupOrder, isLoading: isLoadingGetPickupOrder } = useGetPickupOrder(
     Number(params.id),
   );
-  const { createOrder } = useCreateOrder();
+  const { createOrder, isLoading } = useCreateOrder();
 
   const initialValues = {
     pickupNumber: pickupOrder?.pickupNumber || '',
@@ -43,10 +44,11 @@ const CreateOrder = ({ params }: { params: { id: string } }) => {
         </Link>
         <h1 className="text-lg font-bold my-auto">Create Order</h1>
       </div>
-      <div className="mx-8 mb-8 p-5 w-8/12 rounded-xl bg-mythemes-secondarygreen">
+      <Separator className="bg-black" />
+      <div className="p-6 rounded-xl bg-white w-1/2">
         <FormCreateOrder
           initialValues={initialValues}
-          isLoading={isLoadingGetPickupOrder}
+          isLoading={isLoading}
           onSubmit={onSubmit}
         />
       </div>

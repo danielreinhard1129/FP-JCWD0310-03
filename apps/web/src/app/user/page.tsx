@@ -1,31 +1,27 @@
 'use client';
 /* eslint-disable react/no-unescaped-entities */
-import BrowseOutlet from '@/components/homePage/UserOrder';
+import UserOrder from '@/components/homePage/UserOrder';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
 import { useAppSelector } from '@/redux/hooks';
-import { BASE_API_URL } from '@/utils/config';
+import { format } from 'date-fns'; // If using date-fns
 import 'leaflet/dist/leaflet.css';
-import Image from 'next/image';
+import { Bell } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaLocationDot } from 'react-icons/fa6';
-import noPic from '../../../public/pictNotFound.jpeg';
 import { PromotionCarousel } from './components/PromotionCarousel';
 import SkeletonUser from './components/SkeletonUser';
-import { format } from 'date-fns'; // If using date-fns
-import { Bell } from 'lucide-react';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPosition, setCurrentPosition] = useState<[number, number]>();
-  const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
-    useAppSelector((state) => state.user);
+  const { id, fullName } = useAppSelector((state) => state.user);
   const {
     getLocation,
     data,
     isLoading: getLocLoading,
   } = useGetLocationByCoord();
+  const router = useRouter();
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(
@@ -41,7 +37,14 @@ const Home = () => {
     );
   }, []);
 
-  const router = useRouter();
+  const currentDate = format(new Date(), 'ccc, dd MMM yyyy');
+
+  function capitalize(str: string) {
+    return str
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -51,14 +54,6 @@ const Home = () => {
 
   if (isLoading) {
     return <SkeletonUser />;
-  }
-  const currentDate = format(new Date(), 'ccc, dd MMM yyyy');
-
-  function capitalize(str: string) {
-    return str
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
   }
 
   return (
@@ -85,7 +80,6 @@ const Home = () => {
                       size={20}
                     />
                   </div>
-                  {/* </div> */}
                   <p className="font-bold text-xs">{capitalize(fullName)}</p>
                 </div>
               )}
@@ -97,7 +91,7 @@ const Home = () => {
           <PromotionCarousel />
         </div>
         {/* BROWSE OUTLET */}
-        <BrowseOutlet />
+        <UserOrder />
       </section>
     </>
   );

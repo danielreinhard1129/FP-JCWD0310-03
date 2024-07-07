@@ -4,66 +4,96 @@ import useGetOrder from '@/hooks/api/order/useGetOrder';
 import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
 import { useAppSelector } from '@/redux/hooks';
 import { format } from 'date-fns';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ItemCheckingDialog from '../../components/ItemCheckingDialog';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import { OrderStatus } from '@/types/order.type';
 import { EmployeeWorkShift } from '@/types/employee.type';
+import { toast } from 'sonner';
+import SkeletonDetails from '@/app/dashboard/driver/components/SkeletonDetails';
 
 const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const { data, refetch, isLoading } = useGetOrder(Number(params.slug[0]));
+  const { data, refetch, isLoading: getLoading } = useGetOrder(Number(params.slug[0]));
   const { id } = useAppSelector((state) => state.user)
   const router = useRouter()
   const { user } = useGetUser();
 
+  const station = params.slug[1]
+  const process = params.slug[2]
+
   let targetStatus
   let buttonLabel
-
-  if (data?.orderStatus == OrderStatus.READY_FOR_WASHING) {
-    targetStatus = OrderStatus.BEING_WASHED,
-      buttonLabel = "Claim"
-  }
-  if (data?.orderStatus == OrderStatus.BEING_WASHED) {
-    targetStatus = OrderStatus.WASHING_COMPLETED,
-      buttonLabel = "Finish"
-  }
-  if (data?.orderStatus == OrderStatus.WASHING_COMPLETED) {
-    targetStatus = OrderStatus.BEING_IRONED,
-      buttonLabel = "Claim"
-  }
-  if (data?.orderStatus == OrderStatus.BEING_IRONED) {
-    targetStatus = OrderStatus.IRONING_COMPLETED,
-      buttonLabel = "Finish"
-  }
-  if (data?.orderStatus == OrderStatus.IRONING_COMPLETED) {
-    targetStatus = OrderStatus.BEING_PACKED,
-      buttonLabel = "Claim"
-  }
-  if (data?.orderStatus == OrderStatus.BEING_PACKED) {
-    targetStatus = OrderStatus.AWAITING_PAYMENT,
-      buttonLabel = "Finish"
-  }
-
   let isHidden: boolean = true
+  let isItemChecking: boolean = false
 
-  if (params.slug[2] == "on-going") {
-    if (params.slug[1] == "washing") {
-      if (data?.orderStatus == OrderStatus.BEING_WASHED) {
-        isHidden = false
-      }
+  let isBypassRequest: boolean | undefined = false
+  let isBypassAccepted: boolean | undefined = false
+  let isBypassRejected: boolean | undefined = false
+
+  if (station == "washing") {
+    isBypassRequest = data?.orderWorker[0]?.bypassRequest
+    isBypassAccepted = data?.orderWorker[0]?.bypassAccepted
+    isBypassRejected = data?.orderWorker[0]?.bypassRejected
+    if (process == "request" && data?.orderStatus == OrderStatus.READY_FOR_WASHING) {
+      targetStatus = OrderStatus.BEING_WASHED,
+        buttonLabel = "Claim"
+      isHidden = false
+      isItemChecking = true
     }
-    if (params.slug[1] == "ironing") {
-      if (data?.orderStatus == OrderStatus.BEING_IRONED) {
-        isHidden = false
-      }
+    if (process == "on-going" && data?.orderStatus == OrderStatus.BEING_WASHED) {
+      targetStatus = OrderStatus.WASHING_COMPLETED,
+        buttonLabel = "Finish"
+      isHidden = false
+
     }
-    if (params.slug[1] == "packing") {
-      if (data?.orderStatus == OrderStatus.BEING_PACKED) {
-        isHidden = false
-      }
+    if (process == "history") {
+
+    }
+  }
+
+  if (station == "ironing") {
+    isBypassRequest = data?.orderWorker[1]?.bypassRequest
+    isBypassAccepted = data?.orderWorker[1]?.bypassAccepted
+    isBypassRejected = data?.orderWorker[1]?.bypassRejected
+    if (process == "request" && data?.orderStatus == OrderStatus.WASHING_COMPLETED) {
+      targetStatus = OrderStatus.BEING_IRONED,
+        buttonLabel = "Claim"
+      isHidden = false
+      isItemChecking = true
+    }
+    if (process == "on-going" && data?.orderStatus == OrderStatus.BEING_IRONED) {
+      targetStatus = OrderStatus.IRONING_COMPLETED,
+        buttonLabel = "Finish"
+      isHidden = false
+
+    }
+    if (process == "history") {
+    }
+
+  }
+
+  if (station == "packing") {
+    isBypassRequest = data?.orderWorker[2]?.bypassRequest
+    isBypassAccepted = data?.orderWorker[2]?.bypassAccepted
+    isBypassRejected = data?.orderWorker[2]?.bypassRejected
+    if (process == "request" && data?.orderStatus == OrderStatus.IRONING_COMPLETED) {
+      targetStatus = OrderStatus.BEING_PACKED,
+        buttonLabel = "Claim"
+      isHidden = false
+      isItemChecking = true
+
+    }
+    if (process == "on-going" && data?.orderStatus == OrderStatus.BEING_PACKED) {
+      targetStatus = OrderStatus.AWAITING_PAYMENT,
+        buttonLabel = "Finish"
+      isHidden = false
+
+    }
+    if (process == "history") {
+
     }
   }
 
@@ -73,12 +103,12 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
     orderStatus: targetStatus as OrderStatus
   }
 
-  const { updateOrderStatus } = useUpdateOrderStatus()
+  const { updateOrderStatus, isLoading } = useUpdateOrderStatus()
 
-  const handleUpdate = async (event: React.MouseEvent) => {
-    event.stopPropagation();
+  const handleUpdate = async () => {
     try {
       await updateOrderStatus(values);
+      toast.success(`Succeess!`);
       router.back();
     } catch (error) {
       console.error('Failed to update pickup order', error);
@@ -126,24 +156,8 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
     formattedDate = format(new Date(data?.createdAt), 'dd-MM-yyyy');
   }
 
-  let isBypassRequest: boolean | undefined = false
-  let isBypassAccepted: boolean | undefined = false
-  let isBypassRejected: boolean | undefined = false
-
-  if (params.slug[1] == "washing") {
-    isBypassRequest = data?.orderWorker[0]?.bypassRequest
-    isBypassAccepted = data?.orderWorker[0]?.bypassAccepted
-    isBypassRejected = data?.orderWorker[0]?.bypassRejected
-  }
-  if (params.slug[1] == "ironing") {
-    isBypassRequest = data?.orderWorker[1]?.bypassRequest
-    isBypassAccepted = data?.orderWorker[1]?.bypassAccepted
-    isBypassRejected = data?.orderWorker[1]?.bypassRejected
-  }
-  if (params.slug[1] == "packing") {
-    isBypassRequest = data?.orderWorker[2]?.bypassRequest
-    isBypassAccepted = data?.orderWorker[2]?.bypassAccepted
-    isBypassRejected = data?.orderWorker[2]?.bypassRejected
+  if (getLoading) {
+    return <SkeletonDetails />;
   }
 
   return (
@@ -212,62 +226,46 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
           </div>
         </div>
 
-        {params.slug[2] != "history" ? (
+        {isHidden ? (
           <>
-            {params.slug[2] != "request" ? (
-              (isHidden ? (
-                <></>
+          </>
+        ) : (
+          (isItemChecking ? (
+            <>
+              <button disabled={isDisable} onClick={handleDialogOpen} className={`text-white p-1 rounded-xl w-full ${isDisable ? 'bg-mythemes-secondarygreen' : 'bg-mythemes-maingreen'}`} >{buttonLabel}</button>
+              <ItemCheckingDialog
+                isOpen={isDialogOpen}
+                onClose={handleDialogClose}
+                orderId={Number(params.slug[0])}
+                refetch={refetch}
+                targetStatus={String(targetStatus)}
+                workerId={id}
+              />
+            </>
+          ) : (
+            (isBypassRequest ? (
+              (isBypassAccepted ? (
+                <button disabled={isLoading} onClick={handleUpdate} className='bg-yellow-600 text-white p-1 rounded-xl w-full'>
+                  {isLoading ? <Loader2 className="mx-auto animate-spin" /> : `${buttonLabel}`}
+                  {isLoading ?? 'Success !'}
+                </button>
               ) : (
-                (isBypassRequest == false ? (
-                  <>
-                    <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
-                  </>
+                (isBypassRejected ? (
+                  <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
                 ) : (
-                  (isBypassAccepted == true ? (
-                    <>
-                      <button onClick={handleUpdate} className='bg-yellow-600 text-white p-1 rounded-xl w-full'>{buttonLabel}</button>
-                    </>
-                  ) : (
-                    (isBypassRejected == true ? (
-                      <>
-                        <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
-                      </>
-                    ) : (
-                      <>
-                        <button disabled className='bg-mythemes-dimgrey text-white p-1 rounded-xl w-full'>Bypass Requested</button>
-                      </>
-                    ))
-                  ))
+                  <button disabled className='bg-mythemes-dimgrey text-white p-1 rounded-xl w-full'>Bypass Requested</button>
                 ))
               ))
             ) : (
-              <>
-                <button disabled={isDisable} onClick={handleDialogOpen} className={`text-white p-1 rounded-xl w-full ${isDisable ? 'bg-mythemes-secondarygreen' : 'bg-mythemes-maingreen'}`} >{buttonLabel}</button>
-
-                <ItemCheckingDialog
-                  isOpen={isDialogOpen}
-                  onClose={handleDialogClose}
-                  orderId={Number(params.slug[0])}
-                  refetch={refetch}
-                  targetStatus={String(targetStatus)}
-                  workerId={id}
-                />
-
-              </>
-            )}
-          </>
-        ) : (
-          (isBypassRejected == true ? (
-            <>
-              <button disabled className='bg-red-600 text-white p-1 rounded-xl w-full'>Bypass Rejected</button>
-            </>
-          ) : (
-            <>
-            </>
+              <button disabled={isLoading} onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>
+                {isLoading ? <Loader2 className="mx-auto animate-spin" /> : `${buttonLabel}`}
+                {isLoading ?? 'Success !'}                
+                </button>
+            ))
           ))
         )}
       </div>
-    </div>
+    </div >
   )
 }
 

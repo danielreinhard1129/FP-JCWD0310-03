@@ -50,7 +50,7 @@ export const completeRegistrationService = async (
       return { ...user, token: token };
     });
 
-    const templatePath = path.join(__dirname, '../../templates/verif.hbs');
+    const templatePath = path.join(__dirname, '../../../templates/verif.html');
     const templateSource = fs.readFileSync(templatePath, 'utf-8');
     const compileTemplate = Handlebars.compile(templateSource);
     const confirmationLink = `${NEXT_BASE_URL}/register/verification?token=${newUser.token}`;
@@ -64,7 +64,7 @@ export const completeRegistrationService = async (
         link: confirmationLink,
       }),
     });
-
+ 
     return {
       message: `Verification email has been sent to ${email}`,
       data: newUser,

@@ -96,14 +96,11 @@ const useUpdateUser = () => {
       if (profilePic && profilePic.length > 0) {
         updateUserForm.append('profilePic', profilePic[0]);
       }
-
+ 
       const { data } = await axiosInstance.patch(
         `/user/profile`,
         updateUserForm,
       );
-      console.log('iniddaata', data);
-      console.log('iniupdateuserform', updateUserForm);
-
       dispatch(loginAction(data));
       toast.success('Edit profile success!');
       router.push(`/user/profile`);

@@ -22,7 +22,7 @@ import ItemStation from '../../../components/ItemStation';
 import ItemWorkShift from '../../../components/ItemWorkShift';
 
 export function AddEmployeeForm() {
-  const { addEmployee } = useAddEmployee();
+  const { addEmployee, isLoading } = useAddEmployee();
   const [selected, setSelected] = useState<string>('');
   const [schema, setSchema] = useState(ValidationSchemaSuperAdmin);
 
@@ -48,40 +48,10 @@ export function AddEmployeeForm() {
     }
   }, [selected]);
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <FormInput
-          name="fullName"
-          type="text"
-          label="Full Name"
-          placeholder="Your Full Name"
-          form={form}
-        />
-        <FormInput
-          name="email"
-          type="email"
-          label="Email"
-          placeholder="Your Email"
-          form={form}
-        />
-        <FormInput
-          name="password"
-          type="password"
-          label="Password"
-          placeholder="Entry Password"
-          form={form}
-        />
-        <FormSelectRole
-          name="role"
-          label="Role"
-          placeholder="Select a Role"
-          form={form}
-          setSelected={setSelected}
-          item={<ItemRole />}
-        />
-
-        {selected == 'OUTLET_ADMIN' ? (
+  const renderConditionalFields = () => {
+    switch (selected) {
+      case 'OUTLET_ADMIN':
+        return (
           <>
             <FormSelect
               name="outletId"
@@ -98,11 +68,9 @@ export function AddEmployeeForm() {
               item={<ItemWorkShift />}
             />
           </>
-        ) : (
-          <div></div>
-        )}
-
-        {selected == 'WORKER' ? (
+        );
+      case 'WORKER':
+        return (
           <>
             <FormSelect
               name="outletId"
@@ -126,25 +94,63 @@ export function AddEmployeeForm() {
               item={<ItemStation />}
             />
           </>
-        ) : (
-          <div></div>
-        )}
+        );
+      case 'DRIVER':
+        return (
+          <FormSelect
+            name="outletId"
+            label="Outlet"
+            placeholder="Select an Outlet"
+            form={form}
+            item={<ItemOutlet />}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
-        {selected == 'DRIVER' ? (
-          <>
-            <FormSelect
-              name="outletId"
-              label="Outlet"
-              placeholder="Select an Outlet"
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="">
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="w-full flex flex-col gap-3">
+            <FormInput
+              name="fullName"
+              type="text"
+              label="Full Name"
+              placeholder="Your Full Name"
               form={form}
-              item={<ItemOutlet />}
             />
-          </>
-        ) : (
-          <div></div>
-        )}
+            <FormInput
+              name="email"
+              type="email"
+              label="Email"
+              placeholder="Your Email"
+              form={form}
+            />
+            <FormInput
+              name="password"
+              type="password"
+              label="Password"
+              placeholder="Entry Password"
+              form={form}
+            />
+            <FormSelectRole
+              name="role"
+              label="Role"
+              placeholder="Select a Role"
+              form={form}
+              setSelected={setSelected}
+              item={<ItemRole />}
+            />
+          </div>
+          <div className="flex flex-col gap-3">
+            {renderConditionalFields()}
+          </div>
+        </div>
 
-        <Button type="submit">Submit</Button>
+        <Button disabled={isLoading} type="submit">Submit</Button>
       </form>
     </Form>
   );

@@ -1,6 +1,6 @@
 'use client';
+import AuthGuard from '@/hoc/AuthGuard';
 import useUpdateUser from '@/hooks/api/user/useUpdateUser';
-import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { BASE_API_URL } from '@/utils/config';
 import { getChangedValues } from '@/utils/getChangeValues';
@@ -67,44 +67,23 @@ const EditProfile = () => {
             className="w-36 h-36 rounded-full border-2 my-auto justify-center relative overflow-hidden mx-auto "
             onClick={handleImageClick}
           >
-            {image ? (
-              <Image
-                alt="ProfilePict"
-                src={URL.createObjectURL(image)}
-                quality={80}
-                objectFit="cover"
-                fill
-                loading="lazy"
-                className="mx-auto"
-              />
-            ) : (
-              // <Image
-              //   alt="ProfilePict"
-              //   src={
-              //     profilePic
-              //       ? profilePic.includes('googleusercontent.com')
-              //         ? profilePic
-              //         : `${BASE_API_URL}/assets${profilePic}`
-              //       : noPic.src // Path to your default image
-              //   }
-              //   quality={80}
-              //   objectFit="cover"
-              //   fill
-              //   loading="lazy"
-              //   className="mx-auto"
-              // />
-              <Image
-                alt="ProfilePict"
-                src={
-                  profilePic ? `${BASE_API_URL}/assets${profilePic}` : noPic.src // Path to your default image
-                }
-                quality={80}
-                objectFit="cover"
-                fill
-                loading="lazy"
-                className="mx-auto"
-              />
-            )}
+            <Image
+              alt="ProfilePict"
+              quality={80}
+              objectFit="cover"
+              fill
+              loading="lazy"
+              className="mx-auto"
+              // src={URL.createObjectURL(image)}
+              src={
+                profilePic
+                  ? profilePic.includes('googleusercontent.com')
+                    ? profilePic
+                    : `${BASE_API_URL}/assets${profilePic}`
+                  : noPic.src
+              }
+            />
+
             <input
               type="file"
               name="profilePic"
@@ -124,4 +103,4 @@ const EditProfile = () => {
   );
 };
 
-export default CustomerAuthGuard(EditProfile);
+export default AuthGuard(EditProfile);

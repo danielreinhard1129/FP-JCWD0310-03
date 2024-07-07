@@ -5,11 +5,13 @@ import useUpdateDeliveryOrder from '@/hooks/api/deliveryOrder/useUpdateDeliveryO
 import { useAppSelector } from '@/redux/hooks';
 import { DeliveryStatus } from '@/types/deliveryOrder.type';
 import { format } from 'date-fns';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import SkeletonDetails from '../../components/SkeletonDetails';
 
 const DeliveryDetails = ({ params }: { params: { id: string } }) => {
-  const { deliveryOrder, refetch, isLoading } = useGetDeliveryOrder(Number(params.id));
+  const { deliveryOrder, refetch, isLoading: getLoading } = useGetDeliveryOrder(Number(params.id));
   const { id } = useAppSelector((state) => state.user);
   const router = useRouter()
 
@@ -23,11 +25,11 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
 
   if (deliveryOrder?.deliveryStatus == DeliveryStatus.WAITING_FOR_DRIVER) {
     status = DeliveryStatus.ON_THE_WAY_TO_OUTLET,
-    label = "Claim"
+      label = "Claim"
   }
   if (deliveryOrder?.deliveryStatus == DeliveryStatus.ON_THE_WAY_TO_OUTLET) {
     status = DeliveryStatus.ON_THE_WAY_TO_CUSTOMER,
-    label = "Collected"
+      label = "Collected"
   }
   if (deliveryOrder?.deliveryStatus == DeliveryStatus.ON_THE_WAY_TO_CUSTOMER) {
     status = DeliveryStatus.RECEIVED_BY_CUSTOMER,
@@ -43,23 +45,26 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
     status: String(status)
   }
 
-  const { updateDeliveryOrder } = useUpdateDeliveryOrder()
+  const { updateDeliveryOrder, isLoading } = useUpdateDeliveryOrder()
 
   const handleUpdate = async () => {
     try {
       await updateDeliveryOrder(values);
+      toast.success(`Succeess!`);
       router.back()
     } catch (error) {
       console.error('Failed to update delivery order', error);
     }
   };
 
-
+  if (getLoading) {
+    return <SkeletonDetails />;
+  }
   return (
     <div>
       <div className='flex flex-col gap-4 container p-4 bg-white px-6'>
         <div className='relative flex gap-2'>
-          <ChevronLeft onClick={()=>{router.back()}} className='absolute h-6 my-auto' />
+          <ChevronLeft onClick={() => { router.back() }} className='absolute h-6 my-auto' />
           <h1 className='font-bold mx-auto my-auto'>Delivery Details</h1>
         </div>
       </div>
@@ -114,7 +119,7 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
           <Separator />
           <div className='flex flex-col'>
             <div className='flex justify-start gap-2'>
-              <p className='text-sm font-semibold'>Pickup By : </p>
+              <p className='text-sm font-semibold'>Delivery By : </p>
               <p className='text-sm font-semibold'> {deliveryOrder?.driver?.user.fullName}</p>
             </div>
             <div className='flex flex-col'>
@@ -125,12 +130,16 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         </div>
-        <div className={`${deliveryOrder?.deliveryStatus == DeliveryStatus.RECEIVED_BY_CUSTOMER ? 'hidden' : 'block'}`}>
-          <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{label}</button>
+        <div className={`${deliveryOrder?.deliveryStatus == DeliveryStatus.RECEIVED_BY_CUSTOMER || deliveryOrder?.deliveryStatus == DeliveryStatus.NOT_READY_TO_DELIVER ? 'hidden' : 'block'}`}>
+          <button onClick={handleUpdate} disabled={isLoading} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>
+            {isLoading ? <Loader2 className="mx-auto animate-spin" /> : `${label}`}
+            {isLoading ?? 'Success !'}
+          </button>
         </div>
       </div>
     </div>
   )
 }
+
 
 export default DeliveryDetails

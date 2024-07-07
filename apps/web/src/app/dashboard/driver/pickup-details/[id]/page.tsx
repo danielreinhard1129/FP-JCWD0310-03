@@ -5,11 +5,13 @@ import useUpdatePickupOrder from '@/hooks/api/pickupOrder/useUpdatePickupOrder';
 import { useAppSelector } from '@/redux/hooks';
 import { PickupStatus } from '@/types/pickupOrder.type';
 import { format } from 'date-fns';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import SkeletonDetails from '../../components/SkeletonDetails';
 
 const PickupDetails = ({ params }: { params: { id: string } }) => {
-  const { pickupOrder, refetch, isLoading } = useGetPickupOrder(Number(params.id));
+  const { pickupOrder, refetch, isLoading: getLoading } = useGetPickupOrder(Number(params.id));
   const { id } = useAppSelector((state) => state.user);
   const router = useRouter()
 
@@ -43,16 +45,21 @@ const PickupDetails = ({ params }: { params: { id: string } }) => {
     status: String(status)
   }
 
-  const { updatePickupOrder } = useUpdatePickupOrder()
+  const { updatePickupOrder, isLoading } = useUpdatePickupOrder()
 
   const handleUpdate = async () => {
     try {
       await updatePickupOrder(values);
+      toast.success(`Succeess!`);
       router.back()
     } catch (error) {
       console.error('Failed to update pickup order', error);
     }
   };
+
+  if (getLoading) {
+    return <SkeletonDetails />;
+  }
 
 
   return (
@@ -126,7 +133,10 @@ const PickupDetails = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
         <div className={`${pickupOrder?.pickupStatus == PickupStatus.RECEIVED_BY_OUTLET ? 'hidden' : 'block'}`}>
-          <button onClick={handleUpdate} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>{label}</button>
+          <button onClick={handleUpdate} disabled={isLoading} className='bg-mythemes-maingreen text-white p-1 rounded-xl w-full'>
+          {isLoading ? <Loader2 className="mx-auto animate-spin" /> : `${label}`}  
+          {isLoading ?? 'Success !'}      
+          </button>
         </div>
 
 

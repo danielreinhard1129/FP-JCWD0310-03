@@ -1,13 +1,12 @@
 'use client';
 
-import { toast } from '@/components/ui/use-toast';
-// import { axiosInstance } from '@/lib/axios';
-import { cn } from '@/lib/utils';
 import { Order } from '@/types/order.type';
 import { AxiosError } from 'axios';
 
 import { useRouter } from 'next/navigation';
 import useAxios from '../useAxios';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface CreateOrderArgs extends Pick<Order, 'weight'> {
   orderItem: [];
@@ -16,24 +15,23 @@ interface CreateOrderArgs extends Pick<Order, 'weight'> {
 
 const useCreateOrder = () => {
   const { axiosInstance } = useAxios();
-  const router = useRouter();
+  const router = useRouter();  
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const createOrder = async (payload: CreateOrderArgs) => {
+    setIsLoading(false);
     try {
       await axiosInstance.post('/orders', payload);
+      toast.success('Created Order Success !');
       router.push('/dashboard/master/order');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          className: cn(
-            'top-0 right-0 flex fixed md:max-w-[420px] md:top-16 md:right-4 border-mythemes-darkpink text-mythemes-darkpink',
-          ),
-          variant: 'default',
-          title: error?.response?.data,
-        });
+        toast.error(error.response?.data.errors[0].msg);
       }
+    }finally {
+      setIsLoading(false);
     }
   };
-  return { createOrder };
+  return { createOrder, isLoading };
 };
 
 export default useCreateOrder;

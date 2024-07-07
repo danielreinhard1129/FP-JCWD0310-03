@@ -1,10 +1,9 @@
 'use client'
-import useUpdateOrderStatus from '@/hooks/api/order/useUpdateStatusOrder';
-import { OrderStatus } from '@/types/order.type';
-import { FC, useEffect, useState } from 'react';
-import ItemCheckingDialog from './ItemCheckingDialog';
+import useGetUser from '@/hooks/api/user/useGetUser';
 import { EmployeeWorkShift } from '@/types/employee.type';
+import { OrderStatus } from '@/types/order.type';
 import { useRouter } from 'next/navigation';
+import { FC, useEffect, useState } from 'react';
 
 interface WashingCardProps {
   key: number;
@@ -40,6 +39,38 @@ const WashingCard: FC<WashingCardProps> = ({
   isBypassRejected,
 }) => {
   const router = useRouter()
+  const { user } = useGetUser();
+
+  const employeeWorkShift = user?.employee?.workShift
+
+  const [isDisable, setIsDisable] = useState(false);
+
+  useEffect(() => {
+    const checkStatus = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
+
+      if (employeeWorkShift === EmployeeWorkShift.DAY) {
+        if (currentHour >= 6 && currentHour < 18) {
+          setIsDisable(false);
+        } else {
+          setIsDisable(true);
+        }
+      } else if (employeeWorkShift === EmployeeWorkShift.NIGHT) {
+        if (currentHour >= 18 || currentHour < 6) {
+          setIsDisable(false);
+        } else {
+          setIsDisable(true);
+        }
+      }
+    };
+
+    checkStatus();
+    const interval = setInterval(checkStatus, 60000);
+
+    return () => clearInterval(interval);
+  }, [employeeWorkShift]);
+
 
 
   const handleClick = () => {
@@ -83,7 +114,7 @@ const WashingCard: FC<WashingCardProps> = ({
         (isBypassRequest == false ? (
           <>
             <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-secondarygreen'></div>
-            <button onClick={handleClick} className='absolute right-3 bottom-3 bg-mythemes-maingreen font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>{buttonLabel}</button>
+            <button disabled={isDisable} onClick={handleClick} className='absolute right-3 bottom-3 bg-mythemes-maingreen font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>{buttonLabel}</button>
           </>
         ) : (
           (isBypassAccepted == true ? (
@@ -95,12 +126,14 @@ const WashingCard: FC<WashingCardProps> = ({
             (isBypassRejected == true ? (
               <>
                 <div className='absolute top-0 left-0 h-full w-2 bg-red-200'></div>
-                <button disabled className='absolute right-3 bottom-3 bg-red-600 font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Rejected</button>
+                <button disabled className='absolute right-3 bottom-3 bg-red-600 font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>Finish</button>
+                <div onClick={handleClick} className='absolute top-0 left-0 w-full h-full'></div>
               </>
             ) : (
               <>
                 <div className='absolute top-0 left-0 h-full w-2 bg-mythemes-dimgrey'></div>
-                <button disabled className='absolute right-3 bottom-3 bg-mythemes-dimgrey font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Requested</button>
+                <button disabled className='absolute right-3 bottom-3 bg-mythemes-dimgrey font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>Finish</button>
+                <div onClick={handleClick} className='absolute top-0 left-0 w-full h-full'></div>
               </>
             ))
           ))
@@ -109,12 +142,14 @@ const WashingCard: FC<WashingCardProps> = ({
         (isBypassRejected == true ? (
           <>
             <div className='absolute top-0 left-0 h-full w-2 bg-red-200'></div>
-            <button disabled className='absolute right-3 bottom-3 bg-red-600 font-bold text-sm text-white p-0.5 w-1/3 rounded-md'>Bypass Rejected</button>
+            <button disabled className='absolute right-3 bottom-3 bg-red-600 font-bold text-sm text-white p-0.5 w-1/4 rounded-md'>Rejected</button>
+            <div onClick={handleClick} className='absolute top-0 left-0 w-full h-full'></div>
           </>
         ) : (
           <>
             <div className='absolute top-0 left-0 h-full w-2 bg-green-200'></div>
             <div className={`absolute right-3 bottom-3 bg-green-600 font-bold text-white p-0.5 w-1/4 text-sm text-center rounded-md`}>{buttonLabel}</div>
+            <div onClick={handleClick} className='absolute top-0 left-0 w-full h-full'></div>
           </>
         ))
       )}
