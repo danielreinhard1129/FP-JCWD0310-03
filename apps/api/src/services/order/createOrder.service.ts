@@ -1,7 +1,6 @@
 
 import prisma from '@/prisma';
 import { EmployeeWorkShift, Order, OrderStatus } from '@prisma/client';
-import { EmployeeWorkShift, Order, OrderStatus } from '@prisma/client';
 
 
 interface CreateOrderBody
@@ -18,7 +17,6 @@ export const CreateOrderService = async (
 
         const existingPickupOrder = await prisma.pickupOrder.findFirst({
             where: { pickupNumber: pickupNumber },
-            select: { id: true, outletId: true }
             select: { id: true, outletId: true }
         })
 
