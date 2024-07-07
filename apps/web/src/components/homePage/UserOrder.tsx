@@ -23,6 +23,7 @@ const UserOrder = () => {
     take: 10,
     filterDate: date,
   });
+  
   useEffect(() => {
     setDate(new Date());
   }, []);
