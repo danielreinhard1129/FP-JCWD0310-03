@@ -31,7 +31,7 @@ const ChangePassword = () => {
       <div className="container flex flex-col gap-4">
         <div className="flex relative">
           <ChevronLeft className="absolute" onClick={() => router.back()} />
-          <h1 className="font-extrabold mx-auto">Edit profile</h1>
+          <h1 className="font-extrabold mx-auto">Change Password</h1>
         </div>
 
         <div className="w-full flex flex-col gap-4">

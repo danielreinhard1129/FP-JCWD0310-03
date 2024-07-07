@@ -75,25 +75,29 @@ const PickupDetailDialog: React.FC<ItemCheckingDialogProps> = ({
             Laundry with no pain, make sure your address to enjoy your life.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col  border-2 border-mythemes-secondaryblue rounded-xl p-4 text-sm font-bold gap-2">
-          <div className="flex flex-col justify-between border-b-2">
-            <p className="mb-2">Your Address</p>
-            <p className="font-normal">{address?.addressLine}</p>
+        <div className="flex flex-col border-2 border-mythemes-maingreen rounded-xl p-4 text-sm font-bold gap-2">
+          <div className="flex flex-col justify-between ">
+            <p className="mb-2">Customer Address</p>
+            <p className="font-normal text-gray-400">{address?.addressLine}</p>
           </div>
-          <div className="flex flex-col justify-between border-b-2">
+          <div className="flex flex-col justify-between ">
             <p className="mb-2">Outlet</p>
-            <p className="font-normal mb-1">{outlet?.outletName}</p>
-            <p className="font-normal">{outlet?.address[0].addressLine}</p>
+            <p className="font-normal mb-1 text-gray-400">
+              {outlet?.outletName}
+            </p>
+            <p className="font-normal text-gray-400">
+              {outlet?.address[0].addressLine}
+            </p>
           </div>
-          <div className="flex justify-between border-b-2">
+          <div className="flex justify-between flex-col">
             <p>Distance</p>
-            <p className="">:</p>
-            <p>{distance} Km</p>
+            <p className="text-gray-400 font-normal">{distance} Km</p>
           </div>
-          <div className="flex justify-between border-b-2">
+          <div className="flex flex-col justify-between ">
             <p>Pickup Cost</p>
-            <p className="mx-auto">:</p>{' '}
-            <p>{formatCurrency(Number(pickupPrice))}</p>
+            <p className="text-gray-400 font-normal">
+              {formatCurrency(Number(pickupPrice))}
+            </p>
           </div>
         </div>
         <p className="text-xs font-light">
