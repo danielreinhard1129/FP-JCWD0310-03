@@ -1,6 +1,7 @@
 import { AuthController } from '@/controllers/auth.controllers';
 import { UserController } from '@/controllers/user.controllers';
 import { uploader } from '@/lib/uploader';
+import { updateUserValidator } from '@/middlewares/updateUserValidator';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 
@@ -18,6 +19,7 @@ export class UserRouter {
     this.router.patch(
       '/profile',
       verifyToken,
+      updateUserValidator,
       uploader('IMG', '/images').array('profilePic', 1),
       this.userController.updateUserController,
     );

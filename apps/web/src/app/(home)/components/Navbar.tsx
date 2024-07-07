@@ -14,11 +14,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import logo from '../../../../public/Kucekin_Logo_White_EVO01.png';
 import LogoutDialog from '@/components/LogoutDialog';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const { id } = useAppSelector((state) => state.user);
   const router = useRouter();
+  const [navbarBg, setNavbarBg] = useState(false);
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -26,28 +28,44 @@ const Navbar = () => {
     router.push('/');
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 0) {
+        setNavbarBg(true);
+      } else {
+        setNavbarBg(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <div className="md:block hidden">
-        <div className="left-0 h-12 mt-3 absolute flex justify-between place-items-center container ">
+      <div className={`md:block hidden sticky top-0 `}>
+        <div
+          className={`left-0 h-14  absolute flex justify-between place-items-center container ${navbarBg ? 'bg-[#1A1F1F]' : ''} z-50 `}
+        >
           <div className="w-28 ">
             <Image alt="logo" src={logo} />
           </div>
           <div className="flex gap-16 font-bold text-white text-lg ml-28">
-            <div className="cursor-pointer" onClick={() => router.push('/')}>
-              Home
+            <a href="#home">Home</a>
+            <a href="#about-us">About Us</a>
+            <div
+              className="cursor-pointer"
+              onClick={() => router.push('/user')}
+            >
+              Go to apps
             </div>
-            <div>Services</div>
-            <div>Go to apps</div>
           </div>
           <div className="flex gap-6 font-bold text-white text-xl">
             {Boolean(id) ? (
-              // <Button
-              //   className="bg-transparent hover:bg-red-500  font-bold text-white text-lg rounded-xl"
-              //   onClick={() => logout()}
-              // >
-              //   Log Out
-              // </Button>
               <LogoutDialog />
             ) : (
               <>
@@ -81,7 +99,9 @@ const Navbar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="font-normal mr-6 text-right">
                 <DropdownMenuItem>Home</DropdownMenuItem>
-                <DropdownMenuItem>About</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <a href="#about-us">About Us</a>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Services</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 {Boolean(id) ? (
