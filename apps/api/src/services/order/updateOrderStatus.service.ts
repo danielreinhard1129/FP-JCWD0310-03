@@ -220,7 +220,7 @@ export const updateOrderStatusService = async (
                 await transporter.sendMail({
                     from: 'Admin',
                     to: customer.email,
-                    subject: 'Verify your account',
+                    subject: 'Your Laundry are Complete',
                     html: compileTemplate({
                         name: customer.fullName,
                         orderNumber: existingOrder.orderNumber
