@@ -7,7 +7,7 @@ import { sign } from 'jsonwebtoken';
 export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
   try {
     const { email, password } = body;
- 
+
     const user = await prisma.user.findFirst({
       where: { email: email },
     });
@@ -15,11 +15,18 @@ export const loginService = async (body: Pick<User, 'email' | 'password'>) => {
     if (!user) {
       throw new Error('Incorrect email address or password !');
     }
+
+    if (user.isDelete === true) {
+      throw new Error(
+        'This account has been deleted. Please contact support for more information',
+      );
+    }
+
     if (user && user.profilePic?.includes('googleusercontent.com')) {
       throw new Error('Please Login Using Google Account !');
     }
     const isPasswordValid = await comparePassword(password, user.password);
-  
+
     if (!isPasswordValid) {
       throw new Error('Incorrect email address or password !');
     }

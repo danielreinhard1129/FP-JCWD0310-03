@@ -1,18 +1,13 @@
 'use client';
 
 // import { axiosInstance } from '@/lib/axios';
+import { useAppDispatch } from '@/redux/hooks';
+import { logoutAction } from '@/redux/slices/userSlice';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import useAxios from '../useAxios';
-import { useState } from 'react';
-import { useAppDispatch } from '@/redux/hooks';
-import { loginAction } from '@/redux/slices/userSlice';
-
-interface VerificationResponses {
-  message: string;
-}
-
 interface VerificationArgs {
   password: string | null;
   token: string | null;
@@ -22,6 +17,11 @@ const useVerification = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const logout = () => {
+    localStorage.removeItem('token');
+    dispatch(logoutAction());
+    router.push('/');
+  };
 
   const verification = async (payload: VerificationArgs) => {
     setIsLoading(true);
@@ -32,7 +32,7 @@ const useVerification = () => {
           Authorization: `Bearer ${payload.token}`,
         },
       });
-      dispatch(loginAction(data));
+      logout();
       toast.success('Your account has been verified !');
       router.push('/login');
     } catch (error) {

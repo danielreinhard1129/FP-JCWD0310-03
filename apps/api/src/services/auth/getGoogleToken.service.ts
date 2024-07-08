@@ -43,10 +43,7 @@ export const getGoogleTokenService = async (code: string) => {
       };
     }
 
-    if (
-      existingUser &&
-      existingUser.profilePic &&
-      !existingUser.profilePic.includes('googleusercontent.com')
+    if (existingUser?.password
     ) {
       throw new Error('Please login using email');
     }

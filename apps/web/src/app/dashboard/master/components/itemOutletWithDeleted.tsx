@@ -29,7 +29,6 @@ const ItemOutletWithDeleted: React.FC<SelectOutletProps> = ({
                         </SelectItem>
                     );
                 }
-
             })}
         </SelectContent>
     );

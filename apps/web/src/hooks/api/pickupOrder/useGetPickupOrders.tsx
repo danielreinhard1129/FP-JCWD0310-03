@@ -2,7 +2,6 @@
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 import useAxios from '../useAxios';
 
 interface IGetPickupOrdersQuery extends IPaginationQueries {
@@ -10,7 +9,7 @@ interface IGetPickupOrdersQuery extends IPaginationQueries {
   isOrderCreated?: number;
   isClaimedbyDriver?: number;
   latitude?: number | null;
-  longitude?: number | null;
+  longitude?: number | null;  
 }
 
 const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
@@ -36,9 +35,9 @@ const useGetPickupOrders = (queries: IGetPickupOrdersQuery) => {
   }
 
   useEffect(() => {
-    getPickupOrders();
+    getPickupOrders();   
   
-  }, [queries.page, queries.take]);
+  }, [queries.page, queries.take, queries.pickupStatus, queries.sortBy, queries.sortOrder]);
 
   return { data, isLoading, meta, refetch: getPickupOrders };
 };

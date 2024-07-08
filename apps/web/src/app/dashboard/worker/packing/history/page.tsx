@@ -8,6 +8,7 @@ import { EmployeeStation } from '@/types/employee.type';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 import { useAppSelector } from '@/redux/hooks';
 import NoData from '@/app/dashboard/components/noData';
+import WorkerPackerAuthGuard from '@/hoc/WorkerPackerAuthGuard';
 
 
 const PackingHistory = () => {
@@ -69,4 +70,4 @@ const PackingHistory = () => {
   )
 }
 
-export default WorkerAuthGuard(PackingHistory)
+export default WorkerPackerAuthGuard(PackingHistory)

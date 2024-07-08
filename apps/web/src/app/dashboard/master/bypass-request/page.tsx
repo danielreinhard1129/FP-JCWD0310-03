@@ -28,7 +28,7 @@ const BypassRequest = () => {
     refetch: refetchBypass,
   } = useGetOrderWorkers({
     page: pageBypass,
-    take: 10,
+    take: 8,
     sortOrder,
     filterOutlet,
     bypassRequest: Number(Boolean(true)),
@@ -75,8 +75,8 @@ const BypassRequest = () => {
               <SelectValue placeholder={'Sort By'} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="asc">Sort by: Newest</SelectItem>
-              <SelectItem value="desc">Sort by: Latest</SelectItem>
+              <SelectItem value="asc">Sort by: Oldest</SelectItem>
+              <SelectItem value="desc">Sort by: Newest</SelectItem>
             </SelectContent>
           </Select>
         </div>

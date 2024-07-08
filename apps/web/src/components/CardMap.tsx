@@ -30,6 +30,11 @@ const CardMap: FC<CardMapProps> = ({ onLocationSelect }) => {
   const [currentPosition, setCurrentPosition] = useState<
     [number, number] | null
   >(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -65,6 +70,7 @@ const CardMap: FC<CardMapProps> = ({ onLocationSelect }) => {
         const { lat, lng } = location.latlng;
         setCurrentPosition([lat, lng]);
         getLocation(lat, lng);
+        setIsOpen(false);
       },
     });
 
@@ -73,8 +79,11 @@ const CardMap: FC<CardMapProps> = ({ onLocationSelect }) => {
 
   return (
     <>
-      <Dialog>
-        <DialogTrigger className="w-56 text-left text-mythemes-maingreen font-bold hover:underline">
+      <Dialog open={isOpen}>
+        <DialogTrigger
+          className="w-56 text-left text-mythemes-maingreen font-bold hover:underline"
+          onClick={() => handleOpen()}
+        >
           Set Location on Map
         </DialogTrigger>
         <DialogContent>

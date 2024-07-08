@@ -11,7 +11,6 @@ import { useState } from 'react';
 
 interface RegisterResponses {
   message: string;
-  data: User;
 }
 
 interface RegisterArgs extends Pick<User, 'email'> {}
@@ -32,8 +31,10 @@ const useRegister = () => {
       router.push('/login');
     } catch (error) {
       if (error instanceof AxiosError) {
-        // FIXME = change alert to toast
-        toast.error(error.response?.data);
+        const errorMessage = error.response?.data.errors
+          ? error.response.data.errors.map((err: any) => err.msg).join(', ')
+          : 'An unexpected error occurred';
+        toast.error(errorMessage);
         console.error(error);
       }
     } finally {

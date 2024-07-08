@@ -8,6 +8,7 @@ import useGetUser from '@/hooks/api/user/useGetUser';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 import { useAppSelector } from '@/redux/hooks';
 import NoData from '@/app/dashboard/components/noData';
+import WorkerIronerAuthGuard from '@/hoc/WorkerIronerAuthGuard';
 
 
 const IroningRequest = () => {
@@ -71,4 +72,4 @@ const IroningRequest = () => {
   )
 }
 
-export default WorkerAuthGuard(IroningRequest)
+export default WorkerIronerAuthGuard(IroningRequest)

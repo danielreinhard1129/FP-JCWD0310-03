@@ -26,6 +26,7 @@ import ItemFilterOutlet from './order/components/ItemFilterOutlet';
 import ItemFilterMonth from '../components/ItemFilterMonth';
 import ChartEvents from '../components/ChartEvents';
 import SkeletonOverview from './components/SkeletonOverview';
+import ItemFilterOutletWithDeleted from './order/components/ItemFilterOutletWithDeleted';
 
 const Overview = () => {
   const [filterOutlet, setFilterOutlet] = useState('all');
@@ -105,7 +106,7 @@ const Overview = () => {
               <SelectTrigger className="min-w-40">
                 <SelectValue placeholder={'Outlet'} />
               </SelectTrigger>
-              <ItemFilterOutlet />
+              <ItemFilterOutletWithDeleted />
             </Select>
           </div>
           <Select

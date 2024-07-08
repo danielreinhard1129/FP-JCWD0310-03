@@ -21,7 +21,7 @@ export class PickupOrderController {
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
         sortBy: parseInt(req.query.sortBy as string) || 'id',
-        sortOrder: parseInt(req.query.sortOrder as string) || 'asc',
+        sortOrder: req.query.sortOrder as string || 'asc',
       };
      
       const result = await getPickupOrdersService(query);

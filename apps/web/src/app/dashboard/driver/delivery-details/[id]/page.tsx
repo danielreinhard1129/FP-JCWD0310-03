@@ -9,6 +9,7 @@ import { ChevronLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import SkeletonDetails from '../../components/SkeletonDetails';
+import DriverAuthGuard from '@/hoc/DriverAuthGuard';
 
 const DeliveryDetails = ({ params }: { params: { id: string } }) => {
   const { deliveryOrder, refetch, isLoading: getLoading } = useGetDeliveryOrder(Number(params.id));
@@ -142,4 +143,4 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
 }
 
 
-export default DeliveryDetails
+export default DriverAuthGuard(DeliveryDetails)

@@ -41,6 +41,7 @@ export class UserController {
         id: parseInt(res.locals.user.id as string),
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
+        search: (req.query.search as string) || '',
         sortBy: parseInt(req.query.sortBy as string) || 'id',
         sortOrder: parseInt(req.query.sortOrder as string) || 'desc',
       };      

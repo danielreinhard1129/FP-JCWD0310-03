@@ -23,6 +23,8 @@ export class EmployeeController {
         id: parseInt(res.locals.user.id as string),
         take: parseInt(req.query.take as string) || 1000000,
         page: parseInt(req.query.page as string) || 1,
+        filterOutlet: parseInt(req.query.filterOutlet as string) || 'all',
+        filterRole: (req.query.filterRole as string) || 'all',
         sortBy: parseInt(req.query.sortBy as string) || 'id',
         sortOrder: parseInt(req.query.sortOrder as string) || 'desc',
       };      

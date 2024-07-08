@@ -7,7 +7,8 @@ import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetEmployeesQuery extends IPaginationQueries {
-  // id: number;
+  filterOutlet?: string
+  filterRole?: string
 }
 
 const useGetEmployees = (queries: IGetEmployeesQuery) => {
@@ -34,7 +35,7 @@ const useGetEmployees = (queries: IGetEmployeesQuery) => {
 
   useEffect(() => {
     getEmployees();
-  }, [queries?.page]);
+  }, [queries?.page, queries.filterOutlet, queries.filterRole]);
 
   return { data, isLoading, meta, refetch: getEmployees };
 };

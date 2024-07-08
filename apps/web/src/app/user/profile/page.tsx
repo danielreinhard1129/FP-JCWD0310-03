@@ -24,14 +24,7 @@ const Profile = () => {
   const { email, fullName, role, tokenExpiresIn, isVerify, profilePic } =
     useAppSelector((state) => state.user);
   const { user } = useGetUser();
-  const dispatch = useAppDispatch();
-  const logout = () => {
-    localStorage.removeItem('token');
-    dispatch(logoutAction());
-  };
-
   const { resendVerifEmail } = useResendVerifEmail();
-
   const router = useRouter();
 
   let tokenExpiryDate;
@@ -157,7 +150,7 @@ const Profile = () => {
             className={`${role !== Role.CUSTOMER ? `hidden` : `block`} bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black border-mythemes-mainYellow border-b-2 `}
             onClick={() => router.push(`/user/order`)}
           >
-            <div className='flex flex-row justify-between'>
+            <div className="flex flex-row justify-between">
               <p>Your Order</p>
               <IoIosArrowForward />
             </div>
@@ -166,7 +159,7 @@ const Profile = () => {
             className={`${role !== Role.CUSTOMER ? `hidden` : `block`} bg-mythemes-white  hover:bg-mythemes-maingreen hover:text-white text-black border-mythemes-mainYellow border-b-2`}
             onClick={() => router.push('/user/profile/address')}
           >
-            <div className='flex flex-row justify-between'>
+            <div className="flex flex-row justify-between">
               <p>Your Address</p>
               <IoIosArrowForward />
             </div>

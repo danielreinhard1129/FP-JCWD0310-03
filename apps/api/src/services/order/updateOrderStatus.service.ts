@@ -41,28 +41,7 @@ export const updateOrderStatusService = async (
             data: {
                 orderStatus: setOrderStatus,
             },
-        });
-
-        if (orderStatus == 'AWAITING_PAYMENT') {
-            const customer = await prisma.user.findFirst({
-                where: { id: existingOrder.pickupOrder.userId },
-                select: {email: true, fullName: true}
-            });
-
-            const templatePath = path.join(__dirname, '../../templates/laundryfinish.hbs');
-            const templateSource = fs.readFileSync(templatePath, 'utf-8');
-            const compileTemplate = Handlebars.compile(templateSource);
-
-            await transporter.sendMail({
-                from: 'Admin',
-                to: customer?.email,
-                subject: 'Verify your account',
-                html: compileTemplate({
-                    name: customer?.fullName,
-                    orderNumber: existingOrder.orderNumber
-                }),
-            });
-        }
+        });        
 
         if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == false) {
             const createNotification = await prisma.notification.create({
@@ -110,19 +89,19 @@ export const updateOrderStatusService = async (
                     }
                 })
 
-                // create notifications
+                
                 const createNotification = await prisma.notification.create({
                     data: {
                         title: "Incoming Laundry Task",
                         description: "New laundry arrived at ironing station",
                     }
                 })
-                // distribute notifications
+               
                 const getUserId = await prisma.employee.findMany({
                     where: {
                         outletId: existingOrder.pickupOrder.outletId,
-                        workShift: setWorkShift,//hapus jika ga perlu
-                        station: { not: null },//ubah jika berdasarkan station
+                        workShift: setWorkShift,
+                        station: 'IRONING',
                     },
                     select: { userId: true }
                 })
@@ -149,19 +128,18 @@ export const updateOrderStatusService = async (
                     }
                 })
 
-                // create notifications
                 const createNotification = await prisma.notification.create({
                     data: {
                         title: "Incoming Laundry Task",
                         description: "New laundry arrived at packing station",
                     }
                 })
-                // distribute notifications
+
                 const getUserId = await prisma.employee.findMany({
                     where: {
                         outletId: existingOrder.pickupOrder.outletId,
-                        workShift: setWorkShift,//hapus jika ga perlu
-                        station: { not: null },//ubah jika berdasarkan station
+                        workShift: setWorkShift,
+                        station: "PACKING",
                     },
                     select: { userId: true }
                 })
@@ -217,6 +195,40 @@ export const updateOrderStatusService = async (
                         station: EmployeeStation.PACKING
                     }
                 })
+            }
+        }
+
+        if (orderStatus == 'AWAITING_PAYMENT') {
+            const customer = await prisma.user.findFirst({
+                where: { id: existingOrder.pickupOrder.userId },
+                select: {email: true, fullName: true}
+            });
+
+            if (!customer || !customer.email || !customer.fullName) {
+                throw new Error('Customer information is incomplete');
+            }
+
+            const templatePath = path.join(__dirname, '../../../templates/laundryfinish.hbs');
+            if (!fs.existsSync(templatePath)) {
+                throw new Error('Template file not found');
+            }
+
+            const templateSource = fs.readFileSync(templatePath, 'utf-8');
+            const compileTemplate = Handlebars.compile(templateSource);
+
+            try {
+                await transporter.sendMail({
+                    from: 'Admin',
+                    to: customer.email,
+                    subject: 'Verify your account',
+                    html: compileTemplate({
+                        name: customer.fullName,
+                        orderNumber: existingOrder.orderNumber
+                    }),
+                });
+            } catch (emailError) {
+                console.error('Error sending email:', emailError);
+                throw new Error('Failed to send email');
             }
         }
 

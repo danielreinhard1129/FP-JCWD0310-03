@@ -13,6 +13,12 @@ export const registerService = async (body: Pick<User, 'email'>) => {
       where: { email: email },
     });
 
+    if (existingEmail && existingEmail.isDelete === true) {
+      throw new Error(
+        'This account was removed. Please use another email or reach out to support.',
+      );
+    }
+
     if (existingEmail) {
       throw new Error('Email already exist');
     }

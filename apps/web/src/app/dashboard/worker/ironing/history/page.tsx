@@ -9,6 +9,7 @@ import Pagination from "@/components/Pagination";
 import WorkerAuthGuard from "@/hoc/WorkerAuthGuard";
 import { useAppSelector } from "@/redux/hooks";
 import NoData from "@/app/dashboard/components/noData";
+import WorkerIronerAuthGuard from "@/hoc/WorkerIronerAuthGuard";
 
 
 
@@ -70,4 +71,4 @@ const IroningHistory = () => {
   )
 }
 
-export default WorkerAuthGuard(IroningHistory)
+export default WorkerIronerAuthGuard(IroningHistory)
