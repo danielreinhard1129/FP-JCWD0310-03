@@ -82,6 +82,9 @@ module.exports = {
           grey: '#F8F9FB',
           taubmans: '#ECE5C7',
           dimgrey: '#CDC2AE',
+          one: '#0081A7',
+          two: '#00AFB9',
+          three: '#F07167'
         },
       },
       borderRadius: {

@@ -125,7 +125,9 @@ const FormEditEmployee: FC<FormEditEmployeeProps> = ({
             label="Outlet"
             placeholder="Select an Outlet"
             form={form}
-            item={<ItemOutlet />}
+            item={<ItemOutletWithDeleted 
+              defaultValue={initialValues.outletId}
+            />}
           />
         );
       default:

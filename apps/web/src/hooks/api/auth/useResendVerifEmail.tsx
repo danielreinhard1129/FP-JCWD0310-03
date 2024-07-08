@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import useAxios from '../useAxios';
 import { useAppDispatch } from '@/redux/hooks';
-import { logoutAction } from '@/redux/slices/userSlice';
+import { loginAction, logoutAction } from '@/redux/slices/userSlice';
 
 interface ResendVerifEmailResponse {
   message: string;
@@ -20,23 +20,18 @@ const useResendVerifEmail = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const logout = () => {
-    localStorage.removeItem('token');
-    dispatch(logoutAction());
-  };
 
   const resendVerifEmail = async () => {
     setIsLoading(true);
     try {
-      const { data } = await axiosInstance.patch<ResendVerifEmailResponse>(
-        `/auth/resend-verif-email`,
-      );
-      toast.message('Verification email has been sent to your email');
-      logout();
-      router.push('/');
+      const { data } = await axiosInstance.patch(`/auth/resend-verif-email`);
+
+      dispatch(loginAction(data));
+      toast.success('Verification email has been sent to your email');
+      router.refresh();
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(error.response?.data);
       }
     } finally {
       setIsLoading(false);

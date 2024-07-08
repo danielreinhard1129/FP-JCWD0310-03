@@ -72,12 +72,15 @@ const Transaction = ({ params }: { params: { id: string } }) => {
           window.snap.pay(`${data.snapToken}`, {
             onSuccess: function (result: any) {
               toast.success('Payment success!');
+              refetch()
             },
             onPending: function (result: any) {
               toast.success('Waiting for your payment!');
+              refetch()
             },
             onError: function (result: any) {
               toast.success('Payment failed!');
+              refetch()
             },
           });
         } else {

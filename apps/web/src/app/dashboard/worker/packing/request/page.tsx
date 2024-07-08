@@ -8,6 +8,7 @@ import useGetUser from '@/hooks/api/user/useGetUser';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 import { useAppSelector } from '@/redux/hooks';
 import NoData from '@/app/dashboard/components/noData';
+import WorkerPackerAuthGuard from '@/hoc/WorkerPackerAuthGuard';
 
 
 const PackingRequest = () => {
@@ -70,4 +71,4 @@ const PackingRequest = () => {
   )
 }
 
-export default WorkerAuthGuard(PackingRequest)
+export default WorkerPackerAuthGuard(PackingRequest)

@@ -8,6 +8,7 @@ import { EmployeeStation } from '@/types/employee.type';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 import { useAppSelector } from '@/redux/hooks';
 import NoData from '@/app/dashboard/components/noData';
+import WorkerWasherAuthGuard from '@/hoc/WorkerWasherAuthGuard';
 
 
 const WashingOngoing = () => {
@@ -70,4 +71,4 @@ const WashingOngoing = () => {
   )
 }
 
-export default WorkerAuthGuard(WashingOngoing)
+export default WorkerWasherAuthGuard(WashingOngoing)

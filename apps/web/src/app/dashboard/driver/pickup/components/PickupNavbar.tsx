@@ -16,8 +16,8 @@ const PickupNavbar = () => {
           <ChevronLeft className='h-6 my-auto' />
         </Link>
         <h1 className='font-bold mx-auto my-auto'>Your Pickup</h1>
-        <Link className='absolute h-5 my-auto top-0.5 right-0' href={'/dashboard/driver/notification'} >
-          <Bell className='absolute h-5 my-auto top-0.5 right-0' />
+        <Link className='absolute flex h-6 my-auto top-0 right-0' href={'/dashboard/driver/notification'} >
+          <Bell className='h-5 my-auto' />
         </Link>
       </div>
       <div className='flex gap-2 text-center text-xs font-semibold justify-between'>

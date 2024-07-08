@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import logo1 from '../../../../../../public/Black Friday Typography Instagram Post.png'
+import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 
 interface UpdateOutletArgs {
   outletName: string;
@@ -76,4 +77,4 @@ const EditOutlet = ({ params }: { params: { id: number } }) => {
   );
 };
 
-export default EditOutlet;
+export default SuperAdminGuard(EditOutlet);

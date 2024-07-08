@@ -8,6 +8,7 @@ import { EmployeeStation } from '@/types/employee.type';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 import { useAppSelector } from '@/redux/hooks';
 import NoData from '@/app/dashboard/components/noData';
+import WorkerIronerAuthGuard from '@/hoc/WorkerIronerAuthGuard';
 
 
 const IroningOngoing = () => {
@@ -69,4 +70,4 @@ const IroningOngoing = () => {
   )
 }
 
-export default WorkerAuthGuard(IroningOngoing)
+export default WorkerIronerAuthGuard(IroningOngoing)

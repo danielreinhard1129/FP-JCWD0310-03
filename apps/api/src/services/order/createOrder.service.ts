@@ -79,8 +79,8 @@ export const CreateOrderService = async (
             const getUserId = await tx.employee.findMany({
                 where: {
                     outletId: existingPickupOrder.outletId,
-                    workShift: setWorkShift,//hapus jika ga perlu
-                    station: { not: null },//ubah jika berdasarkan station
+                    workShift: setWorkShift,
+                    station: "WASHING"
                 },
                 select: { userId: true }
             })
