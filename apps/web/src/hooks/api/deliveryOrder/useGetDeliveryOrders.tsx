@@ -38,7 +38,7 @@ const useGetDeliveryOrders = (queries: IGetDeliveryOrdersQuery) => {
   useEffect(() => {
     getDeliveryOrders();
   
-  }, [queries.page, queries.take]);
+  }, [queries.page, queries.take, queries.sortOrder, queries.deliveryStatus]);
 
   return { data, isLoading, meta, refetch: getDeliveryOrders };
 };

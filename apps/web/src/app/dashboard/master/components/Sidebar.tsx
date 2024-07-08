@@ -5,6 +5,7 @@ import logo from '../../../../../public/Kucekin_K_White_Logo.png';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
+  BarChartBig,
   BookUser,
   ClipboardList,
   FileBarChart2,
@@ -23,6 +24,7 @@ import noPic from '../../../../../public/pictNotFound.jpeg';
 const Sidebar = () => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname.startsWith(path);
+  const isPageActive = (path: string) => pathname === path;
   const dispatch = useAppDispatch();
   const { id, role, fullName, profilePic } = useAppSelector(
     (state) => state.user,
@@ -55,6 +57,13 @@ const Sidebar = () => {
         />
       </Link>
       <div className="flex flex-col text-md font-medium">
+        <Link
+          className={`flex gap-2 w-full h-12 px-10  ${isPageActive('/dashboard/master') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
+          href={'/dashboard/master'}
+        >
+          <BarChartBig className="my-auto w-5 h-5" />
+          <h2 className="my-auto">Overview</h2>
+        </Link>
         <Link
           className={`flex gap-2 w-full h-12 px-10 ${role != Role.SUPER_ADMIN ? 'hidden' : 'block'} ${isActive('/dashboard/master/employee') ? ' bg-mythemes-grey text-mythemes-maingreen' : 'text-white'}`}
           href={'/dashboard/master/employee'}

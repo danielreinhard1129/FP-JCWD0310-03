@@ -13,6 +13,7 @@ import { OrderStatus } from '@/types/order.type';
 import { EmployeeWorkShift } from '@/types/employee.type';
 import { toast } from 'sonner';
 import SkeletonDetails from '@/app/dashboard/driver/components/SkeletonDetails';
+import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 
 const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -269,4 +270,4 @@ const BagDetails = ({ params }: { params: { slug: string[] } }) => {
   )
 }
 
-export default BagDetails
+export default WorkerAuthGuard(BagDetails)

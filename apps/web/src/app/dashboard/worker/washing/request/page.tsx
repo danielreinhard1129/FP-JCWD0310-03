@@ -8,13 +8,13 @@ import { useAppSelector } from '@/redux/hooks';
 import useGetUser from '@/hooks/api/user/useGetUser';
 import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
 import NoData from '@/app/dashboard/components/noData';
+import WorkerWasherAuthGuard from '@/hoc/WorkerWasherAuthGuard';
 
 
 const WashingRequest = () => {
   const [page, setPage] = useState<number>(1);
   const { id: id } = useAppSelector((state) => state.user);
   const { data: orders, meta, refetch } = useGetOrders({
-    // id: id,
     page,
     take: 10,
     filterStatus: String(OrderStatus.READY_FOR_WASHING)
@@ -70,4 +70,4 @@ const WashingRequest = () => {
   )
 }
 
-export default WorkerAuthGuard(WashingRequest)
+export default WorkerWasherAuthGuard(WashingRequest)

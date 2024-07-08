@@ -6,14 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import useVerification from '@/hooks/api/auth/useVerification';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FC, useState } from 'react';
+import { Loader2 } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
-import { useSearchParams } from 'next/navigation';
-import { User } from '@/types/user.type';
-import { data } from 'cypress/types/jquery';
-import { Loader2 } from 'lucide-react';
 interface VerificationToken {
   password: string | null;
   // token: string | null;

@@ -19,11 +19,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import ItemFilterOutlet from './components/ItemFilterOutlet';
-import ItemFilterStatus from './components/ItemFilterStatus';
-import { useAppSelector } from '@/redux/hooks';
 import AdminAuthGuard from '@/hoc/AdminAuthGuard';
+import { useAppSelector } from '@/redux/hooks';
 import { Role } from '@/types/user.type';
+import ItemFilterOutletWithDeleted from './components/ItemFilterOutletWithDeleted';
+import ItemFilterStatus from './components/ItemFilterStatus';
 
 const MenuOrder = () => {
   const [page, setPage] = useState<number>(1);
@@ -74,7 +74,7 @@ const MenuOrder = () => {
               <SelectTrigger className="min-w-40">
                 <SelectValue placeholder={'Outlet'} />
               </SelectTrigger>
-              <ItemFilterOutlet />
+              <ItemFilterOutletWithDeleted />
             </Select>
           </div>
           <Select
@@ -96,8 +96,8 @@ const MenuOrder = () => {
               <SelectValue placeholder={'Sort By'} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="asc">Sort by: Newest</SelectItem>
-              <SelectItem value="desc">Sort by: Latest</SelectItem>
+              <SelectItem value="asc">Sort by: Oldest</SelectItem>
+              <SelectItem value="desc">Sort by: Newest</SelectItem>
             </SelectContent>
           </Select>
           <Link href={'/dashboard/master/order/pickup-order-list'}>

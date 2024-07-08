@@ -15,9 +15,6 @@ export const getPickupOrdersService = async (query: GetPickupOrdersQuery) => {
   try {
     const { page, sortBy, sortOrder, pickupStatus, isOrderCreated, take, id, isClaimedbyDriver, latitude, longitude } = query;
 
-    console.log('ini query', query);
-
-
     const existingUser = await prisma.user.findFirst({
       where: { id: id },
       select: { employee: true, role: true }
