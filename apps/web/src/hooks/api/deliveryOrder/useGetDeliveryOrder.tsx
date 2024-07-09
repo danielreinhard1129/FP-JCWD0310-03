@@ -16,7 +16,6 @@ const useGetDeliveryOrder = (id: number) => {
       setData(data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // TODO : replace console.log with toast
         console.log(error);
       }
     } finally {
