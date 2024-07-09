@@ -24,7 +24,7 @@ export const getOutletListService = async (query: IGetOutletsQuery) => {
     if(isDelete==false){
       whereClause.isDelete = false
     }
-
+ 
     const outlets = await prisma.outlet.findMany({
       where: whereClause,
       skip: (page - 1) * take,
