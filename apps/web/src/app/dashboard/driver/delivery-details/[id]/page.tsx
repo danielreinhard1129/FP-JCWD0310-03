@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import SkeletonDetails from '../../components/SkeletonDetails';
 import DriverAuthGuard from '@/hoc/DriverAuthGuard';
+import { replaceUnderscoreWithSpace } from '@/utils/replaceUnderscoreWithSpace';
 
 const DeliveryDetails = ({ params }: { params: { id: string } }) => {
   const { deliveryOrder, refetch, isLoading: getLoading } = useGetDeliveryOrder(Number(params.id));
@@ -126,7 +127,7 @@ const DeliveryDetails = ({ params }: { params: { id: string } }) => {
             <div className='flex flex-col'>
               <p className='text-sm font-semibold'>Status :</p>
               <div className='flex text-sm h-10 font-bold bg-mythemes-grey rounded text-mythemes-maingreen'>
-                <p className='my-auto mx-auto text-lg'>{deliveryOrder?.deliveryStatus}</p>
+                <p className='my-auto mx-auto text-lg'>{deliveryOrder != undefined ? replaceUnderscoreWithSpace(`${deliveryOrder?.deliveryStatus}`):''}</p>
               </div>
             </div>
           </div>

@@ -10,12 +10,11 @@ import { PickupStatus } from '@/types/pickupOrder.type'
 import useGetUser from '@/hooks/api/user/useGetUser'
 import { useAppSelector } from '@/redux/hooks'
 import AdminAuthGuard from '@/hoc/AdminAuthGuard'
+import { replaceUnderscoreWithSpace } from '@/utils/replaceUnderscoreWithSpace'
 
 const PickupOrderList = () => {
   const [page, setPage] = useState<number>(1);
-  // const { id } = useAppSelector((state) => state.user)
   const { data: pickupOrders, meta, refetch } = useGetPickupOrders({
-    // id: id,
     page,
     take: 5,
     pickupStatus: String(PickupStatus.RECEIVED_BY_OUTLET),
@@ -63,7 +62,7 @@ const PickupOrderList = () => {
                   name={pickupOrder.user.fullName}
                   email={pickupOrder.user.email}
                   outlet={pickupOrder.outlet.outletName}
-                  status={pickupOrder.pickupStatus}
+                  status={replaceUnderscoreWithSpace(`${pickupOrder.pickupStatus}`)}
                   createdAt={String(
                     new Date(pickupOrder.createdAt).toLocaleDateString('en-US',options),
                   )}
