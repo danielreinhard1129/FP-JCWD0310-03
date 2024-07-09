@@ -8,6 +8,7 @@ import useGetPickupOrders from '@/hooks/api/pickupOrder/useGetPickupOrders';
 import { useAppSelector } from '@/redux/hooks';
 import { OrderStatus } from '@/types/order.type';
 import { PickupStatus } from '@/types/pickupOrder.type';
+import { replaceUnderscoreWithSpace } from '@/utils/replaceUnderscoreWithSpace';
 import React, { useState } from 'react'
 
 const Shipment = () => {
@@ -86,7 +87,7 @@ const Shipment = () => {
                   <TableCell>{item.driver?.user.fullName}</TableCell>
                   <TableCell>{item.pickupNumber}</TableCell>
                   <TableCell>{item.outlet.outletName}</TableCell>
-                  <TableCell>{item.pickupStatus}</TableCell>
+                  <TableCell>{replaceUnderscoreWithSpace(`${item.pickupStatus}`)}</TableCell>
                 </TableRow>
               );
             })}

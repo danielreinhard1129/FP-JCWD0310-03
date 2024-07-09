@@ -9,6 +9,7 @@ import { ChevronLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import SkeletonDetails from '../../components/SkeletonDetails';
+import { replaceUnderscoreWithSpace } from '@/utils/replaceUnderscoreWithSpace';
 
 const PickupDetails = ({ params }: { params: { id: string } }) => {
   const { pickupOrder, refetch, isLoading: getLoading } = useGetPickupOrder(Number(params.id));
@@ -127,7 +128,7 @@ const PickupDetails = ({ params }: { params: { id: string } }) => {
             <div className='flex flex-col'>
               <p className='text-sm font-semibold'>Status :</p>
               <div className='flex text-sm h-10 font-bold bg-mythemes-grey rounded text-mythemes-maingreen'>
-                <p className='my-auto mx-auto text-lg'>{pickupOrder?.pickupStatus}</p>
+                <p className='my-auto mx-auto text-lg'>{pickupOrder != undefined ? replaceUnderscoreWithSpace(`${pickupOrder?.pickupStatus}`):''}</p>
               </div>
             </div>
           </div>
