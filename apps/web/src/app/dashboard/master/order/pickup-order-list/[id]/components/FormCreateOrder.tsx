@@ -1,137 +1,127 @@
 "use client"
 
-import FormSelect from "@/app/dashboard/master/components/FormSelect"
-import ItemLaundryItem from "@/app/dashboard/master/components/ItemLaundryItem"
-import FormInput from "@/components/FormInput"
-import FormInputDisable from "@/components/FormInputDisable"
-import { Button } from "@/components/ui/button"
-import { Form } from "@/components/ui/form"
-import { Label } from "@/components/ui/label"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Plus, Trash2 } from "lucide-react"
-import { FC, useState } from "react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
-interface FormCreateOrder {
-    pickupNumber: string
-}
+import FormSelect from "@/app/dashboard/master/components/FormSelect";
+import ItemLaundryItem from "@/app/dashboard/master/components/ItemLaundryItem";
+import FormInput from "@/components/FormInput";
+import FormInputDisable from "@/components/FormInputDisable";
+import { Button } from "@/components/ui/button";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus, Trash2 } from "lucide-react";
+import { FC } from "react";
+import { z } from "zod";
 
 interface FormCreateOrderProps {
-    isLoading: boolean,
-    onSubmit: any,
-    initialValues: FormCreateOrder,
+    isLoading: boolean;
+    onSubmit: (data: any) => void;
+    initialValues: {
+        pickupNumber: string;
+        weight: string;
+        orderItem: { laundryItemId: string; qty: string }[];
+    };
 }
 
-const FormCreateOrder: FC<FormCreateOrderProps> = ({isLoading, initialValues, onSubmit }) => {
-    const [formItems, setFormItems] = useState([{ id: 1 }]);
+const schema = z.object({
+    pickupNumber: z.string({ required_error: "Pickup Number is required" }).min(1, "Pickup Number is required"),
+    weight: z.string({ required_error: "Weight is required" }).min(1, "Weight is required"),
+    orderItem: z.array(
+        z.object({
+            laundryItemId: z.string({ required_error: "Laundry Item is required" }).min(1, "Laundry Item is required"),
+            qty: z.string({ required_error: "Quantity is required" }).min(1, "Quantity is required"),
+        })
+    ).min(1, "At least one item is required"),
+});
 
-    const baseSchema = {
-        pickupNumber: z.string({ required_error: "Pickup Number Is Required" }).min(1, "Pickup Number Is Required"),
-        weight: z.string({ required_error: "Weight is Required" }).min(1, "Weight is Required"),
-    };
-
-    const dynamicSchema = formItems.reduce((acc, item) => {
-        acc[`laundryItemId_${item.id}`] = z.string({ required_error: "Laundry Item Is Required" }).min(1, "Laundry Item Is Required");
-        acc[`qty_${item.id}`] = z.string({ required_error: "Quantity Is Required" }).min(1, "Quantity Is Required");
-        return acc;
-      }, {} as Record<string, z.ZodString>);
-
-    const ValidationSchema = z.object({
-        ...baseSchema,
-        ...dynamicSchema,
-      });
-
-    const form = useForm<z.infer<typeof ValidationSchema>>({
+const FormCreateOrder: FC<FormCreateOrderProps> = ({ isLoading, initialValues, onSubmit }) => {
+    const methods = useForm({
         mode: "all",
-        resolver: zodResolver(ValidationSchema),
-        defaultValues: initialValues        
-    })
+        resolver: zodResolver(schema),
+        defaultValues: initialValues,
+    });
 
-    const addFormLaundryItem = () => {
-        setFormItems([...formItems, { id: formItems.slice(-1)[0].id + 1 }]);
-    };
+    const { control, handleSubmit } = methods;
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "orderItem",
+    });
 
-    const deleteFormLaundryItem = (id: number) => {
-        if (formItems.length > 1) {
-            setFormItems(formItems.filter(item => item.id !== id));
+    const handleAddItem = () => append({ laundryItemId: "", qty: "" });
+    const handleRemoveItem = (index: number) => {
+        if (fields.length > 1) {
+            remove(index);
         }
     };
 
-    const handleSubmit = (data: any) => {
-        const orderItem = formItems.map(item => ({
-          laundryItemId: data[`laundryItemId_${item.id}`],
-          qty: data[`qty_${item.id}`],
-        }));
-        const finalData = {
-          pickupNumber: data.pickupNumber,
-          weight: data.weight,
-          orderItem,
-        };
-        onSubmit(finalData);
-      };
+    const onFormSubmit = (data: any) => {
+        onSubmit(data);
+    };
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
+        <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-3">
                 <FormInputDisable
                     name="pickupNumber"
                     type="text"
                     label="Pickup Number"
                     placeholder="Pickup Number"
-                    form={form}
+                    form={methods}
                 />
                 <FormInput
                     name="weight"
                     type="number"
                     label="Weight"
-                    placeholder="Entry Laundry Weight"
+                    placeholder="Enter Laundry Weight"
                     min={1}
-                    form={form}
+                    form={methods}
                 />
                 <div className="flex flex-col gap-3">
-                    <Label className="mt-1">Laundry Item</Label>
-                    <div className="flex flex-col bg-mythemes-secondaryblue/20 px-4 pt-2 pb-4 rounded-md" >
-                        {formItems.map((item, index) => (
-                            <div key={index} className="flex gap-4 ">
+                    <Label className="mt-1">Laundry Items</Label>
+                    <div className="flex flex-col bg-mythemes-secondaryblue/20 px-4 pt-2 pb-4 rounded-md">
+                        {fields.map((field, index) => (
+                            <div key={field.id} className="flex gap-4">
                                 <div className="w-3/4">
                                     <FormSelect
-                                        name={`laundryItemId_${item.id}`}
+                                        name={`orderItem.${index}.laundryItemId`}
                                         label=""
                                         placeholder="Select a Laundry Item"
-                                        form={form}
+                                        form={methods}
                                         item={<ItemLaundryItem />}
                                     />
                                 </div>
                                 <div>
                                     <FormInput
-                                        name={`qty_${item.id}`}
+                                        name={`orderItem.${index}.qty`}
                                         type="number"
                                         label=""
-                                        placeholder="Entry Qty"
+                                        placeholder="Enter Qty"
                                         min={1}
-                                        form={form}
+                                        form={methods}
                                     />
                                 </div>
                                 <div className="mt-2 flex items-center justify-center">
-                                    <div >
-                                        {formItems.length > 1 ? (
-                                            <Trash2 onClick={() => deleteFormLaundryItem(item.id)} className="text-mythemes-maingreen cursor-pointer" />
-                                        ) : (
-                                            <Trash2 className="text-mythemes-secondaryblue cursor-pointer" />
-                                        )}
-                                    </div>
+                                    {fields.length > 1 ? (
+                                        <Trash2
+                                            onClick={() => handleRemoveItem(index)}
+                                            className="text-mythemes-maingreen cursor-pointer"
+                                        />
+                                    ) : (
+                                        <Trash2
+                                            className="text-mythemes-maingreen opacity-50 cursor-not-allowed"
+                                        />
+                                    )}
                                 </div>
                             </div>
                         ))}
-                        <div onClick={addFormLaundryItem} className="bg-mythemes-secondaryblue/40 rounded-md mt-4 p-1 cursor-pointer">
+                        <div onClick={handleAddItem} className="bg-mythemes-secondaryblue/40 rounded-md mt-4 p-1 cursor-pointer">
                             <Plus className="text-mythemes-maingreen mx-auto" />
                         </div>
                     </div>
                 </div>
                 <Button type="submit" disabled={isLoading} className="bg-mythemes-maingreen">Submit</Button>
             </form>
-        </Form>
-    )
+        </FormProvider>
+    );
 }
-export default FormCreateOrder
+
+export default FormCreateOrder;

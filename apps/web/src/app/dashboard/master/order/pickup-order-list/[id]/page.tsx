@@ -17,6 +17,9 @@ const CreateOrder = ({ params }: { params: { id: string } }) => {
 
   const initialValues = {
     pickupNumber: pickupOrder?.pickupNumber || '',
+    weight: '',
+    orderItem: [{ laundryItemId: "", qty: "" }]
+   
   };
 
   if (isLoadingGetPickupOrder) {
@@ -30,7 +33,7 @@ const CreateOrder = ({ params }: { params: { id: string } }) => {
     );
   }
 
-  const onSubmit = (values: any) => {
+  const onSubmit = (values: any) => {       
     createOrder(values);
   };
   return (
