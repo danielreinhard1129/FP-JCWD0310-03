@@ -25,6 +25,12 @@ export class LaundryItemController {
   ) {
     try {
       const query = {
+        id: parseInt(res.locals.user.id as string),
+        take: parseInt(req.query.take as string) || 1000000,
+        page: parseInt(req.query.page as string) || 1,
+        sortBy: parseInt(req.query.sortBy as string) || 'id',
+        sortOrder: (req.query.sortOrder as string) || 'asc',
+        search: (req.query.search as string) || '',
         isDelete: Boolean(parseInt(req.query.isDelete as string)) || false,
       };
       const result = await getLaundryItemListService(query);

@@ -33,7 +33,7 @@ export default function RootLayout({
             {children}
             {/* <Footer /> */}
             {/* <CreatePickupButton /> */}
-            <Toaster richColors />
+            <Toaster richColors position='top-center' />
           </StoreProvider>
         </GoogleOAuthProvider>
       </body>

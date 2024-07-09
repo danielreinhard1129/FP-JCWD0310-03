@@ -1,6 +1,8 @@
 'use client';
 
+import Pagination from '@/components/Pagination';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -10,13 +12,11 @@ import {
 } from '@/components/ui/table';
 import SuperAdminGuard from '@/hoc/SuperAdminGuard';
 import useGetOutletList from '@/hooks/api/outlet/useGetOutletsList';
-import { PlusCircle, X } from 'lucide-react';
+import { debounce } from 'lodash';
+import { PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import TableOutlet from './components/TableOutlet';
-import { debounce } from 'lodash';
-import { Input } from '@/components/ui/input';
-import Pagination from '@/components/Pagination';
 
 const MenuOutlet = () => {
   const [page, setPage] = useState<number>(1);
@@ -38,13 +38,6 @@ const MenuOutlet = () => {
     setSearch(value);
   }, 1500);
 
-  const clearSearch = () => {
-    if (inputRef.current) {
-      inputRef.current.value = '';
-      handleSearch('');
-    }
-  };
-
   return (
     <div className="flex flex-col gap-5 p-6">
       <div className="flex flex-col justify-between my-auto">
@@ -52,10 +45,6 @@ const MenuOutlet = () => {
           <h1 className="font-bold text-xl ml-4">Your Outlet</h1>
         </div>
         <div className="w-full relative flex gap-12 p-4 items-center">
-          <X
-            onClick={clearSearch}
-            className={`cursor-pointer absolute right-2.5 bottom-1.5 h-5 w-5 text-mythemes-maingreen ${search == '' ? `hidden` : `block`}`}
-          />
           <Input
             ref={inputRef}
             className="h-10"
@@ -106,7 +95,6 @@ const MenuOutlet = () => {
                     city: outlet.address[0]?.city,
                   }}
                   refetch={refetch}
-                  // city={outlet.address.city}
                 />
               );
             })}
