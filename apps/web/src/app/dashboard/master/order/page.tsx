@@ -24,6 +24,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { Role } from '@/types/user.type';
 import ItemFilterOutletWithDeleted from './components/ItemFilterOutletWithDeleted';
 import ItemFilterStatus from './components/ItemFilterStatus';
+import { replaceUnderscoreWithSpace } from '@/utils/replaceUnderscoreWithSpace';
 
 const MenuOrder = () => {
   const [page, setPage] = useState<number>(1);
@@ -141,7 +142,7 @@ const MenuOrder = () => {
                   createdAt={String(
                     new Date(order.createdAt).toLocaleDateString('en-US',options),
                   )}
-                  status={order.orderStatus}
+                  status={replaceUnderscoreWithSpace(`${order.orderStatus}`)}
                 />
               );
             })}

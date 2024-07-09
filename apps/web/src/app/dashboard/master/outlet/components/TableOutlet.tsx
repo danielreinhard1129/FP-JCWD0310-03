@@ -3,11 +3,6 @@ import { TableCell, TableRow } from '@/components/ui/table';
 import { SquarePen } from 'lucide-react';
 import Link from 'next/link';
 import { FC } from 'react';
-
-// interface Address {
-//   addressLine: string;
-//   city: string;
-// }
 interface OutletRowProps {
   id: number;
   key: number;
@@ -20,7 +15,13 @@ interface OutletRowProps {
   refetch: () => void;
 }
 
-const TableOutlet: FC<OutletRowProps> = ({ key, id, name, type, address,refetch }) => {
+const TableOutlet: FC<OutletRowProps> = ({
+  id,
+  name,
+  type,
+  address,
+  refetch,
+}) => {
   return (
     <TableRow className="text-sm">
       <TableCell>{name}</TableCell>

@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AdminAuthGuard from '@/hoc/AdminAuthGuard';
 import useGetDeliveryOrders from '@/hooks/api/deliveryOrder/useGetDeliveryOrders';
 import { DeliveryStatus } from '@/types/deliveryOrder.type';
+import { replaceUnderscoreWithSpace } from '@/utils/replaceUnderscoreWithSpace';
 import { useState } from 'react';
 
 const Shipment = () => {
@@ -84,7 +85,7 @@ const Shipment = () => {
                   <TableCell>{item.driver?.user.fullName}</TableCell>
                   <TableCell>{item.deliveryNumber}</TableCell>
                   <TableCell>{item.order.pickupOrder.outlet.outletName}</TableCell>
-                  <TableCell>{item.deliveryStatus}</TableCell>
+                  <TableCell>{replaceUnderscoreWithSpace(`${item.deliveryStatus}`)}</TableCell>
                 </TableRow>
               );
             })}

@@ -96,7 +96,7 @@ const DeliveryRequest = () => {
               <TableHead className="text-black font-bold">
                 Created Date
               </TableHead>
-              <TableHead className="text-black font-bold">Status</TableHead>
+              <TableHead className="text-black font-bold">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

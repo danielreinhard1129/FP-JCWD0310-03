@@ -1,12 +1,12 @@
 'use client';
+import LogoutDialog from '@/components/LogoutDialog';
 import { Button } from '@/components/ui/button';
 import AuthGuard from '@/hoc/AuthGuard';
 import useResendVerifEmail from '@/hooks/api/auth/useResendVerifEmail';
 import useGetUser from '@/hooks/api/user/useGetUser';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { logoutAction } from '@/redux/slices/userSlice';
-import { BASE_API_URL } from '@/utils/config';
-import { ChevronLeft, LogOut } from 'lucide-react';
+import { useAppSelector } from '@/redux/hooks';
+import { Role } from '@/types/user.type';
+import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,8 +16,7 @@ import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 import noPic from '../../../../public/pictNotFound.jpeg';
 import SkeletonProfile from '../components/SkeletonProfile';
-import LogoutDialog from '@/components/LogoutDialog';
-import { Role } from '@/types/user.type';
+import { BASE_API_URL } from '@/utils/config';
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
