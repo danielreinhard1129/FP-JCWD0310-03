@@ -51,7 +51,7 @@ export function DeliveryRequest({ id, refetch }: DeliveryRequestProps) {
   useEffect(() => {
     const checkStatus = () => {
       const now = new Date();
-      const currentHour = now.getHours();
+      const currentHour = now.getUTCHours() + 7
 
       if (employeeWorkShift === EmployeeWorkShift.DAY) {
         if (currentHour >= 6 && currentHour < 18) {
