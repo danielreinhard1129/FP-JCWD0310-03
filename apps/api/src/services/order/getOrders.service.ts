@@ -104,9 +104,11 @@ export const getOrdersService = async (query: GetOrdersQuery) => {
         }
 
         if (filterDate !== undefined) {
-            // whereClause.createdAt = filterDate
-            const startOfDay = new Date(filterDate.setHours(0, 0, 0, 0));
-            const endOfDay = new Date(filterDate.setHours(23, 59, 59, 999));
+            const selectedDate = new Date(filterDate); 
+            const currentDate = new Date(selectedDate);
+            currentDate.setTime(currentDate.getTime() + 7 * 60 * 60 * 1000);
+            const startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
+            const endOfDay = new Date(currentDate.setHours(23, 59, 59, 999));
             whereClause.createdAt = {
                 gte: startOfDay,
                 lte: endOfDay

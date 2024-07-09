@@ -25,7 +25,6 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
       setMeta(data.meta);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data);
         console.log(error);
       }
     } finally {

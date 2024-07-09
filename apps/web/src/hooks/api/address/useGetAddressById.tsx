@@ -30,7 +30,6 @@ const useGetAddressById = (id: number) => {
       setData(response.data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        // TODO : replace console.log with toast
         console.log(error);
       }
     } finally {
