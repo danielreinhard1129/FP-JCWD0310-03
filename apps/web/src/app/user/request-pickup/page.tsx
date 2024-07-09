@@ -123,7 +123,7 @@ const RequestPickup = () => {
   }
   return (
     <main className="relative p-0 pt-[32px]">
-      <div className="flex flex-col gap-4 px-6 h-[900px]">
+      <div className="flex flex-col gap-4 px-6 min-h-[740px]">
         <div className="flex relative">
           <ChevronLeft className="absolute" onClick={() => router.back()} />
           <div className="flex justify-between w-full">

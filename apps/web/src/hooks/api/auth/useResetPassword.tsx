@@ -20,11 +20,7 @@ const useResetPassword = () => {
       const { data } = await axiosInstance.patch<ResetPasswordResponse>(
         '/auth/reset-password',
         { password },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       toast.success(data.message);
@@ -33,7 +29,7 @@ const useResetPassword = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof AxiosError) {
-        toast.error(error?.response?.data);
+        toast.error(error?.response?.data.message);
       }
     } finally {
       setIsLoading(false);
