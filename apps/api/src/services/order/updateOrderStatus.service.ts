@@ -41,7 +41,7 @@ export const updateOrderStatusService = async (
             data: {
                 orderStatus: setOrderStatus,
             },
-        });        
+        });
 
         if (orderStatus == 'AWAITING_PAYMENT' && existingOrder.isPaid == false) {
             const createNotification = await prisma.notification.create({
@@ -65,7 +65,7 @@ export const updateOrderStatusService = async (
             }
 
             const now = new Date();
-            const currentHour = now.getHours();
+            const currentHour = now.getUTCHours() + 7
             let setWorkShift
 
             if (currentHour >= 6 && currentHour < 18) {
@@ -89,14 +89,14 @@ export const updateOrderStatusService = async (
                     }
                 })
 
-                
+
                 const createNotification = await prisma.notification.create({
                     data: {
                         title: "Incoming Laundry Task",
                         description: "New laundry arrived at ironing station",
                     }
                 })
-               
+
                 const getUserId = await prisma.employee.findMany({
                     where: {
                         outletId: existingOrder.pickupOrder.outletId,
@@ -201,7 +201,7 @@ export const updateOrderStatusService = async (
         if (orderStatus == 'AWAITING_PAYMENT') {
             const customer = await prisma.user.findFirst({
                 where: { id: existingOrder.pickupOrder.userId },
-                select: {email: true, fullName: true}
+                select: { email: true, fullName: true }
             });
 
             if (!customer || !customer.email || !customer.fullName) {

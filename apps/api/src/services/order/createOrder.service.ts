@@ -59,7 +59,7 @@ export const CreateOrderService = async (
             })
 
             const now = new Date();
-            const currentHour = now.getHours();
+            const currentHour = now.getUTCHours() + 7
             let setWorkShift
 
             if (currentHour >= 6 && currentHour < 18) {
