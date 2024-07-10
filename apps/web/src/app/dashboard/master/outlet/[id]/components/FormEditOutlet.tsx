@@ -1,18 +1,16 @@
 'use client';
-// import CardMap from '@/components/CardMap';
+
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import useCreateOutlet from '@/hooks/api/outlet/useCreateOutlet';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dynamic from 'next/dynamic';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import FormSelect from '../../../components/FormSelect';
 import ItemOutletType from '../../../components/ItemOutletType';
 import { ValidationSchema } from '../validationSchema';
-import dynamic from 'next/dynamic';
-import useUpdateOutlet from '@/hooks/api/outlet/useUpdateOutlet';
 import { DeleteOutlet } from './DeleteOutlet';
 const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
 
@@ -59,11 +57,6 @@ const FormEditOutlet: FC<EditOutletProps> = ({
     form.setValue('latitude', String(location.latitude));
     form.setValue('longitude', String(location.longitude));
   };
-
-  // function onSubmit(values: z.infer<typeof ValidationSchema>) {
-  //   createOutlet(values);
-  // }
-
   const errors = form.formState.errors;
 
   return (
@@ -120,7 +113,7 @@ const FormEditOutlet: FC<EditOutletProps> = ({
             <CardMap onLocationSelect={onLocationSelect} />
           </div>
         </div>
-        <div className='flex gap-4 items-center'>
+        <div className="flex gap-4 items-center">
           <Button
             disabled={isLoading}
             type="submit"

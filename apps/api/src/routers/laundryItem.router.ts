@@ -1,4 +1,3 @@
-//import { verifyToken } from '@/lib/jwt';
 import { LaundryItemController } from '@/controllers/laundryItem.controller';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';

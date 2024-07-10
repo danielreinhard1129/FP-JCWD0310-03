@@ -18,8 +18,7 @@ interface IFormEditUser {
 }
 
 const EditProfile = () => {
-  const { id, email, fullName, role, isVerify, profilePic, tokenExpiresIn } =
-    useAppSelector((state) => state.user);
+  const { email, fullName, profilePic } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const { updateUser, isLoading } = useUpdateUser();
   const [image, setImage] = useState<File | null>(null);
@@ -29,10 +28,9 @@ const EditProfile = () => {
     inputRef.current?.click();
   };
 
-  const handleImageChange = (e: any) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log('Selected file:', file);
       setImage(file);
     }
   };

@@ -1,13 +1,11 @@
 'use client';
 
-// import { axiosInstance } from '@/lib/axios';
-import { cn } from '@/lib/utils';
 import { User } from '@/types/user.type';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import useAxios from '../useAxios';
-import { toast } from 'sonner';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import useAxios from '../useAxios';
 
 interface RegisterResponses {
   message: string;

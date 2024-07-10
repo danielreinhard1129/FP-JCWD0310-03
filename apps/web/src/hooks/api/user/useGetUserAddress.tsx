@@ -1,10 +1,10 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
+
 import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
-import useAxios from '../useAxios';
-import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import useAxios from '../useAxios';
 
 interface UserResult {
   fullname: string;

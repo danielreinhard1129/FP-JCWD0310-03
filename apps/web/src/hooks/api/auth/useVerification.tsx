@@ -1,6 +1,5 @@
 'use client';
 
-// import { axiosInstance } from '@/lib/axios';
 import { useAppDispatch } from '@/redux/hooks';
 import { logoutAction } from '@/redux/slices/userSlice';
 import { AxiosError } from 'axios';
@@ -26,7 +25,6 @@ const useVerification = () => {
   const verification = async (payload: VerificationArgs) => {
     setIsLoading(true);
     try {
-      console.log('ini payload', payload);
       const { data } = await axiosInstance.post('auth/verification', payload, {
         headers: {
           Authorization: `Bearer ${payload.token}`,

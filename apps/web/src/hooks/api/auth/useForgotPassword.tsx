@@ -27,7 +27,7 @@ const useForgotPassword = () => {
 
       router.replace('/login');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       if (error instanceof AxiosError) {
         toast.error(error?.response?.data);
       }

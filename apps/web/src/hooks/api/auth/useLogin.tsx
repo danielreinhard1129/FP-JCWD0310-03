@@ -1,15 +1,13 @@
 'use client';
 
-// import { axiosInstance } from '@/lib/axios';
-
 import { loginAction } from '@/redux/slices/userSlice';
 import { Role, User } from '@/types/user.type';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import useAxios from '../useAxios';
-import { useState } from 'react';
 
 interface LoginResponses {
   message: string;

@@ -1,5 +1,3 @@
-//import { verifyToken } from '@/lib/jwt';
-
 import { OrderController } from '@/controllers/order.controller';
 import { createOrderValidator } from '@/middlewares/createOrderValidator';
 import { verifyToken } from '@/middlewares/verifyToken';
@@ -39,4 +37,3 @@ export class OrderRouter {
     return this.router;
   }
 }
-

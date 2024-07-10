@@ -1,11 +1,10 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
+
 import { Outlet } from '@/types/outlet.type';
+import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
-import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
-import { toast } from 'sonner';
 
 interface IGetOutletsQuery extends IPaginationQueries {
   search?: string;
@@ -34,7 +33,13 @@ const useGetOutletList = (queries: IGetOutletsQuery) => {
 
   useEffect(() => {
     getOutlet();
-  }, [queries.page, queries.search, queries.take, queries.sortOrder, queries.isDelete]);
+  }, [
+    queries.page,
+    queries.search,
+    queries.take,
+    queries.sortOrder,
+    queries.isDelete,
+  ]);
   return { data, isLoading, meta, refetch: getOutlet };
 };
 

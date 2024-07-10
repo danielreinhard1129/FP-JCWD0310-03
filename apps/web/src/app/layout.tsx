@@ -1,14 +1,9 @@
-import { Footer } from '@/components/Footer';
-// import { Toaster } from '@/components/ui/toaster';
-import CreatePickupButton from '@/components/CreatePickupButton';
 import StoreProvider from '@/provider/StoreProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import type { Metadata } from 'next';
-import { DM_Sans, Inter, Poppins, Rubik } from 'next/font/google';
+import { Rubik } from 'next/font/google';
 import { Toaster } from 'sonner';
 import './globals.css';
-// import './page.module.css';
-// import 'leaflet/dist/leaflet.css';
 
 const inter = Rubik({
   subsets: ['latin'],
@@ -33,7 +28,7 @@ export default function RootLayout({
             {children}
             {/* <Footer /> */}
             {/* <CreatePickupButton /> */}
-            <Toaster richColors position='top-center' />
+            <Toaster richColors position="top-center" />
           </StoreProvider>
         </GoogleOAuthProvider>
       </body>

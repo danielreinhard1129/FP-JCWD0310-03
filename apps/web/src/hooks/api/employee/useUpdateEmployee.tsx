@@ -1,11 +1,10 @@
 'use client';
 
-// import { axiosInstance } from '@/lib/axios';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import useAxios from '../useAxios';
 import { toast } from 'sonner';
-import { AxiosError } from 'axios';
+import useAxios from '../useAxios';
 
 interface updateEmployeeArgs {
   workShift: string;
@@ -15,7 +14,7 @@ interface updateEmployeeArgs {
   email?: string;
   role?: string;
 }
- 
+
 const useUpdateEmployee = (employeeId: number) => {
   const { axiosInstance } = useAxios();
   const router = useRouter();

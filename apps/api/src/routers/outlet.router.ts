@@ -1,6 +1,4 @@
-//import { verifyToken } from '@/lib/jwt';
 import { OutletController } from '@/controllers/outlet.controller';
-import { uploader } from '@/lib/uploader';
 import { verifyToken } from '@/middlewares/verifyToken';
 import { Router } from 'express';
 

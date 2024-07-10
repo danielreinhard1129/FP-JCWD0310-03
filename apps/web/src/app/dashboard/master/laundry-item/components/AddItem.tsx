@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import useCreateLaundryItem from '@/hooks/api/laundryItem/useCreateLaundryItem';
 import { LaundryItem } from '@/types/laundryItem.type';
 import { PlusCircle } from 'lucide-react';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
 interface CreateItemArgs extends Pick<LaundryItem, 'itemName'> {}
 interface Refetch {
@@ -26,14 +26,6 @@ const AddItem = ({ refetch }: Refetch) => {
   const [itemName, setItemName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
-  // const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   refetch();
-  //   event.preventDefault();
-  //   const values: CreateItemArgs = { itemName };
-  //   createLaundryItem(values);
-  //   setItemName('');
-  //   setIsOpen(false);
-  // };
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const values: CreateItemArgs = { itemName };

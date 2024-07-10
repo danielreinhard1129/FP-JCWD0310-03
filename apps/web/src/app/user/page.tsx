@@ -4,7 +4,7 @@ import UserOrder from '@/components/homePage/UserOrder';
 import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
 import { useAppSelector } from '@/redux/hooks';
-import { format } from 'date-fns'; // If using date-fns
+import { format } from 'date-fns';
 import 'leaflet/dist/leaflet.css';
 import { Bell } from 'lucide-react';
 import { useRouter } from 'next/navigation';

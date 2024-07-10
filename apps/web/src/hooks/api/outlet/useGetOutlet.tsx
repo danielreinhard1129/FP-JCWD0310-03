@@ -1,5 +1,5 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
+
 import { Outlet } from '@/types/outlet.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';

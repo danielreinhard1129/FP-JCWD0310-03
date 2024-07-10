@@ -1,13 +1,12 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
+import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
 import useGetUserAddress from '@/hooks/api/user/useGetUserAddress';
-import { useAppSelector } from '@/redux/hooks';
 import 'leaflet/dist/leaflet.css';
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import CardAddress from './components/CardAddress';
 import AddAddress from './components/AddAddress';
-import CustomerAuthGuard from '@/hoc/CustomerAuthGuard';
+import CardAddress from './components/CardAddress';
 
 const UserAddress = () => {
   const { address, isLoading, refetch } = useGetUserAddress();
@@ -15,7 +14,6 @@ const UserAddress = () => {
 
   return (
     <main className="px-6 p-0 pt-[32px]  bg-[#ffff]">
-      {/* // <main className={`container p-0 pt-[32px] ${h > h-screen ? 'h-full' : 'h-full'} bg-[#ffff]`}> */}
       <div className=" flex flex-col gap-4  ">
         <div className="flex  relative">
           <ChevronLeft className="absolute" onClick={() => router.back()} />

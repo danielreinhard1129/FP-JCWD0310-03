@@ -14,7 +14,6 @@ import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
 interface VerificationToken {
   password: string | null;
-  // token: string | null;
 }
 const FormVerification = () => {
   const searchParams = useSearchParams();
