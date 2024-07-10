@@ -30,7 +30,7 @@ const useGetAddressById = (id: number) => {
       setData(response.data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.error(error);
+        console.log(error);
       }
     } finally {
       setIsLoading(false);

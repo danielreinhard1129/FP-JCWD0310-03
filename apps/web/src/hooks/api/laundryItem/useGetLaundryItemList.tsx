@@ -5,6 +5,7 @@ import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
+import { da } from '@faker-js/faker';
 
 interface IGetItemLaundryQuery extends IPaginationQueries {
   search?: string;
