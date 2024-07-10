@@ -1,19 +1,18 @@
 'use client';
-// import CardMap from '@/components/CardMap';
+
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import useCreateOutlet from '@/hooks/api/outlet/useCreateOutlet';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import FormSelect from '../../../components/FormSelect';
 import ItemOutletType from '../../../components/ItemOutletType';
 import { ValidationSchema } from '../validationSchema';
-import dynamic from 'next/dynamic';
 const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
-
 
 const FormCreateOutlet = () => {
   const { createOutlet } = useCreateOutlet();
@@ -23,7 +22,7 @@ const FormCreateOutlet = () => {
     latitude: '',
     longitude: '',
   });
- 
+
   const form = useForm<z.infer<typeof ValidationSchema>>({
     mode: 'all',
     resolver: zodResolver(ValidationSchema),
@@ -103,7 +102,7 @@ const FormCreateOutlet = () => {
             <CardMap onLocationSelect={onLocationSelect} />
           </div>
         </div>
- 
+
         <Button
           type="submit"
           className="bg-white outline outline-teal-800 text-mythemes-maingreen font-bold hover:bg-mythemes-maingreen hover:text-white"

@@ -6,23 +6,19 @@ import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 import AsyncSelect from 'react-select/async';
 
-
-
 interface OrderOption {
   value: string;
   label: string;
 }
 
 interface ShipmentCardProps {
-    id: number;
+  id: number;
 }
 
-const OrderSearch: FC<ShipmentCardProps> = ({
-    id,
-}) => {
+const OrderSearch: FC<ShipmentCardProps> = ({ id }) => {
   const router = useRouter();
   const [search, setSearch] = useState<string>('');
-  const { data, isLoading } = useGetOrders({  search });
+  const { data, isLoading } = useGetOrders({ search });
   const loadOptions = (
     inputValue: string,
     callback: (options: OrderOption[]) => void,
@@ -47,9 +43,6 @@ const OrderSearch: FC<ShipmentCardProps> = ({
       className="mx-auto my-4 max-w-[650px] text-black"
       loadOptions={debouncedLoadOptions}
       isLoading={isLoading}
-    //   onChange={(event) => {
-    //     router.push(appConfig.baseUrlNext + `/${event?.value}`);
-    //   }}
     />
   );
 };

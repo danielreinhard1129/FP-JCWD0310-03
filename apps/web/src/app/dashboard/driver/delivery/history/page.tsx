@@ -1,18 +1,21 @@
-'use client'
+'use client';
+import NoData from '@/app/dashboard/components/noData';
 import Pagination from '@/components/Pagination';
+import DriverAuthGuard from '@/hoc/DriverAuthGuard';
 import useGetDeliveryOrders from '@/hooks/api/deliveryOrder/useGetDeliveryOrders';
+import { useAppSelector } from '@/redux/hooks';
 import { DeliveryStatus } from '@/types/deliveryOrder.type';
 import { useState } from 'react';
 import ShipmentCard from '../../components/CardShipment';
-import DriverAuthGuard from '@/hoc/DriverAuthGuard';
-import { useAppSelector } from '@/redux/hooks';
-import NoData from '@/app/dashboard/components/noData';
 
 const DeliveryOrderHistory = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
-  const { data: deliveryOrders, meta: meta, refetch: refetch } = useGetDeliveryOrders({
-    // id: id,
+  const {
+    data: deliveryOrders,
+    meta: meta,
+    refetch: refetch,
+  } = useGetDeliveryOrders({
     deliveryStatus: String(DeliveryStatus.RECEIVED_BY_CUSTOMER),
     page: page,
     take: 10,
@@ -23,8 +26,8 @@ const DeliveryOrderHistory = () => {
   };
 
   return (
-    <div className='min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6'>
-      <div className='flex flex-col gap-3'>
+    <div className="min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6">
+      <div className="flex flex-col gap-3">
         {deliveryOrders.length == 0 ? (
           <NoData />
         ) : (
@@ -42,12 +45,12 @@ const DeliveryOrderHistory = () => {
                   refetch={refetch}
                   buttonLabel="Complete"
                   isHistory={true}
-                  shipmentType='delivery'
-                  distance=''
+                  shipmentType="delivery"
+                  distance=""
                 />
-              )
+              );
             })}
-            <div className='flex justify-center bg-green-200 content-center rounded-xl mb-2'>
+            <div className="flex justify-center bg-green-200 content-center rounded-xl mb-2">
               <Pagination
                 total={meta?.total || 0}
                 take={meta?.take || 0}
@@ -58,7 +61,7 @@ const DeliveryOrderHistory = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DriverAuthGuard(DeliveryOrderHistory)
+export default DriverAuthGuard(DeliveryOrderHistory);

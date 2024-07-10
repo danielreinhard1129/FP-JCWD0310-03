@@ -50,21 +50,10 @@ const Autocomplete = () => {
         control: (styles) => ({
           ...styles,
           borderRadius: 10,
-          backgroundColor: '#f1f1f1', // Warna background yang diinginkan
-          borderColor: '#f1f1f1', // Warna border yang diinginkan
+          backgroundColor: '#f1f1f1',
+          borderColor: '#f1f1f1',
         }),
       }}
-      //   theme={(theme) => ({
-      //     ...theme,
-      //     borderRadius: 10,
-      //     colors: {
-      //       ...theme.colors,
-      //       primary25: '#f4f4f4',
-      //       primary: '#f4f4f4',
-      //       neutral20: '#fff',
-      //       neutral60: '#fff',
-      //     },
-      //   })}
       onChange={(outlet) => {
         router.push(BASE_URL + `/${outlet?.value}`);
       }}

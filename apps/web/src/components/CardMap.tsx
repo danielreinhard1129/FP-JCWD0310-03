@@ -1,5 +1,9 @@
 'use client';
+import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
 import L from 'leaflet';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import { FC, useEffect, useState } from 'react';
 import {
@@ -9,10 +13,6 @@ import {
   TileLayer,
   useMapEvents,
 } from 'react-leaflet';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import useGetLocationByCoord from '@/hooks/api/getLocation/useGetLocationByCoord';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 
 L.Icon.Default.mergeOptions({
@@ -42,7 +42,6 @@ const CardMap: FC<CardMapProps> = ({ onLocationSelect }) => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentPosition([latitude, longitude]);
-          // getLocation(latitude, longitude);
         },
         (error) => {
           console.error(error);

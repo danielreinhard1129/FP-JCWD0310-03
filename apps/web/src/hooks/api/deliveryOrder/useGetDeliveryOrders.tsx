@@ -1,6 +1,5 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
-import { DeliveryOrder } from '@/types/deliveryOrder.type';
+
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
@@ -21,23 +20,22 @@ const useGetDeliveryOrders = (queries: IGetDeliveryOrdersQuery) => {
 
   const getDeliveryOrders = async () => {
     try {
-      const { data } = await axiosInstance.get('/delivery-orders/',{
+      const { data } = await axiosInstance.get('/delivery-orders/', {
         params: queries,
-      })
-      setData(data.data)
-      setMeta(data.meta)
+      });
+      setData(data.data);
+      setMeta(data.meta);
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error);
       }
     } finally {
       setIsLoading(false);
-    };
-  }
+    }
+  };
 
   useEffect(() => {
     getDeliveryOrders();
-  
   }, [queries.page, queries.take, queries.sortOrder, queries.deliveryStatus]);
 
   return { data, isLoading, meta, refetch: getDeliveryOrders };

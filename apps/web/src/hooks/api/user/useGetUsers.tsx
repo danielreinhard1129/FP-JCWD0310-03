@@ -1,5 +1,5 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
+
 import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { User } from '@/types/user.type';
 import { AxiosError } from 'axios';
@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
 
 interface IGetUsersQuery extends IPaginationQueries {
-  search?: string
+  search?: string;
 }
 
 const useGetUsers = (queries: IGetUsersQuery) => {
@@ -18,7 +18,7 @@ const useGetUsers = (queries: IGetUsersQuery) => {
 
   const getUsers = async () => {
     try {
-      const { data } = await axiosInstance.get('/user',{
+      const { data } = await axiosInstance.get('/user', {
         params: queries,
       });
       setData(data.data);

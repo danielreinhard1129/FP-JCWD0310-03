@@ -1,5 +1,5 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
+
 import { Employee } from '@/types/employee.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ const useGetEmployee = (id: number) => {
       setIsLoading(false);
     }
   };
- 
+
   useEffect(() => {
     getEmployee();
   }, []);

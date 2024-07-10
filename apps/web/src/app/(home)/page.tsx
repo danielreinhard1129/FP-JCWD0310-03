@@ -5,9 +5,8 @@ import Testimonials from '@/components/homePage/Testimonials';
 import { PromotionCarousel } from '@/components/promotion/PromotionCarousel';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import '../page.module.css'; // Pastikan jalur ini sesuai dengan struktur proyek Anda;
-import { Poppins } from 'next/font/google';
 import { useEffect } from 'react';
+import '../page.module.css';
 
 const Home = () => {
   const router = useRouter();

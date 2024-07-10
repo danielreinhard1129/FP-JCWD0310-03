@@ -1,21 +1,20 @@
-'use client'
+'use client';
 import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { EmployeeWorkShift } from '@/types/employee.type';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 
 interface PickupOrderRowTableProps {
   key: number;
   pickupOrderId: number;
-  pickupNumber: string
-  name?: string
-  email?: string
-  outlet: string
-  status: string
-  createdAt: string
-  employeeWorkShift?: EmployeeWorkShift
+  pickupNumber: string;
+  name?: string;
+  email?: string;
+  outlet: string;
+  status: string;
+  createdAt: string;
+  employeeWorkShift?: EmployeeWorkShift;
 }
 
 const TablePickupOrder: FC<PickupOrderRowTableProps> = ({
@@ -27,7 +26,7 @@ const TablePickupOrder: FC<PickupOrderRowTableProps> = ({
   outlet,
   status,
   createdAt,
-  employeeWorkShift
+  employeeWorkShift,
 }) => {
   const router = useRouter();
   //shift confirmation
@@ -36,7 +35,7 @@ const TablePickupOrder: FC<PickupOrderRowTableProps> = ({
   useEffect(() => {
     const checkStatus = () => {
       const now = new Date();
-      const currentHour = now.getUTCHours() + 7
+      const currentHour = now.getUTCHours() + 7;
       if (employeeWorkShift === EmployeeWorkShift.DAY) {
         if (currentHour >= 6 && currentHour < 18) {
           setIsDisable(false);
@@ -58,10 +57,8 @@ const TablePickupOrder: FC<PickupOrderRowTableProps> = ({
     return () => clearInterval(interval);
   }, [employeeWorkShift]);
 
-
-
   return (
-    <TableRow key={key} >
+    <TableRow key={key}>
       <TableCell>{pickupNumber}</TableCell>
       <TableCell>{name}</TableCell>
       <TableCell>{email}</TableCell>
@@ -71,16 +68,17 @@ const TablePickupOrder: FC<PickupOrderRowTableProps> = ({
       <TableCell>
         <Button
           disabled={isDisable}
-          className='font-bold bg-mythemes-maingreen text-center text-white rounded-md'
-          onClick={() => router.push(`/dashboard/master/order/pickup-order-list/${pickupOrderId}`)}
-        >Create Order</Button>
-        {/* <Link  href={`/dashboard/master/order/pickup-order-list/${pickupOrderId}`}>
-                    <div className='font-bold bg-mythemes-maingreen text-center text-white rounded-md'>
-                        <h1 >Create Order</h1>
-                    </div>
-                </Link> */}
+          className="font-bold bg-mythemes-maingreen text-center text-white rounded-md"
+          onClick={() =>
+            router.push(
+              `/dashboard/master/order/pickup-order-list/${pickupOrderId}`,
+            )
+          }
+        >
+          Create Order
+        </Button>
       </TableCell>
     </TableRow>
-  )
-}
-export default TablePickupOrder
+  );
+};
+export default TablePickupOrder;

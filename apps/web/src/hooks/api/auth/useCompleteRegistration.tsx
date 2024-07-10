@@ -1,15 +1,12 @@
 'use client';
 
-// import { axiosInstance } from '@/lib/axios';
 import { IFormUser, User } from '@/types/user.type';
 import { AxiosError } from 'axios';
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import useAxios from '../useAxios';
 import { toast } from 'sonner';
-import { FileWithPath } from 'react-dropzone';
+import useAxios from '../useAxios';
 
 interface CompleteRegistrationResponse {
   message: string;
