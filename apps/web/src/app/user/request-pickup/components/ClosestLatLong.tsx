@@ -35,7 +35,6 @@ interface TargetLocation {
 const closestLocations = (
   targetLocation: TargetLocation,
   locationData: Location[],
-  // count: number = 3,
 ): Location[] => {
   if (!locationData || locationData.length === 0) {
     return [];

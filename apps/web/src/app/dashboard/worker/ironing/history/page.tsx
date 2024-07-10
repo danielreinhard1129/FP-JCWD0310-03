@@ -1,27 +1,27 @@
-'use client'
+'use client';
 
-import useGetOrderWorkers from "@/hooks/api/orderWorker/useGetOrderWorkers";
-import { EmployeeStation } from "@/types/employee.type";
-import { useState } from "react";
-import WashingCard from "../../components/WashingCard";
-import { OrderStatus } from "@/types/order.type";
-import Pagination from "@/components/Pagination";
-import WorkerAuthGuard from "@/hoc/WorkerAuthGuard";
-import { useAppSelector } from "@/redux/hooks";
-import NoData from "@/app/dashboard/components/noData";
-import WorkerIronerAuthGuard from "@/hoc/WorkerIronerAuthGuard";
-
-
+import NoData from '@/app/dashboard/components/noData';
+import Pagination from '@/components/Pagination';
+import WorkerIronerAuthGuard from '@/hoc/WorkerIronerAuthGuard';
+import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
+import { useAppSelector } from '@/redux/hooks';
+import { EmployeeStation } from '@/types/employee.type';
+import { OrderStatus } from '@/types/order.type';
+import { useState } from 'react';
+import WashingCard from '../../components/WashingCard';
 
 const IroningHistory = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
-  const { data: orderWorkers, meta, refetch } = useGetOrderWorkers({
-    // id: id,
+  const {
+    data: orderWorkers,
+    meta,
+    refetch,
+  } = useGetOrderWorkers({
     page,
     take: 10,
     isComplete: Number(Boolean(true)),
-    station: String(EmployeeStation.IRONING)
+    station: String(EmployeeStation.IRONING),
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
@@ -29,8 +29,8 @@ const IroningHistory = () => {
   };
 
   return (
-    <div className='min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6'>
-      <div className='flex flex-col gap-3'>
+    <div className="min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6">
+      <div className="flex flex-col gap-3">
         {orderWorkers.length == 0 ? (
           <NoData />
         ) : (
@@ -54,10 +54,10 @@ const IroningHistory = () => {
                   isBypassAccepted={false}
                   isBypassRejected={orderWorker.bypassRejected}
                 />
-              )
+              );
             })}
 
-            <div className='flex justify-center bg-green-200 content-center rounded-xl mb-2'>
+            <div className="flex justify-center bg-green-200 content-center rounded-xl mb-2">
               <Pagination
                 total={meta?.total || 0}
                 take={meta?.take || 0}
@@ -68,7 +68,7 @@ const IroningHistory = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WorkerIronerAuthGuard(IroningHistory)
+export default WorkerIronerAuthGuard(IroningHistory);

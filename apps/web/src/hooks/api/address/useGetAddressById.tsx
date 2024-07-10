@@ -1,5 +1,5 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
+
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
@@ -30,7 +30,7 @@ const useGetAddressById = (id: number) => {
       setData(response.data);
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error);
+        console.error(error);
       }
     } finally {
       setIsLoading(false);

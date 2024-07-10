@@ -1,6 +1,5 @@
 'use client';
 
-// import faker from 'faker';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -15,7 +14,7 @@ import { FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
 interface ShipmentCardProps {
-  dataSet: number[] | undefined;  
+  dataSet: number[] | undefined;
   daysInMonth?: number;
   label: string;
   title: string;
@@ -25,31 +24,30 @@ const ChartEvents: FC<ShipmentCardProps> = ({
   dataSet,
   daysInMonth,
   label,
-  title 
-})=> {
-
+  title,
+}) => {
   const labels: (number | string)[] = [];
 
-if (daysInMonth) {
-  for (let i = 1; i <= daysInMonth; i++) {
-    labels.push(i);
+  if (daysInMonth) {
+    for (let i = 1; i <= daysInMonth; i++) {
+      labels.push(i);
+    }
+  } else {
+    labels.push(
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    );
   }
-} else {
-  labels.push(
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  );
-}
 
   ChartJS.register(
     CategoryScale,

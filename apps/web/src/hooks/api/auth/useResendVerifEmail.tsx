@@ -1,14 +1,13 @@
 'use client';
 
-// import { axiosInstance } from '@/lib/axios';
+import { useAppDispatch } from '@/redux/hooks';
+import { loginAction } from '@/redux/slices/userSlice';
 import { User } from '@/types/user.type';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import useAxios from '../useAxios';
-import { useAppDispatch } from '@/redux/hooks';
-import { loginAction, logoutAction } from '@/redux/slices/userSlice';
 
 interface ResendVerifEmailResponse {
   message: string;

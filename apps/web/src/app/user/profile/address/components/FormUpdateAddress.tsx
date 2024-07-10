@@ -1,16 +1,15 @@
 'use client';
-// import CardMap from '@/components/CardMap';
+
 import FormCheckBox from '@/components/FormCheckBock';
 import FormInput from '@/components/FormInput';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FC, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ValidationSchema } from '../validationSchema';
-import dynamic from 'next/dynamic';
 
 const CardMap = dynamic(() => import('@/components/CardMap'), { ssr: false });
 
@@ -35,13 +34,7 @@ const FormUpdateAddress: FC<FormEditAddressProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [location, setLocation] = useState<any>();
-  const [locationData, setLocationData] = useState({
-    // addressLine: '',
-    // city: '',
-    // latitude: '',
-    // longitude: '',
-    // isPrimary: false,
-  });
+  const [locationData, setLocationData] = useState({});
 
   const handleDialogOpen = () => {
     setOpen(true);

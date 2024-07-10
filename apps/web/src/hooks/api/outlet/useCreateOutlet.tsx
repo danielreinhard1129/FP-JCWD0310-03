@@ -15,11 +15,9 @@ interface createOutletArgs {
 }
 
 const useCreateOutlet = () => {
-  //   const [isLoading, setIsloading] = useState(false);
   const { axiosInstance } = useAxios();
   const router = useRouter();
   const createOutlet = async (payload: createOutletArgs) => {
-    // setIsloading(true);
     try {
       const { outletName, outletType, addressLine, city } = payload;
 

@@ -1,35 +1,35 @@
-'use client'
+'use client';
+import NoData from '@/app/dashboard/components/noData';
 import Pagination from '@/components/Pagination';
+import WorkerIronerAuthGuard from '@/hoc/WorkerIronerAuthGuard';
 import useGetOrderWorkers from '@/hooks/api/orderWorker/useGetOrderWorkers';
+import { useAppSelector } from '@/redux/hooks';
+import { EmployeeStation } from '@/types/employee.type';
 import { OrderStatus } from '@/types/order.type';
 import { useState } from 'react';
 import WashingCard from '../../components/WashingCard';
-import { EmployeeStation } from '@/types/employee.type';
-import WorkerAuthGuard from '@/hoc/WorkerAuthGuard';
-import { useAppSelector } from '@/redux/hooks';
-import NoData from '@/app/dashboard/components/noData';
-import WorkerIronerAuthGuard from '@/hoc/WorkerIronerAuthGuard';
-
 
 const IroningOngoing = () => {
   const [page, setPage] = useState<number>(1);
   const { id } = useAppSelector((state) => state.user);
-  const { data: orderWorkers, meta, refetch } = useGetOrderWorkers({
-    // id: id,
+  const {
+    data: orderWorkers,
+    meta,
+    refetch,
+  } = useGetOrderWorkers({
     page,
     take: 10,
     isComplete: Number(Boolean(false)),
-    station: String(EmployeeStation.IRONING)
+    station: String(EmployeeStation.IRONING),
   });
 
   const handleChangePaginate = ({ selected }: { selected: number }) => {
     setPage(selected + 1);
   };
 
-
   return (
-    <div className='min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6'>
-      <div className='flex flex-col gap-3'>
+    <div className="min-h-dvh flex flex-col gap-2 pt-4 bg-mythemes-grey container px-6">
+      <div className="flex flex-col gap-3">
         {orderWorkers.length == 0 ? (
           <NoData />
         ) : (
@@ -53,10 +53,10 @@ const IroningOngoing = () => {
                   isBypassAccepted={orderWorker.bypassAccepted}
                   isBypassRejected={orderWorker.bypassRejected}
                 />
-              )
+              );
             })}
 
-            <div className='flex justify-center bg-mythemes-secondarygreen content-center rounded-xl mb-2'>
+            <div className="flex justify-center bg-mythemes-secondarygreen content-center rounded-xl mb-2">
               <Pagination
                 total={meta?.total || 0}
                 take={meta?.take || 0}
@@ -67,7 +67,7 @@ const IroningOngoing = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WorkerIronerAuthGuard(IroningOngoing)
+export default WorkerIronerAuthGuard(IroningOngoing);

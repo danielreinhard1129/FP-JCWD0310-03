@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-// interface IForgotPassArgs extends Pick<User, 'email'> {}
 interface ResetPasswordResponse {
   message: string;
 }

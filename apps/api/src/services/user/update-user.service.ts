@@ -5,10 +5,9 @@ import prisma from '@/prisma';
 import { appConfig } from '@/utils/config';
 import { User } from '@prisma/client';
 import fs from 'fs';
-import { sign } from 'jsonwebtoken';
-import { join } from 'path';
-import path from 'path';
 import Handlebars from 'handlebars';
+import { sign } from 'jsonwebtoken';
+import path, { join } from 'path';
 
 const defaultDir = '../../../public/images';
 
@@ -47,7 +46,6 @@ export const updateUserService = async (
     }
 
     if (newPassword && password) {
-      // Periksa jika ada newPassword dan oldPassword
       const isOldPasswordValid = await comparePassword(password, user.password);
 
       if (!isOldPasswordValid) {
@@ -56,8 +54,6 @@ export const updateUserService = async (
 
       const hashedPassword = await hashPassword(String(newPassword));
       body.password = hashedPassword;
-
-      // newPassword = undefined;
     }
 
     if (email && user.email !== email) {

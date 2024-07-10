@@ -1,11 +1,10 @@
 'use client';
-// import { axiosInstance } from '@/lib/axios';
+
 import { LaundryItem } from '@/types/laundryItem.type';
+import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import useAxios from '../useAxios';
-import { IPaginationMeta, IPaginationQueries } from '@/types/pagination.type';
-import { da } from '@faker-js/faker';
 
 interface IGetItemLaundryQuery extends IPaginationQueries {
   search?: string;
