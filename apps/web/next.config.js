@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'jcwd031003.purwadhikabootcamp.com',
+        hostname: 'kucekin.purwadhikabootcamp.com',
       },
     ],
   },
